@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Blend for Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekDesk", "GeekDesk.csproj", "{B4983CEC-2281-413C-8ECF-92EE0E40A713}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B4983CEC-2281-413C-8ECF-92EE0E40A713}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4983CEC-2281-413C-8ECF-92EE0E40A713}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4983CEC-2281-413C-8ECF-92EE0E40A713}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4983CEC-2281-413C-8ECF-92EE0E40A713}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7D844F27-975B-4CFF-A373-E665FB8866DE}
+	EndGlobalSection
+EndGlobal

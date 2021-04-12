@@ -1,0 +1,219 @@
+﻿<Window x:Class="GeekDesk.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GeekDesk"
+        mc:Ignorable="d"
+        xmlns:util="clr-namespace:GeekDesk.Util"
+        xmlns:DraggAnimatedPanel="clr-namespace:DraggAnimatedPanel" x:Name="window"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+
+        <Style x:Key="ListBoxStyle" BasedOn="{StaticResource ListBoxBaseStyle}" TargetType="ListBox"/>
+        <Style TargetType="{x:Type ListBoxItem}" x:Key="memuStory" BasedOn="{StaticResource ListBoxStyle}">
+            <Style.Triggers>
+                <!--鼠标移入-->
+                <EventTrigger RoutedEvent="MouseMove">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <!--鼠标移入放大-->
+                            <DoubleAnimation To="20" Duration="0:0:0.001" Storyboard.TargetProperty="FontSize"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <!--鼠标移出-->
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <!--鼠标移出恢复正常大小-->
+                            <DoubleAnimation To="15" Duration="0:0:0.001" Storyboard.TargetProperty="FontSize"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+
+
+        <!--左侧栏样式动画-->
+        <Style x:Key="menuStyle" TargetType="ListBoxItem" BasedOn="{StaticResource ListBoxItemBaseStyle}">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <TranslateTransform/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="True"/>
+                    </MultiTrigger.Conditions>
+                    <MultiTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation To="20" Duration="0:0:0.001" Storyboard.TargetProperty="FontSize"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </MultiTrigger.EnterActions>
+                    <MultiTrigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation To="15" Duration="0:0:0.5" Storyboard.TargetProperty="FontSize"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </MultiTrigger.ExitActions>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--右侧栏样式动画-->
+        <Style x:Key="imageStyle" TargetType="Image">
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="Source" Value="{Binding BitmapImage}"/>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="True"/>
+                    </MultiTrigger.Conditions>
+                    <MultiTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation To="80" Duration="0:0:0.1" Storyboard.TargetProperty="Width"/>
+                                <DoubleAnimation To="80" Duration="0:0:0.1" Storyboard.TargetProperty="Height"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </MultiTrigger.EnterActions>
+                    <MultiTrigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation To="60" Duration="0:0:0.5" Storyboard.TargetProperty="Width"/>
+                                <DoubleAnimation To="60" Duration="0:0:0.5" Storyboard.TargetProperty="Height"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </MultiTrigger.ExitActions>
+                </MultiTrigger>
+            </Style.Triggers>
+
+        </Style>
+
+        <util:MenuWidthConvert x:Key="MenuWidthConvert"/>
+
+    </Window.Resources>
+
+
+
+    <Grid>
+        <!--背景图片-->
+        <Grid.Background>
+            <ImageBrush ImageSource="D:\壁纸\18078.jpg"></ImageBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="leftColumn" MinWidth="80" Width="150" MaxWidth="200"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.Row="0" Grid.Column="0">
+            <Label>Text</Label>
+        </DockPanel>
+
+        <!--左侧栏-->
+        <hc:Card Opacity="1" x:Name="leftCard" Grid.Row="1" Grid.Column="0"
+                 BorderThickness="1" 
+                 Effect="{DynamicResource EffectShadow2}" 
+                 Margin="5,5,0,5"
+                 >
+            <!--<hc:Card.ContextMenu>
+                <ContextMenu Width="200">
+                    <TextBlock Text="新建菜单"/>
+                </ContextMenu>
+            </hc:Card.ContextMenu>-->
+            <!--<ListBox  x:Name="menu"   BorderThickness="0"  ItemsSource="{Binding}"   Margin="10,8,10,8"
+                      >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding menu}" FontSize="15" Style="{StaticResource memuStory}"  PreviewMouseLeftButtonDown="menuClick" RenderTransformOrigin="0.5,0.5">
+                           
+                        </TextBlock>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>-->
+
+            <ListBox x:Name="menu"  ItemsSource="{Binding}">
+                <ListBox.Resources>
+                    <ContextMenu x:Key="menuDialog" Width="200">
+                        <MenuItem Header="新建菜单"/>
+                        <MenuItem Header="重命名"/>
+                        <MenuItem Header="删除" Click="deleteMenu"/>
+                    </ContextMenu>
+                </ListBox.Resources>
+
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource menuStyle}">
+                        <Setter Property="ContextMenu" Value="{StaticResource menuDialog}"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <DraggAnimatedPanel:DraggAnimatedPanel ItemsHeight="30" ItemsWidth="{Binding ElementName=leftColumn, Path=Width, Converter={StaticResource MenuWidthConvert}}"   HorizontalAlignment="Center" VerticalAlignment="Top" SwapCommand="{Binding SwapCommand2, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding menu}"  PreviewMouseLeftButtonDown="menuClick" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </hc:Card>
+        <!--分割线-->
+        <GridSplitter Opacity="0" Grid.Row="1" Grid.Column="0" Width="1"  VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+
+        <!--右侧栏-->
+        <hc:Card AllowDrop="True" Drop="Wrap_Drop" Opacity="1" x:Name="rightCard" Grid.Row="1" Grid.Column="1"  BorderThickness="1" Effect="{DynamicResource EffectShadow2}" Margin="5,5,5,5">
+            <WrapPanel Orientation="Horizontal">
+                <ListBox x:Name="data" ItemsSource="{Binding}" 
+                         BorderThickness="0"
+                         SelectionChanged="data_SelectionChanged"
+                         >
+                    <!--<ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource dataStyle}"/>
+                    </ListBox.ItemContainerStyle>-->
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <DraggAnimatedPanel:DraggAnimatedPanel ItemsHeight="115" ItemsWidth="100"  HorizontalAlignment="Center" SwapCommand="{Binding SwapCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="5,5,5,5" CornerRadius="10">
+                                <StackPanel  Tag="{Binding Path}"
+                                             MouseLeftButtonDown="dataClick"
+                                             HorizontalAlignment="Center"
+                                             hc:Poptip.HitMode="None" 
+                                             hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
+                                             hc:Poptip.Content="{Binding Path}" 
+                                             hc:Poptip.Placement="BottomLeft"
+                                             Margin="5,5,5,5"
+                                             Height="115"
+                                             >
+                                    <Image Style="{StaticResource imageStyle}"></Image>
+                                    <TextBlock Width="80" TextWrapping="Wrap" TextAlignment="Center" Height="35" LineHeight="15" FontSize="12" Text="{Binding Name}"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </WrapPanel>
+
+        </hc:Card>
+
+
+
+    </Grid>
+</Window>
