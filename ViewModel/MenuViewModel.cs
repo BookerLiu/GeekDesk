@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
 namespace GeekDesk.ViewModel
 {
@@ -12,7 +7,7 @@ namespace GeekDesk.ViewModel
 
         public MenuViewModel()
         {
-            
+
         }
 
         public ObservableCollection<Menu> GetMenus()
@@ -23,7 +18,7 @@ namespace GeekDesk.ViewModel
             menus.Add(new Menu() { menu = "test3" });
             return menus;
         }
-        
+
 
     }
 

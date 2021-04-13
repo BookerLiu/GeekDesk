@@ -8,7 +8,7 @@
         xmlns:util="clr-namespace:GeekDesk.Util"
         xmlns:DraggAnimatedPanel="clr-namespace:DraggAnimatedPanel" x:Name="window"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="500" Width="600">
     <Window.Resources>
 
         <Style x:Key="ListBoxStyle" BasedOn="{StaticResource ListBoxBaseStyle}" TargetType="ListBox"/>
@@ -143,7 +143,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>-->
 
-            <ListBox x:Name="menu"  ItemsSource="{Binding}">
+            <ListBox x:Name="menus"  ItemsSource="{Binding MenuList}">
                 <ListBox.Resources>
                     <ContextMenu x:Key="menuDialog" Width="200">
                         <MenuItem Header="新建菜单"/>
@@ -165,7 +165,7 @@
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding menu}"  PreviewMouseLeftButtonDown="menuClick" />
+                        <TextBlock Text="{Binding}"  PreviewMouseLeftButtonDown="menuClick" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -176,31 +176,29 @@
         <!--右侧栏-->
         <hc:Card AllowDrop="True" Drop="Wrap_Drop" Opacity="1" x:Name="rightCard" Grid.Row="1" Grid.Column="1"  BorderThickness="1" Effect="{DynamicResource EffectShadow2}" Margin="5,5,5,5">
             <WrapPanel Orientation="Horizontal">
-                <ListBox x:Name="data" ItemsSource="{Binding}" 
+                <ListBox x:Name="icons" ItemsSource="{Binding}" 
                          BorderThickness="0"
                          SelectionChanged="data_SelectionChanged"
                          >
-                    <!--<ListBox.ItemContainerStyle>
-                        <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource dataStyle}"/>
-                    </ListBox.ItemContainerStyle>-->
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <DraggAnimatedPanel:DraggAnimatedPanel ItemsHeight="115" ItemsWidth="100"  HorizontalAlignment="Center" SwapCommand="{Binding SwapCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
 
+
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Border Margin="5,5,5,5" CornerRadius="10">
-                                <StackPanel  Tag="{Binding Path}"
+                                <StackPanel  Tag="{Binding}"
                                              MouseLeftButtonDown="dataClick"
                                              HorizontalAlignment="Center"
-                                             hc:Poptip.HitMode="None" 
-                                             hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
-                                             hc:Poptip.Content="{Binding Path}" 
-                                             hc:Poptip.Placement="BottomLeft"
                                              Margin="5,5,5,5"
                                              Height="115"
+                                             hc:Poptip.HitMode="None" 
+                                             hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
+                                             hc:Poptip.Content="{Binding Content}" 
+                                             hc:Poptip.Placement="BottomLeft"
                                              >
                                     <Image Style="{StaticResource imageStyle}"></Image>
                                     <TextBlock Width="80" TextWrapping="Wrap" TextAlignment="Center" Height="35" LineHeight="15" FontSize="12" Text="{Binding Name}"/>

@@ -1,15 +1,13 @@
-﻿using GalaSoft.MvvmLight;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using GeekDesk.Constant;
+using System;
+using System.ComponentModel;
 
 namespace GeekDesk.ViewModel
 {
+
     [Serializable]
-    public class AppConfig  :  ViewModelBase
+    public class AppConfig : System.ComponentModel.INotifyPropertyChanged
     {
         private int menuSortType = (int)SortType.CUSTOM; //菜单排序类型
         private int iconSortType = (int)SortType.CUSTOM; //图表排序类型
@@ -18,8 +16,10 @@ namespace GeekDesk.ViewModel
         private double menuCardWidth = (double)DefaultConstant.MENU_CARD_WIDHT;//菜单栏宽度
 
 
+
         #region GetSet
-        public int MenuSortType {
+        public int MenuSortType
+        {
             get
             {
                 return menuSortType;
@@ -27,7 +27,7 @@ namespace GeekDesk.ViewModel
             set
             {
                 menuSortType = value;
-                RaisePropertyChanged();
+                OnPropertyChanged("MenuSortType");
             }
         }
 
@@ -40,7 +40,7 @@ namespace GeekDesk.ViewModel
             set
             {
                 iconSortType = value;
-                RaisePropertyChanged();
+                OnPropertyChanged("IconSortType");
             }
         }
 
@@ -53,7 +53,7 @@ namespace GeekDesk.ViewModel
             set
             {
                 windowWidth = value;
-                RaisePropertyChanged();
+                OnPropertyChanged("WindowWidth");
             }
         }
 
@@ -66,7 +66,7 @@ namespace GeekDesk.ViewModel
             set
             {
                 windowHeight = value;
-                RaisePropertyChanged();
+                OnPropertyChanged("WindowHeight");
             }
         }
 
@@ -79,9 +79,17 @@ namespace GeekDesk.ViewModel
             set
             {
                 menuCardWidth = value;
-                RaisePropertyChanged();
+                OnPropertyChanged("MenuCardWidth");
             }
         }
+
+        [field: NonSerializedAttribute()]
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         #endregion
 
     }

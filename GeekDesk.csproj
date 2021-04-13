@@ -85,6 +85,7 @@
     </ApplicationDefinition>
     <Compile Include="Command\DelegateCommand.cs" />
     <Compile Include="Command\DelegateCommandBase.cs" />
+    <Compile Include="Constant\AppConstant.cs" />
     <Compile Include="Constant\DefaultConstant.cs" />
     <Compile Include="Constant\SortType.cs" />
     <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.cs" />
@@ -98,9 +99,8 @@
     <Compile Include="Util\MouseUtilities.cs" />
     <Compile Include="Util\SystemIcon.cs" />
     <Compile Include="ViewModel\AppConfig.cs" />
-    <Compile Include="ViewModel\DataInfos.cs" />
-    <Compile Include="ViewModel\MainModel.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\AppData.cs" />
+    <Compile Include="ViewModel\IconInfo.cs" />
     <Compile Include="ViewModel\MenuViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

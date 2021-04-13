@@ -1,12 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GeekDesk.Constant;
 using GeekDesk.ViewModel;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 /// <summary>
 /// 提取一些代码
@@ -15,45 +10,49 @@ namespace GeekDesk.Util
 {
     class CommonCode
     {
-        private static string appConfigFilePath = AppDomain.CurrentDomain.BaseDirectory.Trim() + "\\config";
+
         /// <summary>
-        /// 获取app配置
+        /// 获取app 数据
         /// </summary>
         /// <returns></returns>
-        public static AppConfig GetAppConfig()
+        public static AppData GetAppData()
         {
-            AppConfig config;
-            if (!File.Exists(appConfigFilePath))
+            AppData appData;
+            if (!File.Exists(AppConstant.DATA_FILE_PATH))
             {
-                using (FileStream fs = File.Create(appConfigFilePath)) { }
-                config = new AppConfig();
-                SaveAppConfig(config);
-                   
+                using (FileStream fs = File.Create(AppConstant.DATA_FILE_PATH)) { }
+                appData = new AppData();
+                SaveAppData(appData);
+
             }
             else
             {
-                using (FileStream fs = new FileStream(appConfigFilePath, FileMode.Open))
+                using (FileStream fs = new FileStream(AppConstant.DATA_FILE_PATH, FileMode.Open))
                 {
                     BinaryFormatter bf = new BinaryFormatter();
-                    string json = bf.Deserialize(fs) as string;
-                    config = JsonConvert.DeserializeObject<AppConfig>(json);
+                    appData = bf.Deserialize(fs) as AppData;
                 }
             }
-            return config;
+            return appData;
         }
 
         /// <summary>
-        /// 保存app配置
+        /// 保存app 数据
         /// </summary>
-        /// <param name="config"></param>
-        public static void SaveAppConfig(AppConfig config)
+        /// <param name="appData"></param>
+        public static void SaveAppData(AppData appData)
         {
-            using (FileStream fs = new FileStream(appConfigFilePath, FileMode.Create))
+
+            using (FileStream fs = new FileStream(AppConstant.DATA_FILE_PATH, FileMode.Create))
             {
                 BinaryFormatter bf = new BinaryFormatter();
-                string json = JsonConvert.SerializeObject(config);
-                bf.Serialize(fs, json);
+                bf.Serialize(fs, appData);
             }
         }
+
+
+
+
+
     }
 }

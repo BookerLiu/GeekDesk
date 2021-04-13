@@ -1,21 +1,14 @@
-﻿using System;
+﻿using DraggAnimatedPanelExample;
+using GalaSoft.MvvmLight;
+using GeekDesk.Util;
+using GeekDesk.ViewModel;
+using System;
 using System.Collections.Generic;
-
+using System.IO;
 using System.Windows;
-
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-
-using GeekDesk.ViewModel;
-using System.IO;
-using GeekDesk.Util;
-using GalaSoft.MvvmLight;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Collections.ObjectModel;
-using WPF.JoshSmith.ServiceProviders.UI;
-using DraggAnimatedPanelExample;
-using System.ComponentModel;
 
 namespace GeekDesk
 {
@@ -25,21 +18,47 @@ namespace GeekDesk
     /// 
     public partial class MainWindow : Window
     {
-        private static MainModel mainModel;
 
-        ListViewDragDropManager<ViewModel.Menu> dragMgr;
-        ListViewDragDropManager<ViewModel.DataInfos> dragMgr2;
+        private static AppData appData = CommonCode.GetAppData();
         public MainWindow()
         {
             InitializeComponent();
+            loadData();
+            List<string> menuList = new List<string>();
 
-            mainModel = new MainModel();
+            Dictionary<string, List<IconInfo>> iconMap = new Dictionary<string, List<IconInfo>>();
+
+
+
             //this.DataContext = mainModel;
             //menu.Items = mainModel;
             //System.Diagnostics.Process.Start(@"D:\SoftWare\WeGame\wegame.exe");
             this.Loaded += Window_Loaded;
             this.SizeChanged += MainWindow_Resize;
         }
+
+        private void loadData()
+        {
+            this.DataContext = appData;
+            appData.MenuList.Add("Test1");
+            this.Width = appData.AppConfig.WindowWidth;
+            this.Height = appData.AppConfig.WindowHeight;
+
+
+            List<IconInfo> iconList;
+            if (appData.IconMap.ContainsKey("1"))
+            {
+                iconList = appData.IconMap["1"];
+            }
+            else
+            {
+                iconList = new List<IconInfo>();
+                appData.IconMap.Add("1", iconList);
+            }
+            icons.ItemsSource = iconList;
+
+        }
+
 
         DelegateCommand<int[]> _swap;
         public DelegateCommand<int[]> SwapCommand
@@ -52,17 +71,17 @@ namespace GeekDesk
                         {
                             int fromS = indexes[0];
                             int to = indexes[1];
-                            var elementSource = data.Items[to];
-                            var dragged = data.Items[fromS];
+                            var elementSource = icons.Items[to];
+                            var dragged = icons.Items[fromS];
                             if (fromS > to)
                             {
-                                data.Items.Remove(dragged);
-                                data.Items.Insert(to, dragged);
+                                icons.Items.Remove(dragged);
+                                icons.Items.Insert(to, dragged);
                             }
                             else
                             {
-                                data.Items.Remove(dragged);
-                                data.Items.Insert(to, dragged);
+                                icons.Items.Remove(dragged);
+                                icons.Items.Insert(to, dragged);
                             }
                         }
                     );
@@ -80,17 +99,17 @@ namespace GeekDesk
                         {
                             int fromS = indexes[0];
                             int to = indexes[1];
-                            var elementSource = menu.Items[to];
-                            var dragged = menu.Items[fromS];
+                            var elementSource = menus.Items[to];
+                            var dragged = menus.Items[fromS];
                             if (fromS > to)
                             {
-                                menu.Items.Remove(dragged);
-                                menu.Items.Insert(to, dragged);
+                                menus.Items.Remove(dragged);
+                                menus.Items.Insert(to, dragged);
                             }
                             else
                             {
-                                menu.Items.Remove(dragged);
-                                menu.Items.Insert(to, dragged);
+                                menus.Items.Remove(dragged);
+                                menus.Items.Insert(to, dragged);
                             }
                         }
                     );
@@ -104,23 +123,41 @@ namespace GeekDesk
         {
             Array dropObject = (System.Array)e.Data.GetData(DataFormats.FileDrop);
             if (dropObject == null) return;
-            string path = (string)dropObject.GetValue(0);
-            if (File.Exists(path))
+            foreach (object obj in dropObject)
             {
-                // 文件
-                BitmapImage bi = FileIcon.GetBitmapImage(path);
-                DataInfos infos = new DataInfos();
-                infos.Path = path;
-                infos.BitmapImage = bi;
-                infos.Name = Path.GetFileNameWithoutExtension(path);
-                data.Items.Add(infos);
-                data.Items.Refresh();
-            }
-            else if (Directory.Exists(path))
-            {
-                //文件夹
+                string path = (string)obj;
+                if (File.Exists(path))
+                {
+                    // 文件
+                    BitmapImage bi = FileIcon.GetBitmapImage(path);
+                    IconInfo iconInfo = new IconInfo();
+                    iconInfo.Path = path;
+                    iconInfo.BitmapImage = bi;
+                    iconInfo.Name = Path.GetFileNameWithoutExtension(path);
+                    List<IconInfo> iconList;
+                    if (appData.IconMap.ContainsKey("1"))
+                    {
+                        iconList = appData.IconMap["1"];
+                    }
+                    else
+                    {
+                        iconList = new List<IconInfo>();
+                        appData.IconMap.Add("1", iconList);
+                    }
+                    iconList.Add(iconInfo);
+                    icons.ItemsSource = iconList;
+                    CommonCode.SaveAppData(appData);
 
+                }
+                else if (Directory.Exists(path))
+                {
+                    //文件夹
+
+                }
             }
+            icons.Items.Refresh();
+
+
 
         }
 
@@ -139,8 +176,10 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void dataClick(object sender, MouseButtonEventArgs e)
         {
-            //string path = ((StackPanel)sender).Tag.ToString();
-            //System.Diagnostics.Process.Start(path);
+            IconInfo icon = (IconInfo)((StackPanel)sender).Tag;
+            System.Diagnostics.Process.Start(icon.Path);
+            icon.Count++;
+            CommonCode.SaveAppData(appData);
         }
 
         /// <summary>
@@ -150,128 +189,42 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void data_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (data.SelectedIndex != -1) data.SelectedIndex = -1;
+            if (icons.SelectedIndex != -1) icons.SelectedIndex = -1;
         }
 
         #region Window_Loaded
         void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            AppConfig config = CommonCode.GetAppConfig();
-            this.Width = config.WindowWidth;
-            this.Height = config.WindowHeight;
-            this.DataContext = config;
-
-            this.menu.Items.Add(new ViewModel.Menu() { menu = "test1" });
-            this.menu.Items.Add(new ViewModel.Menu() { menu = "test2" });
-            this.menu.Items.Add(new ViewModel.Menu() { menu = "test3" });
+            //this.menus.Items.Add(new ViewModel.Menu() { menu = "test1" });
+            //this.menus.Items.Add(new ViewModel.Menu() { menu = "test2" });
+            //this.menus.Items.Add(new ViewModel.Menu() { menu = "test3" });
         }
         #endregion // Window_Loaded
 
-        #region Window_Closing
-        void Window_Closing(object sender, CancelEventArgs e)
-        {
-            Rect rect = this.RestoreBounds;
-            AppConfig config = this.DataContext as AppConfig;
-            config.WindowWidth = rect.Width;
-            config.WindowHeight = rect.Height;
-            CommonCode.SaveAppConfig(config);
-        }
-        #endregion // Window_Closing
+        //#region Window_Closing
+        //void Window_Closing(object sender, CancelEventArgs e)
+        //{
+        //    Rect rect = this.RestoreBounds;
+        //    AppConfig config = this.DataContext as AppConfig;
+        //    config.WindowWidth = rect.Width;
+        //    config.WindowHeight = rect.Height;
+        //    CommonCode.SaveAppConfig(config);
+        //}
+        //#endregion // Window_Closing
 
         void MainWindow_Resize(object sender, System.EventArgs e)
         {
             if (this.DataContext != null)
             {
-                AppConfig config = this.DataContext as AppConfig;
-                config.WindowWidth = this.Width;
-                config.WindowHeight = this.Height;
-                CommonCode.SaveAppConfig(config);
-            }
-
-        }
-
-
-
-        #region dragMgr_ProcessDrop
-
-        // Performs custom drop logic for the top ListView.
-        void dragMgr_ProcessDrop(object sender, ProcessDropEventArgs<object> e)
-        {
-            // This shows how to customize the behavior of a drop.
-            // Here we perform a swap, instead of just moving the dropped item.
-
-            int higherIdx = Math.Max(e.OldIndex, e.NewIndex);
-            int lowerIdx = Math.Min(e.OldIndex, e.NewIndex);
-
-            if (lowerIdx < 0)
-            {
-                // The item came from the lower ListView
-                // so just insert it.
-                e.ItemsSource.Insert(higherIdx, e.DataItem);
-            }
-            else
-            {
-                // null values will cause an error when calling Move.
-                // It looks like a bug in ObservableCollection to me.
-                if (e.ItemsSource[lowerIdx] == null ||
-                    e.ItemsSource[higherIdx] == null)
-                    return;
-
-                // The item came from the ListView into which
-                // it was dropped, so swap it with the item
-                // at the target index.
-                e.ItemsSource.Move(lowerIdx, higherIdx);
-                e.ItemsSource.Move(higherIdx - 1, lowerIdx);
-            }
-
-            // Set this to 'Move' so that the OnListViewDrop knows to 
-            // remove the item from the other ListView.
-            e.Effects = DragDropEffects.Move;
-        }
-
-        #endregion // dragMgr_ProcessDrop
-
-        #region OnListViewDragEnter
-
-        // Handles the DragEnter event for both ListViews.
-        void OnListViewDragEnter(object sender, DragEventArgs e)
-        {
-            e.Effects = DragDropEffects.Move;
-        }
-
-        #endregion // OnListViewDragEnter
-
-        #region OnListViewDrop
-
-        // Handles the Drop event for both ListViews.
-        void OnListViewDrop(object sender, DragEventArgs e)
-        {
-            if (e.Effects == DragDropEffects.None)
-                return;
-            ViewModel.Menu menuV = e.Data.GetData(typeof(ViewModel.Menu)) as ViewModel.Menu;
-            DataInfos data = e.Data.GetData(typeof(DataInfos)) as DataInfos;
-
-            if (sender == this.menu)
-            {
-                if (this.dragMgr.IsDragInProgress)
-                    return;
-
-                // An item was dragged from the bottom ListView into the top ListView
-                // so remove that item from the bottom ListView.
-                (this.data.ItemsSource as ObservableCollection<DataInfos>).Remove(data);
-            }
-            else
-            {
-                if (this.dragMgr2.IsDragInProgress)
-                    return;
-
-                // An item was dragged from the top ListView into the bottom ListView
-                // so remove that item from the top ListView.
-                (this.menu.ItemsSource as ObservableCollection<ViewModel.Menu>).Remove(menuV);
+                AppData appData = this.DataContext as AppData;
+                appData.AppConfig.WindowWidth = this.Width;
+                appData.AppConfig.WindowHeight = this.Height;
+                CommonCode.SaveAppData(appData);
             }
         }
 
-        #endregion // OnListViewDrop
+
+
 
         private void leftCard_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -287,13 +240,13 @@ namespace GeekDesk
             ViewModel.Menu pojo = (ViewModel.Menu)((ContextMenu)((MenuItem)sender).Parent).DataContext;
             string menuTitle = pojo.menu;
             int index = 0;
-            foreach (object obj in menu.Items)
+            foreach (object obj in menus.Items)
             {
                 string test = ((ViewModel.Menu)obj).menu;
                 if (test == menuTitle)
                 {
-                    menu.Items.RemoveAt(index);
-                    menu.Items.Refresh();
+                    menus.Items.RemoveAt(index);
+                    menus.Items.Refresh();
                     return;
                 }
                 index++;
@@ -301,10 +254,7 @@ namespace GeekDesk
 
         }
 
-        public Double ConvertString(string val)
-        {
-            return Convert.ToDouble(val);
-        }
+
 
     }
 
@@ -315,7 +265,7 @@ namespace GeekDesk
     {
         public List<ViewModel.Menu> MenuList { get; set; }
 
-        public List<ViewModel.DataInfos> DataList { get; set; }
+        public List<ViewModel.IconInfo> DataList { get; set; }
 
 
     }

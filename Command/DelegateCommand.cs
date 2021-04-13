@@ -50,7 +50,7 @@ namespace DraggAnimatedPanelExample
         /// <param name = "canExecuteMethod">Delegate to execute when CanExecute is called on the command.  This can be null.</param>
         /// <exception cref = "ArgumentNullException">When both <paramref name = "executeMethod" /> and <paramref name = "canExecuteMethod" /> ar <see langword = "null" />.</exception>
         public DelegateCommand(Action<T> executeMethod, Func<T, bool> canExecuteMethod)
-            : base((o) => executeMethod((T) o), (o) => canExecuteMethod((T) o))
+            : base((o) => executeMethod((T)o), (o) => canExecuteMethod((T)o))
         {
             if (executeMethod == null || canExecuteMethod == null)
                 throw new ArgumentNullException("executeMethod");
