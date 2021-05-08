@@ -15,7 +15,7 @@ namespace GeekDesk.Util
         /// 获取app 数据
         /// </summary>
         /// <returns></returns>
-        public static AppData GetAppData()
+        public static AppData GetAppDataByFile()
         {
             AppData appData;
             if (!File.Exists(AppConstant.DATA_FILE_PATH))

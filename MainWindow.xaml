@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GeekDesk"
+        xmlns:tp="clr-namespace:GeekDesk.EditTextBlock"
         mc:Ignorable="d"
         xmlns:util="clr-namespace:GeekDesk.Util"
         xmlns:DraggAnimatedPanel="clr-namespace:DraggAnimatedPanel" x:Name="window"
@@ -11,8 +12,7 @@
         Title="MainWindow" Height="500" Width="600">
     <Window.Resources>
 
-        <Style x:Key="ListBoxStyle" BasedOn="{StaticResource ListBoxBaseStyle}" TargetType="ListBox"/>
-        <Style TargetType="{x:Type ListBoxItem}" x:Key="memuStory" BasedOn="{StaticResource ListBoxStyle}">
+        <Style TargetType="{x:Type TextBlock}" x:Key="memuStory">
             <Style.Triggers>
                 <!--鼠标移入-->
                 <EventTrigger RoutedEvent="MouseMove">
@@ -39,6 +39,7 @@
         <!--左侧栏样式动画-->
         <Style x:Key="menuStyle" TargetType="ListBoxItem" BasedOn="{StaticResource ListBoxItemBaseStyle}">
             <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Margin" Value="0,0,0,1"/>
             <Setter Property="RenderTransform">
                 <Setter.Value>
                     <TranslateTransform/>
@@ -67,15 +68,31 @@
             </Style.Triggers>
         </Style>
 
+        <BeginStoryboard x:Key="imageStoryboard">
+            <Storyboard>
+                <DoubleAnimation To="80" Duration="0:0:0.1" Storyboard.TargetProperty="Width"/>
+                <DoubleAnimation To="80" Duration="0:0:0.1" Storyboard.TargetProperty="Height"/>
+            </Storyboard>
+        </BeginStoryboard>
+
         <!--右侧栏样式动画-->
         <Style x:Key="imageStyle" TargetType="Image">
             <Setter Property="Width" Value="60"/>
             <Setter Property="Height" Value="60"/>
             <Setter Property="Source" Value="{Binding BitmapImage}"/>
-            <Style.Triggers>
-                <MultiTrigger>
+            <!--<DataTrigger Binding="{Binding ElementName=sv, Path=ComputedVerticalScrollBarVisibility}" Value="Visible">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation To="80" Duration="0:0:0.1" Storyboard.TargetProperty="Width"/>
+                            <DoubleAnimation To="80" Duration="0:0:0.1" Storyboard.TargetProperty="Height"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.EnterActions>
+            </DataTrigger>-->
+            <!--<MultiTrigger>
                     <MultiTrigger.Conditions>
-                        <Condition Property="IsMouseOver" Value="True"/>
+                        <Condition Property="{Binding RelativeSource={RelativeSource Mode=PreviousData}, Path=IsMouseOver}" Value="True"/>
                     </MultiTrigger.Conditions>
                     <MultiTrigger.EnterActions>
                         <BeginStoryboard>
@@ -93,12 +110,12 @@
                             </Storyboard>
                         </BeginStoryboard>
                     </MultiTrigger.ExitActions>
-                </MultiTrigger>
-            </Style.Triggers>
+                </MultiTrigger>-->
 
         </Style>
 
         <util:MenuWidthConvert x:Key="MenuWidthConvert"/>
+        <util:VisibilityConvert x:Key="VisibilityConvert"/>
 
     </Window.Resources>
 
@@ -127,28 +144,18 @@
                  Effect="{DynamicResource EffectShadow2}" 
                  Margin="5,5,0,5"
                  >
-            <!--<hc:Card.ContextMenu>
+            <hc:Card.ContextMenu>
                 <ContextMenu Width="200">
-                    <TextBlock Text="新建菜单"/>
+                    <MenuItem Header="新建菜单" Click="CreateMenu"/>
                 </ContextMenu>
-            </hc:Card.ContextMenu>-->
-            <!--<ListBox  x:Name="menu"   BorderThickness="0"  ItemsSource="{Binding}"   Margin="10,8,10,8"
-                      >
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding menu}" FontSize="15" Style="{StaticResource memuStory}"  PreviewMouseLeftButtonDown="menuClick" RenderTransformOrigin="0.5,0.5">
-                           
-                        </TextBlock>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>-->
+            </hc:Card.ContextMenu>
 
             <ListBox x:Name="menus"  ItemsSource="{Binding MenuList}">
                 <ListBox.Resources>
                     <ContextMenu x:Key="menuDialog" Width="200">
-                        <MenuItem Header="新建菜单"/>
-                        <MenuItem Header="重命名"/>
-                        <MenuItem Header="删除" Click="deleteMenu"/>
+                        <MenuItem Header="新建菜单" Click="CreateMenu"/>
+                        <MenuItem Header="重命名"  Click="RenameMenu" Tag="{Binding}"/>
+                        <MenuItem Header="删除" Click="DeleteMenu" Tag="{Binding}"/>
                     </ContextMenu>
                 </ListBox.Resources>
 
@@ -165,7 +172,24 @@
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}"  PreviewMouseLeftButtonDown="menuClick" />
+                        <StackPanel>
+                            <TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
+                                     HorizontalAlignment="Left"
+                                     Width="{Binding ElementName=leftColumn, Path=Width, Converter={StaticResource MenuWidthConvert}}"
+                                     FontSize="15"
+                                     TextAlignment="Left"
+                                     BorderBrush="{x:Null}" 
+                                     BorderThickness="0" 
+                                     LostFocus="LostFocusOrEnterDown"
+                                     KeyDown="LostFocusOrEnterDown"
+                                     Tag="{Binding}"
+                                     IsVisibleChanged="MenuEditWhenVisibilityChanged"
+                                     Visibility="{Binding Path=MenuEdit, Converter={StaticResource VisibilityConvert}}"/>
+                            <TextBlock Text="{Binding MenuName}"  
+                                       PreviewMouseLeftButtonDown="menuClick"
+                                       IsVisibleChanged="MenuWhenVisibilityChanged"
+                                       Visibility="{Binding Path=NotMenuEdit, Converter={StaticResource VisibilityConvert}}"/>
+                        </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -189,7 +213,6 @@
 
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border Margin="5,5,5,5" CornerRadius="10">
                                 <StackPanel  Tag="{Binding}"
                                              MouseLeftButtonDown="dataClick"
                                              HorizontalAlignment="Center"
@@ -199,11 +222,17 @@
                                              hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
                                              hc:Poptip.Content="{Binding Content}" 
                                              hc:Poptip.Placement="BottomLeft"
+                                             MouseMove="StackPanel_MouseMove"
                                              >
-                                    <Image Style="{StaticResource imageStyle}"></Image>
+                                    <Image x:Name="testImage" Style="{StaticResource imageStyle}"></Image>
+                                
                                     <TextBlock Width="80" TextWrapping="Wrap" TextAlignment="Center" Height="35" LineHeight="15" FontSize="12" Text="{Binding Name}"/>
-                                </StackPanel>
-                            </Border>
+                                <!--<StackPanel.Triggers>
+                                    <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                        
+                                    </DataTrigger>
+                                </StackPanel.Triggers>-->
+                            </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

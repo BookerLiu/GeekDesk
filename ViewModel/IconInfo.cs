@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeekDesk.Constant;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Media.Imaging;
@@ -15,6 +16,8 @@ namespace GeekDesk.ViewModel
         private BitmapImage bitmapImage; //位图
         private byte[] imageByteArr; //图片 base64
         private string content; //显示信息
+        private int imageWidth = (int)DefaultConstant.IMAGE_WIDTH;
+        private int imageHeight = (int)DefaultConstant.IMAGE_HEIGHT;
 
         public int Count
         {
@@ -97,6 +100,19 @@ namespace GeekDesk.ViewModel
             {
                 content = value;
                 OnPropertyChanged("Content");
+            }
+        }
+
+        public int ImageWidth
+        {
+            get
+            {
+                return imageWidth;
+            }
+            set
+            {
+                imageWidth = value;
+                OnPropertyChanged("ImageWidth");
             }
         }
 

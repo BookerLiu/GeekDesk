@@ -1,9 +1,11 @@
 ﻿using DraggAnimatedPanelExample;
-using GalaSoft.MvvmLight;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,7 +21,8 @@ namespace GeekDesk
     public partial class MainWindow : Window
     {
 
-        private static AppData appData = CommonCode.GetAppData();
+        private AppData appData = CommonCode.GetAppDataByFile();
+        private int menuSelectIndexTemp = -1;
         public MainWindow()
         {
             InitializeComponent();
@@ -40,19 +43,20 @@ namespace GeekDesk
         private void loadData()
         {
             this.DataContext = appData;
-            appData.MenuList.Add("Test1");
+            //menus.ItemsSource = appData.MenuList;
+            appData.MenuList.Add(new MenuInfo() { MenuName = "test1", MenuId = "1", MenuEdit = (int)Visibility.Collapsed });
             this.Width = appData.AppConfig.WindowWidth;
             this.Height = appData.AppConfig.WindowHeight;
 
 
-            List<IconInfo> iconList;
+            ObservableCollection<IconInfo> iconList;
             if (appData.IconMap.ContainsKey("1"))
             {
                 iconList = appData.IconMap["1"];
             }
             else
             {
-                iconList = new List<IconInfo>();
+                iconList = new ObservableCollection<IconInfo>();
                 appData.IconMap.Add("1", iconList);
             }
             icons.ItemsSource = iconList;
@@ -89,6 +93,8 @@ namespace GeekDesk
             }
         }
         DelegateCommand<int[]> _swap2;
+
+
         public DelegateCommand<int[]> SwapCommand2
         {
             get
@@ -99,18 +105,22 @@ namespace GeekDesk
                         {
                             int fromS = indexes[0];
                             int to = indexes[1];
-                            var elementSource = menus.Items[to];
-                            var dragged = menus.Items[fromS];
+                            ObservableCollection<MenuInfo> menuList = appData.MenuList;
+                            var elementSource = menuList[to];
+                            var dragged = menuList[fromS];
                             if (fromS > to)
                             {
-                                menus.Items.Remove(dragged);
-                                menus.Items.Insert(to, dragged);
+                                menuList.Remove(dragged);
+                                menuList.Insert(to, dragged);
                             }
                             else
                             {
-                                menus.Items.Remove(dragged);
-                                menus.Items.Insert(to, dragged);
+                                menuList.Remove(dragged);
+                                menuList.Insert(to, dragged);
                             }
+                            appData.MenuList = menuList;
+                            //menus.Items.Refresh();
+
                         }
                     );
                 return _swap2;
@@ -134,14 +144,14 @@ namespace GeekDesk
                     iconInfo.Path = path;
                     iconInfo.BitmapImage = bi;
                     iconInfo.Name = Path.GetFileNameWithoutExtension(path);
-                    List<IconInfo> iconList;
+                    ObservableCollection<IconInfo> iconList;
                     if (appData.IconMap.ContainsKey("1"))
                     {
                         iconList = appData.IconMap["1"];
                     }
                     else
                     {
-                        iconList = new List<IconInfo>();
+                        iconList = new ObservableCollection<IconInfo>();
                         appData.IconMap.Add("1", iconList);
                     }
                     iconList.Add(iconInfo);
@@ -231,44 +241,119 @@ namespace GeekDesk
 
         }
 
-        private void deleteMenu(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 删除菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DeleteMenu(object sender, RoutedEventArgs e)
         {
-            //if (data.SelectedIndex == -1)
-            //{
-            //    return;
-            //}
-            ViewModel.Menu pojo = (ViewModel.Menu)((ContextMenu)((MenuItem)sender).Parent).DataContext;
-            string menuTitle = pojo.menu;
-            int index = 0;
-            foreach (object obj in menus.Items)
-            {
-                string test = ((ViewModel.Menu)obj).menu;
-                if (test == menuTitle)
-                {
-                    menus.Items.RemoveAt(index);
-                    menus.Items.Refresh();
-                    return;
-                }
-                index++;
-            }
-
+            MenuInfo menuInfo = ((MenuItem)sender).Tag as MenuInfo;
+            appData.MenuList.Remove(menuInfo);
+            CommonCode.SaveAppData(appData);
         }
 
+        private void StackPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            UIElementCollection childs = ((StackPanel)sender).Children;
+            IEnumerator iEnumerator = childs.GetEnumerator();
+            //((Image)iEnumerator.Current).Style;
+        }
 
+        /// <summary>
+        /// 重命名菜单 将textbox 设置为可见
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RenameMenu(object sender, RoutedEventArgs e)
+        {
+            MenuInfo menuInfo = ((MenuItem)sender).Tag as MenuInfo;
+            menuInfo.MenuEdit = (int)Visibility.Visible;
+            
+        }
 
+        /// <summary>
+        /// 编辑菜单失焦或者敲下Enter键时保存修改后的菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LostFocusOrEnterDown(object sender, EventArgs e)
+        {
+            TextBox menuBox = null;
+            if (e.GetType() == typeof(KeyEventArgs))
+            {
+                KeyEventArgs eKey = e as KeyEventArgs;
+                if (eKey.Key == Key.Enter)
+                {
+                    menuBox = ((TextBox)sender);
+                }
+            } else if(e.GetType() == typeof(RoutedEventArgs))
+            {
+                menuBox = ((TextBox)sender);
+            }
+
+            if (menuBox != null)
+            {
+                MenuInfo menuInfo = menuBox.Tag as MenuInfo;
+                string text = menuBox.Text;
+                menuInfo.MenuName = text;
+                menuInfo.MenuEdit = (int)Visibility.Collapsed;
+                CommonCode.SaveAppData(appData);
+            }
+        }
+
+        /// <summary>
+        /// 当修改菜单元素可见时 设置全选并获得焦点
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MenuEditWhenVisibilityChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            TextBox box = sender as TextBox;
+            if (box.Visibility == Visibility.Visible)
+            {
+                Keyboard.Focus(box);
+                box.SelectAll();
+            }
+        }
+
+        /// <summary>
+        /// 当修改菜单元素可见时 设置原菜单为不可见 并且不可选中
+        /// 修改菜单元素不可见时  原菜单可见 并 选中
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MenuWhenVisibilityChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            TextBlock tb = sender as TextBlock;
+            if (tb.Visibility == Visibility.Collapsed)
+            {
+                if (menus.SelectedIndex != -1)
+                {
+                    menuSelectIndexTemp = menus.SelectedIndex;
+                    menus.SelectedIndex = -1;
+                } else
+                {
+                    menus.SelectedIndex = menuSelectIndexTemp;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 新建菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CreateMenu(object sender, RoutedEventArgs e)
+        {
+            appData.MenuList.Add(new MenuInfo() { MenuEdit = (int)Visibility.Collapsed, MenuId = "zz", MenuName = "NewGouop" });
+            menus.SelectedIndex = appData.MenuList.Count - 1;
+            //appData.MenuList[appData.MenuList.Count - 1].MenuEdit = (int)Visibility.Visible;
+            CommonCode.SaveAppData(appData);
+        }
     }
 
 
-
-
-    public class MainModel : ViewModelBase
-    {
-        public List<ViewModel.Menu> MenuList { get; set; }
-
-        public List<ViewModel.IconInfo> DataList { get; set; }
-
-
-    }
 
 
 }

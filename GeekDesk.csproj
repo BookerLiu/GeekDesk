@@ -90,6 +90,8 @@
     <Compile Include="Constant\SortType.cs" />
     <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.cs" />
     <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.Drag.cs" />
+    <Compile Include="EditTextBlock\EditableTextBlock.cs" />
+    <Compile Include="EditTextBlock\EditableTextBlockAdorner.cs" />
     <Compile Include="Util\CommonCode.cs" />
     <Compile Include="Util\ConsoleManager.cs" />
     <Compile Include="Util\DragAdorner.cs" />
@@ -98,10 +100,11 @@
     <Compile Include="Util\MenuWidthConvert.cs" />
     <Compile Include="Util\MouseUtilities.cs" />
     <Compile Include="Util\SystemIcon.cs" />
+    <Compile Include="Util\VisibilityConvert.cs" />
     <Compile Include="ViewModel\AppConfig.cs" />
     <Compile Include="ViewModel\AppData.cs" />
     <Compile Include="ViewModel\IconInfo.cs" />
-    <Compile Include="ViewModel\MenuViewModel.cs" />
+    <Compile Include="ViewModel\MenuInfo.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

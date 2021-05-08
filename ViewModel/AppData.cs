@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace GeekDesk.ViewModel
@@ -7,11 +8,11 @@ namespace GeekDesk.ViewModel
     [Serializable]
     class AppData : INotifyPropertyChanged
     {
-        private List<string> menuList = new List<string>();
-        private Dictionary<string, List<IconInfo>> iconMap = new Dictionary<string, List<IconInfo>>();
+        private ObservableCollection<MenuInfo> menuList = new ObservableCollection<MenuInfo>();
+        private Dictionary<string, ObservableCollection<IconInfo>> iconMap = new Dictionary<string, ObservableCollection<IconInfo>>();
         private AppConfig appConfig = new AppConfig();
 
-        public List<string> MenuList
+        public ObservableCollection<MenuInfo> MenuList
         {
             get
             {
@@ -24,7 +25,7 @@ namespace GeekDesk.ViewModel
             }
         }
 
-        public Dictionary<string, List<IconInfo>> IconMap
+        public Dictionary<string, ObservableCollection<IconInfo>> IconMap
         {
             get
             {
