@@ -27,43 +27,32 @@ namespace GeekDesk
         {
             InitializeComponent();
             loadData();
-            List<string> menuList = new List<string>();
-
-            Dictionary<string, List<IconInfo>> iconMap = new Dictionary<string, List<IconInfo>>();
-
-
-
             //this.DataContext = mainModel;
             //menu.Items = mainModel;
             //System.Diagnostics.Process.Start(@"D:\SoftWare\WeGame\wegame.exe");
             this.Loaded += Window_Loaded;
             this.SizeChanged += MainWindow_Resize;
+            this.Topmost = true;
         }
 
         private void loadData()
         {
             this.DataContext = appData;
-            //menus.ItemsSource = appData.MenuList;
-            appData.MenuList.Add(new MenuInfo() { MenuName = "test1", MenuId = "1", MenuEdit = (int)Visibility.Collapsed });
+            if (appData.MenuList.Count == 0)
+            {
+                appData.MenuList.Add(new MenuInfo() { MenuName = "NewGouop", MenuId = System.Guid.NewGuid().ToString(), MenuEdit = (int)Visibility.Collapsed});
+            }
+            //窗体大小
             this.Width = appData.AppConfig.WindowWidth;
             this.Height = appData.AppConfig.WindowHeight;
-
-
-            ObservableCollection<IconInfo> iconList;
-            if (appData.IconMap.ContainsKey("1"))
-            {
-                iconList = appData.IconMap["1"];
-            }
-            else
-            {
-                iconList = new ObservableCollection<IconInfo>();
-                appData.IconMap.Add("1", iconList);
-            }
-            icons.ItemsSource = iconList;
-
+            //选中 菜单
+            menus.SelectedIndex = appData.AppConfig.SelectedMenuIndex;
+            //图标数据
+            icons.ItemsSource = appData.MenuList[appData.AppConfig.SelectedMenuIndex].IconList;
         }
 
 
+        #region 图标拖动
         DelegateCommand<int[]> _swap;
         public DelegateCommand<int[]> SwapCommand
         {
@@ -93,7 +82,6 @@ namespace GeekDesk
             }
         }
         DelegateCommand<int[]> _swap2;
-
 
         public DelegateCommand<int[]> SwapCommand2
         {
@@ -126,7 +114,7 @@ namespace GeekDesk
                 return _swap2;
             }
         }
-
+        #endregion 图标拖动
 
 
         private void Wrap_Drop(object sender, DragEventArgs e)
@@ -144,18 +132,7 @@ namespace GeekDesk
                     iconInfo.Path = path;
                     iconInfo.BitmapImage = bi;
                     iconInfo.Name = Path.GetFileNameWithoutExtension(path);
-                    ObservableCollection<IconInfo> iconList;
-                    if (appData.IconMap.ContainsKey("1"))
-                    {
-                        iconList = appData.IconMap["1"];
-                    }
-                    else
-                    {
-                        iconList = new ObservableCollection<IconInfo>();
-                        appData.IconMap.Add("1", iconList);
-                    }
-                    iconList.Add(iconInfo);
-                    icons.ItemsSource = iconList;
+                    appData.MenuList[menus.SelectedIndex].IconList.Add(iconInfo);
                     CommonCode.SaveAppData(appData);
 
                 }
@@ -166,15 +143,15 @@ namespace GeekDesk
                 }
             }
             icons.Items.Refresh();
-
-
-
         }
 
         //菜单点击事件
-        private void menuClick(object sender, MouseButtonEventArgs e)
+        private void MenuClick(object sender, SelectionChangedEventArgs e)
         {
-
+            //设置对应菜单的图标列表
+            icons.ItemsSource = appData.MenuList[menus.SelectedIndex].IconList;
+            appData.AppConfig.SelectedMenuIndex = menus.SelectedIndex;
+            CommonCode.SaveAppData(appData);
         }
 
 
@@ -184,7 +161,7 @@ namespace GeekDesk
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void dataClick(object sender, MouseButtonEventArgs e)
+        private void IconClick(object sender, MouseButtonEventArgs e)
         {
             IconInfo icon = (IconInfo)((StackPanel)sender).Tag;
             System.Diagnostics.Process.Start(icon.Path);
@@ -197,30 +174,26 @@ namespace GeekDesk
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void data_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void IconSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (icons.SelectedIndex != -1) icons.SelectedIndex = -1;
         }
 
-        #region Window_Loaded
         void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //this.menus.Items.Add(new ViewModel.Menu() { menu = "test1" });
-            //this.menus.Items.Add(new ViewModel.Menu() { menu = "test2" });
-            //this.menus.Items.Add(new ViewModel.Menu() { menu = "test3" });
+            //加载完毕注册热键
+            Hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL, Key.Y, ()=>
+            {
+                if (this.Visibility == Visibility.Collapsed)
+                {
+                    this.Visibility = Visibility.Visible;
+                } else
+                {
+                    this.Visibility = Visibility.Collapsed;
+                }
+            });
         }
-        #endregion // Window_Loaded
 
-        //#region Window_Closing
-        //void Window_Closing(object sender, CancelEventArgs e)
-        //{
-        //    Rect rect = this.RestoreBounds;
-        //    AppConfig config = this.DataContext as AppConfig;
-        //    config.WindowWidth = rect.Width;
-        //    config.WindowHeight = rect.Height;
-        //    CommonCode.SaveAppConfig(config);
-        //}
-        //#endregion // Window_Closing
 
         void MainWindow_Resize(object sender, System.EventArgs e)
         {
@@ -234,13 +207,6 @@ namespace GeekDesk
         }
 
 
-
-
-        private void leftCard_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
         /// <summary>
         /// 删除菜单
         /// </summary>
@@ -253,11 +219,12 @@ namespace GeekDesk
             CommonCode.SaveAppData(appData);
         }
 
-        private void StackPanel_MouseMove(object sender, MouseEventArgs e)
+        private void DragMove(object sender, MouseEventArgs e)
         {
-            UIElementCollection childs = ((StackPanel)sender).Children;
-            IEnumerator iEnumerator = childs.GetEnumerator();
-            //((Image)iEnumerator.Current).Style;
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                this.DragMove();
+            }
         }
 
         /// <summary>
@@ -346,11 +313,38 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void CreateMenu(object sender, RoutedEventArgs e)
         {
-            appData.MenuList.Add(new MenuInfo() { MenuEdit = (int)Visibility.Collapsed, MenuId = "zz", MenuName = "NewGouop" });
+            appData.MenuList.Add(new MenuInfo() { MenuEdit = (int)Visibility.Collapsed, MenuId = System.Guid.NewGuid().ToString(), MenuName = "NewGouop" });
             menus.SelectedIndex = appData.MenuList.Count - 1;
             //appData.MenuList[appData.MenuList.Count - 1].MenuEdit = (int)Visibility.Visible;
             CommonCode.SaveAppData(appData);
         }
+
+        /// <summary>
+        /// 关闭按钮单击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CloseButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// 图片图标单击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NotifyIcon_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.Visibility == Visibility.Collapsed)
+            {
+                this.Visibility = Visibility.Visible;
+            } else
+            {
+                this.Visibility = Visibility.Collapsed;
+            }
+        }
+
     }
 
 

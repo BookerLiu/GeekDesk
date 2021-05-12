@@ -14,10 +14,24 @@ namespace GeekDesk.ViewModel
         private double windowWidth = (double)DefaultConstant.WINDOW_WIDTH;  //窗口宽度
         private double windowHeight = (double)DefaultConstant.WINDOW_HEIGHT; //窗口高度
         private double menuCardWidth = (double)DefaultConstant.MENU_CARD_WIDHT;//菜单栏宽度
+        private int selectedMenuIndex = 0;  //上次选中菜单索引
 
 
 
         #region GetSet
+        public int SelectedMenuIndex
+        {
+            get
+            {
+                return selectedMenuIndex;
+            }
+            set
+            {
+                selectedMenuIndex = value;
+                OnPropertyChanged("SelectedMenuIndex");
+            }
+        }
+
         public int MenuSortType
         {
             get

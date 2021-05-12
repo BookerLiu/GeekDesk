@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -12,17 +13,13 @@ namespace GeekDesk.ViewModel
     [Serializable]
     class MenuInfo : INotifyPropertyChanged
     {
-        [field: NonSerializedAttribute()]
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+       
 
         private string menuName;
         private string menuId;
         private int menuEdit = (int)Visibility.Collapsed;
         private int notMenuEdit = (int)Visibility.Visible;
+        private ObservableCollection<IconInfo> iconList = new ObservableCollection<IconInfo>();
 
         public string MenuName
         {
@@ -81,6 +78,26 @@ namespace GeekDesk.ViewModel
                 notMenuEdit = value;
                 OnPropertyChanged("NotMenuEdit");
             }
+        }
+
+        public ObservableCollection<IconInfo> IconList
+        {
+            get
+            {
+                return iconList;
+            }
+            set
+            {
+                iconList = value;
+                OnPropertyChanged("IconList");
+            }
+        }
+
+        [field: NonSerializedAttribute()]
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

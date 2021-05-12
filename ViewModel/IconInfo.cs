@@ -116,6 +116,21 @@ namespace GeekDesk.ViewModel
             }
         }
 
+        public int ImageHeight
+        {
+            get
+            {
+                return imageHeight;
+            }
+            set
+            {
+                imageHeight = value;
+                OnPropertyChanged("ImageHeight");
+            }
+        }
+
+
+
 
 
         [field: NonSerializedAttribute()]

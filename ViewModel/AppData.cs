@@ -9,7 +9,6 @@ namespace GeekDesk.ViewModel
     class AppData : INotifyPropertyChanged
     {
         private ObservableCollection<MenuInfo> menuList = new ObservableCollection<MenuInfo>();
-        private Dictionary<string, ObservableCollection<IconInfo>> iconMap = new Dictionary<string, ObservableCollection<IconInfo>>();
         private AppConfig appConfig = new AppConfig();
 
         public ObservableCollection<MenuInfo> MenuList
@@ -25,18 +24,6 @@ namespace GeekDesk.ViewModel
             }
         }
 
-        public Dictionary<string, ObservableCollection<IconInfo>> IconMap
-        {
-            get
-            {
-                return iconMap;
-            }
-            set
-            {
-                iconMap = value;
-                OnPropertyChanged("IconMap");
-            }
-        }
 
         public AppConfig AppConfig
         {

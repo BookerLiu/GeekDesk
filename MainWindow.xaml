@@ -9,32 +9,9 @@
         xmlns:util="clr-namespace:GeekDesk.Util"
         xmlns:DraggAnimatedPanel="clr-namespace:DraggAnimatedPanel" x:Name="window"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        Title="MainWindow" Height="500" Width="600">
+        Title="MainWindow" Height="500" Width="600"
+        >
     <Window.Resources>
-
-        <Style TargetType="{x:Type TextBlock}" x:Key="memuStory">
-            <Style.Triggers>
-                <!--鼠标移入-->
-                <EventTrigger RoutedEvent="MouseMove">
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <!--鼠标移入放大-->
-                            <DoubleAnimation To="20" Duration="0:0:0.001" Storyboard.TargetProperty="FontSize"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger>
-                <!--鼠标移出-->
-                <EventTrigger RoutedEvent="MouseLeave">
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <!--鼠标移出恢复正常大小-->
-                            <DoubleAnimation To="15" Duration="0:0:0.001" Storyboard.TargetProperty="FontSize"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger>
-            </Style.Triggers>
-        </Style>
-
 
         <!--左侧栏样式动画-->
         <Style x:Key="menuStyle" TargetType="ListBoxItem" BasedOn="{StaticResource ListBoxItemBaseStyle}">
@@ -48,57 +25,50 @@
             <Style.Triggers>
                 <MultiTrigger>
                     <MultiTrigger.Conditions>
-                        <Condition Property="IsMouseOver" Value="True"/>
+                        <Condition Property="IsMouseOver" Value="False"/>
+                        <Condition Property="IsSelected" Value="False"/>
                     </MultiTrigger.Conditions>
                     <MultiTrigger.EnterActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation To="20" Duration="0:0:0.001" Storyboard.TargetProperty="FontSize"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </MultiTrigger.EnterActions>
-                    <MultiTrigger.ExitActions>
                         <BeginStoryboard>
                             <Storyboard>
                                 <DoubleAnimation To="15" Duration="0:0:0.5" Storyboard.TargetProperty="FontSize"/>
                             </Storyboard>
                         </BeginStoryboard>
+                    </MultiTrigger.EnterActions>
+                    <MultiTrigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard Timeline.DesiredFrameRate="30">
+                                <DoubleAnimation To="20" Duration="0:0:0.001" Storyboard.TargetProperty="FontSize"/>
+                            </Storyboard>
+                        </BeginStoryboard>
                     </MultiTrigger.ExitActions>
                 </MultiTrigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#C3C3C3"/>
+                </Trigger>
+                <Trigger Property="IsFocused" Value="true">
+                    <Setter Property="Background" Value="#B9B9B9"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
             </Style.Triggers>
         </Style>
 
-        <BeginStoryboard x:Key="imageStoryboard">
-            <Storyboard>
-                <DoubleAnimation To="80" Duration="0:0:0.1" Storyboard.TargetProperty="Width"/>
-                <DoubleAnimation To="80" Duration="0:0:0.1" Storyboard.TargetProperty="Height"/>
-            </Storyboard>
-        </BeginStoryboard>
 
         <!--右侧栏样式动画-->
         <Style x:Key="imageStyle" TargetType="Image">
-            <Setter Property="Width" Value="60"/>
-            <Setter Property="Height" Value="60"/>
+            <Setter Property="Width"  Value="{Binding ImageWidth}"/>
+            <Setter Property="Height" Value="{Binding ImageHeight}"/>
             <Setter Property="Source" Value="{Binding BitmapImage}"/>
-            <!--<DataTrigger Binding="{Binding ElementName=sv, Path=ComputedVerticalScrollBarVisibility}" Value="Visible">
-                <DataTrigger.EnterActions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation To="80" Duration="0:0:0.1" Storyboard.TargetProperty="Width"/>
-                            <DoubleAnimation To="80" Duration="0:0:0.1" Storyboard.TargetProperty="Height"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </DataTrigger.EnterActions>
-            </DataTrigger>-->
-            <!--<MultiTrigger>
+            <Style.Triggers>
+                <MultiTrigger>
                     <MultiTrigger.Conditions>
-                        <Condition Property="{Binding RelativeSource={RelativeSource Mode=PreviousData}, Path=IsMouseOver}" Value="True"/>
+                        <Condition Property="IsMouseOver" Value="True"/>
                     </MultiTrigger.Conditions>
                     <MultiTrigger.EnterActions>
                         <BeginStoryboard>
                             <Storyboard>
-                                <DoubleAnimation To="80" Duration="0:0:0.1" Storyboard.TargetProperty="Width"/>
-                                <DoubleAnimation To="80" Duration="0:0:0.1" Storyboard.TargetProperty="Height"/>
+                                <DoubleAnimation To="80" Duration="0:0:0.001" Storyboard.TargetProperty="Width"/>
+                                <DoubleAnimation To="80" Duration="0:0:0.001" Storyboard.TargetProperty="Height"/>
                             </Storyboard>
                         </BeginStoryboard>
                     </MultiTrigger.EnterActions>
@@ -110,8 +80,8 @@
                             </Storyboard>
                         </BeginStoryboard>
                     </MultiTrigger.ExitActions>
-                </MultiTrigger>-->
-
+                </MultiTrigger>
+            </Style.Triggers>
         </Style>
 
         <util:MenuWidthConvert x:Key="MenuWidthConvert"/>
@@ -124,25 +94,49 @@
     <Grid>
         <!--背景图片-->
         <Grid.Background>
-            <ImageBrush ImageSource="D:\壁纸\18078.jpg"></ImageBrush>
+            <ImageBrush ImageSource="D:\壁纸\18039.jpg" Opacity="0.618"></ImageBrush>
         </Grid.Background>
+        <!--<Grid.Background>
+            <SolidColorBrush Color="Black" Opacity="0.5"/>
+        </Grid.Background>-->
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="40" MouseMove="DragMove"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition x:Name="leftColumn" MinWidth="80" Width="150" MaxWidth="200"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <DockPanel Grid.Row="0" Grid.Column="0">
-            <Label>Text</Label>
+
+
+        <DockPanel Grid.Row="0" Grid.Column="0" MouseMove="DragMove">
+           <Image Source="/Resource/Image/WindowLogo.png" Margin="10,0,0,0" Width="94" Height="30" HorizontalAlignment="Left"/>
         </DockPanel>
 
+        <StackPanel Grid.Row="0" Grid.Column="1" MouseMove="DragMove" HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button Background="Transparent" 
+                    BorderThickness="0"
+                    hc:IconElement.Geometry="{StaticResource ODDataGeometry}"
+                    hc:IconElement.Height="18"
+                    hc:IconElement.Width="18"
+                    HorizontalAlignment="Right"
+                    />
+            <Button Background="Transparent" 
+                    BorderThickness="0"
+                    hc:IconElement.Geometry="M828.770654 148.714771C641.293737-20.89959 354.184117-19.590868 168.245698 152.630946c-212.062907 196.418185-212.062907 522.329912 0 718.748098 185.93842 172.221815 473.048039 173.520546 660.524956 3.916176 219.435707-198.536117 219.435707-528.054322 0-726.580449z m-121.880976 569.643707c-11.708566 11.708566-30.680039 11.708566-42.388605 0L502.729054 556.586459c-0.659356-0.659356-1.728312-0.659356-2.397659 0L338.609327 718.318517c-11.708566 11.708566-30.680039 11.708566-42.388605 0l-0.039961-0.039961c-11.708566-11.708566-11.708566-30.680039 0-42.388605l161.732059-161.732058c0.659356-0.659356 0.659356-1.728312 0-2.397659L296.1408 350.008195c-11.708566-11.708566-11.708566-30.680039 0-42.388605l0.039961-0.039961c11.708566-11.708566 30.680039-11.708566 42.388605 0l161.772019 161.77202c0.659356 0.659356 1.728312 0.659356 2.397659 0L664.551024 307.539668c11.708566-11.708566 30.680039-11.708566 42.388605 0l0.039961 0.039961c11.708566 11.708566 11.708566 30.680039 0 42.388605L545.15762 511.770224c-0.659356 0.659356-0.659356 1.728312 0 2.397659L706.919649 675.939902c11.708566 11.708566 11.708566 30.680039 0 42.388605l-0.029971 0.029971z" 
+                    hc:IconElement.Height="18"
+                    hc:IconElement.Width="18"
+                    HorizontalAlignment="Right"
+                    Click="CloseButtonClick"
+                    />
+        </StackPanel>
+
         <!--左侧栏-->
-        <hc:Card Opacity="1" x:Name="leftCard" Grid.Row="1" Grid.Column="0"
+        <hc:Card x:Name="leftCard" Grid.Row="1" Grid.Column="0"
                  BorderThickness="1" 
                  Effect="{DynamicResource EffectShadow2}" 
-                 Margin="5,5,0,5"
+                 Opacity="0.5"
+                 Margin="5,0,0,5"
                  >
             <hc:Card.ContextMenu>
                 <ContextMenu Width="200">
@@ -150,7 +144,9 @@
                 </ContextMenu>
             </hc:Card.ContextMenu>
 
-            <ListBox x:Name="menus"  ItemsSource="{Binding MenuList}">
+            <ListBox x:Name="menus"  
+                     ItemsSource="{Binding MenuList}"
+                     SelectionChanged="MenuClick">
                 <ListBox.Resources>
                     <ContextMenu x:Key="menuDialog" Width="200">
                         <MenuItem Header="新建菜单" Click="CreateMenu"/>
@@ -185,24 +181,43 @@
                                      Tag="{Binding}"
                                      IsVisibleChanged="MenuEditWhenVisibilityChanged"
                                      Visibility="{Binding Path=MenuEdit, Converter={StaticResource VisibilityConvert}}"/>
-                            <TextBlock Text="{Binding MenuName}"  
-                                       PreviewMouseLeftButtonDown="menuClick"
-                                       IsVisibleChanged="MenuWhenVisibilityChanged"
-                                       Visibility="{Binding Path=NotMenuEdit, Converter={StaticResource VisibilityConvert}}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Background="Transparent" 
+                                        BorderThickness="0"
+                                        hc:IconElement.Geometry="M805.677 218h100.323v540.3c0 0.072-0.972-0.3-1.696-0.3h-779.304v-561h401.869l3.867-1.982s230.651-131.583 285.375-162.778l-18.832 185.76h8.398zM246.395 562.149c0 45.515 37.029 82.543 82.543 82.543s82.543-37.029 82.543-82.543-37.029-82.543-82.543-82.543-82.543 37.028-82.543 82.543zM607.846 333.696c-25.872-10.699-59.908-16.494-95.837-16.494s-69.965 5.746-95.837 16.445c-41.257 17.061-47.416 40.353-47.416 52.353h33.591c0-5 8.343-13.687 26.661-21.263 21.579-8.924 51.832-13.945 83.001-13.945s61.421 4.971 83.001 13.896c18.317 7.576 26.661 16.312 26.661 21.312h33.591c-0.001-12-6.16-35.243-47.416-52.304zM695.078 479.606c-45.515 0-82.543 37.029-82.543 82.543s37.029 82.543 82.543 82.543c45.515 0 82.543-37.029 82.543-82.543s-37.028-82.543-82.543-82.543zM904.304 792h-784.765c-30.073 0-54.539-24.863-54.539-55.425v-517.298c0-30.561 24.466-55.277 54.539-55.277h398.429c34.254-20 284.848-162.442 292.86-167.011 5.582-3.184 10.775-4.768 15.874-4.767 7.977 0.001 14.871 3.852 19.076 10.598 2.903 4.656 4.221 10.346 4.221 17.432v143.748h54.304c30.356 0 54.697 24.716 54.697 55.277v517.298c0 30.562-24.341 55.425-54.696 55.425zM927 217.598c0-20.155-20.551-20.598-20.551-20.598h-89.449v-169.19l-0.685 4.759c-54.724 31.195-285.477 162.449-285.477 162.449l-3.969 1.982h-408.963c-11.132 0-19.906 9.466-19.906 20.598v521.497c0 11.131 8.774 19.905 19.905 19.905h7.095v-1h779.304c0.724 0 1.696 0.371 1.696 0.3v0.949c11 0 21-9.023 21-20.154v-521.497zM377.891 562.149c0 26.993-21.96 48.953-48.953 48.953-26.993 0-48.953-21.96-48.953-48.953 0-26.992 21.96-48.953 48.953-48.953 26.993 0 48.953 21.961 48.953 48.953zM411.482 562.149c0 45.515-37.029 82.543-82.543 82.543s-82.543-37.029-82.543-82.543 37.029-82.543 82.543-82.543 82.543 37.028 82.543 82.543zM279.986 562.149c0 26.993 21.96 48.953 48.953 48.953 26.992 0 48.953-21.96 48.953-48.953 0-26.992-21.96-48.953-48.953-48.953-26.993 0-48.953 21.961-48.953 48.953zM744.031 562.149c0 26.993-21.96 48.953-48.953 48.953s-48.953-21.96-48.953-48.953c0-26.992 21.96-48.953 48.953-48.953s48.953 21.961 48.953 48.953zM695.078 644.693c-45.515 0-82.543-37.029-82.543-82.543s37.029-82.543 82.543-82.543c45.515 0 82.543 37.029 82.543 82.543s-37.028 82.543-82.543 82.543zM646.126 562.149c0 26.993 21.96 48.953 48.953 48.953s48.953-21.96 48.953-48.953c0-26.992-21.96-48.953-48.953-48.953s-48.953 21.961-48.953 48.953zM595.009 364.737c-21.579-8.924-51.832-13.945-83.001-13.945s-61.421 4.971-83.001 13.896c-18.318 7.576-26.661 16.312-26.661 21.312h-33.591c0-12 6.16-35.243 47.415-52.304 25.873-10.699 59.908-16.494 95.837-16.494s69.965 5.746 95.837 16.445c41.258 17.061 47.417 40.353 47.417 52.353h-33.591c0.001-5-8.343-13.687-26.661-21.263zM125 759h-7.095c-11.131 0-19.905-8.774-19.905-19.905v-521.497c0-11.132 8.774-20.598 19.905-20.598h7.095v562zM906 759.249v-541.249h-108.721l19.036-185.65 0.685-4.54v169.19h89.449s20.551 0.443 20.551 20.598v521.497c0 11.131-10 20.154-21 20.154z" 
+                                        hc:IconElement.Height="18"
+                                        hc:IconElement.Width="18"
+                                        />
+                                <TextBlock Text="{Binding MenuName}"
+                                           VerticalAlignment="Center"
+                                           IsVisibleChanged="MenuWhenVisibilityChanged"
+                                           Visibility="{Binding Path=NotMenuEdit, Converter={StaticResource VisibilityConvert}}"
+                                           />
+                            </StackPanel>
+                            
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </hc:Card>
+        
         <!--分割线-->
         <GridSplitter Opacity="0" Grid.Row="1" Grid.Column="0" Width="1"  VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
 
         <!--右侧栏-->
-        <hc:Card AllowDrop="True" Drop="Wrap_Drop" Opacity="1" x:Name="rightCard" Grid.Row="1" Grid.Column="1"  BorderThickness="1" Effect="{DynamicResource EffectShadow2}" Margin="5,5,5,5">
+        <hc:Card AllowDrop="True" 
+                 Drop="Wrap_Drop" 
+                 Opacity="0.5" 
+                 x:Name="rightCard" 
+                 Grid.Row="1" 
+                 Grid.Column="1"  
+                 BorderThickness="1" 
+                 Effect="{DynamicResource EffectShadow2}" 
+                 Margin="5,0,5,5">
             <WrapPanel Orientation="Horizontal">
                 <ListBox x:Name="icons" ItemsSource="{Binding}" 
                          BorderThickness="0"
-                         SelectionChanged="data_SelectionChanged"
+                         SelectionChanged="IconSelectionChanged"
                          >
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -213,34 +228,30 @@
 
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                                <StackPanel  Tag="{Binding}"
-                                             MouseLeftButtonDown="dataClick"
-                                             HorizontalAlignment="Center"
-                                             Margin="5,5,5,5"
-                                             Height="115"
-                                             hc:Poptip.HitMode="None" 
-                                             hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
-                                             hc:Poptip.Content="{Binding Content}" 
-                                             hc:Poptip.Placement="BottomLeft"
-                                             MouseMove="StackPanel_MouseMove"
-                                             >
-                                    <Image x:Name="testImage" Style="{StaticResource imageStyle}"></Image>
-                                
-                                    <TextBlock Width="80" TextWrapping="Wrap" TextAlignment="Center" Height="35" LineHeight="15" FontSize="12" Text="{Binding Name}"/>
-                                <!--<StackPanel.Triggers>
-                                    <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
-                                        
-                                    </DataTrigger>
-                                </StackPanel.Triggers>-->
+                            <StackPanel 
+                                        MouseLeftButtonDown="IconClick"
+                                        HorizontalAlignment="Center"
+                                        Margin="5,5,5,5"
+                                        hc:Poptip.HitMode="None" 
+                                        hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
+                                        hc:Poptip.Content="{Binding Content}" 
+                                        hc:Poptip.Placement="BottomLeft"
+                                        >
+                                <Image Style="{StaticResource imageStyle}"></Image>
+                                    <TextBlock MaxWidth="80"
+                                               MaxHeight="40"
+                                               TextWrapping="Wrap" 
+                                               TextTrimming="WordEllipsis"
+                                               TextAlignment="Center" 
+                                               VerticalAlignment="Center" 
+                                               Text="{Binding Name}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
             </WrapPanel>
-
         </hc:Card>
-
-
-
+        <hc:NotifyIcon Icon="/Resource/Image/Ico.png" Text="GeekDesk" Click="NotifyIcon_Click"/>
     </Grid>
+
 </Window>
