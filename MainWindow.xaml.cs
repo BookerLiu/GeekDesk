@@ -10,6 +10,8 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 
 namespace GeekDesk
@@ -27,6 +29,20 @@ namespace GeekDesk
         {
             InitializeComponent();
             loadData();
+            //Border border = new Border();
+            //VisualBrush brush = new VisualBrush();
+            //brush.Visual = test;
+            //brush.Stretch = Stretch.Uniform;
+            //border.Background = brush;
+            //border.Effect = new BlurEffect()
+            //{
+            //    Radius = 80,
+            //    RenderingBias = RenderingBias.Performance
+            //};
+            //border.Margin = new Thickness(-this.Margin.Left, -this.Margin.Top, 0, 0);
+            //this.ClipToBounds = true;
+            //this.Children.Clear();
+            //this.Children.Add(border);
             //this.DataContext = mainModel;
             //menu.Items = mainModel;
             //System.Diagnostics.Process.Start(@"D:\SoftWare\WeGame\wegame.exe");

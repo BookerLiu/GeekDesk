@@ -99,10 +99,12 @@
         <Border CornerRadius="5"  BorderThickness="0">
             <!--背景图片-->
             <Border.Background>
-                <ImageBrush ImageSource="D:\壁纸\18086.jpg" Opacity="0.9"></ImageBrush>
+                <ImageBrush ImageSource="D:\壁纸\tmig.jpg" Opacity="1"></ImageBrush>
             </Border.Background>
             <Grid>
-
+                <!--<Grid.Background>
+                    <VisualBrush Stretch="Uniform" Visual="{Binding ElementName=test}"/>
+                </Grid.Background>-->
                 <!--<Grid.Background>
             <SolidColorBrush Color="Black" Opacity="0.5"/>
         </Grid.Background>-->
