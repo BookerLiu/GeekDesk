@@ -1,4 +1,5 @@
 ﻿using GeekDesk.Constant;
+using GeekDesk.Util;
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -16,8 +17,38 @@ namespace GeekDesk.ViewModel
         private BitmapImage bitmapImage; //位图
         private byte[] imageByteArr; //图片 base64
         private string content; //显示信息
-        private int imageWidth = (int)DefaultConstant.IMAGE_WIDTH;
-        private int imageHeight = (int)DefaultConstant.IMAGE_HEIGHT;
+        private int imageWidth = (int)DefaultConstant.IMAGE_WIDTH; //图片宽度
+        private int imageHeight = (int)DefaultConstant.IMAGE_HEIGHT; //图片高度
+        private bool adminStartUp = false; //始终管理员方式启动  默认否
+        private byte[] defaultImage;
+
+
+
+        public byte[] DefaultImage
+        {
+            get
+            {
+                return defaultImage;
+            }
+            set
+            {
+                defaultImage = value;
+                OnPropertyChanged("DefaultImage");
+            }
+        }
+
+        public bool AdminStartUp
+        {
+            get
+            {
+                return adminStartUp;
+            }
+            set
+            {
+                adminStartUp = value;
+                OnPropertyChanged("AdminStartUp");
+            }
+        }
 
         public int Count
         {
@@ -66,12 +97,12 @@ namespace GeekDesk.ViewModel
             get
             {
 
-                return ToImage(ImageByteArr);
+                return ImageUtil.ByteArrToImage(ImageByteArr);
             }
             set
             {
                 bitmapImage = value;
-                ImageByteArr = getJPGFromImageControl(bitmapImage);
+                ImageByteArr = ImageUtil.BitmapImageToByte(bitmapImage);
                 OnPropertyChanged("BitmapImage");
             }
         }
@@ -140,29 +171,6 @@ namespace GeekDesk.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public BitmapImage ToImage(byte[] array)
-        {
-            using (var ms = new System.IO.MemoryStream(array))
-            {
-                var image = new BitmapImage();
-                image.BeginInit();
-                image.CacheOption = BitmapCacheOption.OnLoad; // here
-                image.StreamSource = ms;
-                image.EndInit();
-                return image;
-            }
-        }
-
-        public byte[] getJPGFromImageControl(BitmapImage bi)
-        {
-            using (MemoryStream memStream = new MemoryStream())
-            {
-                PngBitmapEncoder encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create(bi));
-                encoder.Save(memStream);
-                return memStream.GetBuffer();
-            }
-        }
 
     }
 }

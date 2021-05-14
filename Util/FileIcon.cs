@@ -19,23 +19,6 @@ namespace GeekDesk.Util
 
         public static BitmapImage GetBitmapImage(string filePath)
         {
-            //Icon ico;
-            //BitmapImage bmpImage = null;
-            //MemoryStream strm;
-            //using (ico = GetIcon(filePath))
-            //{
-            //    Bitmap bmp = ico.ToBitmap();
-            //    using (strm = new MemoryStream())
-            //    {
-            //        bmp.Save(strm, System.Drawing.Imaging.ImageFormat.Png);
-            //        bmpImage = new BitmapImage();
-            //        bmpImage.BeginInit();
-            //        strm.Seek(0, SeekOrigin.Begin);
-            //        bmpImage.StreamSource = strm;
-            //        bmpImage.EndInit();
-            //    }
-            //}
-            //return bmpImage;
             Icon ico = GetIcon(filePath);
             Bitmap bmp = ico.ToBitmap();
             MemoryStream strm = new MemoryStream();

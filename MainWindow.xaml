@@ -10,6 +10,10 @@
         xmlns:DraggAnimatedPanel="clr-namespace:DraggAnimatedPanel" x:Name="window"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         Title="MainWindow" Height="500" Width="600"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        OpacityMask ="White"
         >
     <Window.Resources>
 
@@ -17,11 +21,12 @@
         <Style x:Key="menuStyle" TargetType="ListBoxItem" BasedOn="{StaticResource ListBoxItemBaseStyle}">
             <Setter Property="FontSize" Value="15"/>
             <Setter Property="Margin" Value="0,0,0,1"/>
-            <Setter Property="RenderTransform">
+            <Setter Property="Background">
                 <Setter.Value>
-                    <TranslateTransform/>
+                    <SolidColorBrush Opacity="0"/>
                 </Setter.Value>
             </Setter>
+
             <Style.Triggers>
                 <MultiTrigger>
                     <MultiTrigger.Conditions>
@@ -38,16 +43,16 @@
                     <MultiTrigger.ExitActions>
                         <BeginStoryboard>
                             <Storyboard Timeline.DesiredFrameRate="30">
-                                <DoubleAnimation To="20" Duration="0:0:0.001" Storyboard.TargetProperty="FontSize"/>
+                                <DoubleAnimation To="18" Duration="0:0:0.001" Storyboard.TargetProperty="FontSize"/>
                             </Storyboard>
                         </BeginStoryboard>
                     </MultiTrigger.ExitActions>
                 </MultiTrigger>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#C3C3C3"/>
+                    <Setter Property="Background" Value="#FFE4DBDB"/>
                 </Trigger>
-                <Trigger Property="IsFocused" Value="true">
-                    <Setter Property="Background" Value="#B9B9B9"/>
+                <Trigger Property="IsSelected" Value="true">
+                    <Setter Property="Background" Value="#FFECECEC"/>
                     <Setter Property="Foreground" Value="Black"/>
                 </Trigger>
             </Style.Triggers>
@@ -90,38 +95,48 @@
     </Window.Resources>
 
 
+    <Border CornerRadius="5"  BorderThickness="0" Background="White">
+        <Border CornerRadius="5"  BorderThickness="0">
+            <!--背景图片-->
+            <Border.Background>
+                <ImageBrush ImageSource="D:\壁纸\18086.jpg" Opacity="0.9"></ImageBrush>
+            </Border.Background>
+            <Grid>
 
-    <Grid>
-        <!--背景图片-->
-        <Grid.Background>
-            <ImageBrush ImageSource="D:\壁纸\18039.jpg" Opacity="0.618"></ImageBrush>
-        </Grid.Background>
-        <!--<Grid.Background>
+                <!--<Grid.Background>
             <SolidColorBrush Color="Black" Opacity="0.5"/>
         </Grid.Background>-->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40" MouseMove="DragMove"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="leftColumn" MinWidth="80" Width="150" MaxWidth="200"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" MouseMove="DragMove"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="LeftColumn" MinWidth="80" Width="165" MaxWidth="200"></ColumnDefinition>
+                    <ColumnDefinition Width="45*"></ColumnDefinition>
+                    <ColumnDefinition Width="382*"/>
+                </Grid.ColumnDefinitions>
 
 
-        <DockPanel Grid.Row="0" Grid.Column="0" MouseMove="DragMove">
-           <Image Source="/Resource/Image/WindowLogo.png" Margin="10,0,0,0" Width="94" Height="30" HorizontalAlignment="Left"/>
-        </DockPanel>
+                <DockPanel Grid.Row="0" Grid.Column="0" MouseMove="DragMove">
+                    <DockPanel.Background>
+                        <SolidColorBrush Opacity="0.01"/>
+                    </DockPanel.Background>
+                    <Image Source="/Resource/Image/WindowLogo.png" Margin="10,0,0,0" Width="94" Height="30" HorizontalAlignment="Left"/>
+                </DockPanel>
 
-        <StackPanel Grid.Row="0" Grid.Column="1" MouseMove="DragMove" HorizontalAlignment="Right" Orientation="Horizontal">
-            <Button Background="Transparent" 
+                <DockPanel Grid.Row="0" Grid.Column="2" MouseMove="DragMove">
+                    <DockPanel.Background>
+                        <SolidColorBrush Opacity="0.01"/>
+                    </DockPanel.Background>
+                    <hc:UniformSpacingPanel Spacing="0" Grid.ColumnSpan="4" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Button Background="Transparent" 
                     BorderThickness="0"
-                    hc:IconElement.Geometry="{StaticResource ODDataGeometry}"
+                    hc:IconElement.Geometry="M917.930667 512c0-57.6 36.181333-106.496 86.869333-125.952a505.429333 505.429333 0 0 0-55.210667-133.461333A134.826667 134.826667 0 0 1 771.413333 74.410667 507.733333 507.733333 0 0 0 637.952 19.2 135.168 135.168 0 0 1 512 106.069333 134.912 134.912 0 0 1 386.048 19.2 505.429333 505.429333 0 0 0 252.586667 74.410667c22.186667 49.749333 13.141333 109.824-27.562667 150.528a135.168 135.168 0 0 1-150.528 27.648 502.016 502.016 0 0 0-55.296 133.461333c50.688 19.626667 86.869333 68.437333 86.869333 125.952 0 57.6-36.181333 106.496-86.869333 125.952 12.117333 47.530667 30.72 92.330667 55.210667 133.461333a134.826667 134.826667 0 0 1 178.090666 178.176 507.733333 507.733333 0 0 0 133.546667 55.210667A135.168 135.168 0 0 1 512 917.930667c57.6 0 106.496 36.181333 125.952 86.869333a505.429333 505.429333 0 0 0 133.461333-55.210667 134.912 134.912 0 0 1 27.562667-150.528 135.168 135.168 0 0 1 150.528-27.648 502.016 502.016 0 0 0 55.296-133.461333A134.912 134.912 0 0 1 917.930667 512zM512 647.338667a135.338667 135.338667 0 1 1 0.085333-270.762667A135.338667 135.338667 0 0 1 512 647.338667z"
                     hc:IconElement.Height="18"
                     hc:IconElement.Width="18"
                     HorizontalAlignment="Right"
                     />
-            <Button Background="Transparent" 
+                        <Button Background="Transparent" 
                     BorderThickness="0"
                     hc:IconElement.Geometry="M828.770654 148.714771C641.293737-20.89959 354.184117-19.590868 168.245698 152.630946c-212.062907 196.418185-212.062907 522.329912 0 718.748098 185.93842 172.221815 473.048039 173.520546 660.524956 3.916176 219.435707-198.536117 219.435707-528.054322 0-726.580449z m-121.880976 569.643707c-11.708566 11.708566-30.680039 11.708566-42.388605 0L502.729054 556.586459c-0.659356-0.659356-1.728312-0.659356-2.397659 0L338.609327 718.318517c-11.708566 11.708566-30.680039 11.708566-42.388605 0l-0.039961-0.039961c-11.708566-11.708566-11.708566-30.680039 0-42.388605l161.732059-161.732058c0.659356-0.659356 0.659356-1.728312 0-2.397659L296.1408 350.008195c-11.708566-11.708566-11.708566-30.680039 0-42.388605l0.039961-0.039961c11.708566-11.708566 30.680039-11.708566 42.388605 0l161.772019 161.77202c0.659356 0.659356 1.728312 0.659356 2.397659 0L664.551024 307.539668c11.708566-11.708566 30.680039-11.708566 42.388605 0l0.039961 0.039961c11.708566 11.708566 11.708566 30.680039 0 42.388605L545.15762 511.770224c-0.659356 0.659356-0.659356 1.728312 0 2.397659L706.919649 675.939902c11.708566 11.708566 11.708566 30.680039 0 42.388605l-0.029971 0.029971z" 
                     hc:IconElement.Height="18"
@@ -129,107 +144,142 @@
                     HorizontalAlignment="Right"
                     Click="CloseButtonClick"
                     />
-        </StackPanel>
+                    </hc:UniformSpacingPanel>
 
-        <!--左侧栏-->
-        <hc:Card x:Name="leftCard" Grid.Row="1" Grid.Column="0"
+                </DockPanel>
+
+                <!--左侧栏-->
+                <hc:Card x:Name="leftCard" Grid.Row="1" Grid.Column="0"
                  BorderThickness="1" 
                  Effect="{DynamicResource EffectShadow2}" 
-                 Opacity="0.5"
                  Margin="5,0,0,5"
                  >
-            <hc:Card.ContextMenu>
-                <ContextMenu Width="200">
-                    <MenuItem Header="新建菜单" Click="CreateMenu"/>
-                </ContextMenu>
-            </hc:Card.ContextMenu>
+                    <hc:Card.Background>
+                        <SolidColorBrush Color="#FFFFFFFF" Opacity="0.5"/>
+                    </hc:Card.Background>
+                    <hc:Card.BorderBrush>
+                        <SolidColorBrush Color="#FFFFFFFF" Opacity="0"/>
+                    </hc:Card.BorderBrush>
+                    <hc:Card.ContextMenu>
+                        <ContextMenu Width="200">
+                            <MenuItem Header="新建菜单" Click="CreateMenu"/>
+                        </ContextMenu>
+                    </hc:Card.ContextMenu>
+                    <WrapPanel Orientation="Horizontal">
+                        <ListBox x:Name="menus"  
+                         ItemsSource="{Binding MenuList}"
+                         BorderThickness="0" Foreground="{x:Null}"
+                     >
 
-            <ListBox x:Name="menus"  
-                     ItemsSource="{Binding MenuList}"
-                     SelectionChanged="MenuClick">
-                <ListBox.Resources>
-                    <ContextMenu x:Key="menuDialog" Width="200">
-                        <MenuItem Header="新建菜单" Click="CreateMenu"/>
-                        <MenuItem Header="重命名"  Click="RenameMenu" Tag="{Binding}"/>
-                        <MenuItem Header="删除" Click="DeleteMenu" Tag="{Binding}"/>
-                    </ContextMenu>
-                </ListBox.Resources>
 
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource menuStyle}">
-                        <Setter Property="ContextMenu" Value="{StaticResource menuDialog}"/>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <DraggAnimatedPanel:DraggAnimatedPanel ItemsHeight="30" ItemsWidth="{Binding ElementName=leftColumn, Path=Width, Converter={StaticResource MenuWidthConvert}}"   HorizontalAlignment="Center" VerticalAlignment="Top" SwapCommand="{Binding SwapCommand2, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
+                            <ListBox.Resources>
+                                <ContextMenu x:Key="menuDialog" Width="200">
+                                    <MenuItem Header="新建菜单" Click="CreateMenu"/>
+                                    <MenuItem Header="重命名"  Click="RenameMenu" Tag="{Binding}"/>
+                                    <MenuItem Header="删除" Click="DeleteMenu" Tag="{Binding}"/>
+                                </ContextMenu>
+                            </ListBox.Resources>
 
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem" BasedOn="{StaticResource menuStyle}">
+                                    <Setter Property="ContextMenu" Value="{StaticResource menuDialog}"/>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.Background>
+                                <SolidColorBrush Color="AliceBlue" Opacity="0"/>
+                            </ListBox.Background>
+
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <DraggAnimatedPanel:DraggAnimatedPanel ItemsHeight="30" ItemsWidth="{Binding ElementName=LeftColumn, Path=Width, Converter={StaticResource MenuWidthConvert}}"   HorizontalAlignment="Center" VerticalAlignment="Top" SwapCommand="{Binding SwapCommand2, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel MouseLeftButtonDown="MenuClick" Tag="{Binding}">
+                                        <TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
                                      HorizontalAlignment="Left"
-                                     Width="{Binding ElementName=leftColumn, Path=Width, Converter={StaticResource MenuWidthConvert}}"
+                                     Width="{Binding ElementName=LeftColumn, Path=Width, Converter={StaticResource MenuWidthConvert}}"
                                      FontSize="15"
                                      TextAlignment="Left"
-                                     BorderBrush="{x:Null}" 
-                                     BorderThickness="0" 
                                      LostFocus="LostFocusOrEnterDown"
                                      KeyDown="LostFocusOrEnterDown"
                                      Tag="{Binding}"
                                      IsVisibleChanged="MenuEditWhenVisibilityChanged"
                                      Visibility="{Binding Path=MenuEdit, Converter={StaticResource VisibilityConvert}}"/>
-                            <StackPanel Orientation="Horizontal">
-                                <Button Background="Transparent" 
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Background="Transparent" 
                                         BorderThickness="0"
-                                        hc:IconElement.Geometry="M805.677 218h100.323v540.3c0 0.072-0.972-0.3-1.696-0.3h-779.304v-561h401.869l3.867-1.982s230.651-131.583 285.375-162.778l-18.832 185.76h8.398zM246.395 562.149c0 45.515 37.029 82.543 82.543 82.543s82.543-37.029 82.543-82.543-37.029-82.543-82.543-82.543-82.543 37.028-82.543 82.543zM607.846 333.696c-25.872-10.699-59.908-16.494-95.837-16.494s-69.965 5.746-95.837 16.445c-41.257 17.061-47.416 40.353-47.416 52.353h33.591c0-5 8.343-13.687 26.661-21.263 21.579-8.924 51.832-13.945 83.001-13.945s61.421 4.971 83.001 13.896c18.317 7.576 26.661 16.312 26.661 21.312h33.591c-0.001-12-6.16-35.243-47.416-52.304zM695.078 479.606c-45.515 0-82.543 37.029-82.543 82.543s37.029 82.543 82.543 82.543c45.515 0 82.543-37.029 82.543-82.543s-37.028-82.543-82.543-82.543zM904.304 792h-784.765c-30.073 0-54.539-24.863-54.539-55.425v-517.298c0-30.561 24.466-55.277 54.539-55.277h398.429c34.254-20 284.848-162.442 292.86-167.011 5.582-3.184 10.775-4.768 15.874-4.767 7.977 0.001 14.871 3.852 19.076 10.598 2.903 4.656 4.221 10.346 4.221 17.432v143.748h54.304c30.356 0 54.697 24.716 54.697 55.277v517.298c0 30.562-24.341 55.425-54.696 55.425zM927 217.598c0-20.155-20.551-20.598-20.551-20.598h-89.449v-169.19l-0.685 4.759c-54.724 31.195-285.477 162.449-285.477 162.449l-3.969 1.982h-408.963c-11.132 0-19.906 9.466-19.906 20.598v521.497c0 11.131 8.774 19.905 19.905 19.905h7.095v-1h779.304c0.724 0 1.696 0.371 1.696 0.3v0.949c11 0 21-9.023 21-20.154v-521.497zM377.891 562.149c0 26.993-21.96 48.953-48.953 48.953-26.993 0-48.953-21.96-48.953-48.953 0-26.992 21.96-48.953 48.953-48.953 26.993 0 48.953 21.961 48.953 48.953zM411.482 562.149c0 45.515-37.029 82.543-82.543 82.543s-82.543-37.029-82.543-82.543 37.029-82.543 82.543-82.543 82.543 37.028 82.543 82.543zM279.986 562.149c0 26.993 21.96 48.953 48.953 48.953 26.992 0 48.953-21.96 48.953-48.953 0-26.992-21.96-48.953-48.953-48.953-26.993 0-48.953 21.961-48.953 48.953zM744.031 562.149c0 26.993-21.96 48.953-48.953 48.953s-48.953-21.96-48.953-48.953c0-26.992 21.96-48.953 48.953-48.953s48.953 21.961 48.953 48.953zM695.078 644.693c-45.515 0-82.543-37.029-82.543-82.543s37.029-82.543 82.543-82.543c45.515 0 82.543 37.029 82.543 82.543s-37.028 82.543-82.543 82.543zM646.126 562.149c0 26.993 21.96 48.953 48.953 48.953s48.953-21.96 48.953-48.953c0-26.992-21.96-48.953-48.953-48.953s-48.953 21.961-48.953 48.953zM595.009 364.737c-21.579-8.924-51.832-13.945-83.001-13.945s-61.421 4.971-83.001 13.896c-18.318 7.576-26.661 16.312-26.661 21.312h-33.591c0-12 6.16-35.243 47.415-52.304 25.873-10.699 59.908-16.494 95.837-16.494s69.965 5.746 95.837 16.445c41.258 17.061 47.417 40.353 47.417 52.353h-33.591c0.001-5-8.343-13.687-26.661-21.263zM125 759h-7.095c-11.131 0-19.905-8.774-19.905-19.905v-521.497c0-11.132 8.774-20.598 19.905-20.598h7.095v562zM906 759.249v-541.249h-108.721l19.036-185.65 0.685-4.54v169.19h89.449s20.551 0.443 20.551 20.598v521.497c0 11.131-10 20.154-21 20.154z" 
+                                        hc:IconElement.Geometry="M438.857143 548.571429a36.571429 36.571429 0 0 1 36.571428 36.571428v256a36.571429 36.571429 0 0 1-36.571428 36.571429H182.857143a36.571429 36.571429 0 0 1-36.571429-36.571429v-256a36.571429 36.571429 0 0 1 36.571429-36.571428h256z m402.285714 0a36.571429 36.571429 0 0 1 36.571429 36.571428v256a36.571429 36.571429 0 0 1-36.571429 36.571429h-256a36.571429 36.571429 0 0 1-36.571428-36.571429v-256a36.571429 36.571429 0 0 1 36.571428-36.571428h256z m-438.857143 73.142857H219.428571v182.857143h182.857143v-182.857143z m402.285715 0h-182.857143v182.857143h182.857143v-182.857143zM438.857143 146.285714a36.571429 36.571429 0 0 1 36.571428 36.571429v256a36.571429 36.571429 0 0 1-36.571428 36.571428H182.857143a36.571429 36.571429 0 0 1-36.571429-36.571428V182.857143a36.571429 36.571429 0 0 1 36.571429-36.571429h256z m402.285714 0a36.571429 36.571429 0 0 1 36.571429 36.571429v256a36.571429 36.571429 0 0 1-36.571429 36.571428h-256a36.571429 36.571429 0 0 1-36.571428-36.571428V182.857143a36.571429 36.571429 0 0 1 36.571428-36.571429h256zM402.285714 219.428571H219.428571v182.857143h182.857143V219.428571z m402.285715 0h-182.857143v182.857143h182.857143V219.428571z" 
                                         hc:IconElement.Height="18"
                                         hc:IconElement.Width="18"
                                         />
-                                <TextBlock Text="{Binding MenuName}"
+                                            <TextBlock Text="{Binding MenuName}"
                                            VerticalAlignment="Center"
                                            IsVisibleChanged="MenuWhenVisibilityChanged"
                                            Visibility="{Binding Path=NotMenuEdit, Converter={StaticResource VisibilityConvert}}"
                                            />
-                            </StackPanel>
-                            
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </hc:Card>
-        
-        <!--分割线-->
-        <GridSplitter Opacity="0" Grid.Row="1" Grid.Column="0" Width="1"  VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+                                        </StackPanel>
 
-        <!--右侧栏-->
-        <hc:Card AllowDrop="True" 
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </WrapPanel>
+                </hc:Card>
+
+                <!--分割线-->
+                <GridSplitter DragCompleted="LeftCardResize" Opacity="0" Grid.Row="1" Grid.Column="0" Width="1"  VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+
+                <!--右侧栏-->
+                <hc:Card AllowDrop="True" 
                  Drop="Wrap_Drop" 
-                 Opacity="0.5" 
                  x:Name="rightCard" 
                  Grid.Row="1" 
                  Grid.Column="1"  
                  BorderThickness="1" 
                  Effect="{DynamicResource EffectShadow2}" 
-                 Margin="5,0,5,5">
-            <WrapPanel Orientation="Horizontal">
-                <ListBox x:Name="icons" ItemsSource="{Binding}" 
+                 Margin="5,0,5,5" Grid.ColumnSpan="2">
+                    <hc:Card.Background>
+                        <SolidColorBrush Color="#FFFFFFFF" Opacity="0.5"/>
+                    </hc:Card.Background>
+                    <hc:Card.BorderBrush>
+                        <SolidColorBrush Color="#FFFFFFFF" Opacity="0"/>
+                    </hc:Card.BorderBrush>
+                    <WrapPanel Orientation="Horizontal">
+                        <ListBox x:Name="icons" ItemsSource="{Binding}" 
                          BorderThickness="0"
                          SelectionChanged="IconSelectionChanged"
                          >
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <DraggAnimatedPanel:DraggAnimatedPanel ItemsHeight="115" ItemsWidth="100"  HorizontalAlignment="Center" SwapCommand="{Binding SwapCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
+                            <ListBox.Background>
+                                <SolidColorBrush Opacity="0"/>
+                            </ListBox.Background>
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <DraggAnimatedPanel:DraggAnimatedPanel ItemsHeight="115" ItemsWidth="100"  HorizontalAlignment="Center" SwapCommand="{Binding SwapCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
 
+                            <ListBox.Resources>
+                                <ContextMenu x:Key="iconDialog" Width="200">
+                                    <MenuItem Header="管理员方式运行" Click="IconAdminStart" Tag="{Binding}"/>
+                                    <MenuItem Header="打开文件所在位置" Click="ShowInExplore" Tag="{Binding}"/>
+                                    <MenuItem Header="属性" Click="PropertyConfig" Tag="{Binding}"/>
+                                    <MenuItem Header="从列表移除" Click="RemoveIcon" Tag="{Binding}"/>
+                                </ContextMenu>
+                            </ListBox.Resources>
 
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel 
-                                        MouseLeftButtonDown="IconClick"
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="ContextMenu" Value="{StaticResource iconDialog}"/>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Tag="{Binding}"
+                                        MouseLeftButtonUp="IconClick"
                                         HorizontalAlignment="Center"
                                         Margin="5,5,5,5"
                                         hc:Poptip.HitMode="None" 
@@ -237,21 +287,27 @@
                                         hc:Poptip.Content="{Binding Content}" 
                                         hc:Poptip.Placement="BottomLeft"
                                         >
-                                <Image Style="{StaticResource imageStyle}"></Image>
-                                    <TextBlock MaxWidth="80"
+                                        <Image Style="{StaticResource imageStyle}" />
+                                        <TextBlock MaxWidth="80"
                                                MaxHeight="40"
                                                TextWrapping="Wrap" 
                                                TextTrimming="WordEllipsis"
                                                TextAlignment="Center" 
                                                VerticalAlignment="Center" 
                                                Text="{Binding Name}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </WrapPanel>
-        </hc:Card>
-        <hc:NotifyIcon Icon="/Resource/Image/Ico.png" Text="GeekDesk" Click="NotifyIcon_Click"/>
-    </Grid>
+
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </WrapPanel>
+                </hc:Card>
+                <hc:NotifyIcon Icon="/Resource/Image/Ico.png" Text="GeekDesk" Click="NotifyIcon_Click"/>
+                <StackPanel hc:Growl.GrowlParent="True" VerticalAlignment="Top" Margin="0,10,10,0"/>
+            </Grid>
+        </Border>
+    </Border>
+   
+   
 
 </Window>

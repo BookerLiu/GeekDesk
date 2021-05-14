@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace GeekDesk.ViewModel
 {
     [Serializable]
-    class AppData : INotifyPropertyChanged
+    public class AppData : INotifyPropertyChanged
     {
         private ObservableCollection<MenuInfo> menuList = new ObservableCollection<MenuInfo>();
         private AppConfig appConfig = new AppConfig();

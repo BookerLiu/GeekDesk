@@ -7,7 +7,7 @@ namespace GeekDesk.ViewModel
 {
 
     [Serializable]
-    public class AppConfig : System.ComponentModel.INotifyPropertyChanged
+    public class AppConfig : INotifyPropertyChanged
     {
         private int menuSortType = (int)SortType.CUSTOM; //菜单排序类型
         private int iconSortType = (int)SortType.CUSTOM; //图表排序类型

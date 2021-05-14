@@ -1,11 +1,11 @@
 ﻿using DraggAnimatedPanelExample;
+using GeekDesk.Constant;
+using GeekDesk.Control;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,7 +21,7 @@ namespace GeekDesk
     public partial class MainWindow : Window
     {
 
-        private AppData appData = CommonCode.GetAppDataByFile();
+        public static AppData appData = CommonCode.GetAppDataByFile();
         private int menuSelectIndexTemp = -1;
         public MainWindow()
         {
@@ -40,9 +40,10 @@ namespace GeekDesk
             this.DataContext = appData;
             if (appData.MenuList.Count == 0)
             {
-                appData.MenuList.Add(new MenuInfo() { MenuName = "NewGouop", MenuId = System.Guid.NewGuid().ToString(), MenuEdit = (int)Visibility.Collapsed});
+                appData.MenuList.Add(new MenuInfo() { MenuName = "NewMenu", MenuId = System.Guid.NewGuid().ToString(), MenuEdit = (int)Visibility.Collapsed});
             }
             //窗体大小
+            LeftColumn.Width = new GridLength(appData.AppConfig.MenuCardWidth);
             this.Width = appData.AppConfig.WindowWidth;
             this.Height = appData.AppConfig.WindowHeight;
             //选中 菜单
@@ -64,18 +65,13 @@ namespace GeekDesk
                         {
                             int fromS = indexes[0];
                             int to = indexes[1];
-                            var elementSource = icons.Items[to];
-                            var dragged = icons.Items[fromS];
-                            if (fromS > to)
-                            {
-                                icons.Items.Remove(dragged);
-                                icons.Items.Insert(to, dragged);
-                            }
-                            else
-                            {
-                                icons.Items.Remove(dragged);
-                                icons.Items.Insert(to, dragged);
-                            }
+                            ObservableCollection<IconInfo> iconList = appData.MenuList[menus.SelectedIndex].IconList;
+                            var elementSource = iconList[to];
+                            var dragged = iconList[fromS];
+
+                            iconList.Remove(dragged);
+                            iconList.Insert(to, dragged);
+                            CommonCode.SaveAppData(appData);
                         }
                     );
                 return _swap;
@@ -96,19 +92,11 @@ namespace GeekDesk
                             ObservableCollection<MenuInfo> menuList = appData.MenuList;
                             var elementSource = menuList[to];
                             var dragged = menuList[fromS];
-                            if (fromS > to)
-                            {
-                                menuList.Remove(dragged);
-                                menuList.Insert(to, dragged);
-                            }
-                            else
-                            {
-                                menuList.Remove(dragged);
-                                menuList.Insert(to, dragged);
-                            }
+                            menuList.Remove(dragged);
+                            menuList.Insert(to, dragged);
+                            menus.SelectedIndex = to;
                             appData.MenuList = menuList;
-                            //menus.Items.Refresh();
-
+                            CommonCode.SaveAppData(appData);
                         }
                     );
                 return _swap2;
@@ -124,33 +112,27 @@ namespace GeekDesk
             foreach (object obj in dropObject)
             {
                 string path = (string)obj;
-                if (File.Exists(path))
-                {
-                    // 文件
-                    BitmapImage bi = FileIcon.GetBitmapImage(path);
-                    IconInfo iconInfo = new IconInfo();
-                    iconInfo.Path = path;
-                    iconInfo.BitmapImage = bi;
-                    iconInfo.Name = Path.GetFileNameWithoutExtension(path);
-                    appData.MenuList[menus.SelectedIndex].IconList.Add(iconInfo);
-                    CommonCode.SaveAppData(appData);
 
-                }
-                else if (Directory.Exists(path))
+                IconInfo iconInfo = new IconInfo
                 {
-                    //文件夹
-
-                }
+                    Path = path,
+                    BitmapImage = ImageUtil.GetBitmapIconByPath(path)
+                };
+                iconInfo.DefaultImage = iconInfo.ImageByteArr;
+                iconInfo.Name = Path.GetFileNameWithoutExtension(path);
+                appData.MenuList[menus.SelectedIndex].IconList.Add(iconInfo);
             }
-            icons.Items.Refresh();
+            CommonCode.SaveAppData(appData);
         }
 
-        //菜单点击事件
-        private void MenuClick(object sender, SelectionChangedEventArgs e)
+   
+        ////菜单点击事件
+        private void MenuClick(object sender, MouseButtonEventArgs e)
         {
             //设置对应菜单的图标列表
-            icons.ItemsSource = appData.MenuList[menus.SelectedIndex].IconList;
-            appData.AppConfig.SelectedMenuIndex = menus.SelectedIndex;
+            MenuInfo mi = (MenuInfo)(((StackPanel)sender).Tag);
+            icons.ItemsSource = mi.IconList;
+            appData.AppConfig.SelectedMenuIndex = menus.Items.IndexOf(mi);
             CommonCode.SaveAppData(appData);
         }
 
@@ -164,10 +146,80 @@ namespace GeekDesk
         private void IconClick(object sender, MouseButtonEventArgs e)
         {
             IconInfo icon = (IconInfo)((StackPanel)sender).Tag;
-            System.Diagnostics.Process.Start(icon.Path);
-            icon.Count++;
-            CommonCode.SaveAppData(appData);
+            if (icon.AdminStartUp)
+            {
+                StartIconApp(icon, IconStartType.ADMIN_STARTUP);
+            }
+            else
+            {
+                StartIconApp(icon, IconStartType.DEFAULT_STARTUP);
+            }
         }
+
+        /// <summary>
+        /// 管理员方式启动
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void IconAdminStart(object sender, RoutedEventArgs e)
+        {
+            IconInfo icon = (IconInfo)((MenuItem)sender).Tag;
+            StartIconApp(icon, IconStartType.ADMIN_STARTUP);
+        }
+
+        /// <summary>
+        /// 打开文件所在位置
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowInExplore(object sender, RoutedEventArgs e)
+        {
+            IconInfo icon = (IconInfo)((MenuItem)sender).Tag;
+            StartIconApp(icon, IconStartType.SHOW_IN_EXPLORE);
+        }
+
+        private void StartIconApp(IconInfo icon, IconStartType type)
+        {
+            try
+            {
+
+                if (!File.Exists(icon.Path) && !Directory.Exists(icon.Path))
+                {
+                    HandyControl.Controls.Growl.WarningGlobal("程序启动失败(文件路径不存在或已删除)!");
+                    return;
+                }
+
+                Process p = new Process();
+                p.StartInfo.FileName = icon.Path;
+
+                switch (type) {
+                    case IconStartType.ADMIN_STARTUP:
+                        p.StartInfo.Arguments = "1";//启动参数
+                        p.StartInfo.Verb = "runas";
+                        p.StartInfo.CreateNoWindow = false; //设置显示窗口
+                        p.StartInfo.UseShellExecute = false;//不使用操作系统外壳程序启动进程
+                        p.StartInfo.ErrorDialog = false;
+                        this.Visibility = Visibility.Collapsed;
+                        break;// c#好像不能case穿透
+                    case IconStartType.DEFAULT_STARTUP:
+                        this.Visibility = Visibility.Collapsed;
+                        break;
+                    case IconStartType.SHOW_IN_EXPLORE:
+                        p.StartInfo.FileName = "Explorer.exe";
+                        p.StartInfo.Arguments = "/e,/select," + icon.Path;
+                        break;
+                }
+                p.Start();
+                icon.Count++;
+                CommonCode.SaveAppData(appData);
+            } catch (Exception)
+            {
+                HandyControl.Controls.Growl.WarningGlobal("程序启动失败(不支持的启动方式)!");
+            }
+            
+        }
+
+        
 
         /// <summary>
         /// data选中事件 设置不可选中
@@ -313,7 +365,7 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void CreateMenu(object sender, RoutedEventArgs e)
         {
-            appData.MenuList.Add(new MenuInfo() { MenuEdit = (int)Visibility.Collapsed, MenuId = System.Guid.NewGuid().ToString(), MenuName = "NewGouop" });
+            appData.MenuList.Add(new MenuInfo() { MenuEdit = (int)Visibility.Collapsed, MenuId = System.Guid.NewGuid().ToString(), MenuName = "NewMenu" });
             menus.SelectedIndex = appData.MenuList.Count - 1;
             //appData.MenuList[appData.MenuList.Count - 1].MenuEdit = (int)Visibility.Visible;
             CommonCode.SaveAppData(appData);
@@ -345,6 +397,37 @@ namespace GeekDesk
             }
         }
 
+        /// <summary>
+        /// 弹出Icon属性修改面板
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PropertyConfig(object sender, RoutedEventArgs e)
+        {
+            HandyControl.Controls.Dialog.Show(new IconInfoDialog((IconInfo)((MenuItem)sender).Tag));
+        }
+
+        /// <summary>
+        /// 从列表删除图标
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RemoveIcon(object sender, RoutedEventArgs e)
+        {
+            appData.MenuList[menus.SelectedIndex].IconList.Remove((IconInfo)((MenuItem)sender).Tag);
+            CommonCode.SaveAppData(appData);
+        }
+
+        /// <summary>
+        /// 左侧栏宽度改变 持久化
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LeftCardResize(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            appData.AppConfig.MenuCardWidth = LeftColumn.Width.Value;
+            CommonCode.SaveAppData(appData);
+        }
     }
 
 

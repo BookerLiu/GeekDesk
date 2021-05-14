@@ -71,8 +71,13 @@
     <Compile Include="Command\DelegateCommand.cs" />
     <Compile Include="Command\DelegateCommandBase.cs" />
     <Compile Include="Constant\AppConstant.cs" />
+    <Compile Include="Constant\Constants.cs" />
     <Compile Include="Constant\DefaultConstant.cs" />
+    <Compile Include="Constant\IconStartType.cs" />
     <Compile Include="Constant\SortType.cs" />
+    <Compile Include="Control\IconInfoDialog.xaml.cs">
+      <DependentUpon>IconInfoDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.cs" />
     <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.Drag.cs" />
     <Compile Include="EditTextBlock\EditableTextBlock.cs" />
@@ -82,6 +87,7 @@
     <Compile Include="Util\DragAdorner.cs" />
     <Compile Include="Util\FileIcon.cs" />
     <Compile Include="Util\HotKey.cs" />
+    <Compile Include="Util\ImageUtil.cs" />
     <Compile Include="Util\ListViewDragDropManager.cs" />
     <Compile Include="Util\MenuWidthConvert.cs" />
     <Compile Include="Util\MouseUtilities.cs" />
@@ -91,6 +97,10 @@
     <Compile Include="ViewModel\AppData.cs" />
     <Compile Include="ViewModel\IconInfo.cs" />
     <Compile Include="ViewModel\MenuInfo.cs" />
+    <Page Include="Control\IconInfoDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -139,6 +149,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resource\DefaultIconfont\iconfont.svg" />
+    <Resource Include="Resource\Image\图片.png" />
+    <Resource Include="Resource\Image\文件夹.png" />
     <Resource Include="Resource\Image\Ico.png" />
     <Resource Include="Resource\Image\Ico.ico" />
     <Resource Include="Resource\Image\WindowLogo.png" />

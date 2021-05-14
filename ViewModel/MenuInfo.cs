@@ -11,7 +11,7 @@ namespace GeekDesk.ViewModel
 {
 
     [Serializable]
-    class MenuInfo : INotifyPropertyChanged
+    public class MenuInfo : INotifyPropertyChanged
     {
        
 
