@@ -2,23 +2,84 @@
 using GeekDesk.Constant;
 using System;
 using System.ComponentModel;
+using System.Windows;
 
+/// <summary>
+/// 程序设置
+/// </summary>
 namespace GeekDesk.ViewModel
 {
 
     [Serializable]
     public class AppConfig : INotifyPropertyChanged
     {
-        private int menuSortType = (int)SortType.CUSTOM; //菜单排序类型
-        private int iconSortType = (int)SortType.CUSTOM; //图表排序类型
+        private SortType menuSortType = SortType.CUSTOM; //菜单排序类型
+        private SortType iconSortType = SortType.CUSTOM; //图表排序类型
         private double windowWidth = (double)DefaultConstant.WINDOW_WIDTH;  //窗口宽度
         private double windowHeight = (double)DefaultConstant.WINDOW_HEIGHT; //窗口高度
         private double menuCardWidth = (double)DefaultConstant.MENU_CARD_WIDHT;//菜单栏宽度
         private int selectedMenuIndex = 0;  //上次选中菜单索引
-
+        private bool followMouse = true;  //面板跟随鼠标 默认是
+        private Visibility configIconVisible = Visibility.Visible; // 设置按钮是否显示
+        private AppHideType appHideType = AppHideType.START_EXE;  //面板关闭方式 (默认启动程序后)
+        private Visibility startedShowPanel = Visibility.Visible;  //启动时是否显示主面板  默认显示
 
 
         #region GetSet
+
+        public Visibility StartedShowPanel
+        {
+            get
+            {
+                return startedShowPanel;
+            }
+            set
+            {
+                startedShowPanel = value;
+                OnPropertyChanged("StartedShowPanel");
+            }
+        }
+
+        public AppHideType AppHideType
+        {
+            get
+            {
+                return appHideType;
+            }
+            set
+            {
+                appHideType = value;
+                OnPropertyChanged("AppHideType");
+            }
+        }
+
+        public Visibility ConfigIconVisible
+        {
+            get
+            {
+                return configIconVisible;
+            }
+            set
+            {
+                configIconVisible = value;
+                OnPropertyChanged("ConfigIconVisible");
+            }
+        }
+
+
+        public bool FollowMouse
+        {
+            get
+            {
+                return followMouse;
+            }
+            set
+            {
+                followMouse = value;
+                OnPropertyChanged("FollowMouse");
+            }
+        }
+
         public int SelectedMenuIndex
         {
             get
@@ -32,7 +93,7 @@ namespace GeekDesk.ViewModel
             }
         }
 
-        public int MenuSortType
+        public SortType MenuSortType
         {
             get
             {
@@ -45,7 +106,7 @@ namespace GeekDesk.ViewModel
             }
         }
 
-        public int IconSortType
+        public SortType IconSortType
         {
             get
             {

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
+/// <summary>
+/// 程序数据
+/// </summary>
 namespace GeekDesk.ViewModel
 {
     [Serializable]

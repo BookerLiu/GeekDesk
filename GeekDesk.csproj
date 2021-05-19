@@ -71,10 +71,14 @@
     <Compile Include="Command\DelegateCommand.cs" />
     <Compile Include="Command\DelegateCommandBase.cs" />
     <Compile Include="Constant\AppConstant.cs" />
+    <Compile Include="Constant\AppHideType.cs" />
     <Compile Include="Constant\Constants.cs" />
     <Compile Include="Constant\DefaultConstant.cs" />
     <Compile Include="Constant\IconStartType.cs" />
     <Compile Include="Constant\SortType.cs" />
+    <Compile Include="Control\ConfigDialog.xaml.cs">
+      <DependentUpon>ConfigDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Control\IconInfoDialog.xaml.cs">
       <DependentUpon>IconInfoDialog.xaml</DependentUpon>
     </Compile>
@@ -90,13 +94,18 @@
     <Compile Include="Util\ImageUtil.cs" />
     <Compile Include="Util\ListViewDragDropManager.cs" />
     <Compile Include="Util\MenuWidthConvert.cs" />
+    <Compile Include="Util\MouseUtil.cs" />
     <Compile Include="Util\MouseUtilities.cs" />
+    <Compile Include="Util\ScreenUtil.cs" />
     <Compile Include="Util\SystemIcon.cs" />
-    <Compile Include="Util\VisibilityConvert.cs" />
     <Compile Include="ViewModel\AppConfig.cs" />
     <Compile Include="ViewModel\AppData.cs" />
     <Compile Include="ViewModel\IconInfo.cs" />
     <Compile Include="ViewModel\MenuInfo.cs" />
+    <Page Include="Control\ConfigDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Control\IconInfoDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

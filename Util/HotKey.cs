@@ -5,6 +5,10 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 
+
+/// <summary>
+/// 热键注册
+/// </summary>
 namespace GeekDesk.Util
 {
 

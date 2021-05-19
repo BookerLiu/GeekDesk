@@ -3,7 +3,7 @@
 /// </summary>
 namespace GeekDesk.Constant
 {
-    enum DefaultConstant
+    public enum DefaultConstant
     {
         WINDOW_WIDTH = 666, //默认窗体宽度
         WINDOW_HEIGHT = 500, //默认窗体高度

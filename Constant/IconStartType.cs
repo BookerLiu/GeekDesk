@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 /// </summary>
 namespace GeekDesk.Constant
 {
-    enum IconStartType
+    public enum IconStartType
     {
         DEFAULT_STARTUP = 1, //默认启动方式
         ADMIN_STARTUP = 2,  //管理员方式启动

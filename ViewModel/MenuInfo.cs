@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace GeekDesk.ViewModel
@@ -17,8 +13,8 @@ namespace GeekDesk.ViewModel
 
         private string menuName;
         private string menuId;
-        private int menuEdit = (int)Visibility.Collapsed;
-        private int notMenuEdit = (int)Visibility.Visible;
+        private Visibility menuEdit = Visibility.Collapsed;
+        private Visibility notMenuEdit = Visibility.Visible;
         private ObservableCollection<IconInfo> iconList = new ObservableCollection<IconInfo>();
 
         public string MenuName
@@ -47,7 +43,7 @@ namespace GeekDesk.ViewModel
             }
         }
 
-        public int MenuEdit
+        public Visibility MenuEdit
         {
             get
             {
@@ -56,18 +52,18 @@ namespace GeekDesk.ViewModel
             set
             {
                 menuEdit = value;
-                if (menuEdit == (int)Visibility.Visible)
+                if (menuEdit == Visibility.Visible)
                 {
-                    NotMenuEdit = (int)Visibility.Collapsed;
+                    NotMenuEdit = Visibility.Collapsed;
                 } else
                 {
-                    NotMenuEdit = (int)Visibility.Visible;
+                    NotMenuEdit = Visibility.Visible;
                 }
                 OnPropertyChanged("MenuEdit");
             }
         }
 
-        public int NotMenuEdit
+        public Visibility NotMenuEdit
         {
             get
             {

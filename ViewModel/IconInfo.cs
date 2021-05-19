@@ -5,6 +5,9 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows.Media.Imaging;
 
+/// <summary>
+/// 图标信息
+/// </summary>
 namespace GeekDesk.ViewModel
 {
     [Serializable]
@@ -20,7 +23,7 @@ namespace GeekDesk.ViewModel
         private int imageWidth = (int)DefaultConstant.IMAGE_WIDTH; //图片宽度
         private int imageHeight = (int)DefaultConstant.IMAGE_HEIGHT; //图片高度
         private bool adminStartUp = false; //始终管理员方式启动  默认否
-        private byte[] defaultImage;
+        private byte[] defaultImage; //默认图标
 
 
 

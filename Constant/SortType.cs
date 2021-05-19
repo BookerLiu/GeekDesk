@@ -1,6 +1,6 @@
 ﻿namespace GeekDesk.Constant
 {
-    enum SortType
+    public enum SortType
     {
         CUSTOM = 1, //自定义排序
         NAME = 2, //按名称排序

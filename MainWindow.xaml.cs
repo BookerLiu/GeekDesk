@@ -10,9 +10,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Effects;
-using System.Windows.Media.Imaging;
+
 
 namespace GeekDesk
 {
@@ -29,23 +27,6 @@ namespace GeekDesk
         {
             InitializeComponent();
             loadData();
-            //Border border = new Border();
-            //VisualBrush brush = new VisualBrush();
-            //brush.Visual = test;
-            //brush.Stretch = Stretch.Uniform;
-            //border.Background = brush;
-            //border.Effect = new BlurEffect()
-            //{
-            //    Radius = 80,
-            //    RenderingBias = RenderingBias.Performance
-            //};
-            //border.Margin = new Thickness(-this.Margin.Left, -this.Margin.Top, 0, 0);
-            //this.ClipToBounds = true;
-            //this.Children.Clear();
-            //this.Children.Add(border);
-            //this.DataContext = mainModel;
-            //menu.Items = mainModel;
-            //System.Diagnostics.Process.Start(@"D:\SoftWare\WeGame\wegame.exe");
             this.Loaded += Window_Loaded;
             this.SizeChanged += MainWindow_Resize;
             this.Topmost = true;
@@ -56,8 +37,9 @@ namespace GeekDesk
             this.DataContext = appData;
             if (appData.MenuList.Count == 0)
             {
-                appData.MenuList.Add(new MenuInfo() { MenuName = "NewMenu", MenuId = System.Guid.NewGuid().ToString(), MenuEdit = (int)Visibility.Collapsed});
+                appData.MenuList.Add(new MenuInfo() { MenuName = "NewMenu", MenuId = System.Guid.NewGuid().ToString(), MenuEdit = Visibility.Collapsed});
             }
+            this.Visibility = appData.AppConfig.StartedShowPanel;
             //窗体大小
             LeftColumn.Width = new GridLength(appData.AppConfig.MenuCardWidth);
             this.Width = appData.AppConfig.WindowWidth;
@@ -254,7 +236,7 @@ namespace GeekDesk
             {
                 if (this.Visibility == Visibility.Collapsed)
                 {
-                    this.Visibility = Visibility.Visible;
+                    ShowAppAndFollowMouse();
                 } else
                 {
                     this.Visibility = Visibility.Collapsed;
@@ -289,9 +271,33 @@ namespace GeekDesk
 
         private void DragMove(object sender, MouseEventArgs e)
         {
+            //if (e.LeftButton == MouseButtonState.Pressed)
+            //{
+            //    this.DragMove();
+            //}
+
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                this.DragMove();
+                var windowMode = this.ResizeMode;
+                if (this.ResizeMode != ResizeMode.NoResize)
+                {
+                    this.ResizeMode = ResizeMode.NoResize;
+                }
+
+                this.UpdateLayout();
+
+
+                /* 当点击拖拽区域的时候，让窗口跟着移动
+                (When clicking the drag area, make the window follow) */
+                DragMove();
+
+
+                if (this.ResizeMode != windowMode)
+                {
+                    this.ResizeMode = windowMode;
+                }
+
+                this.UpdateLayout();
             }
         }
 
@@ -332,7 +338,7 @@ namespace GeekDesk
                 MenuInfo menuInfo = menuBox.Tag as MenuInfo;
                 string text = menuBox.Text;
                 menuInfo.MenuName = text;
-                menuInfo.MenuEdit = (int)Visibility.Collapsed;
+                menuInfo.MenuEdit = Visibility.Collapsed;
                 CommonCode.SaveAppData(appData);
             }
         }
@@ -381,7 +387,7 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void CreateMenu(object sender, RoutedEventArgs e)
         {
-            appData.MenuList.Add(new MenuInfo() { MenuEdit = (int)Visibility.Collapsed, MenuId = System.Guid.NewGuid().ToString(), MenuName = "NewMenu" });
+            appData.MenuList.Add(new MenuInfo() { MenuEdit = Visibility.Collapsed, MenuId = System.Guid.NewGuid().ToString(), MenuName = "NewMenu" });
             menus.SelectedIndex = appData.MenuList.Count - 1;
             //appData.MenuList[appData.MenuList.Count - 1].MenuEdit = (int)Visibility.Visible;
             CommonCode.SaveAppData(appData);
@@ -397,21 +403,7 @@ namespace GeekDesk
             this.Visibility = Visibility.Collapsed;
         }
 
-        /// <summary>
-        /// 图片图标单击事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void NotifyIcon_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.Visibility == Visibility.Collapsed)
-            {
-                this.Visibility = Visibility.Visible;
-            } else
-            {
-                this.Visibility = Visibility.Collapsed;
-            }
-        }
+       
 
         /// <summary>
         /// 弹出Icon属性修改面板
@@ -443,6 +435,133 @@ namespace GeekDesk
         {
             appData.AppConfig.MenuCardWidth = LeftColumn.Width.Value;
             CommonCode.SaveAppData(appData);
+        }
+
+        /// <summary>
+        /// 随鼠标位置显示面板 (鼠标始终在中间)
+        /// </summary>
+        private void ShowAppAndFollowMouse()
+        {
+            //获取鼠标位置
+            Point p = MouseUtil.GetMousePosition();
+            double left = SystemParameters.VirtualScreenLeft;
+            double top = SystemParameters.VirtualScreenTop;
+            double width = SystemParameters.VirtualScreenWidth;
+            double height = SystemParameters.VirtualScreenHeight;
+            double right = width - Math.Abs(left);
+            double bottom = height - Math.Abs(top);
+
+            
+            if (p.X - this.Width / 2 < left)
+            {
+                //判断是否在最左边缘
+                this.Left = left;
+            } else if (p.X + this.Width / 2 > right) 
+            {
+                //判断是否在最右边缘
+                this.Left = right - this.Width;
+            } else
+            {
+                this.Left = p.X - this.Width / 2;
+            }
+
+            
+            if (p.Y - this.Height / 2 < top)
+            {
+                //判断是否在最上边缘
+                this.Top = top;
+            } else if (p.Y + this.Height/2 > bottom) 
+            {
+                //判断是否在最下边缘
+                this.Top = bottom - this.Height;
+            } else
+            {
+                this.Top = p.Y - this.Height / 2;
+            }
+
+            this.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>
+        /// 右键任务栏图标 显示主面板
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowApp(object sender, RoutedEventArgs e)
+        {
+            ShowApp();
+        }
+        private void ShowApp()
+        {
+            this.Visibility = Visibility.Visible;
+            ShowAppAndFollowMouse();
+        }
+
+        /// <summary>
+        /// 图片图标单击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NotifyIcon_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.Visibility == Visibility.Collapsed)
+            {
+                ShowApp();
+            }
+            else
+            {
+                this.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        /// <summary>
+        /// 右键任务栏图标 设置
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ConfigApp(object sender, RoutedEventArgs e)
+        {
+            //MenuInfo menuInfo = ((MenuItem)sender).Tag as MenuInfo;
+            //appData.MenuList.Remove(menuInfo);
+
+
+
+            CommonCode.SaveAppData(appData);
+        }
+
+        /// <summary>
+        /// 右键任务栏图标退出
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExitApp(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// 设置按钮左键弹出菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ConfigButtonClick(object sender, RoutedEventArgs e)
+        {
+            SettingMenu.IsOpen = true;
+        }
+
+        /// <summary>
+        /// 禁用设置按钮右键菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SettingButton_Initialized(object sender, EventArgs e)
+        {
+            SettingButton.ContextMenu = null;
         }
     }
 
