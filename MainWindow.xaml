@@ -168,7 +168,7 @@
                  Margin="5,0,0,5"
                  >
                     <hc:Card.Background>
-                        <SolidColorBrush Color="#FFFFFFFF" Opacity="0.1"/>
+                        <SolidColorBrush Color="#FFFFFFFF" Opacity="0.5"/>
                     </hc:Card.Background>
                     <hc:Card.BorderBrush>
                         <SolidColorBrush Color="#FFFFFFFF" Opacity="0"/>
@@ -254,7 +254,7 @@
                  Effect="{DynamicResource EffectShadow2}" 
                  Margin="5,0,5,5" Grid.ColumnSpan="2">
                     <hc:Card.Background>
-                        <SolidColorBrush Color="#FFFFFFFF" Opacity="0.1"/>
+                        <SolidColorBrush Color="#FFFFFFFF" Opacity="0.5"/>
                     </hc:Card.Background>
                     <hc:Card.BorderBrush>
                         <SolidColorBrush Color="#FFFFFFFF" Opacity="0"/>
