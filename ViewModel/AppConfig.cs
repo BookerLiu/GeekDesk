@@ -1,5 +1,6 @@
 ﻿
 using GeekDesk.Constant;
+using GeekDesk.Util;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -22,12 +23,12 @@ namespace GeekDesk.ViewModel
         private bool followMouse = true;  //面板跟随鼠标 默认是
         private Visibility configIconVisible = Visibility.Visible; // 设置按钮是否显示
         private AppHideType appHideType = AppHideType.START_EXE;  //面板关闭方式 (默认启动程序后)
-        private Visibility startedShowPanel = Visibility.Visible;  //启动时是否显示主面板  默认显示
+        private bool startedShowPanel = true;  //启动时是否显示主面板  默认显示
 
 
         #region GetSet
 
-        public Visibility StartedShowPanel
+        public bool StartedShowPanel
         {
             get
             {
@@ -163,6 +164,7 @@ namespace GeekDesk.ViewModel
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            CommonCode.SaveAppData(MainWindow.appData);
         }
 
         #endregion

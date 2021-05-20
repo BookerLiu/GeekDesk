@@ -45,7 +45,7 @@
                     </MultiTrigger.EnterActions>
                     <MultiTrigger.ExitActions>
                         <BeginStoryboard>
-                            <Storyboard Timeline.DesiredFrameRate="30">
+                            <Storyboard Timeline.DesiredFrameRate="60">
                                 <DoubleAnimation To="18" Duration="0:0:0.001" Storyboard.TargetProperty="FontSize"/>
                             </Storyboard>
                         </BeginStoryboard>
@@ -97,7 +97,7 @@
     </Window.Resources>
 
 
-    <Border CornerRadius="5"  BorderThickness="0" Background="White">
+    <Border CornerRadius="5"  BorderThickness="0" Background="White" LostFocus="App_LostFocus">
         <Border CornerRadius="5"  BorderThickness="0">
             <!--背景图片-->
             <Border.Background>
@@ -143,11 +143,11 @@
                                 Initialized="SettingButton_Initialized"
                                 x:Name="SettingButton"
                                 >
-                            <Button.ContextMenu>
+                            <!--<Button.ContextMenu>
                                 <ContextMenu Width="200" x:Name="SettingMenu">
                                     <MenuItem Header="设置" Click="ConfigApp"/>
                                 </ContextMenu>
-                            </Button.ContextMenu>
+                            </Button.ContextMenu>-->
                         </Button>
                         <Button Background="Transparent" 
                                 BorderThickness="0"
@@ -180,11 +180,10 @@
                     </hc:Card.ContextMenu>
                     <WrapPanel Orientation="Horizontal">
                         <ListBox x:Name="menus"  
-                         ItemsSource="{Binding MenuList}"
-                         BorderThickness="0" Foreground="{x:Null}"
-                     >
-
-
+                                 ItemsSource="{Binding MenuList}"
+                                 BorderThickness="0" Foreground="{x:Null}"
+                                 VirtualizingPanel.VirtualizationMode="Recycling"
+                                >
                             <ListBox.Resources>
                                 <ContextMenu x:Key="menuDialog" Width="200">
                                     <MenuItem Header="新建菜单" Click="CreateMenu"/>
@@ -262,9 +261,10 @@
                     </hc:Card.BorderBrush>
                     <WrapPanel Orientation="Horizontal">
                         <ListBox x:Name="icons" ItemsSource="{Binding}" 
-                         BorderThickness="0"
-                         SelectionChanged="IconSelectionChanged"
-                         >
+                                 BorderThickness="0"
+                                 SelectionChanged="IconSelectionChanged"
+                                 VirtualizingPanel.VirtualizationMode="Recycling"
+                                 >
                             <ListBox.Background>
                                 <SolidColorBrush Opacity="0"/>
                             </ListBox.Background>

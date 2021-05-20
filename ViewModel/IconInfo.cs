@@ -172,6 +172,7 @@ namespace GeekDesk.ViewModel
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            CommonCode.SaveAppData(MainWindow.appData);
         }
 
 

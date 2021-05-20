@@ -26,20 +26,21 @@ namespace GeekDesk
         public MainWindow()
         {
             InitializeComponent();
-            loadData();
+            LoadData();
+            this.Topmost = true;
             this.Loaded += Window_Loaded;
             this.SizeChanged += MainWindow_Resize;
-            this.Topmost = true;
         }
 
-        private void loadData()
+        private void LoadData()
         {
             this.DataContext = appData;
             if (appData.MenuList.Count == 0)
             {
                 appData.MenuList.Add(new MenuInfo() { MenuName = "NewMenu", MenuId = System.Guid.NewGuid().ToString(), MenuEdit = Visibility.Collapsed});
             }
-            this.Visibility = appData.AppConfig.StartedShowPanel;
+           
+            
             //窗体大小
             LeftColumn.Width = new GridLength(appData.AppConfig.MenuCardWidth);
             this.Width = appData.AppConfig.WindowWidth;
@@ -69,7 +70,6 @@ namespace GeekDesk
 
                             iconList.Remove(dragged);
                             iconList.Insert(to, dragged);
-                            CommonCode.SaveAppData(appData);
                         }
                     );
                 return _swap;
@@ -94,7 +94,6 @@ namespace GeekDesk
                             menuList.Insert(to, dragged);
                             menus.SelectedIndex = to;
                             appData.MenuList = menuList;
-                            CommonCode.SaveAppData(appData);
                         }
                     );
                 return _swap2;
@@ -120,7 +119,6 @@ namespace GeekDesk
                 iconInfo.Name = Path.GetFileNameWithoutExtension(path);
                 appData.MenuList[menus.SelectedIndex].IconList.Add(iconInfo);
             }
-            CommonCode.SaveAppData(appData);
         }
 
    
@@ -131,7 +129,6 @@ namespace GeekDesk
             MenuInfo mi = (MenuInfo)(((StackPanel)sender).Tag);
             icons.ItemsSource = mi.IconList;
             appData.AppConfig.SelectedMenuIndex = menus.Items.IndexOf(mi);
-            CommonCode.SaveAppData(appData);
         }
 
 
@@ -197,10 +194,16 @@ namespace GeekDesk
                         p.StartInfo.CreateNoWindow = false; //设置显示窗口
                         p.StartInfo.UseShellExecute = false;//不使用操作系统外壳程序启动进程
                         p.StartInfo.ErrorDialog = false;
-                        this.Visibility = Visibility.Collapsed;
+                        if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
+                        {
+                            this.Visibility = Visibility.Collapsed;
+                        }
                         break;// c#好像不能case穿透
                     case IconStartType.DEFAULT_STARTUP:
-                        this.Visibility = Visibility.Collapsed;
+                        if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
+                        {
+                            this.Visibility = Visibility.Collapsed;
+                        }
                         break;
                     case IconStartType.SHOW_IN_EXPLORE:
                         p.StartInfo.FileName = "Explorer.exe";
@@ -209,14 +212,11 @@ namespace GeekDesk
                 }
                 p.Start();
                 icon.Count++;
-                CommonCode.SaveAppData(appData);
             } catch (Exception)
             {
                 HandyControl.Controls.Growl.WarningGlobal("程序启动失败(不支持的启动方式)!");
             }
-            
         }
-
         
 
         /// <summary>
@@ -231,12 +231,16 @@ namespace GeekDesk
 
         void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            if (!appData.AppConfig.StartedShowPanel)
+            {
+                this.Visibility = Visibility.Collapsed;
+            }
             //加载完毕注册热键
             Hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL, Key.Y, ()=>
             {
                 if (this.Visibility == Visibility.Collapsed)
                 {
-                    ShowAppAndFollowMouse();
+                    ShowApp();
                 } else
                 {
                     this.Visibility = Visibility.Collapsed;
@@ -252,7 +256,6 @@ namespace GeekDesk
                 AppData appData = this.DataContext as AppData;
                 appData.AppConfig.WindowWidth = this.Width;
                 appData.AppConfig.WindowHeight = this.Height;
-                CommonCode.SaveAppData(appData);
             }
         }
 
@@ -266,7 +269,6 @@ namespace GeekDesk
         {
             MenuInfo menuInfo = ((MenuItem)sender).Tag as MenuInfo;
             appData.MenuList.Remove(menuInfo);
-            CommonCode.SaveAppData(appData);
         }
 
         private void DragMove(object sender, MouseEventArgs e)
@@ -310,7 +312,6 @@ namespace GeekDesk
         {
             MenuInfo menuInfo = ((MenuItem)sender).Tag as MenuInfo;
             menuInfo.MenuEdit = (int)Visibility.Visible;
-            
         }
 
         /// <summary>
@@ -339,7 +340,6 @@ namespace GeekDesk
                 string text = menuBox.Text;
                 menuInfo.MenuName = text;
                 menuInfo.MenuEdit = Visibility.Collapsed;
-                CommonCode.SaveAppData(appData);
             }
         }
 
@@ -387,10 +387,12 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void CreateMenu(object sender, RoutedEventArgs e)
         {
-            appData.MenuList.Add(new MenuInfo() { MenuEdit = Visibility.Collapsed, MenuId = System.Guid.NewGuid().ToString(), MenuName = "NewMenu" });
+            MenuInfo info = new MenuInfo() { MenuEdit = Visibility.Collapsed, MenuId = System.Guid.NewGuid().ToString(), MenuName = "NewMenu" };
+            appData.MenuList.Add(info);
+            menus.Items.Refresh();
             menus.SelectedIndex = appData.MenuList.Count - 1;
-            //appData.MenuList[appData.MenuList.Count - 1].MenuEdit = (int)Visibility.Visible;
-            CommonCode.SaveAppData(appData);
+            appData.AppConfig.SelectedMenuIndex = menus.SelectedIndex;
+            icons.ItemsSource = info.IconList;
         }
 
         /// <summary>
@@ -423,7 +425,6 @@ namespace GeekDesk
         private void RemoveIcon(object sender, RoutedEventArgs e)
         {
             appData.MenuList[menus.SelectedIndex].IconList.Remove((IconInfo)((MenuItem)sender).Tag);
-            CommonCode.SaveAppData(appData);
         }
 
         /// <summary>
@@ -434,7 +435,6 @@ namespace GeekDesk
         private void LeftCardResize(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
             appData.AppConfig.MenuCardWidth = LeftColumn.Width.Value;
-            CommonCode.SaveAppData(appData);
         }
 
         /// <summary>
@@ -493,8 +493,13 @@ namespace GeekDesk
         }
         private void ShowApp()
         {
-            this.Visibility = Visibility.Visible;
-            ShowAppAndFollowMouse();
+            if (appData.AppConfig.FollowMouse)
+            {
+                ShowAppAndFollowMouse();
+            } else
+            {
+                this.Visibility = Visibility.Visible;
+            }
         }
 
         /// <summary>
@@ -526,7 +531,7 @@ namespace GeekDesk
 
 
 
-            CommonCode.SaveAppData(appData);
+            //CommonCode.SaveAppData(appData);
         }
 
         /// <summary>
@@ -551,7 +556,8 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void ConfigButtonClick(object sender, RoutedEventArgs e)
         {
-            SettingMenu.IsOpen = true;
+            //SettingMenu.IsOpen = true;
+            new ConfigWindow(appData.AppConfig).Show();
         }
 
         /// <summary>
@@ -562,6 +568,14 @@ namespace GeekDesk
         private void SettingButton_Initialized(object sender, EventArgs e)
         {
             SettingButton.ContextMenu = null;
+        }
+
+        private void App_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (appData.AppConfig.AppHideType == AppHideType.LOST_FOCUS)
+            {
+                this.Visibility = Visibility.Collapsed;
+            }
         }
     }
 

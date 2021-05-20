@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeekDesk.Util;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
@@ -26,7 +27,7 @@ namespace GeekDesk.ViewModel
             set
             {
                 menuName = value;
-                OnPropertyChanged("MenuName");
+                OnPropertyChanged("MenuName");               
             }
         }
 
@@ -94,6 +95,7 @@ namespace GeekDesk.ViewModel
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            CommonCode.SaveAppData(MainWindow.appData);
         }
     }
 }

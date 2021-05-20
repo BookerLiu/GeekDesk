@@ -1,0 +1,64 @@
+﻿<hc:Window x:Class="GeekDesk.Control.ConfigWindow"
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           xmlns:hc="https://handyorg.github.io/handycontrol"
+           mc:Ignorable="d"
+           WindowStartupLocation="CenterScreen"
+           Height="450" 
+           Width="600" 
+           WindowStyle="None"
+           AllowsTransparency="True"
+           Background="Transparent"
+           >
+    <Border CornerRadius="8"  BorderThickness="0" Background="White" Opacity="0.9">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <hc:Card Grid.Row="0" Grid.Column="0">
+                <hc:SideMenu BorderThickness="1" AutoSelect="True" Header="WorkItems" BorderBrush="#FF958F8F">
+                    <hc:Interaction.Triggers>
+                        <hc:EventTrigger EventName="SelectionChanged">
+                            <hc:EventToCommand Command="{Binding SwitchItemCmd}" PassEventArgsToCommand="True" />
+                        </hc:EventTrigger>
+                    </hc:Interaction.Triggers>
+                    <hc:SideMenuItem Header="Work Items" Background="#FFD1C8C8">
+                        <hc:SideMenuItem.Icon>
+                            <Button Background="Transparent" 
+                                BorderThickness="0"
+                                hc:IconElement.Geometry="M828.770654 148.714771C641.293737-20.89959 354.184117-19.590868 168.245698 152.630946c-212.062907 196.418185-212.062907 522.329912 0 718.748098 185.93842 172.221815 473.048039 173.520546 660.524956 3.916176 219.435707-198.536117 219.435707-528.054322 0-726.580449z m-121.880976 569.643707c-11.708566 11.708566-30.680039 11.708566-42.388605 0L502.729054 556.586459c-0.659356-0.659356-1.728312-0.659356-2.397659 0L338.609327 718.318517c-11.708566 11.708566-30.680039 11.708566-42.388605 0l-0.039961-0.039961c-11.708566-11.708566-11.708566-30.680039 0-42.388605l161.732059-161.732058c0.659356-0.659356 0.659356-1.728312 0-2.397659L296.1408 350.008195c-11.708566-11.708566-11.708566-30.680039 0-42.388605l0.039961-0.039961c11.708566-11.708566 30.680039-11.708566 42.388605 0l161.772019 161.77202c0.659356 0.659356 1.728312 0.659356 2.397659 0L664.551024 307.539668c11.708566-11.708566 30.680039-11.708566 42.388605 0l0.039961 0.039961c11.708566 11.708566 11.708566 30.680039 0 42.388605L545.15762 511.770224c-0.659356 0.659356-0.659356 1.728312 0 2.397659L706.919649 675.939902c11.708566 11.708566 11.708566 30.680039 0 42.388605l-0.029971 0.029971z" 
+                                hc:IconElement.Height="18"
+                                hc:IconElement.Width="18"
+                                HorizontalAlignment="Right"
+                                />
+                        </hc:SideMenuItem.Icon>
+                    </hc:SideMenuItem>
+                    <hc:SideMenuItem Header="Work Items2">
+                        <hc:SideMenuItem.Icon>
+                            <Button Background="Transparent" 
+                                BorderThickness="0"
+                                hc:IconElement.Geometry="M828.770654 148.714771C641.293737-20.89959 354.184117-19.590868 168.245698 152.630946c-212.062907 196.418185-212.062907 522.329912 0 718.748098 185.93842 172.221815 473.048039 173.520546 660.524956 3.916176 219.435707-198.536117 219.435707-528.054322 0-726.580449z m-121.880976 569.643707c-11.708566 11.708566-30.680039 11.708566-42.388605 0L502.729054 556.586459c-0.659356-0.659356-1.728312-0.659356-2.397659 0L338.609327 718.318517c-11.708566 11.708566-30.680039 11.708566-42.388605 0l-0.039961-0.039961c-11.708566-11.708566-11.708566-30.680039 0-42.388605l161.732059-161.732058c0.659356-0.659356 0.659356-1.728312 0-2.397659L296.1408 350.008195c-11.708566-11.708566-11.708566-30.680039 0-42.388605l0.039961-0.039961c11.708566-11.708566 30.680039-11.708566 42.388605 0l161.772019 161.77202c0.659356 0.659356 1.728312 0.659356 2.397659 0L664.551024 307.539668c11.708566-11.708566 30.680039-11.708566 42.388605 0l0.039961 0.039961c11.708566 11.708566 11.708566 30.680039 0 42.388605L545.15762 511.770224c-0.659356 0.659356-0.659356 1.728312 0 2.397659L706.919649 675.939902c11.708566 11.708566 11.708566 30.680039 0 42.388605l-0.029971 0.029971z" 
+                                hc:IconElement.Height="18"
+                                hc:IconElement.Width="18"
+                                HorizontalAlignment="Right"
+                                />
+                        </hc:SideMenuItem.Icon>
+                    </hc:SideMenuItem>
+                </hc:SideMenu>
+            </hc:Card>
+
+            <hc:Card x:Name="LeftCard" Grid.Row="0" Grid.Column="1">
+            </hc:Card>
+
+        </Grid>
+    </Border>
+    
+           
+</hc:Window>
