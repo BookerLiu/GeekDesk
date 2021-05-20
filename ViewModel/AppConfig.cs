@@ -4,6 +4,7 @@ using GeekDesk.Util;
 using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 /// <summary>
 /// 程序设置
@@ -24,9 +25,54 @@ namespace GeekDesk.ViewModel
         private Visibility configIconVisible = Visibility.Visible; // 设置按钮是否显示
         private AppHideType appHideType = AppHideType.START_EXE;  //面板关闭方式 (默认启动程序后)
         private bool startedShowPanel = true;  //启动时是否显示主面板  默认显示
+        [field: NonSerialized]
+        private BitmapImage bitmapImage; //位图
+        private byte[] imageByteArr; //背景图片 byte数组
+        private byte[] defaultImage; //默认背景图片
+
 
 
         #region GetSet
+
+        public byte[] ImageByteArr
+        {
+            get
+            {
+                return imageByteArr;
+            }
+            set
+            {
+                imageByteArr = value;
+                OnPropertyChanged("ImageByteArr");
+            }
+        }
+
+        public byte[] DefaultImage
+        {
+            get
+            {
+                return defaultImage;
+            }
+            set
+            {
+                defaultImage = value;
+                OnPropertyChanged("DefaultImage");
+            }
+        }
+
+        public BitmapImage BitmapImage
+        {
+            get
+            {
+                return bitmapImage;
+            }
+            set
+            {
+                bitmapImage = value;
+                OnPropertyChanged("BitmapImage");
+            }
+        }
+
 
         public bool StartedShowPanel
         {
