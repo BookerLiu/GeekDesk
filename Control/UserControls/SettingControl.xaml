@@ -3,15 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:util="clr-namespace:GeekDesk.Util"
              xmlns:local="clr-namespace:GeekDesk.Control.UserControls"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" 
              Background="AliceBlue"
              d:DesignHeight="450" d:DesignWidth="800">
-    <hc:SimplePanel Margin="10" DataContextChanged="SimplePanel_DataContextChanged">
+
+    <UserControl.Resources>
+        <util:HideTypeConvert x:Key="HideTypeConvert"/>
+    </UserControl.Resources>
+    <hc:SimplePanel Margin="10">
+        <hc:SimplePanel.Background>
+            <SolidColorBrush Opacity="0.9"/>
+        </hc:SimplePanel.Background>
         <hc:UniformSpacingPanel Spacing="10" Margin="0,0,0,10" Grid.ColumnSpan="4">
             <TextBlock Text="主面板设置" VerticalAlignment="Center"/>
         </hc:UniformSpacingPanel>
+        <hc:Divider LineStrokeDashArray="3,3" Margin="30,22,450,119" LineStroke="Black" Grid.ColumnSpan="4"/>
         <hc:UniformSpacingPanel Spacing="10" Margin="30,26.394,0,-16.394" Grid.ColumnSpan="4">
             <CheckBox x:Name="IconIsAdmin" Content="启动时显示主面板" IsChecked="{Binding StartedShowPanel}">
                 <CheckBox.Background>
@@ -34,13 +43,29 @@
         <hc:UniformSpacingPanel Spacing="10" Margin="30,89.49,-30,-79.49" Grid.ColumnSpan="4">
             <TextBlock Text="面板关闭方式" VerticalAlignment="Center"/>
         </hc:UniformSpacingPanel>
-        <hc:UniformSpacingPanel Spacing="10" Margin="40,115.004,-10,-102.337" Grid.ColumnSpan="4">
-            <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}" Style="{StaticResource RadioButtonIcon}" Content="运行项目后" IsChecked="True"/>
-            <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}" Style="{StaticResource RadioButtonIcon}" Content="失去焦点后"/>
-            <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}" Style="{StaticResource RadioButtonIcon}" Content="手动关闭"/>
+        <hc:Divider LineStrokeDashArray="3,3" Margin="30,109,450,26.208" LineStroke="Black" Grid.ColumnSpan="4"/>
+        <hc:UniformSpacingPanel Spacing="10" Margin="40,115,-10,-102.337" Grid.ColumnSpan="4">
+            <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}" 
+                         Style="{StaticResource RadioButtonIcon}" Content="失去焦点后"
+                         IsChecked="{Binding AppHideType, Mode=TwoWay, Converter={StaticResource HideTypeConvert}, ConverterParameter=1}"/>
+            <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}"
+                         Style="{StaticResource RadioButtonIcon}" Content="运行项目后" 
+                         IsChecked="{Binding AppHideType, Mode=TwoWay, Converter={StaticResource HideTypeConvert}, ConverterParameter=2}"/>
+            <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}" 
+                         Style="{StaticResource RadioButtonIcon}" Content="手动关闭"
+                         IsChecked="{Binding AppHideType, Mode=TwoWay, Converter={StaticResource HideTypeConvert}, ConverterParameter=3}"/>
         </hc:UniformSpacingPanel>
+        <hc:UniformSpacingPanel Spacing="10" Margin="30,160.5,-30,-150.5" Grid.ColumnSpan="4">
+            <TextBlock Text="背景图片" VerticalAlignment="Center"/>
+        </hc:UniformSpacingPanel>
+        <hc:UniformSpacingPanel Spacing="10" Margin="40,199.5,-40,-189.5" Grid.ColumnSpan="4">
+            <TextBlock Text="图片路径:" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding BacImgName}" Width="200" VerticalAlignment="Center"/>
+            <Button Content="修改" Click="Button_Click"/>
+        </hc:UniformSpacingPanel>
+        <hc:Divider LineStrokeDashArray="3,3" Margin="30,22,450,119" LineStroke="Black" Grid.ColumnSpan="4"/>
 
-        <hc:Divider LineStrokeDashArray="3,3" Margin="10,242.735,-10,-91.735" LineStroke="Black" Grid.ColumnSpan="4"/>
+        <!--<hc:Divider LineStrokeDashArray="3,3" Margin="10,242.735,-10,-91.735" LineStroke="Black" Grid.ColumnSpan="4"/>-->
 
     </hc:SimplePanel>
 </UserControl>

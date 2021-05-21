@@ -28,11 +28,24 @@ namespace GeekDesk.ViewModel
         [field: NonSerialized]
         private BitmapImage bitmapImage; //位图
         private byte[] imageByteArr; //背景图片 byte数组
-        private byte[] defaultImage; //默认背景图片
+        private string bacImgName = "系统默认";
 
 
 
         #region GetSet
+
+        public string BacImgName
+        {
+            get
+            {
+                return bacImgName;
+            }
+            set
+            {
+                bacImgName = value;
+                OnPropertyChanged("BacImgName");
+            }
+        }
 
         public byte[] ImageByteArr
         {
@@ -47,28 +60,23 @@ namespace GeekDesk.ViewModel
             }
         }
 
-        public byte[] DefaultImage
-        {
-            get
-            {
-                return defaultImage;
-            }
-            set
-            {
-                defaultImage = value;
-                OnPropertyChanged("DefaultImage");
-            }
-        }
 
         public BitmapImage BitmapImage
         {
             get
             {
-                return bitmapImage;
+                if (imageByteArr == null || imageByteArr.Length == 0)
+                {
+                    return ImageUtil.ByteArrToImage(Convert.FromBase64String(Constants.DEFAULT_BAC_IMAGE_BASE64));
+                } else
+                {
+                    return ImageUtil.ByteArrToImage(ImageByteArr);
+                }
             }
             set
             {
                 bitmapImage = value;
+                imageByteArr = ImageUtil.BitmapImageToByte(bitmapImage);
                 OnPropertyChanged("BitmapImage");
             }
         }

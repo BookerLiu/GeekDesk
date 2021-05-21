@@ -101,6 +101,7 @@
     <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.Drag.cs" />
     <Compile Include="EditTextBlock\EditableTextBlock.cs" />
     <Compile Include="EditTextBlock\EditableTextBlockAdorner.cs" />
+    <Compile Include="Util\HideTypeConvert.cs" />
     <Compile Include="Util\CommonCode.cs" />
     <Compile Include="Util\ConsoleManager.cs" />
     <Compile Include="Util\DragAdorner.cs" />

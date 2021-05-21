@@ -6,6 +6,7 @@ using GeekDesk.ViewModel;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -109,6 +110,8 @@ namespace GeekDesk
             foreach (object obj in dropObject)
             {
                 string path = (string)obj;
+
+                //string base64 = ImageUtil.FileImageToBase64(path, ImageFormat.Jpeg);
 
                 IconInfo iconInfo = new IconInfo
                 {
@@ -500,6 +503,7 @@ namespace GeekDesk
             {
                 this.Visibility = Visibility.Visible;
             }
+            Keyboard.Focus(this);
         }
 
         /// <summary>
@@ -571,6 +575,14 @@ namespace GeekDesk
         }
 
         private void App_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (appData.AppConfig.AppHideType == AppHideType.LOST_FOCUS)
+            {
+                this.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void window_Deactivated(object sender, EventArgs e)
         {
             if (appData.AppConfig.AppHideType == AppHideType.LOST_FOCUS)
             {
