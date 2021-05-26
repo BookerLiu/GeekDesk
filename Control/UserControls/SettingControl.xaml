@@ -61,7 +61,7 @@
         <hc:UniformSpacingPanel Spacing="10" Margin="40,199.5,-40,-189.5" Grid.ColumnSpan="4">
             <TextBlock Text="图片路径:" VerticalAlignment="Center"/>
             <TextBlock Text="{Binding BacImgName}" Width="200" VerticalAlignment="Center"/>
-            <Button Content="修改" Click="Button_Click"/>
+            <Button Content="修改" Click="BGButton_Click"/>
         </hc:UniformSpacingPanel>
         <hc:Divider LineStrokeDashArray="3,3" Margin="30,22,450,119" LineStroke="Black" Grid.ColumnSpan="4"/>
 

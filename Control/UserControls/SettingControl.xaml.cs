@@ -1,4 +1,6 @@
 ﻿using GeekDesk.Util;
+using GeekDesk.ViewModel;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,8 +38,30 @@ namespace GeekDesk.Control.UserControls
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 修改背景图片
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BGButton_Click(object sender, RoutedEventArgs e)
         {
+            AppConfig appConfig = MainWindow.appData.AppConfig;
+
+            try
+            {
+                OpenFileDialog ofd = new OpenFileDialog
+                {
+                    Multiselect = false, //只允许选中单个文件
+                    Filter = "图像文件(*.png, *.jpg)|*.png;*.jpg;*.gif"
+                };
+                if (ofd.ShowDialog() == true)
+                {
+                    appConfig.BitmapImage = ImageUtil.GetBitmapImageByFile(ofd.FileName);
+                }
+            } catch (Exception)
+            {
+                HandyControl.Controls.Growl.WarningGlobal("修改背景失败,已重置为默认背景!");
+            }
 
         }
     }

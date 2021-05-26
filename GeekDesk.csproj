@@ -38,6 +38,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Apex.WinForms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=98d06957926c086d, processorArchitecture=MSIL">
+      <HintPath>packages\SharpShellTools.2.2.0.0\lib\Apex.WinForms.dll</HintPath>
+    </Reference>
     <Reference Include="CommonServiceLocator, Version=2.0.6.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>packages\CommonServiceLocator.2.0.6\lib\net45\CommonServiceLocator.dll</HintPath>
     </Reference>
@@ -53,12 +56,23 @@
     <Reference Include="HandyControl, Version=3.1.0.0, Culture=neutral, PublicKeyToken=45be8712787a1e5b, processorArchitecture=MSIL">
       <HintPath>packages\HandyControl.3.1.0\lib\net452\HandyControl.dll</HintPath>
     </Reference>
+    <Reference Include="ServerManager, Version=2.2.0.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>packages\SharpShellTools.2.2.0.0\lib\ServerManager.exe</HintPath>
+    </Reference>
+    <Reference Include="SharpShell, Version=2.2.0.0, Culture=neutral, PublicKeyToken=f14dc899472fe6fb, processorArchitecture=MSIL">
+      <HintPath>packages\SharpShellTools.2.2.0.0\lib\SharpShell.dll</HintPath>
+    </Reference>
+    <Reference Include="srm, Version=2.2.0.0, Culture=neutral, PublicKeyToken=68bd4561cc3495fc, processorArchitecture=MSIL">
+      <HintPath>packages\SharpShellTools.2.2.0.0\lib\srm.exe</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Common, Version=4.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Drawing.Common.6.0.0-preview.3.21201.4\lib\net461\System.Drawing.Common.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -82,7 +96,6 @@
     </ApplicationDefinition>
     <Compile Include="Command\DelegateCommand.cs" />
     <Compile Include="Command\DelegateCommandBase.cs" />
-    <Compile Include="Constant\AppConstant.cs" />
     <Compile Include="Constant\AppHideType.cs" />
     <Compile Include="Constant\Constants.cs" />
     <Compile Include="Constant\DefaultConstant.cs" />
@@ -113,6 +126,7 @@
     <Compile Include="Util\MouseUtil.cs" />
     <Compile Include="Util\MouseUtilities.cs" />
     <Compile Include="Util\ScreenUtil.cs" />
+    <Compile Include="Util\ShellContextMenu.cs" />
     <Compile Include="Util\SystemIcon.cs" />
     <Compile Include="ViewModel\AppConfig.cs" />
     <Compile Include="ViewModel\AppData.cs" />

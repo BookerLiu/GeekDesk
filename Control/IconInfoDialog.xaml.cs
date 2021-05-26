@@ -1,6 +1,7 @@
 ﻿using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using Microsoft.Win32;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -58,17 +59,24 @@ namespace GeekDesk.Control
         /// <param name="e"></param>
         private void EditImage(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog
+            try
             {
-                Multiselect = false, //只允许选中单个文件
-                Filter = "所有文件(*.*)|*.*"
-            };
-            if (ofd.ShowDialog() == true)
+                OpenFileDialog ofd = new OpenFileDialog
+                {
+                    Multiselect = false, //只允许选中单个文件
+                    Filter = "所有文件(*.*)|*.*"
+                };
+                if (ofd.ShowDialog() == true)
+                {
+                    IconInfo info = this.DataContext as IconInfo;
+                    info.BitmapImage = ImageUtil.GetBitmapIconByPath(ofd.FileName);
+                    CommonCode.SaveAppData(MainWindow.appData);
+                }
+            } catch (Exception)
             {
-                IconInfo info = this.DataContext as IconInfo;
-                info.BitmapImage = ImageUtil.GetBitmapIconByPath(ofd.FileName);
-                CommonCode.SaveAppData(MainWindow.appData);
+                HandyControl.Controls.Growl.WarningGlobal("修改图标失败,已重置为默认图标!");
             }
+            
         }
     }
 }

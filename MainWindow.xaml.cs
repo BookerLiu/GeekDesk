@@ -3,15 +3,16 @@ using GeekDesk.Constant;
 using GeekDesk.Control;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
+using SharpShell.SharpContextMenu;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Drawing.Imaging;
+using System.Drawing;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-
+using System.Windows.Media;
 
 namespace GeekDesk
 {
@@ -216,7 +217,7 @@ namespace GeekDesk
                 p.Start();
                 icon.Count++;
             } catch (Exception)
-            {
+            { 
                 HandyControl.Controls.Growl.WarningGlobal("程序启动失败(不支持的启动方式)!");
             }
         }
@@ -446,7 +447,7 @@ namespace GeekDesk
         private void ShowAppAndFollowMouse()
         {
             //获取鼠标位置
-            Point p = MouseUtil.GetMousePosition();
+            System.Windows.Point p = MouseUtil.GetMousePosition();
             double left = SystemParameters.VirtualScreenLeft;
             double top = SystemParameters.VirtualScreenTop;
             double width = SystemParameters.VirtualScreenWidth;
@@ -550,7 +551,10 @@ namespace GeekDesk
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-
+            IconInfo icon = (IconInfo)((MenuItem)sender).Tag;
+            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("Explorer.exe");
+            psi.Arguments = "/e,/select," + icon.Path;
+            System.Diagnostics.Process.Start(psi);
         }
 
         /// <summary>

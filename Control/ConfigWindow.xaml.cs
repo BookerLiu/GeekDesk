@@ -46,5 +46,6 @@ namespace GeekDesk.Control
         {
             this.Close();
         }
+
     }
 }

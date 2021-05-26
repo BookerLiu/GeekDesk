@@ -1,8 +1,11 @@
 ﻿using GeekDesk.Constant;
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
 namespace GeekDesk.Util
@@ -66,7 +69,7 @@ namespace GeekDesk.Util
             {
                 if (IsImage(filePath)) {
                     //图片
-                    return GetThumbnail(filePath, 256, 256);
+                    return GetThumbnailByFile(filePath, 256, 256);
                 } else
                 { //其它文件
                     return FileIcon.GetBitmapImage(filePath);
@@ -86,47 +89,128 @@ namespace GeekDesk.Util
         /// <param name="lnWidth">缩略图的宽度</param>
         /// <param name="lnHeight">缩略图的高度</param>
         /// <returns></returns>
-        public static BitmapImage GetThumbnail(string lcFilename, int lnWidth, int lnHeight)
+        //public static BitmapImage GetThumbnail(string lcFilename, int lnWidth, int lnHeight)
+        //{
+        //    Bitmap bmpOut = null;
+        //    try
+        //    {
+        //        Bitmap loBMP = new Bitmap(lcFilename);
+        //        ImageFormat loFormat = loBMP.RawFormat;
+
+        //        decimal lnRatio;
+        //        int lnNewWidth = 0;
+        //        int lnNewHeight = 0;
+
+        //        //如果图像小于缩略图直接返回原图，因为upfront
+        //        if (loBMP.Width < lnWidth && loBMP.Height < lnHeight)
+        //            return BitmapToBitmapImage(loBMP);
+        //        if (loBMP.Width > loBMP.Height)
+        //        {
+        //            lnRatio = (decimal)lnWidth / loBMP.Width;
+        //            lnNewWidth = lnWidth;
+        //            decimal lnTemp = loBMP.Height * lnRatio;
+        //            lnNewHeight = (int)lnTemp;
+        //        }
+        //        else
+        //        {
+        //            lnRatio = (decimal)lnHeight / loBMP.Height;
+        //            lnNewHeight = lnHeight;
+        //            decimal lnTemp = loBMP.Width * lnRatio;
+        //            lnNewWidth = (int)lnTemp;
+        //        }
+        //        bmpOut = new Bitmap(lnNewWidth, lnNewHeight);
+        //        Graphics g = Graphics.FromImage(bmpOut);
+        //        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+        //        g.FillRectangle(Brushes.White, 0, 0, lnNewWidth, lnNewHeight);
+        //        g.DrawImage(loBMP, 0, 0, lnNewWidth, lnNewHeight);
+        //        loBMP.Dispose();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return Base64ToBitmapImage(Constants.DEFAULT_IMG_IMAGE_BASE64);
+        //    }
+        //    return BitmapToBitmapImage(bmpOut);
+        //}
+
+        public static BitmapImage GetThumbnailByFile(string filePath, int tWidth, int tHeight)
         {
-            Bitmap bmpOut = null;
+
             try
             {
-                Bitmap loBMP = new Bitmap(lcFilename);
-                ImageFormat loFormat = loBMP.RawFormat;
-
-                decimal lnRatio;
-                int lnNewWidth = 0;
-                int lnNewHeight = 0;
-
-                //如果图像小于缩略图直接返回原图，因为upfront
-                if (loBMP.Width < lnWidth && loBMP.Height < lnHeight)
-                    return BitmapToBitmapImage(bmpOut);
-                if (loBMP.Width > loBMP.Height)
+                Image img = Image.FromFile(filePath);
+                if (img.Width <= tWidth && img.Height <= tHeight)
                 {
-                    lnRatio = (decimal)lnWidth / loBMP.Width;
-                    lnNewWidth = lnWidth;
-                    decimal lnTemp = loBMP.Height * lnRatio;
-                    lnNewHeight = (int)lnTemp;
+                    return GetBitmapImageByFile(filePath);
                 }
                 else
                 {
-                    lnRatio = (decimal)lnHeight / loBMP.Height;
-                    lnNewHeight = lnHeight;
-                    decimal lnTemp = loBMP.Width * lnRatio;
-                    lnNewWidth = (int)lnTemp;
+                    Bitmap loBMP = new Bitmap(filePath);
+                    ImageFormat loFormat = loBMP.RawFormat;
+
+                    decimal lnRatio;
+                    int lnNewWidth;
+                    int lnNewHeight;
+                    if (loBMP.Width > loBMP.Height)
+                    {
+                        lnRatio = (decimal)tWidth / loBMP.Width;
+                        lnNewWidth = tWidth;
+                        decimal lnTemp = loBMP.Height * lnRatio;
+                        lnNewHeight = (int)lnTemp;
+                    }
+                    else
+                    {
+                        lnRatio = (decimal)tHeight / loBMP.Height;
+                        lnNewHeight = tHeight;
+                        decimal lnTemp = loBMP.Width * lnRatio;
+                        lnNewWidth = (int)lnTemp;
+                    }
+                    Bitmap bmpOut = new Bitmap(lnNewWidth, lnNewHeight);
+                    Graphics g = Graphics.FromImage(bmpOut);
+                    g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                    g.FillRectangle(Brushes.White, 0, 0, lnNewWidth, lnNewHeight);
+                    g.DrawImage(loBMP, 0, 0, lnNewWidth, lnNewHeight);
+                    loBMP.Dispose();
+                    string tempPath = Constants.APP_DIR + "\\temp";
+                    if (File.Exists(tempPath))
+                    {
+                        File.Delete(tempPath);
+                    }
+                    bmpOut.Save(tempPath, loFormat);
+                    BitmapImage bm = GetBitmapImageByFile(tempPath);
+                    File.Delete(tempPath);
+                    return bm;
                 }
-                bmpOut = new Bitmap(lnNewWidth, lnNewHeight);
-                Graphics g = Graphics.FromImage(bmpOut);
-                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                g.FillRectangle(Brushes.White, 0, 0, lnNewWidth, lnNewHeight);
-                g.DrawImage(loBMP, 0, 0, lnNewWidth, lnNewHeight);
-                loBMP.Dispose();
             }
-            catch
+            catch (Exception)
             {
                 return Base64ToBitmapImage(Constants.DEFAULT_IMG_IMAGE_BASE64);
             }
-            return BitmapToBitmapImage(bmpOut);
+            
+        }
+
+
+        public static BitmapImage GetBitmapImageByFile(string filePath)
+        {
+            BitmapImage bmImg = new BitmapImage();
+            bmImg.BeginInit();
+            bmImg.CacheOption = BitmapCacheOption.OnLoad;
+            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                bmImg.StreamSource = fs;
+                bmImg.EndInit();
+            }
+            return bmImg;
+        }
+
+        public static BitmapImage MemoryStremToBitMapImage(MemoryStream ms)
+        {
+            BitmapImage bi = new BitmapImage();
+            bi.BeginInit();
+            bi.StreamSource = ms;
+            bi.CacheOption = BitmapCacheOption.OnLoad;
+            bi.EndInit();
+            bi.Freeze();
+            return bi;
         }
 
 
@@ -135,12 +219,24 @@ namespace GeekDesk.Util
         /// </summary>
         /// <param name="bitmap"></param>
         /// <returns></returns>
-        private static BitmapImage BitmapToBitmapImage(Bitmap bitmap)
+        public static BitmapImage BitmapToBitmapImage(Bitmap bitmap)
+        {
+            return BitmapToBitmapImage(bitmap, null);
+        }
+
+        public static BitmapImage BitmapToBitmapImage(Image bitmap, ImageFormat format)
         {
             BitmapImage bitmapImage = new BitmapImage();
             using (MemoryStream ms = new MemoryStream())
             {
-                bitmap.Save(ms, bitmap.RawFormat);
+                if (format == null)
+                {
+                    bitmap.Save(ms, bitmap.RawFormat);
+                }
+                else
+                {
+                    bitmap.Save(ms, format);
+                }
                 bitmapImage.BeginInit();
                 bitmapImage.StreamSource = ms;
                 bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
@@ -149,6 +245,29 @@ namespace GeekDesk.Util
             }
             return bitmapImage;
         }
+
+        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+        public static extern bool DeleteObject(IntPtr hObject);
+
+        public static BitmapImage Bitmap2BitmapImage(Bitmap bitmap)
+        {
+            IntPtr hBitmap = bitmap.GetHbitmap();
+            BitmapImage retval;
+            try
+            {
+                retval = (BitmapImage)Imaging.CreateBitmapSourceFromHBitmap(
+                             hBitmap,
+                             IntPtr.Zero,
+                             Int32Rect.Empty,
+                             BitmapSizeOptions.FromEmptyOptions());
+            }
+            finally
+            {
+                DeleteObject(hBitmap);
+            }
+            return retval;
+        }
+
 
         /// <summary>
         /// 图片文件转base64
