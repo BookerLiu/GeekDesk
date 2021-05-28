@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:util="clr-namespace:GeekDesk.Util"
+             xmlns:cvt="clr-namespace:GeekDesk.Converts"
              xmlns:local="clr-namespace:GeekDesk.Control.UserControls"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" 
@@ -11,61 +11,124 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
-        <util:HideTypeConvert x:Key="HideTypeConvert"/>
+        <cvt:HideTypeConvert x:Key="HideTypeConvert"/>
     </UserControl.Resources>
-    <hc:SimplePanel Margin="10">
-        <hc:SimplePanel.Background>
-            <SolidColorBrush Opacity="0.9"/>
-        </hc:SimplePanel.Background>
-        <hc:UniformSpacingPanel Spacing="10" Margin="0,0,0,10" Grid.ColumnSpan="4">
-            <TextBlock Text="主面板设置" VerticalAlignment="Center"/>
-        </hc:UniformSpacingPanel>
-        <hc:Divider LineStrokeDashArray="3,3" Margin="30,22,450,119" LineStroke="Black" Grid.ColumnSpan="4"/>
-        <hc:UniformSpacingPanel Spacing="10" Margin="30,26.394,0,-16.394" Grid.ColumnSpan="4">
-            <CheckBox x:Name="IconIsAdmin" Content="启动时显示主面板" IsChecked="{Binding StartedShowPanel}">
-                <CheckBox.Background>
-                    <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                        <GradientStop Color="#FF9EA3A6"/>
-                    </LinearGradientBrush>
-                </CheckBox.Background>
-            </CheckBox>
-        </hc:UniformSpacingPanel>
+        <hc:SimplePanel Margin="10">
+            <hc:SimplePanel.Background>
+                <SolidColorBrush Opacity="0.9"/>
+            </hc:SimplePanel.Background>
 
-        <hc:UniformSpacingPanel Spacing="10" Margin="30,50,0,-102.337" Grid.ColumnSpan="4">
-            <CheckBox  Content="显示时追随鼠标位置" IsChecked="{Binding FollowMouse}" Unchecked="CheckBox_Unchecked">
-                <CheckBox.Background>
-                    <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                        <GradientStop Color="#FF9EA3A6"/>
-                    </LinearGradientBrush>
-                </CheckBox.Background>
-            </CheckBox>
-        </hc:UniformSpacingPanel>
-        <hc:UniformSpacingPanel Spacing="10" Margin="30,89.49,-30,-79.49" Grid.ColumnSpan="4">
-            <TextBlock Text="面板关闭方式" VerticalAlignment="Center"/>
-        </hc:UniformSpacingPanel>
-        <hc:Divider LineStrokeDashArray="3,3" Margin="30,109,450,26.208" LineStroke="Black" Grid.ColumnSpan="4"/>
-        <hc:UniformSpacingPanel Spacing="10" Margin="40,115,-10,-102.337" Grid.ColumnSpan="4">
-            <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}" 
+            <hc:UniformSpacingPanel Spacing="10" Margin="0,0,0,10" Grid.ColumnSpan="4">
+                <TextBlock Text="主面板设置" VerticalAlignment="Center"/>
+            </hc:UniformSpacingPanel>
+            <hc:Divider LineStrokeDashArray="3,3" Margin="30,22,450,119" LineStroke="Black" Grid.ColumnSpan="4"/>
+            <hc:UniformSpacingPanel Spacing="10" Margin="30,26.394,0,-16.394" Grid.ColumnSpan="4">
+                <CheckBox x:Name="IconIsAdmin" Content="启动时显示主面板" IsChecked="{Binding StartedShowPanel}">
+                    <CheckBox.Background>
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                            <GradientStop Color="#FF9EA3A6"/>
+                        </LinearGradientBrush>
+                    </CheckBox.Background>
+                </CheckBox>
+            </hc:UniformSpacingPanel>
+
+            <hc:UniformSpacingPanel Spacing="10" Margin="30,50,0,-102.337" Grid.ColumnSpan="4">
+                <CheckBox  Content="显示时追随鼠标位置" IsChecked="{Binding FollowMouse}" Unchecked="CheckBox_Unchecked">
+                    <CheckBox.Background>
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                            <GradientStop Color="#FF9EA3A6"/>
+                        </LinearGradientBrush>
+                    </CheckBox.Background>
+                </CheckBox>
+            </hc:UniformSpacingPanel>
+            <hc:UniformSpacingPanel Spacing="10" Margin="30,89.49,-30,-79.49" Grid.ColumnSpan="4">
+                <TextBlock Text="面板关闭方式" VerticalAlignment="Center"/>
+            </hc:UniformSpacingPanel>
+            <hc:Divider LineStrokeDashArray="3,3" Margin="30,109,450,26.208" LineStroke="Black" Grid.ColumnSpan="4"/>
+            <hc:UniformSpacingPanel Spacing="10" Margin="40,115,-10,-102.337" Grid.ColumnSpan="4">
+                <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}" 
                          Style="{StaticResource RadioButtonIcon}" Content="失去焦点后"
                          IsChecked="{Binding AppHideType, Mode=TwoWay, Converter={StaticResource HideTypeConvert}, ConverterParameter=1}"/>
-            <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}"
+                <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}"
                          Style="{StaticResource RadioButtonIcon}" Content="运行项目后" 
                          IsChecked="{Binding AppHideType, Mode=TwoWay, Converter={StaticResource HideTypeConvert}, ConverterParameter=2}"/>
-            <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}" 
+                <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}" 
                          Style="{StaticResource RadioButtonIcon}" Content="手动关闭"
                          IsChecked="{Binding AppHideType, Mode=TwoWay, Converter={StaticResource HideTypeConvert}, ConverterParameter=3}"/>
-        </hc:UniformSpacingPanel>
-        <hc:UniformSpacingPanel Spacing="10" Margin="30,160.5,-30,-150.5" Grid.ColumnSpan="4">
-            <TextBlock Text="背景图片" VerticalAlignment="Center"/>
-        </hc:UniformSpacingPanel>
-        <hc:UniformSpacingPanel Spacing="10" Margin="40,199.5,-40,-189.5" Grid.ColumnSpan="4">
-            <TextBlock Text="图片路径:" VerticalAlignment="Center"/>
-            <TextBlock Text="{Binding BacImgName}" Width="200" VerticalAlignment="Center"/>
-            <Button Content="修改" Click="BGButton_Click"/>
-        </hc:UniformSpacingPanel>
-        <hc:Divider LineStrokeDashArray="3,3" Margin="30,22,450,119" LineStroke="Black" Grid.ColumnSpan="4"/>
+            </hc:UniformSpacingPanel>
+            <hc:UniformSpacingPanel Spacing="10" Margin="30,160.5,-30,-150.5" Grid.ColumnSpan="4">
+                <TextBlock Text="背景图片" VerticalAlignment="Center"/>
+            </hc:UniformSpacingPanel>
+            <hc:UniformSpacingPanel Spacing="10" Margin="40,183,-40,-173" Grid.ColumnSpan="4">
+                <TextBlock Text="图片路径:" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding BacImgName}" Width="200" 
+                       VerticalAlignment="Center"
+                       hc:Poptip.HitMode="None" 
+                       hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
+                       hc:Poptip.Content="{Binding BacImgName}" 
+                       hc:Poptip.Placement="TopLeft"
+                       />
+                <Button Content="修改" Click="BGButton_Click"/>
+            </hc:UniformSpacingPanel>
+            <hc:Divider LineStrokeDashArray="3,3" Margin="30,22,450,119" LineStroke="Black" Grid.ColumnSpan="4"/>
 
-        <!--<hc:Divider LineStrokeDashArray="3,3" Margin="10,242.735,-10,-91.735" LineStroke="Black" Grid.ColumnSpan="4"/>-->
+            <hc:Divider LineStrokeDashArray="3,3" Margin="10,217.235,-10,-66.235" LineStroke="Black" Grid.ColumnSpan="4"/>
+            <hc:UniformSpacingPanel Spacing="10" Margin="30,240,-30,-230" Grid.ColumnSpan="4">
+                <TextBlock Text="托盘不透明度" VerticalAlignment="Center"/>
+            </hc:UniformSpacingPanel>
+            <hc:UniformSpacingPanel Spacing="10" Margin="40,267,-40,-257" Grid.ColumnSpan="4">
+                <hc:PreviewSlider Value="{Binding CardOpacity}"
+                              Maximum="100"
+                              Margin="0,0,-313.5,7.5"
+                              >
+                    <hc:PreviewSlider.PreviewContent>
+                        <Label Style="{StaticResource LabelPrimary}" Content="{Binding Path=(hc:PreviewSlider.PreviewPosition),RelativeSource={RelativeSource Self}}" ContentStringFormat="#0"/>
+                    </hc:PreviewSlider.PreviewContent>
+                </hc:PreviewSlider>
+            </hc:UniformSpacingPanel>
 
-    </hc:SimplePanel>
+            <hc:UniformSpacingPanel Spacing="10" Margin="30,298.813,-30,-288.813" Grid.ColumnSpan="4">
+                <TextBlock Text="背景图片不透明度" VerticalAlignment="Center"/>
+            </hc:UniformSpacingPanel>
+            <hc:UniformSpacingPanel Spacing="10" Margin="40,330,-40,-320" Grid.ColumnSpan="4">
+                <hc:PreviewSlider Value="{Binding BgOpacity}"
+                              Maximum="100"
+                              Margin="0,0,-313.5,7.5"
+                              >
+                    <hc:PreviewSlider.PreviewContent>
+                        <Label Style="{StaticResource LabelPrimary}" Content="{Binding Path=(hc:PreviewSlider.PreviewPosition),RelativeSource={RelativeSource Self}}" ContentStringFormat="#0"/>
+                    </hc:PreviewSlider.PreviewContent>
+                </hc:PreviewSlider>
+            </hc:UniformSpacingPanel>
+
+            <hc:UniformSpacingPanel Spacing="10" Margin="30,370.813,-30,-360.813" Grid.ColumnSpan="4">
+                <TextBlock Text="主面板不透明度" VerticalAlignment="Center"/>
+            </hc:UniformSpacingPanel>
+            <hc:UniformSpacingPanel Spacing="10" Margin="40,399,-40,-389" Grid.ColumnSpan="4">
+                <hc:PreviewSlider Value="{Binding PannelOpacity}"
+                              Minimum="50"
+                              Maximum="100"
+                              Margin="0,0,-313.5,7.5"
+                              >
+                    <hc:PreviewSlider.PreviewContent>
+                        <Label Style="{StaticResource LabelPrimary}" Content="{Binding Path=(hc:PreviewSlider.PreviewPosition),RelativeSource={RelativeSource Self}}" ContentStringFormat="#0"/>
+                    </hc:PreviewSlider.PreviewContent>
+                </hc:PreviewSlider>
+            </hc:UniformSpacingPanel>
+
+            <hc:UniformSpacingPanel Spacing="10" Margin="30,429.313,-30,-419.313" Grid.ColumnSpan="4">
+                <TextBlock Text="主面板圆角大小" VerticalAlignment="Center"/>
+            </hc:UniformSpacingPanel>
+            <hc:UniformSpacingPanel Spacing="10" Margin="40,463.5,-40,-453.5" Grid.ColumnSpan="4">
+                <hc:PreviewSlider Value="{Binding PannelCornerRadius}"
+                              Maximum="25"
+                              Margin="0,0,-313.5,7.5"
+                              >
+                    <hc:PreviewSlider.PreviewContent>
+                        <Label Style="{StaticResource LabelPrimary}" Content="{Binding Path=(hc:PreviewSlider.PreviewPosition),RelativeSource={RelativeSource Self}}" ContentStringFormat="#0"/>
+                    </hc:PreviewSlider.PreviewContent>
+                </hc:PreviewSlider>
+            </hc:UniformSpacingPanel>
+        </hc:SimplePanel>
+   
 </UserControl>

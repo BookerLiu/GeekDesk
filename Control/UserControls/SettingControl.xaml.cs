@@ -28,11 +28,6 @@ namespace GeekDesk.Control.UserControls
             InitializeComponent();
         }
 
-        private void SimplePanel_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            CommonCode.SaveAppData(MainWindow.appData);
-        }
-
         private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
 
@@ -57,6 +52,7 @@ namespace GeekDesk.Control.UserControls
                 if (ofd.ShowDialog() == true)
                 {
                     appConfig.BitmapImage = ImageUtil.GetBitmapImageByFile(ofd.FileName);
+                    appConfig.BacImgName = ofd.FileName;
                 }
             } catch (Exception)
             {

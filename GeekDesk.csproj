@@ -107,14 +107,23 @@
     <Compile Include="Control\IconInfoDialog.xaml.cs">
       <DependentUpon>IconInfoDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\UserControls\LeftCardControl.xaml.cs">
+      <DependentUpon>LeftCardControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\UserControls\RightCardControl.xaml.cs">
+      <DependentUpon>RightCardControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Control\UserControls\SettingControl.xaml.cs">
       <DependentUpon>SettingControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converts\DoubleToGridLength.cs" />
+    <Compile Include="Converts\IntToCornerRadius.cs" />
+    <Compile Include="Converts\OpcityConvert.cs" />
     <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.cs" />
     <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.Drag.cs" />
     <Compile Include="EditTextBlock\EditableTextBlock.cs" />
     <Compile Include="EditTextBlock\EditableTextBlockAdorner.cs" />
-    <Compile Include="Util\HideTypeConvert.cs" />
+    <Compile Include="Converts\HideTypeConvert.cs" />
     <Compile Include="Util\CommonCode.cs" />
     <Compile Include="Util\ConsoleManager.cs" />
     <Compile Include="Util\DragAdorner.cs" />
@@ -122,7 +131,7 @@
     <Compile Include="Util\HotKey.cs" />
     <Compile Include="Util\ImageUtil.cs" />
     <Compile Include="Util\ListViewDragDropManager.cs" />
-    <Compile Include="Util\MenuWidthConvert.cs" />
+    <Compile Include="Converts\MenuWidthConvert.cs" />
     <Compile Include="Util\MouseUtil.cs" />
     <Compile Include="Util\MouseUtilities.cs" />
     <Compile Include="Util\ScreenUtil.cs" />
@@ -137,6 +146,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Control\IconInfoDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\UserControls\LeftCardControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\UserControls\RightCardControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace GeekDesk.Util
+namespace GeekDesk.Converts
 {
    public class HideTypeConvert : IValueConverter
     {

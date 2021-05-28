@@ -12,7 +12,8 @@
            AllowsTransparency="True"
            Background="Transparent"
            >
-    <Border CornerRadius="8" BorderThickness="0">
+
+        <Border CornerRadius="8" BorderThickness="0">
         <Border.Background>
             <SolidColorBrush Color="AliceBlue" Opacity="0.9"/>
         </Border.Background>
@@ -56,13 +57,13 @@
                     </hc:SideMenuItem>
                 </hc:SideMenu>
             </hc:Card>
-            <hc:Card x:Name="RightCard" Grid.Row="0" Grid.Column="1" MouseDown="DragMove">
-            </hc:Card>
-            <Button Width="22" Height="22" Click="Close_Button_Click" Style="{StaticResource ButtonIcon}" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" Grid.Column="1"/>
-        </Grid>
+            <hc:ScrollViewer  Grid.Row="0" Grid.Column="1">
+                <hc:Card x:Name="RightCard" Height="600"  MouseDown="DragMove">
+                </hc:Card>
+            </hc:ScrollViewer>
 
+        <Button Width="22" Height="22" Click="Close_Button_Click" Style="{StaticResource ButtonIcon}" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" Grid.Column="1"/>
+        </Grid>
     </Border>
-    
-    
-           
+
 </hc:Window>

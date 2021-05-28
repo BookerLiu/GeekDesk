@@ -2,6 +2,7 @@
 using GeekDesk.Constant;
 using GeekDesk.Util;
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -29,10 +30,77 @@ namespace GeekDesk.ViewModel
         private BitmapImage bitmapImage; //位图
         private byte[] imageByteArr; //背景图片 byte数组
         private string bacImgName = "系统默认";
-
-
+        private int cardOpacity = 10;  //默认0.1的不透明度  此处显示数值 * 100
+        private int bgOpacity = 100; // 背景图片不透明度 此处显示数值 * 100
+        private int pannelOpacity = 100; //主面板不透明度 此处显示数值 * 100
+        private int pannelCornerRadius = 4;  //面板圆角 默认4
+        [field: NonSerialized]
+        private ObservableCollection<IconInfo> selectedMenuIcons;
 
         #region GetSet
+        public ObservableCollection<IconInfo> SelectedMenuIcons
+        {
+            get
+            {
+                return selectedMenuIcons;
+            }
+            set
+            {
+                selectedMenuIcons = value;
+                OnPropertyChanged("SelectedMenuIcons");
+            }
+        }
+
+        public int PannelCornerRadius
+        {
+            get
+            {
+                return pannelCornerRadius;
+            }
+            set
+            {
+                pannelCornerRadius = value;
+                OnPropertyChanged("pannelCornerRadius");
+            }
+        }
+
+        public int PannelOpacity
+        {
+            get
+            {
+                return pannelOpacity;
+            }
+            set
+            {
+                pannelOpacity = value;
+                OnPropertyChanged("PannelOpacity");
+            }
+        }
+        public int BgOpacity
+        {
+            get
+            {
+                return bgOpacity;
+            }
+            set
+            {
+                bgOpacity = value;
+                OnPropertyChanged("BgOpacity");
+            }
+        }
+
+        public int CardOpacity
+        {
+            get
+            {
+                return cardOpacity;
+            }
+            set
+            {
+                cardOpacity = value;
+                OnPropertyChanged("CardOpacity");
+            }
+        }
 
         public string BacImgName
         {
@@ -67,6 +135,7 @@ namespace GeekDesk.ViewModel
             {
                 if (imageByteArr == null || imageByteArr.Length == 0)
                 {
+                    bacImgName = "系统默认";
                     return ImageUtil.ByteArrToImage(Convert.FromBase64String(Constants.DEFAULT_BAC_IMAGE_BASE64));
                 } else
                 {

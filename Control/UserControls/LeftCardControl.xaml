@@ -1,0 +1,138 @@
+﻿<UserControl x:Class="GeekDesk.Control.UserControls.LeftCardControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GeekDesk.Control.UserControls"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:cvt="clr-namespace:GeekDesk.Converts"
+             xmlns:DraggAnimatedPanel="clr-namespace:DraggAnimatedPanel"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+
+        <!--左侧栏样式动画-->
+        <Style x:Key="menuStyle" TargetType="ListBoxItem" BasedOn="{StaticResource ListBoxItemBaseStyle}">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Margin" Value="0,0,0,1"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <SolidColorBrush Opacity="0"/>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="False"/>
+                        <Condition Property="IsSelected" Value="False"/>
+                    </MultiTrigger.Conditions>
+                    <MultiTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation To="15" Duration="0:0:0.5" Storyboard.TargetProperty="FontSize"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </MultiTrigger.EnterActions>
+                    <MultiTrigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard Timeline.DesiredFrameRate="60">
+                                <DoubleAnimation To="18" Duration="0:0:0.001" Storyboard.TargetProperty="FontSize"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </MultiTrigger.ExitActions>
+                </MultiTrigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFE4DBDB"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="true">
+                    <Setter Property="Background" Value="#FFECECEC"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <cvt:MenuWidthConvert x:Key="MenuWidthConvert"/>
+        <cvt:OpcityConvert x:Key="OpcityConvert"/>
+    </UserControl.Resources>
+        <!--左侧栏-->
+        <hc:Card 
+                 BorderThickness="1" 
+                 Effect="{DynamicResource EffectShadow2}" 
+                 Margin="5,0,0,5"
+                 >
+            <hc:Card.Background>
+                <SolidColorBrush Color="#FFFFFFFF" Opacity="{Binding AppConfig.CardOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}"/>
+            </hc:Card.Background>
+            <hc:Card.BorderBrush>
+                <SolidColorBrush Color="#FFFFFFFF" Opacity="0"/>
+            </hc:Card.BorderBrush>
+            <hc:Card.ContextMenu>
+                <ContextMenu Width="200">
+                    <MenuItem Header="新建菜单" Click="CreateMenu"/>
+                </ContextMenu>
+            </hc:Card.ContextMenu>
+            <WrapPanel Orientation="Horizontal">
+                <ListBox x:Name="menus"
+                         ItemsSource="{Binding MenuList}"
+                         Tag="{Binding AppConfig.MenuCardWidth}"
+                         BorderThickness="0" Foreground="{x:Null}"
+                         SelectedIndex="{Binding AppConfig.SelectedMenuIndex}"
+                         VirtualizingPanel.VirtualizationMode="Recycling"
+                         >
+                    <ListBox.Resources>
+                        <ContextMenu x:Key="menuDialog" Width="200">
+                            <MenuItem Header="新建菜单" Click="CreateMenu"/>
+                            <MenuItem Header="重命名"  Click="RenameMenu" Tag="{Binding}"/>
+                            <MenuItem Header="删除" Click="DeleteMenu" Tag="{Binding}"/>
+                        </ContextMenu>
+                    </ListBox.Resources>
+
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem" BasedOn="{StaticResource menuStyle}">
+                            <Setter Property="ContextMenu" Value="{StaticResource menuDialog}"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.Background>
+                        <SolidColorBrush Color="AliceBlue" Opacity="0"/>
+                    </ListBox.Background>
+
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                        <DraggAnimatedPanel:DraggAnimatedPanel ItemsHeight="30" ItemsWidth="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}}"   HorizontalAlignment="Center" VerticalAlignment="Top" SwapCommand="{Binding SwapCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel MouseLeftButtonDown="MenuClick" Tag="{Binding}">
+                                <TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
+                                     HorizontalAlignment="Left"
+                                     Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}}"
+                                     FontSize="15"
+                                     TextAlignment="Left"
+                                     LostFocus="LostFocusOrEnterDown"
+                                     KeyDown="LostFocusOrEnterDown"
+                                     Tag="{Binding}"
+                                     IsVisibleChanged="MenuEditWhenVisibilityChanged"
+                                     Visibility="{Binding MenuEdit}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Background="Transparent" 
+                                        BorderThickness="0"
+                                        hc:IconElement.Geometry="M438.857143 548.571429a36.571429 36.571429 0 0 1 36.571428 36.571428v256a36.571429 36.571429 0 0 1-36.571428 36.571429H182.857143a36.571429 36.571429 0 0 1-36.571429-36.571429v-256a36.571429 36.571429 0 0 1 36.571429-36.571428h256z m402.285714 0a36.571429 36.571429 0 0 1 36.571429 36.571428v256a36.571429 36.571429 0 0 1-36.571429 36.571429h-256a36.571429 36.571429 0 0 1-36.571428-36.571429v-256a36.571429 36.571429 0 0 1 36.571428-36.571428h256z m-438.857143 73.142857H219.428571v182.857143h182.857143v-182.857143z m402.285715 0h-182.857143v182.857143h182.857143v-182.857143zM438.857143 146.285714a36.571429 36.571429 0 0 1 36.571428 36.571429v256a36.571429 36.571429 0 0 1-36.571428 36.571428H182.857143a36.571429 36.571429 0 0 1-36.571429-36.571428V182.857143a36.571429 36.571429 0 0 1 36.571429-36.571429h256z m402.285714 0a36.571429 36.571429 0 0 1 36.571429 36.571429v256a36.571429 36.571429 0 0 1-36.571429 36.571428h-256a36.571429 36.571429 0 0 1-36.571428-36.571428V182.857143a36.571429 36.571429 0 0 1 36.571428-36.571429h256zM402.285714 219.428571H219.428571v182.857143h182.857143V219.428571z m402.285715 0h-182.857143v182.857143h182.857143V219.428571z" 
+                                        hc:IconElement.Height="18"
+                                        hc:IconElement.Width="18"
+                                        />
+                                    <TextBlock Text="{Binding MenuName}"
+                                           VerticalAlignment="Center"
+                                           IsVisibleChanged="MenuWhenVisibilityChanged"
+                                           Visibility="{Binding NotMenuEdit}"
+                                           />
+                                </StackPanel>
+
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </WrapPanel>
+        </hc:Card>
+</UserControl>
