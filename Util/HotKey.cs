@@ -82,7 +82,7 @@ namespace GeekDesk.Util
         public delegate void HotKeyCallBackHanlder();
     }
 
-    enum HotkeyModifiers
+    public enum HotkeyModifiers
     {
         MOD_ALT = 0x1,
         MOD_CONTROL = 0x2,

@@ -5,6 +5,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 /// <summary>
@@ -36,8 +37,48 @@ namespace GeekDesk.ViewModel
         private int pannelCornerRadius = 4;  //面板圆角 默认4
         [field: NonSerialized]
         private ObservableCollection<IconInfo> selectedMenuIcons;
+        private string hotkeyStr;
+        private HotkeyModifiers hotkeyModifiers;
+        private Key hotkey;
 
         #region GetSet
+        public Key Hotkey
+        {
+            get
+            {
+                return hotkey;
+            }
+            set
+            {
+                hotkey = value;
+                OnPropertyChanged("Hotkey");
+            }
+        }
+        public string HotkeyStr
+        {
+            get
+            {
+                return hotkeyStr;
+            }
+            set
+            {
+                hotkeyStr = value;
+                OnPropertyChanged("HotkeyStr");
+            }
+        }
+        public HotkeyModifiers HotkeyModifiers
+        {
+            get
+            {
+                return hotkeyModifiers;
+            }
+            set
+            {
+                hotkeyModifiers = value;
+                OnPropertyChanged("HotkeyModifiers");
+            }
+        }
+
         public ObservableCollection<IconInfo> SelectedMenuIcons
         {
             get

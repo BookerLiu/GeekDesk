@@ -28,7 +28,7 @@
             </hc:UniformSpacingPanel>
 
             <hc:UniformSpacingPanel Spacing="10" Margin="30,50,0,-102.337" Grid.ColumnSpan="4">
-                <CheckBox  Content="显示时追随鼠标位置" IsChecked="{Binding FollowMouse}" Unchecked="CheckBox_Unchecked">
+                <CheckBox  Content="显示时追随鼠标位置" IsChecked="{Binding FollowMouse}">
                     <CheckBox.Background>
                         <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
                             <GradientStop Color="#FF9EA3A6"/>
@@ -56,6 +56,14 @@
         </hc:UniformSpacingPanel>
         <hc:UniformSpacingPanel Spacing="10" Margin="30,193,0,-180.337" Grid.ColumnSpan="4">
             <TextBlock Text="当前热键:"/>
+            <hc:TextBox HorizontalAlignment="Left" 
+                        VerticalAlignment="Top" 
+                        IsReadOnly="True" 
+                        IsReadOnlyCaretVisible="True" 
+                        Width="80"
+                        Text="{Binding HotkeyStr}" 
+                        KeyDown="HotKeyDown"
+                        Margin="12.967,-7.38,-12.967,0"/>
         </hc:UniformSpacingPanel>
     </hc:SimplePanel>
    

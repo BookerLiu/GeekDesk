@@ -3,6 +3,7 @@ using GeekDesk.Constant;
 using GeekDesk.Control;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
+using GlobalHotKey;
 using SharpShell.SharpContextMenu;
 using System;
 using System.Collections.ObjectModel;
@@ -53,7 +54,7 @@ namespace GeekDesk
                 this.Visibility = Visibility.Collapsed;
             }
             //加载完毕注册热键
-            Hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL, Key.Y, ()=>
+            Hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL | HotkeyModifiers.MOD_ALT, Key.Y, ()=>
             {
                 if (this.Visibility == Visibility.Collapsed)
                 {

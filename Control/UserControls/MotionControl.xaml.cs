@@ -23,16 +23,40 @@ namespace GeekDesk.Control.UserControls
     /// </summary>
     public partial class MotionControl : UserControl
     {
+        private static bool controlKeyDown = false;
+        private static AppConfig appConfig = MainWindow.appData.AppConfig;
+
         public MotionControl()
         {
             InitializeComponent();
         }
 
-        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+
+        /// <summary>
+        /// 热键按下
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void HotKeyDown(object sender, KeyEventArgs e)
         {
-
+            if (e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Control) 
+                || e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Windows)
+                || e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Alt)
+                || (e.Key >= Key.A && e.Key <= Key.Z))
+            {
+                if (e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Control)
+                || e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Windows)
+                || e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    appConfig.HotkeyStr = "Ctrl + ";
+                } else if (e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Control)
+                || e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Windows)
+                || e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Alt)
+                && (e.Key >= Key.A && e.Key <= Key.Z))
+                {
+                    appConfig.HotkeyStr += e.Key.ToString();
+                }
+            }
         }
-
-        
     }
 }
