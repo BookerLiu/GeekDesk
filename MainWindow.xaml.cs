@@ -27,8 +27,8 @@ namespace GeekDesk
         public static AppData appData = CommonCode.GetAppDataByFile();
         public MainWindow()
         {
-            InitializeComponent();
             LoadData();
+            InitializeComponent();
             this.Topmost = true;
             this.Loaded += Window_Loaded;
             this.SizeChanged += MainWindow_Resize;
@@ -114,12 +114,6 @@ namespace GeekDesk
 
 
 
-
-
-
-
-
-
         /// <summary>
         /// 关闭按钮单击事件
         /// </summary>
@@ -129,10 +123,6 @@ namespace GeekDesk
         {
             this.Visibility = Visibility.Collapsed;
         }
-
-       
-
-        
 
        
 

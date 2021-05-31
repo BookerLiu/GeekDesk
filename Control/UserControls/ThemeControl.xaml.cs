@@ -19,18 +19,13 @@ using System.Windows.Shapes;
 namespace GeekDesk.Control.UserControls
 {
     /// <summary>
-    /// SettingControl.xaml 的交互逻辑
+    /// MotionControl.xaml 的交互逻辑
     /// </summary>
-    public partial class SettingControl : UserControl
+    public partial class ThemeControl : System.Windows.Controls.UserControl
     {
-        public SettingControl()
+        public ThemeControl()
         {
             InitializeComponent();
-        }
-
-        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-
         }
 
         /// <summary>
@@ -54,7 +49,8 @@ namespace GeekDesk.Control.UserControls
                     appConfig.BitmapImage = ImageUtil.GetBitmapImageByFile(ofd.FileName);
                     appConfig.BacImgName = ofd.FileName;
                 }
-            } catch (Exception)
+            }
+            catch (Exception)
             {
                 HandyControl.Controls.Growl.WarningGlobal("修改背景失败,已重置为默认背景!");
             }

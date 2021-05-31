@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="GeekDesk.Control.UserControls.AboutControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GeekDesk.Control.UserControls"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             mc:Ignorable="d" 
+             Background="AliceBlue"
+             d:DesignHeight="400" d:DesignWidth="500">
+    <hc:SimplePanel Margin="20">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Image Source="/Resource/Image/Ico.png" Width="250" Height="250"/>
+            <TextBlock Text="这是个人开发的程序,所有人可任意修改和免费试用(商用请联系作者)"/>
+        </StackPanel>
+    </hc:SimplePanel>
+</UserControl>

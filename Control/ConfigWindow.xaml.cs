@@ -15,11 +15,15 @@ namespace GeekDesk.Control
     /// </summary>
     public partial class ConfigWindow
     {
+        private static AboutControl about = new AboutControl();
+        private static ThemeControl theme = new ThemeControl();
+        private static MotionControl motion = new MotionControl();
+
         public ConfigWindow(AppConfig appConfig)
         {
             InitializeComponent();
             this.DataContext = appConfig;
-            RightCard.Content = new SettingControl();
+            RightCard.Content = about;
             this.Topmost = true;
         }
 
@@ -47,5 +51,21 @@ namespace GeekDesk.Control
             this.Close();
         }
 
+        private void MemuClick(object sender, RoutedEventArgs e)
+        {
+            SideMenuItem smi = sender as SideMenuItem;
+            switch (smi.Tag.ToString())
+            {
+                case "Motion":
+                    RightCard.Content = motion;
+                    break;
+                case "Theme":
+                    RightCard.Content = theme;
+                    break;
+                default:
+                    RightCard.Content = about;
+                    break;
+            }
+        }
     }
 }

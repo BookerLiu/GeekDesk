@@ -107,14 +107,20 @@
     <Compile Include="Control\IconInfoDialog.xaml.cs">
       <DependentUpon>IconInfoDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\UserControls\AboutControl.xaml.cs">
+      <DependentUpon>AboutControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Control\UserControls\LeftCardControl.xaml.cs">
       <DependentUpon>LeftCardControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\UserControls\ThemeControl.xaml.cs">
+      <DependentUpon>ThemeControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\UserControls\RightCardControl.xaml.cs">
       <DependentUpon>RightCardControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\UserControls\SettingControl.xaml.cs">
-      <DependentUpon>SettingControl.xaml</DependentUpon>
+    <Compile Include="Control\UserControls\MotionControl.xaml.cs">
+      <DependentUpon>MotionControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converts\DoubleToGridLength.cs" />
     <Compile Include="Converts\IntToCornerRadius.cs" />
@@ -149,7 +155,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Control\UserControls\AboutControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Control\UserControls\LeftCardControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\UserControls\ThemeControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -157,7 +171,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Control\UserControls\SettingControl.xaml">
+    <Page Include="Control\UserControls\MotionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -173,7 +187,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Resource\Dictionary\GemetryDictionary.xaml">
+    <Page Include="Resource\Dictionary\Geometry.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

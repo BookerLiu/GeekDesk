@@ -12,7 +12,7 @@
     <UserControl.Resources>
 
         <!--左侧栏样式动画-->
-        <Style x:Key="menuStyle" TargetType="ListBoxItem" BasedOn="{StaticResource ListBoxItemBaseStyle}">
+        <Style x:Key="MenuStyle" TargetType="ListBoxItem" BasedOn="{StaticResource ListBoxItemBaseStyle}">
             <Setter Property="FontSize" Value="15"/>
             <Setter Property="Margin" Value="0,0,0,1"/>
             <Setter Property="Background">
@@ -88,7 +88,7 @@
                     </ListBox.Resources>
 
                     <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem" BasedOn="{StaticResource menuStyle}">
+                        <Style TargetType="ListBoxItem" BasedOn="{StaticResource MenuStyle}">
                             <Setter Property="ContextMenu" Value="{StaticResource menuDialog}"/>
                         </Style>
                     </ListBox.ItemContainerStyle>
