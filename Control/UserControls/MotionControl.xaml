@@ -60,9 +60,10 @@
                         VerticalAlignment="Top" 
                         IsReadOnly="True" 
                         IsReadOnlyCaretVisible="True" 
-                        Width="80"
+                        Width="200"
                         Text="{Binding HotkeyStr}" 
                         KeyDown="HotKeyDown"
+                        KeyUp="HotKeyUp"
                         Margin="12.967,-7.38,-12.967,0"/>
         </hc:UniformSpacingPanel>
     </hc:SimplePanel>

@@ -18,13 +18,15 @@ namespace GeekDesk.Control
         private static AboutControl about = new AboutControl();
         private static ThemeControl theme = new ThemeControl();
         private static MotionControl motion = new MotionControl();
+        public MainWindow mainWindow;
 
-        public ConfigWindow(AppConfig appConfig)
+        public ConfigWindow(AppConfig appConfig, MainWindow mainWindow)
         {
             InitializeComponent();
             this.DataContext = appConfig;
             RightCard.Content = about;
             this.Topmost = true;
+            this.mainWindow = mainWindow;
         }
 
          

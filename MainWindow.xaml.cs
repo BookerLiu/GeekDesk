@@ -137,50 +137,7 @@ namespace GeekDesk
         //    appData.AppConfig.MenuCardWidth = LeftColumn.Width.Value;
         //}
 
-        /// <summary>
-        /// 随鼠标位置显示面板 (鼠标始终在中间)
-        /// </summary>
-        private void ShowAppAndFollowMouse()
-        {
-            //获取鼠标位置
-            System.Windows.Point p = MouseUtil.GetMousePosition();
-            double left = SystemParameters.VirtualScreenLeft;
-            double top = SystemParameters.VirtualScreenTop;
-            double width = SystemParameters.VirtualScreenWidth;
-            double height = SystemParameters.VirtualScreenHeight;
-            double right = width - Math.Abs(left);
-            double bottom = height - Math.Abs(top);
-
-            
-            if (p.X - this.Width / 2 < left)
-            {
-                //判断是否在最左边缘
-                this.Left = left;
-            } else if (p.X + this.Width / 2 > right) 
-            {
-                //判断是否在最右边缘
-                this.Left = right - this.Width;
-            } else
-            {
-                this.Left = p.X - this.Width / 2;
-            }
-
-            
-            if (p.Y - this.Height / 2 < top)
-            {
-                //判断是否在最上边缘
-                this.Top = top;
-            } else if (p.Y + this.Height/2 > bottom) 
-            {
-                //判断是否在最下边缘
-                this.Top = bottom - this.Height;
-            } else
-            {
-                this.Top = p.Y - this.Height / 2;
-            }
-
-            this.Visibility = Visibility.Visible;
-        }
+       
 
         /// <summary>
         /// 右键任务栏图标 显示主面板
@@ -202,6 +159,56 @@ namespace GeekDesk
             }
             Keyboard.Focus(this);
         }
+
+        /// <summary>
+        /// 随鼠标位置显示面板 (鼠标始终在中间)
+        /// </summary>
+        private void ShowAppAndFollowMouse()
+        {
+            //获取鼠标位置
+            System.Windows.Point p = MouseUtil.GetMousePosition();
+            double left = SystemParameters.VirtualScreenLeft;
+            double top = SystemParameters.VirtualScreenTop;
+            double width = SystemParameters.VirtualScreenWidth;
+            double height = SystemParameters.VirtualScreenHeight;
+            double right = width - Math.Abs(left);
+            double bottom = height - Math.Abs(top);
+
+
+            if (p.X - this.Width / 2 < left)
+            {
+                //判断是否在最左边缘
+                this.Left = left;
+            }
+            else if (p.X + this.Width / 2 > right)
+            {
+                //判断是否在最右边缘
+                this.Left = right - this.Width;
+            }
+            else
+            {
+                this.Left = p.X - this.Width / 2;
+            }
+
+
+            if (p.Y - this.Height / 2 < top)
+            {
+                //判断是否在最上边缘
+                this.Top = top;
+            }
+            else if (p.Y + this.Height / 2 > bottom)
+            {
+                //判断是否在最下边缘
+                this.Top = bottom - this.Height;
+            }
+            else
+            {
+                this.Top = p.Y - this.Height / 2;
+            }
+
+            this.Visibility = Visibility.Visible;
+        }
+
 
         /// <summary>
         /// 图片图标单击事件
@@ -266,7 +273,7 @@ namespace GeekDesk
         private void ConfigButtonClick(object sender, RoutedEventArgs e)
         {
             //SettingMenu.IsOpen = true;
-            new ConfigWindow(appData.AppConfig).Show();
+            new ConfigWindow(appData.AppConfig, this).Show();
         }
 
         /// <summary>
