@@ -48,15 +48,29 @@ namespace GeekDesk.Control.UserControls
                 || e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Windows)
                 || e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Alt))
                 {
-                    appConfig.HotkeyStr = "Ctrl + ";
-                } else if (e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Control)
-                || e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Windows)
-                || e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Alt)
+                    appConfig.HotkeyStr += GetKeyName(e);
+                } else if (appConfig.HotkeyStr.Length > 0
                 && (e.Key >= Key.A && e.Key <= Key.Z))
                 {
                     appConfig.HotkeyStr += e.Key.ToString();
                 }
             }
         }
+
+        private string GetKeyName(KeyEventArgs e)
+        {
+            if (e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Control))
+            {
+                return "Ctrl + ";
+            } else if (e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Windows))
+            {
+                return "Win + ";
+            } else if (e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Alt))
+            {
+                return "Alt + ";
+            }
+            return "";
+        }
+
     }
 }
