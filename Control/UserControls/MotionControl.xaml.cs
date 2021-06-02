@@ -1,5 +1,7 @@
 ﻿using GeekDesk.Util;
 using GeekDesk.ViewModel;
+using GlobalHotKey;
+using HandyControl.Data;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -11,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -140,11 +143,15 @@ namespace GeekDesk.Control.UserControls
             ConfigWindow cw = (ConfigWindow)Window.GetWindow(this);
             try
             {
-                Hotkey.Regist(cw.mainWindow, appConfig.HotkeyModifiers, appConfig.Hotkey, () =>
+                if (cw.mainWindow.hotKeyId != -1)
+                {
+                    Hotkey.UnRegist(new WindowInteropHelper(cw.mainWindow).Handle, Hotkey.keymap[cw.mainWindow.hotKeyId]);
+                }
+                cw.mainWindow.hotKeyId = Hotkey.Regist(cw.mainWindow, appConfig.HotkeyModifiers, appConfig.Hotkey, () =>
                 {
                     if (cw.mainWindow.Visibility == Visibility.Collapsed)
                     {
-                        ShowApp(cw.mainWindow);
+                        cw.mainWindow.ShowApp();
                     }
                     else
                     {
@@ -153,7 +160,7 @@ namespace GeekDesk.Control.UserControls
                 });
             } catch (Exception)
             {
-                HandyControl.Controls.Growl.ErrorGlobal("热键注册失败,当前热键已被其它程序占用!");
+                HandyControl.Controls.Growl.WarningGlobal("当前快捷键已被其它程序占用(" + appConfig.HotkeyStr + ")!");
             }
             
         }

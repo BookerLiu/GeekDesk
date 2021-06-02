@@ -30,7 +30,7 @@ namespace GeekDesk.Util
         /// <param name="fsModifiers">组合键</param>
         /// <param name="key">快捷键</param>
         /// <param name="callBack">回调函数</param>
-        public static bool Regist(Window window, HotkeyModifiers fsModifiers, Key key, HotKeyCallBackHanlder callBack)
+        public static int Regist(Window window, HotkeyModifiers fsModifiers, Key key, HotKeyCallBackHanlder callBack)
         {
             var hwnd = new WindowInteropHelper(window).Handle;
             var _hwndSource = HwndSource.FromHwnd(hwnd);
@@ -40,8 +40,8 @@ namespace GeekDesk.Util
 
             var vk = KeyInterop.VirtualKeyFromKey(key);
             keymap[id] = callBack;
-
-            return RegisterHotKey(hwnd, id, fsModifiers, (uint)vk);
+            if (!RegisterHotKey(hwnd, id, fsModifiers, (uint)vk)) throw new Exception("RegisterHotKey Failed");
+            return id;
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace GeekDesk.Util
 
         const int WM_HOTKEY = 0x312;
         static int keyid = 10;
-        static Dictionary<int, HotKeyCallBackHanlder> keymap = new Dictionary<int, HotKeyCallBackHanlder>();
+        public static Dictionary<int, HotKeyCallBackHanlder> keymap = new Dictionary<int, HotKeyCallBackHanlder>();
 
         public delegate void HotKeyCallBackHanlder();
     }

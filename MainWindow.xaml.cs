@@ -4,6 +4,7 @@ using GeekDesk.Control;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using GlobalHotKey;
+using HandyControl.Data;
 using SharpShell.SharpContextMenu;
 using System;
 using System.Collections.ObjectModel;
@@ -26,6 +27,8 @@ namespace GeekDesk
     {
 
         public static AppData appData = CommonCode.GetAppDataByFile();
+        public int hotKeyId = -1;
+        public HotKeyManager hkm = new HotKeyManager();
         public MainWindow()
         {
             LoadData();
@@ -53,18 +56,45 @@ namespace GeekDesk
             {
                 this.Visibility = Visibility.Collapsed;
             }
-            //加载完毕注册热键
-            Hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL | HotkeyModifiers.MOD_ALT, Key.Y, ()=>
+            try
+            {
+                HotKey hk =  hkm.Register(Key.Y, ModifierKeys.Control);
+                hkm.KeyPressed += DisplayWindowHotKeyPress;
+                ////加载完毕注册热键
+                //hotKeyId = Hotkey.Regist(this, appData.AppConfig.HotkeyModifiers, appData.AppConfig.Hotkey, () =>
+                //{
+                //    if (this.Visibility == Visibility.Collapsed)
+                //    {
+                //        ShowApp();
+                //    }
+                //    else
+                //    {
+                //        this.Visibility = Visibility.Collapsed;
+                //    }
+                //});
+            } catch (Exception)
+            {
+                HandyControl.Controls.Growl.WarningGlobal("启动快捷键已被其它程序占用(" + appData.AppConfig.HotkeyStr + ")!");
+            }
+            
+        }
+
+        private void DisplayWindowHotKeyPress(object sender, KeyPressedEventArgs e)
+        {
+            if (e.HotKey.Key == Key.Y)
             {
                 if (this.Visibility == Visibility.Collapsed)
                 {
                     ShowApp();
-                } else
+                }
+                else
                 {
                     this.Visibility = Visibility.Collapsed;
                 }
-            });
+            }
+
         }
+
 
 
         void MainWindow_Resize(object sender, System.EventArgs e)
@@ -148,7 +178,7 @@ namespace GeekDesk
         {
             ShowApp();
         }
-        private void ShowApp()
+        public void ShowApp()
         {
             if (appData.AppConfig.FollowMouse)
             {

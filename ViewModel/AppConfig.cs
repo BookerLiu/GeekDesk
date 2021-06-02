@@ -37,9 +37,9 @@ namespace GeekDesk.ViewModel
         private int pannelCornerRadius = 4;  //面板圆角 默认4
         [field: NonSerialized]
         private ObservableCollection<IconInfo> selectedMenuIcons;
-        private string hotkeyStr;
-        private HotkeyModifiers hotkeyModifiers;
-        private Key hotkey;
+        private string hotkeyStr = "Ctrl + Q";
+        private HotkeyModifiers hotkeyModifiers = HotkeyModifiers.MOD_CONTROL;
+        private Key hotkey = Key.Q;
 
         #region GetSet
         public Key Hotkey
