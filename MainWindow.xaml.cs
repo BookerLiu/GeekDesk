@@ -2,6 +2,7 @@
 using GeekDesk.Constant;
 using GeekDesk.Control;
 using GeekDesk.Control.Windows;
+using GeekDesk.Task;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using GlobalHotKey;
@@ -37,6 +38,7 @@ namespace GeekDesk
             this.Topmost = true;
             this.Loaded += Window_Loaded;
             this.SizeChanged += MainWindow_Resize;
+            BacklogTask.BackLogCheck();
         }
 
         private void LoadData()

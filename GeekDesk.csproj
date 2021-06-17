@@ -275,6 +275,7 @@
   <ItemGroup>
     <Content Include="Fonts\iconfont.css" />
     <Content Include="Fonts\iconfont.js" />
+    <Resource Include="Resource\Image\CompleteLogo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

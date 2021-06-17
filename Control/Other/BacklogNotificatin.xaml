@@ -9,35 +9,41 @@
         Height="450">
     <Grid>
 
-        <!--<TextBlock Text="You have a new task" 
-                   VerticalAlignment="Top" 
-                   FontSize="25" 
-                   Foreground="#326CF3"
-                   HorizontalAlignment="Center" Margin="37.686,17.333,36.353,0"/>
-        <Border Margin="27.647,69,36.354,329" Style="{StaticResource BorderTipInfo}" Height="50">
-            <TextBlock Margin="10,0,0,0" FontSize="20" Text="任务名称"/>
-        </Border>
+        <Image Source="/Resource/Image/CompleteLogo.png" Margin="22,22,22,361" />
 
-        <Border Style="{StaticResource BorderRegion}" Width="250" Height="200"  Effect="{StaticResource EffectShadow1}" Margin="31.646,168,36.353,80">
-            <Border Background="{DynamicResource InfoBrush}">
-                <TextBlock Text="agaharhaewrhehssssssss任务名称ssssssssssssssssss"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"
-                           Foreground="White"
-                           TextWrapping="Wrap"
-                           TextAlignment="Center"
-                           Margin="10"
-                           FontSize="15"/>
+        
+        <hc:Card MaxWidth="250" Height="200" BorderThickness="0" Effect="{DynamicResource EffectShadow2}" Margin="8">
+            <!--Card 的内容部分-->
+            <Border CornerRadius="4,4,0,0" Width="160" Height="160">
+                <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Msg}"/>
             </Border>
-        </Border>-->
+            <!--Card 的尾部部分-->
+            <hc:Card.Footer>
+                <StackPanel Margin="10" Width="160">
+                    <!--Card 的一级内容-->
+                    <TextBlock TextWrapping="NoWrap" FontSize="20"  Style="{DynamicResource TextBlockLargeBold}" TextTrimming="CharacterEllipsis" 
+                                       Text="{Binding Title}" 
+                                       HorizontalAlignment="Left"/>
+                    <!--Card 的二级内容-->
+                    <TextBlock TextWrapping="NoWrap" Style="{DynamicResource TextBlockDefault}" TextTrimming="CharacterEllipsis" 
+                                       Text="{Binding ExeTime}" Margin="0,6,0,0"
+                                       HorizontalAlignment="Left"/>
+                </StackPanel>
+            </hc:Card.Footer>
+        </hc:Card>
 
-        <ComboBox hc:DropDownElement.ConsistentWidth="False" SelectedIndex="0" Margin="219,334,39,84" Height="20" Width="60">
-            <ComboBox.Items>
-                <ComboBoxItem Content="分"/>
-                <ComboBoxItem Content="时"/>
-            </ComboBox.Items>
-        </ComboBox>
+        <hc:UniformSpacingPanel Spacing="20" HorizontalAlignment="Center" Margin="0,346,0,0">
+            <hc:TextBox x:Name="DelayTime" Height="20" Width="60" Text="10" PreviewTextInput="DelayTime_PreviewTextInput" PreviewLostKeyboardFocus="DelayTime_PreviewLostKeyboardFocus" />
+            <ComboBox x:Name="DelayType" hc:DropDownElement.ConsistentWidth="False" SelectedIndex="0" Height="20" Width="60">
+                <ComboBox.Items>
+                    <ComboBoxItem Content="分"/>
+                    <ComboBoxItem Content="时"/>
+                </ComboBox.Items>
+            </ComboBox>
+            <Button Content="推迟提醒" Click="DelayButton_Click"/>
+        </hc:UniformSpacingPanel>
 
-        <Button Command="{Binding OpenCmd}" Content="关闭" Margin="10,0,10,20" Width="298" VerticalAlignment="Bottom"/>
+
+        <Button Click="BacklogDone_Click" Content="朕已阅" Margin="10,0,10,20" Width="298" VerticalAlignment="Bottom"/>
     </Grid>
 </Border>
