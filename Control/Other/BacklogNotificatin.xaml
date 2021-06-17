@@ -1,0 +1,43 @@
+﻿<Border x:Class="GeekDesk.Control.Other.BacklogNotificatin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        Background="AliceBlue"
+        BorderThickness="1"
+        BorderBrush="{DynamicResource BorderBrush}"
+        Width="320"
+        Height="450">
+    <Grid>
+
+        <!--<TextBlock Text="You have a new task" 
+                   VerticalAlignment="Top" 
+                   FontSize="25" 
+                   Foreground="#326CF3"
+                   HorizontalAlignment="Center" Margin="37.686,17.333,36.353,0"/>
+        <Border Margin="27.647,69,36.354,329" Style="{StaticResource BorderTipInfo}" Height="50">
+            <TextBlock Margin="10,0,0,0" FontSize="20" Text="任务名称"/>
+        </Border>
+
+        <Border Style="{StaticResource BorderRegion}" Width="250" Height="200"  Effect="{StaticResource EffectShadow1}" Margin="31.646,168,36.353,80">
+            <Border Background="{DynamicResource InfoBrush}">
+                <TextBlock Text="agaharhaewrhehssssssss任务名称ssssssssssssssssss"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Foreground="White"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"
+                           Margin="10"
+                           FontSize="15"/>
+            </Border>
+        </Border>-->
+
+        <ComboBox hc:DropDownElement.ConsistentWidth="False" SelectedIndex="0" Margin="219,334,39,84" Height="20" Width="60">
+            <ComboBox.Items>
+                <ComboBoxItem Content="分"/>
+                <ComboBoxItem Content="时"/>
+            </ComboBox.Items>
+        </ComboBox>
+
+        <Button Command="{Binding OpenCmd}" Content="关闭" Margin="10,0,10,20" Width="298" VerticalAlignment="Bottom"/>
+    </Grid>
+</Border>

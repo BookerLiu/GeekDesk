@@ -1,4 +1,5 @@
-﻿using GeekDesk.Util;
+﻿using GeekDesk.Control.Windows;
+using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using GlobalHotKey;
 using HandyControl.Data;
@@ -19,7 +20,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GeekDesk.Control.UserControls
+namespace GeekDesk.Control.UserControls.Config
 {
     /// <summary>
     /// 动作设置

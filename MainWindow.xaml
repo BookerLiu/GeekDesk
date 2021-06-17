@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GeekDesk"
         xmlns:tp="clr-namespace:GeekDesk.EditTextBlock"
-        xmlns:uc="clr-namespace:GeekDesk.Control.UserControls"
+        xmlns:uc="clr-namespace:GeekDesk.Control.UserControls.PannelCard"
         mc:Ignorable="d"
         xmlns:cvt="clr-namespace:GeekDesk.Converts"
         xmlns:DraggAnimatedPanel="clr-namespace:DraggAnimatedPanel"
@@ -62,7 +62,7 @@
                         <SolidColorBrush Opacity="0.01"/>
                     </DockPanel.Background>
                     <hc:UniformSpacingPanel Spacing="0" Grid.ColumnSpan="4" HorizontalAlignment="Right" VerticalAlignment="Center">
-                        <Button Background="Transparent" 
+                        <Button Background="Transparent"
                                 BorderThickness="0"
                                 hc:IconElement.Geometry="M917.930667 512c0-57.6 36.181333-106.496 86.869333-125.952a505.429333 505.429333 0 0 0-55.210667-133.461333A134.826667 134.826667 0 0 1 771.413333 74.410667 507.733333 507.733333 0 0 0 637.952 19.2 135.168 135.168 0 0 1 512 106.069333 134.912 134.912 0 0 1 386.048 19.2 505.429333 505.429333 0 0 0 252.586667 74.410667c22.186667 49.749333 13.141333 109.824-27.562667 150.528a135.168 135.168 0 0 1-150.528 27.648 502.016 502.016 0 0 0-55.296 133.461333c50.688 19.626667 86.869333 68.437333 86.869333 125.952 0 57.6-36.181333 106.496-86.869333 125.952 12.117333 47.530667 30.72 92.330667 55.210667 133.461333a134.826667 134.826667 0 0 1 178.090666 178.176 507.733333 507.733333 0 0 0 133.546667 55.210667A135.168 135.168 0 0 1 512 917.930667c57.6 0 106.496 36.181333 125.952 86.869333a505.429333 505.429333 0 0 0 133.461333-55.210667 134.912 134.912 0 0 1 27.562667-150.528 135.168 135.168 0 0 1 150.528-27.648 502.016 502.016 0 0 0 55.296-133.461333A134.912 134.912 0 0 1 917.930667 512zM512 647.338667a135.338667 135.338667 0 1 1 0.085333-270.762667A135.338667 135.338667 0 0 1 512 647.338667z"
                                 hc:IconElement.Height="18"
@@ -72,6 +72,12 @@
                                 Initialized="SettingButton_Initialized"
                                 x:Name="SettingButton"
                                 >
+                            <Button.ContextMenu>
+                                <ContextMenu x:Name="SettingMenus" Width="130">
+                                    <MenuItem Header="设置" Click="ConfigMenuClick"/>
+                                    <MenuItem Header="待办" Click="BacklogMenuClick"/>
+                                </ContextMenu>
+                            </Button.ContextMenu>
                         </Button>
                         <Button Background="Transparent" 
                                 BorderThickness="0"
@@ -94,8 +100,9 @@
                 
                 <hc:NotifyIcon Icon="/Resource/Image/Ico.png" Text="GeekDesk" Click="NotifyIcon_Click">
                     <hc:NotifyIcon.ContextMenu>
-                        <ContextMenu Width="200">
+                        <ContextMenu Width="130">
                             <MenuItem Header="打开面板" Click="ShowApp"/>
+                            <MenuItem Header="待办"  Click="BacklogMenuClick"/>
                             <MenuItem Header="设置"  Click="ConfigApp"/>
                             <MenuItem Header="退出" Click="ExitApp"/>
                         </ContextMenu>

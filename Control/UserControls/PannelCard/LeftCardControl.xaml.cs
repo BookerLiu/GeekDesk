@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GeekDesk.Control.UserControls
+namespace GeekDesk.Control.UserControls.PannelCard
 {
     /// <summary>
     /// LeftCardControl.xaml 的交互逻辑
@@ -123,7 +123,19 @@ namespace GeekDesk.Control.UserControls
         private void DeleteMenu(object sender, RoutedEventArgs e)
         {
             MenuInfo menuInfo = ((MenuItem)sender).Tag as MenuInfo;
+            if (appData.MenuList.Count == 1)
+            {
+                //如果删除以后没有菜单的话 先创建一个
+                CreateMenu(null, null);
+            }
             appData.MenuList.Remove(menuInfo);
+            if (menus.SelectedIndex == -1)
+            {
+                // 选中下一个菜单
+                menus.SelectedIndex = 0;
+                appData.AppConfig.SelectedMenuIndex = menus.SelectedIndex;
+                appData.AppConfig.SelectedMenuIcons = appData.MenuList[0].IconList;
+            }
         }
 
         /// <summary>
@@ -171,6 +183,14 @@ namespace GeekDesk.Control.UserControls
             }
         }
 
+        /// <summary>
+        /// 修改菜单图标
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EditMenuGeometry(object sender, RoutedEventArgs e)
+        {
 
+        }
     }
 }

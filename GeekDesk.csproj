@@ -104,25 +104,40 @@
     <Compile Include="Constant\DefaultConstant.cs" />
     <Compile Include="Constant\IconStartType.cs" />
     <Compile Include="Constant\SortType.cs" />
-    <Compile Include="Control\ConfigWindow.xaml.cs">
+    <Compile Include="Control\Other\BacklogNotificatin.xaml.cs">
+      <DependentUpon>BacklogNotificatin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\UserControls\Backlog\BacklogControl.xaml.cs">
+      <DependentUpon>BacklogControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Windows\BacklogInfoWindow.xaml.cs">
+      <DependentUpon>BacklogInfoWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Windows\BacklogWindow.xaml.cs">
+      <DependentUpon>BacklogWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Windows\ConfigWindow.xaml.cs">
       <DependentUpon>ConfigWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\IconInfoDialog.xaml.cs">
+    <Compile Include="Control\Other\IconInfoDialog.xaml.cs">
       <DependentUpon>IconInfoDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\UserControls\AboutControl.xaml.cs">
+    <Compile Include="Control\Other\MenuGeometryDialog.xaml.cs">
+      <DependentUpon>MenuGeometryDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\UserControls\Config\AboutControl.xaml.cs">
       <DependentUpon>AboutControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\UserControls\LeftCardControl.xaml.cs">
+    <Compile Include="Control\UserControls\PannelCard\LeftCardControl.xaml.cs">
       <DependentUpon>LeftCardControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\UserControls\ThemeControl.xaml.cs">
+    <Compile Include="Control\UserControls\Config\ThemeControl.xaml.cs">
       <DependentUpon>ThemeControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\UserControls\RightCardControl.xaml.cs">
+    <Compile Include="Control\UserControls\PannelCard\RightCardControl.xaml.cs">
       <DependentUpon>RightCardControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\UserControls\MotionControl.xaml.cs">
+    <Compile Include="Control\UserControls\Config\MotionControl.xaml.cs">
       <DependentUpon>MotionControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converts\DoubleToGridLength.cs" />
@@ -133,6 +148,7 @@
     <Compile Include="EditTextBlock\EditableTextBlock.cs" />
     <Compile Include="EditTextBlock\EditableTextBlockAdorner.cs" />
     <Compile Include="Converts\HideTypeConvert.cs" />
+    <Compile Include="Task\BacklogTask.cs" />
     <Compile Include="Util\CommonCode.cs" />
     <Compile Include="Util\ConsoleManager.cs" />
     <Compile Include="Util\DragAdorner.cs" />
@@ -148,33 +164,54 @@
     <Compile Include="Util\SystemIcon.cs" />
     <Compile Include="ViewModel\AppConfig.cs" />
     <Compile Include="ViewModel\AppData.cs" />
+    <Compile Include="ViewModel\BacklogInfo.cs" />
     <Compile Include="ViewModel\IconInfo.cs" />
     <Compile Include="ViewModel\MenuInfo.cs" />
-    <Page Include="Control\ConfigWindow.xaml">
+    <Page Include="Control\Other\BacklogNotificatin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Control\IconInfoDialog.xaml">
+    <Page Include="Control\UserControls\Backlog\BacklogControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Control\UserControls\AboutControl.xaml">
+    <Page Include="Control\Windows\BacklogInfoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Control\UserControls\LeftCardControl.xaml">
+    <Page Include="Control\Windows\BacklogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Control\UserControls\ThemeControl.xaml">
+    <Page Include="Control\Windows\ConfigWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Control\UserControls\RightCardControl.xaml">
+    <Page Include="Control\Other\IconInfoDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Control\UserControls\MotionControl.xaml">
+    <Page Include="Control\Other\MenuGeometryDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\UserControls\Config\AboutControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\UserControls\PannelCard\LeftCardControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\UserControls\Config\ThemeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\UserControls\PannelCard\RightCardControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\UserControls\Config\MotionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -190,6 +227,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Resource\DefaultIconfont\MyIcon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resource\Dictionary\Geometry.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -213,25 +254,27 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Fonts\iconfont.ttf" />
+    <None Include="Fonts\iconfont.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Resource\DefaultIconfont\iconfont.json" />
-    <Resource Include="Resource\DefaultIconfont\iconfont.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resource\DefaultIconfont\iconfont.svg" />
     <Resource Include="Resource\Image\图片.png" />
     <Resource Include="Resource\Image\文件夹.png" />
     <Resource Include="Resource\Image\Ico.png" />
     <Resource Include="Resource\Image\Ico.ico" />
     <Resource Include="Resource\Image\WindowLogo.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Fonts\iconfont.css" />
+    <Content Include="Fonts\iconfont.js" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

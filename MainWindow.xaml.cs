@@ -1,6 +1,7 @@
 ﻿using DraggAnimatedPanelExample;
 using GeekDesk.Constant;
 using GeekDesk.Control;
+using GeekDesk.Control.Windows;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using GlobalHotKey;
@@ -264,12 +265,7 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void ConfigApp(object sender, RoutedEventArgs e)
         {
-            //MenuInfo menuInfo = ((MenuItem)sender).Tag as MenuInfo;
-            //appData.MenuList.Remove(menuInfo);
-
-
-
-            //CommonCode.SaveAppData(appData);
+            ConfigWindow.Show(appData.AppConfig, this);
         }
 
         /// <summary>
@@ -282,7 +278,7 @@ namespace GeekDesk
             Application.Current.Shutdown();
         }
 
-        
+
 
         //public static void ShowContextMenu(IntPtr hAppWnd, Window taskBar, System.Windows.Point pt)
         //{
@@ -296,16 +292,33 @@ namespace GeekDesk
         //}
 
         /// <summary>
-        /// 设置按钮左键弹出菜单
+        /// 设置图标
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ConfigButtonClick(object sender, RoutedEventArgs e)
         {
-            //SettingMenu.IsOpen = true;
-            new ConfigWindow(appData.AppConfig, this).Show();
+            SettingMenus.IsOpen = true;
         }
 
+        /// <summary>
+        /// 设置菜单点击
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ConfigMenuClick(object sender, RoutedEventArgs e)
+        {
+            ConfigWindow.Show(appData.AppConfig, this);
+        }
+        /// <summary>
+        /// 待办任务
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BacklogMenuClick(object sender, RoutedEventArgs e)
+        {
+            BacklogWindow.Show();
+        }
         /// <summary>
         /// 禁用设置按钮右键菜单
         /// </summary>
@@ -331,6 +344,8 @@ namespace GeekDesk
                 this.Visibility = Visibility.Collapsed;
             }
         }
+
+        
     }
 
 

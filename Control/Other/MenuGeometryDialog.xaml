@@ -1,4 +1,4 @@
-﻿<Border x:Class="GeekDesk.Control.IconInfoDialog"
+﻿<Border x:Class="GeekDesk.Control.Other.MenuGeometryDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:hc="https://handyorg.github.io/handycontrol"
@@ -6,7 +6,7 @@
         Width="300"
         Height="300"
         Opacity="0.9">
-    <Border.Resources>
+    <!--<Border.Resources>
         <Style x:Key="LeftTB" TargetType="TextBlock" BasedOn="{StaticResource TextBlockBaseStyle}">
             <Setter Property="Width" Value="40"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -34,7 +34,7 @@
                 <TextBlock  Text="图标:"  Style="{StaticResource LeftTB}"/>
                 <Image x:Name="IconImg" Source="{Binding BitmapImage, Mode=OneWay}" Width="60" Height="60"/>
                 <Button Content="修改" Click="EditImage"/>
-                <Button Content="默认" Click="EditImageToDefault"/>
+                <Button Content="重置" Click="ReStoreImage"/>
             </hc:UniformSpacingPanel>
             <hc:Divider LineStrokeDashArray="3,3" Margin="0,128,0,23" LineStroke="Black" Grid.ColumnSpan="4"/>
             <hc:UniformSpacingPanel Spacing="10" Margin="0,150,0,10" Grid.ColumnSpan="4">
@@ -52,5 +52,5 @@
             </hc:UniformSpacingPanel>
         </Grid>
         <Button Width="22" Height="22" Command="hc:ControlCommands.Close" Style="{StaticResource ButtonIcon}" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,4,4,0"/>
-    </hc:SimplePanel>
+    </hc:SimplePanel>-->
 </Border>

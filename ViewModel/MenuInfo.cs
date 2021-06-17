@@ -16,7 +16,36 @@ namespace GeekDesk.ViewModel
         private string menuId;
         private Visibility menuEdit = Visibility.Collapsed;
         private Visibility notMenuEdit = Visibility.Visible;
+        private string menuGeometry;  //菜单几何图标
+        private string geometryColor; //几何图标颜色
         private ObservableCollection<IconInfo> iconList = new ObservableCollection<IconInfo>();
+
+
+        public string MenuGeometry
+        {
+            get
+            {
+                return menuGeometry;
+            }
+            set
+            {
+                menuGeometry = value;
+                OnPropertyChanged("MenuGeometry");
+            }
+        }
+
+        public string GeometryColor
+        {
+            get
+            {
+                return geometryColor;
+            }
+            set
+            {
+                geometryColor = value;
+                OnPropertyChanged("GeometryColor");
+            }
+        }
 
         public string MenuName
         {

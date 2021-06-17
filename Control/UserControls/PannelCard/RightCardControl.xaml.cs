@@ -1,5 +1,6 @@
 ﻿using DraggAnimatedPanelExample;
 using GeekDesk.Constant;
+using GeekDesk.Control.Other;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using System;
@@ -20,7 +21,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GeekDesk.Control.UserControls
+namespace GeekDesk.Control.UserControls.PannelCard
 {
     /// <summary>
     /// RightCardControl.xaml 的交互逻辑

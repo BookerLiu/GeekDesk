@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 
-namespace GeekDesk.Control
+namespace GeekDesk.Control.Other
 {
     /// <summary>
     /// TextDialog.xaml 的交互逻辑
@@ -45,7 +45,7 @@ namespace GeekDesk.Control
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void EditImageToDefault(object sender, RoutedEventArgs e)
+        private void ReStoreImage(object sender, RoutedEventArgs e)
         {
             IconInfo info = ((Button)sender).Tag as IconInfo;
             info.BitmapImage = ImageUtil.ByteArrToImage(info.DefaultImage);

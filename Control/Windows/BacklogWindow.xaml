@@ -1,0 +1,99 @@
+﻿<Window x:Class="GeekDesk.Control.Windows.BacklogWindow"
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           xmlns:hc="https://handyorg.github.io/handycontrol"
+           xmlns:local="clr-namespace:GeekDesk"
+           mc:Ignorable="d"
+           WindowStartupLocation="CenterScreen"
+           Height="450" 
+           Width="850" 
+           WindowStyle="None"
+           AllowsTransparency="True"
+           Background="Transparent" ShowInTaskbar="False"
+        >
+    <Window.Resources>
+        <Style x:Key="MenuStyle" TargetType="hc:SideMenuItem" BasedOn="{StaticResource SideMenuItemBaseStyle}">
+            <Style.Setters>
+                <Setter Property="Background" Value="AliceBlue"/>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFE2E2E2"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#FFDAD7D7"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Border CornerRadius="8" BorderThickness="0">
+        <Border.Background>
+            <SolidColorBrush Color="AliceBlue" Opacity="0.9"/>
+        </Border.Background>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <hc:Card Grid.Row="0" Grid.Column="0">
+                <hc:SideMenu BorderThickness="1" 
+                             AutoSelect="True" 
+                             >
+                    <hc:SideMenu.Background>
+                        <SolidColorBrush Color="AliceBlue"/>
+                    </hc:SideMenu.Background>
+
+                    <hc:SideMenu.ItemContainerStyle>
+                        <Style TargetType="hc:SideMenuItem" BasedOn="{StaticResource MenuStyle}"/>
+                    </hc:SideMenu.ItemContainerStyle>
+
+                    <hc:SideMenuItem Header="待办列表"
+                                     IsSelected="True"
+                                     Selected="MemuClick"
+                                     Tag="ExeList"
+                                     >
+                        <hc:SideMenuItem.Icon>
+                            <Button Background="Transparent" 
+                            BorderThickness="0"
+                            hc:IconElement.Geometry="{StaticResource About}" 
+                            hc:IconElement.Height="18"
+                            hc:IconElement.Width="18"
+                            HorizontalAlignment="Right"
+                            />
+                        </hc:SideMenuItem.Icon>
+                    </hc:SideMenuItem>
+                    <hc:SideMenuItem Header="历史待办"
+                                     Tag="History"
+                                     Selected="MemuClick">
+                        <hc:SideMenuItem.Icon>
+                            <Button Background="Transparent" 
+                            BorderThickness="0"
+                            hc:IconElement.Geometry="{StaticResource Pannel}"
+                            hc:IconElement.Height="18"
+                            hc:IconElement.Width="18"
+                            HorizontalAlignment="Right"
+                            />
+                        </hc:SideMenuItem.Icon>
+                    </hc:SideMenuItem>
+                </hc:SideMenu>
+            </hc:Card>
+            <hc:Card Grid.Row="0" Grid.Column="1" x:Name="RightCard" Height="450"  MouseDown="DragMove" />
+
+
+            <Button Width="22" Height="22" Click="Close_Button_Click" Style="{StaticResource ButtonIcon}" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" Grid.Column="1"/>
+            <Button Content="新建待办"
+                    Panel.ZIndex="1"
+                    Background="#5BC0DE"
+                    Foreground="White"
+                    Grid.Column="1"
+                    Margin="590,29,10,384"
+                    Click="CreateBacklog_BtnClick"/>
+        </Grid>
+    </Border>
+</Window>

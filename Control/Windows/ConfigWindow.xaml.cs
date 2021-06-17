@@ -1,6 +1,7 @@
 ﻿
 using GalaSoft.MvvmLight.Command;
 using GeekDesk.Control.UserControls;
+using GeekDesk.Control.UserControls.Config;
 using GeekDesk.ViewModel;
 using HandyControl.Controls;
 using HandyControl.Data;
@@ -8,7 +9,7 @@ using System;
 using System.Windows;
 using System.Windows.Input;
 
-namespace GeekDesk.Control
+namespace GeekDesk.Control.Windows
 {
     /// <summary>
     /// ConfigDialog.xaml 的交互逻辑
@@ -20,7 +21,7 @@ namespace GeekDesk.Control
         private static MotionControl motion = new MotionControl();
         public MainWindow mainWindow;
 
-        public ConfigWindow(AppConfig appConfig, MainWindow mainWindow)
+        private ConfigWindow(AppConfig appConfig, MainWindow mainWindow)
         {
             InitializeComponent();
             this.DataContext = appConfig;
@@ -68,6 +69,16 @@ namespace GeekDesk.Control
                     RightCard.Content = about;
                     break;
             }
+        }
+
+        private static System.Windows.Window window = null;
+        public static void Show(AppConfig appConfig, MainWindow mainWindow)
+        {
+            if (window == null || !window.Activate())
+            {
+                window = new ConfigWindow(appConfig, mainWindow);
+            }
+            window.Show();
         }
     }
 }

@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GeekDesk.Control.UserControls
+namespace GeekDesk.Control.UserControls.Config
 {
     /// <summary>
     /// MotionControl.xaml 的交互逻辑

@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="GeekDesk.Control.UserControls.Backlog.BacklogControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GeekDesk.Control.UserControls.PannelCard"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             mc:Ignorable="d" 
+             Background="AliceBlue"
+             >
+    
+    <hc:SimplePanel Margin="20">
+        <Grid>
+            <DataGrid x:Name="BacklogList" 
+                  HeadersVisibility="All"  
+                  AutoGenerateColumns="False" 
+                  ItemsSource="{Binding}"
+                  IsReadOnly="True"
+                  Initialized="DataGridMenu_Initialized"
+                  >
+                <DataGrid.ContextMenu>
+                    <ContextMenu x:Name="Menu" Width="120">
+                        <MenuItem Header="详情" Click="DetailMenu_Click"/>
+                        <MenuItem Header="删除" Click="DeleteMenu_Click"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow" BasedOn="{StaticResource DataGridRowStyle}">
+                        <EventSetter Event="MouseRightButtonUp" Handler="DataGridRow_MouseRightButtonUp" />
+                    </Style>
+                </DataGrid.RowStyle>
+
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell" BasedOn="{StaticResource DataGridCellStyle}">
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+                </DataGrid.CellStyle>
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource DataGridColumnHeaderStyle}">
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+
+                <DataGrid.Background>
+                    <SolidColorBrush Color="AliceBlue"/>
+                </DataGrid.Background>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="120" Binding="{Binding Title}" Header="待办任务"/>
+                    <DataGridTextColumn Width="210" Binding="{Binding Msg}" Header="待办详情"/>
+                    <DataGridTextColumn Width="147" Binding="{Binding ExeTime}" Header="待办时间"/>
+                    <DataGridTextColumn Width="147" Binding="{Binding DoneTime}" Header="完成时间"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <StackPanel hc:Growl.GrowlParent="True" hc:Growl.Token="DeleteConfirm" VerticalAlignment="Center" Margin="0,10,10,50"/>
+        </Grid>
+    </hc:SimplePanel>
+</UserControl>

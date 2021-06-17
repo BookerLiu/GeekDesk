@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeekDesk.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,17 +11,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GeekDesk.Control.UserControls
+namespace GeekDesk.Control.Other
 {
     /// <summary>
-    /// AboutControl.xaml 的交互逻辑
+    /// BacklogNotificatin.xaml 的交互逻辑
     /// </summary>
-    public partial class AboutControl : UserControl
+    public partial class BacklogNotificatin
     {
-        public AboutControl()
+        public BacklogNotificatin(BacklogInfo info)
         {
             InitializeComponent();
         }
