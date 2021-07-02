@@ -80,7 +80,7 @@
                             hc:IconElement.Width="18"
                             HorizontalAlignment="Right"
                             />-->
-                            <TextBlock Text="&#xe70b;" Style="{StaticResource MyIcon}"/>
+                            <TextBlock Text="&#xe614;" FontFamily="pack://application:,,,/Fonts/#IconFont" FontSize="40"/>
                         </hc:SideMenuItem.Icon>
                     </hc:SideMenuItem>
 

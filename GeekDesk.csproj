@@ -37,6 +37,9 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>GeekDesk.SvgToGeometry</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Apex.WinForms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=98d06957926c086d, processorArchitecture=MSIL">
       <HintPath>packages\SharpShellTools.2.2.0.0\lib\Apex.WinForms.dll</HintPath>
@@ -56,8 +59,11 @@
     <Reference Include="GlobalHotKey, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\GlobalHotKey.1.1.0\lib\GlobalHotKey.dll</HintPath>
     </Reference>
-    <Reference Include="HandyControl, Version=3.1.0.0, Culture=neutral, PublicKeyToken=45be8712787a1e5b, processorArchitecture=MSIL">
-      <HintPath>packages\HandyControl.3.1.0\lib\net452\HandyControl.dll</HintPath>
+    <Reference Include="HandyControl, Version=3.2.0.0, Culture=neutral, PublicKeyToken=45be8712787a1e5b, processorArchitecture=MSIL">
+      <HintPath>packages\HandyControl.3.2.0\lib\net472\HandyControl.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="ServerManager, Version=2.2.0.0, Culture=neutral, processorArchitecture=x86">
       <HintPath>packages\SharpShellTools.2.2.0.0\lib\ServerManager.exe</HintPath>
@@ -148,6 +154,7 @@
     <Compile Include="EditTextBlock\EditableTextBlock.cs" />
     <Compile Include="EditTextBlock\EditableTextBlockAdorner.cs" />
     <Compile Include="Converts\HideTypeConvert.cs" />
+    <Compile Include="SvgToGeometry.cs" />
     <Compile Include="Task\BacklogTask.cs" />
     <Compile Include="Util\CommonCode.cs" />
     <Compile Include="Util\ConsoleManager.cs" />
@@ -254,8 +261,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Resource Include="Fonts\iconfont.ttf" />
-    <None Include="Fonts\iconfont.json" />
+    <Resource Include="Fonts\iconfont.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="iconfont.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -273,8 +284,6 @@
     <Resource Include="Resource\Image\WindowLogo.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Fonts\iconfont.css" />
-    <Content Include="Fonts\iconfont.js" />
     <Resource Include="Resource\Image\CompleteLogo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
