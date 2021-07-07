@@ -79,7 +79,10 @@ namespace GeekDesk
             {
                 HandyControl.Controls.Growl.WarningGlobal("启动快捷键已被其它程序占用(" + appData.AppConfig.HotkeyStr + ")!");
             }
-            
+            //AeroGlassHelper.ExtendGlass(this);
+            //AeroGlassHelper.ExtendGlass(BBB, (int)this.Margin.Left, (int)this.Margin.Right, (int)this.Margin.Top, (int)this.Margin.Bottom);
+
+
         }
 
         private void DisplayWindowHotKeyPress(object sender, KeyPressedEventArgs e)
@@ -97,7 +100,6 @@ namespace GeekDesk
             }
 
         }
-
 
 
         void MainWindow_Resize(object sender, System.EventArgs e)
@@ -347,7 +349,15 @@ namespace GeekDesk
             }
         }
 
-        
+        private void window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (this.DataContext != null)
+            {
+                AppData appData = this.DataContext as AppData;
+                appData.AppConfig.WindowWidth = this.Width;
+                appData.AppConfig.WindowHeight = this.Height;
+            }
+        }
     }
 
 

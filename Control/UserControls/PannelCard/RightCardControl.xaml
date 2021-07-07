@@ -52,7 +52,7 @@
              Effect="{DynamicResource EffectShadow2}" 
              Margin="5,0,5,5" Grid.ColumnSpan="2">
         <hc:Card.Background>
-            <SolidColorBrush Color="#FFFFFFFF" Opacity="{Binding AppConfig.CardOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}"/>
+            <SolidColorBrush Color="AliceBlue"  hc:GeometryEffect.GeometryEffect="20" Opacity="{Binding AppConfig.CardOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}"/>
         </hc:Card.Background>
         <hc:Card.BorderBrush>
             <SolidColorBrush Color="#FFFFFFFF" Opacity="0"/>

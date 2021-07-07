@@ -11,18 +11,19 @@
         xmlns:DraggAnimatedPanel="clr-namespace:DraggAnimatedPanel"
         x:Name="window"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        Title="MainWindow" Height="500" Width="600"
+        Title="MainWindow" 
+        d:DesignHeight="500" d:DesignWidth="700"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
         OpacityMask ="White"
         Deactivated="window_Deactivated"
+        SizeChanged="window_SizeChanged"
         >
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="10"/>
     </WindowChrome.WindowChrome>
     <Window.Resources>
-
        
         <cvt:MenuWidthConvert x:Key="MenuWidthConvert"/>
         <cvt:OpcityConvert x:Key="OpcityConvert"/>
@@ -37,7 +38,18 @@
         <Border CornerRadius="{Binding AppConfig.PannelCornerRadius, Mode=TwoWay, Converter={StaticResource IntToCornerRadius}}"  BorderThickness="0">
             <!--背景图片-->
             <Border.Background>
-                <ImageBrush ImageSource="{Binding AppConfig.BitmapImage}" Opacity="{Binding AppConfig.BgOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}"></ImageBrush>
+                <VisualBrush>
+                    <VisualBrush.Visual>
+                        <Grid ClipToBounds="True">
+                            <Image Source="{Binding AppConfig.BitmapImage}" Margin="-30" Opacity="{Binding AppConfig.BgOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}">
+                                <Image.Effect>
+                                    <BlurEffect Radius="100"/>
+                                </Image.Effect>
+                            </Image>
+                        </Grid>
+                    </VisualBrush.Visual>
+                </VisualBrush>
+                <!--<ImageBrush ImageSource="{Binding AppConfig.BitmapImage}" Opacity="{Binding AppConfig.BgOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}"></ImageBrush>-->
             </Border.Background>
             <Grid>
                 <Grid.RowDefinitions>

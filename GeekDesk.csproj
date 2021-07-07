@@ -38,7 +38,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>GeekDesk.SvgToGeometry</StartupObject>
+    <StartupObject>GeekDesk.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Apex.WinForms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=98d06957926c086d, processorArchitecture=MSIL">
@@ -59,8 +59,8 @@
     <Reference Include="GlobalHotKey, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\GlobalHotKey.1.1.0\lib\GlobalHotKey.dll</HintPath>
     </Reference>
-    <Reference Include="HandyControl, Version=3.2.0.0, Culture=neutral, PublicKeyToken=45be8712787a1e5b, processorArchitecture=MSIL">
-      <HintPath>packages\HandyControl.3.2.0\lib\net472\HandyControl.dll</HintPath>
+    <Reference Include="HandyControl, Version=3.1.0.0, Culture=neutral, PublicKeyToken=45be8712787a1e5b, processorArchitecture=MSIL">
+      <HintPath>packages\HandyControl.3.1.0\lib\net472\HandyControl.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -116,6 +116,9 @@
     <Compile Include="Control\UserControls\Backlog\BacklogControl.xaml.cs">
       <DependentUpon>BacklogControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\UserControls\IconFont\IconPannel.xaml.cs">
+      <DependentUpon>IconPannel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Control\Windows\BacklogInfoWindow.xaml.cs">
       <DependentUpon>BacklogInfoWindow.xaml</DependentUpon>
     </Compile>
@@ -146,6 +149,9 @@
     <Compile Include="Control\UserControls\Config\MotionControl.xaml.cs">
       <DependentUpon>MotionControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\Windows\IconfontWindow.xaml.cs">
+      <DependentUpon>IconfontWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converts\DoubleToGridLength.cs" />
     <Compile Include="Converts\IntToCornerRadius.cs" />
     <Compile Include="Converts\OpcityConvert.cs" />
@@ -154,8 +160,8 @@
     <Compile Include="EditTextBlock\EditableTextBlock.cs" />
     <Compile Include="EditTextBlock\EditableTextBlockAdorner.cs" />
     <Compile Include="Converts\HideTypeConvert.cs" />
-    <Compile Include="SvgToGeometry.cs" />
     <Compile Include="Task\BacklogTask.cs" />
+    <Compile Include="Util\AeroGlassHelper.cs" />
     <Compile Include="Util\CommonCode.cs" />
     <Compile Include="Util\ConsoleManager.cs" />
     <Compile Include="Util\DragAdorner.cs" />
@@ -166,12 +172,13 @@
     <Compile Include="Converts\MenuWidthConvert.cs" />
     <Compile Include="Util\MouseUtil.cs" />
     <Compile Include="Util\MouseUtilities.cs" />
-    <Compile Include="Util\ScreenUtil.cs" />
     <Compile Include="Util\ShellContextMenu.cs" />
+    <Compile Include="Util\SvgToGeometry.cs" />
     <Compile Include="Util\SystemIcon.cs" />
     <Compile Include="ViewModel\AppConfig.cs" />
     <Compile Include="ViewModel\AppData.cs" />
     <Compile Include="ViewModel\BacklogInfo.cs" />
+    <Compile Include="ViewModel\IconfontInfo.cs" />
     <Compile Include="ViewModel\IconInfo.cs" />
     <Compile Include="ViewModel\MenuInfo.cs" />
     <Page Include="Control\Other\BacklogNotificatin.xaml">
@@ -179,6 +186,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Control\UserControls\Backlog\BacklogControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\UserControls\IconFont\IconPannel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -222,6 +233,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Control\Windows\IconfontWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -261,6 +276,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Resource\Iconfont\iconfont.json" />
     <Resource Include="Fonts\iconfont.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -285,6 +301,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\Image\CompleteLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\Iconfont\iconfont.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

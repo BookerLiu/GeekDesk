@@ -55,13 +55,15 @@
         <cvt:OpcityConvert x:Key="OpcityConvert"/>
     </UserControl.Resources>
         <!--左侧栏-->
-        <hc:Card 
+        <hc:Card x:Name="MyCard"
                  BorderThickness="1" 
                  Effect="{DynamicResource EffectShadow2}" 
                  Margin="5,0,0,5"
                  >
             <hc:Card.Background>
-                <SolidColorBrush Color="#FFFFFFFF" Opacity="{Binding AppConfig.CardOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}"/>
+                <SolidColorBrush Color="#FFFFFFFF" hc:GeometryEffect.GeometryEffect="20" Opacity="{Binding AppConfig.CardOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}">
+                
+                </SolidColorBrush>
             </hc:Card.Background>
             <hc:Card.BorderBrush>
                 <SolidColorBrush Color="#FFFFFFFF" Opacity="0"/>
@@ -131,8 +133,9 @@
                                     </Canvas>
                                 </Button>-->
                                 <!--<TextBlock Text="&#xe606;" Style="{StaticResource MyIcon}"/>-->
-                                <TextBlock Text="&#xe614;" FontFamily="/#IconFont" FontSize="40"/>
                                 <TextBlock Text="{Binding MenuName}"
+                                           HorizontalAlignment="Center"
+                                           TextAlignment="Center"
                                            VerticalAlignment="Center"
                                            IsVisibleChanged="MenuWhenVisibilityChanged"
                                            Visibility="{Binding NotMenuEdit}"

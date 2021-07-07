@@ -1,4 +1,5 @@
 ﻿using DraggAnimatedPanelExample;
+using GeekDesk.Control.Windows;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using System;
@@ -13,6 +14,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -31,6 +33,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
         {
             InitializeComponent();
             appData.AppConfig.SelectedMenuIcons = appData.MenuList[appData.AppConfig.SelectedMenuIndex].IconList;
+
         }
 
         DelegateCommand<int[]> _swap;
@@ -190,7 +193,8 @@ namespace GeekDesk.Control.UserControls.PannelCard
         /// <param name="e"></param>
         private void EditMenuGeometry(object sender, RoutedEventArgs e)
         {
-
+            MenuInfo menuInfo = ((MenuItem)sender).Tag as MenuInfo;
+            IconfontWindow.Show(SvgToGeometry.GetIconfonts(), menuInfo);
         }
     }
 }

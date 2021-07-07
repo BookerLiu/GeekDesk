@@ -48,6 +48,23 @@ namespace GeekDesk.Util
         }
 
         /// <summary>
+        /// byte[]转换成Image
+        /// </summary>
+        /// <param name="byteArrayIn">二进制图片流</param>
+        /// <returns>Image</returns>
+        public static Image ByteArrayToImage(byte[] byteArrayIn)
+        {
+            if (byteArrayIn == null)
+                return null;
+            using (System.IO.MemoryStream ms = new System.IO.MemoryStream(byteArrayIn))
+            {
+                System.Drawing.Image returnImage = System.Drawing.Image.FromStream(ms);
+                ms.Flush();
+                return returnImage;
+            }
+        }
+
+        /// <summary>
         /// 图片base64 转 BitmapImage
         /// </summary>
         /// <param name="base64"></param>

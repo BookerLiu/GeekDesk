@@ -4,6 +4,7 @@ using GeekDesk.Util;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -177,6 +178,7 @@ namespace GeekDesk.ViewModel
                 if (imageByteArr == null || imageByteArr.Length == 0)
                 {
                     bacImgName = "系统默认";
+                    //Image image = ImageUtil.ByteArrayToImage(Convert.FromBase64String(Constants.DEFAULT_BAC_IMAGE_BASE64));
                     return ImageUtil.ByteArrToImage(Convert.FromBase64String(Constants.DEFAULT_BAC_IMAGE_BASE64));
                 } else
                 {
