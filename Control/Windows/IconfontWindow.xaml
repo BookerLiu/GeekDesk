@@ -21,12 +21,12 @@
             <hc:TabControl x:Name="MyTabControl" IsAnimationEnabled="True" SelectionChanged="TabControl_SelectionChanged" ShowContextMenu="True"  IsTabFillEnabled="True" Margin="20,30,20,20" Height="350" VerticalAlignment="Top">
                 <hc:TabItem Tag="System" Header="系统" hc:IconElement.Height="16" hc:IconElement.Width="16" hc:IconElement.Geometry="{StaticResource CalendarGeometry}" >
                     <hc:SimplePanel Background="AliceBlue">
-                        <uc:IconPannel x:Name="System" />
+                        <uc:IconPannel IconfontList="{Binding iconListSystem}" IconInfo="{Binding iconInfoSystem}"/>
                     </hc:SimplePanel>
                 </hc:TabItem>
                 <hc:TabItem Tag="Custom" IsSelected="True" Header="自定义" hc:IconElement.Height="16" hc:IconElement.Width="16" hc:IconElement.Geometry="{StaticResource CalendarGeometry}">
                     <hc:SimplePanel Background="AliceBlue">
-                        <uc:IconPannel x:Name="Custom" />
+                        <uc:IconPannel IconfontList="{Binding iconListCustom}" IconInfo="{Binding iconInfoCustom}"/>
                     </hc:SimplePanel>
                 </hc:TabItem>
             </hc:TabControl>

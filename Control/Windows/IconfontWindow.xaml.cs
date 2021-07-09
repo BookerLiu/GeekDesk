@@ -22,15 +22,18 @@ namespace GeekDesk.Control.Windows
     public partial class IconfontWindow : Window
     {
 
-        private static List<IconfontInfo> listInfo;
         private static MenuInfo menuInfo;
+        private DataContextInfo dataContextInfo = new DataContextInfo();
+
         private IconfontWindow(List<IconfontInfo> listInfo, MenuInfo menuInfo)
         {
             InitializeComponent();
-            this.DataContext = listInfo;
-            IconfontWindow.listInfo = listInfo;
+            dataContextInfo.iconListSystem = listInfo;
+            this.DataContext = dataContextInfo;
             IconfontWindow.menuInfo = menuInfo;
         }
+
+
 
         /// <summary>
         /// 移动窗口
@@ -52,7 +55,7 @@ namespace GeekDesk.Control.Windows
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.DataContext = listInfo;
+            //this.DataContext = listInfo;
         }
 
         private void Confirm_Click(object sender, RoutedEventArgs e)
@@ -62,15 +65,15 @@ namespace GeekDesk.Control.Windows
             switch (tag)
             {
                 case "Custom":
-                    if (Custom.IconfontList.SelectedIndex != -1)
+                    if (dataContextInfo.iconInfoCustom != null)
                     {
-                        menuInfo.MenuGeometry = (((StackPanel)Custom.IconfontList.SelectedItem).Tag as IconfontInfo).Text;
+                        menuInfo.MenuGeometry = dataContextInfo.iconInfoCustom.Text;
                     }
                     break;
                 default:
-                    if (System.IconfontList.SelectedIndex != -1)
+                    if (dataContextInfo.iconInfoSystem != null)
                     {
-                        menuInfo.MenuGeometry = (((StackPanel)System.IconfontList.SelectedItem).Tag as IconfontInfo).Text;
+                        menuInfo.MenuGeometry = dataContextInfo.iconInfoSystem.Text;
                     }
                     break;
             }
@@ -86,6 +89,17 @@ namespace GeekDesk.Control.Windows
                 window = new IconfontWindow(listInfo, menuInfo);
             }
             window.Show();
+        }
+
+
+        private class DataContextInfo
+        {
+            public List<IconfontInfo> iconListSystem;
+            public List<IconfontInfo> iconListCustom;
+            public IconfontInfo iconInfoSystem;
+            public IconfontInfo iconInfoCustom;
+
+            
         }
     }
 }
