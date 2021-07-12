@@ -1,5 +1,7 @@
-﻿using GeekDesk.Util;
+﻿using GeekDesk.Control.Other;
+using GeekDesk.Util;
 using GeekDesk.ViewModel;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,14 +25,15 @@ namespace GeekDesk.Control.Windows
     {
 
         private static MenuInfo menuInfo;
-        private DataContextInfo dataContextInfo = new DataContextInfo();
-
-        private IconfontWindow(List<IconfontInfo> listInfo, MenuInfo menuInfo)
+        private static List<IconfontInfo> systemIcons;
+        private static List<IconfontInfo> customIcons;
+        private IconfontWindow(List<IconfontInfo> icons, MenuInfo menuInfo)
         {
-            InitializeComponent();
-            dataContextInfo.iconListSystem = listInfo;
-            this.DataContext = dataContextInfo;
+            systemIcons = icons;
+            this.DataContext = systemIcons;
+            this.Topmost = true;
             IconfontWindow.menuInfo = menuInfo;
+            InitializeComponent();
         }
 
 
@@ -55,25 +58,42 @@ namespace GeekDesk.Control.Windows
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //this.DataContext = listInfo;
+            TabItem ti = this.MyTabControl.SelectedItem as TabItem;
+
+            switch (ti.Tag.ToString())
+            {
+                case "Custom":
+                    CustomButton.IsEnabled = true;
+                    this.DataContext = customIcons;
+                    break;
+                default:
+                    if (CustomButton != null)
+                    {
+                        CustomButton.IsEnabled = false;
+                    }
+                    this.DataContext = systemIcons;
+                    break;
+            }
         }
 
         private void Confirm_Click(object sender, RoutedEventArgs e)
         {
-            string tag = (MyTabControl.SelectedContent as TabItem).Tag.ToString();
-
-            switch (tag)
+            TabItem ti = this.MyTabControl.SelectedItem as TabItem;
+            int index;
+            switch (ti.Tag.ToString())
             {
                 case "Custom":
-                    if (dataContextInfo.iconInfoCustom != null)
+                    index = this.CustomIcon.IconListBox.SelectedIndex;
+                    if (index != -1)
                     {
-                        menuInfo.MenuGeometry = dataContextInfo.iconInfoCustom.Text;
+                        menuInfo.MenuGeometry = customIcons[index].Text;
                     }
                     break;
                 default:
-                    if (dataContextInfo.iconInfoSystem != null)
+                    index = this.SystemIcon.IconListBox.SelectedIndex;
+                    if (index != -1)
                     {
-                        menuInfo.MenuGeometry = dataContextInfo.iconInfoSystem.Text;
+                        menuInfo.MenuGeometry = systemIcons[index].Text;
                     }
                     break;
             }
@@ -91,14 +111,9 @@ namespace GeekDesk.Control.Windows
             window.Show();
         }
 
-
-        private class DataContextInfo
+        private void CustomButton_Click(object sender, RoutedEventArgs e)
         {
-            public List<IconfontInfo> iconListSystem;
-            public List<IconfontInfo> iconListCustom;
-            public IconfontInfo iconInfoSystem;
-            public IconfontInfo iconInfoCustom;
-
+            
             
         }
     }

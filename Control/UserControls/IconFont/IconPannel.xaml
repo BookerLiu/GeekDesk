@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              >
     <WrapPanel  HorizontalAlignment="Center" VerticalAlignment="Top">
-        <ListBox x:Name="IconListBox" ItemsSource="{Binding iconListSystem}" SelectionChanged="ListBox_SelectionChanged" BorderThickness="0" Background="AliceBlue">
+        <ListBox x:Name="IconListBox" ItemsSource="{Binding}" BorderThickness="0" Background="AliceBlue">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Orientation="Horizontal" Background="Transparent"/>

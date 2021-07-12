@@ -113,6 +113,9 @@
     <Compile Include="Control\Other\BacklogNotificatin.xaml.cs">
       <DependentUpon>BacklogNotificatin.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\Other\CustomIconUrlDialog.xaml.cs">
+      <DependentUpon>CustomIconUrlDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Control\UserControls\Backlog\BacklogControl.xaml.cs">
       <DependentUpon>BacklogControl.xaml</DependentUpon>
     </Compile>
@@ -167,6 +170,7 @@
     <Compile Include="Util\DragAdorner.cs" />
     <Compile Include="Util\FileIcon.cs" />
     <Compile Include="Util\HotKey.cs" />
+    <Compile Include="Util\HttpUtil.cs" />
     <Compile Include="Util\ImageUtil.cs" />
     <Compile Include="Util\ListViewDragDropManager.cs" />
     <Compile Include="Converts\MenuWidthConvert.cs" />
@@ -184,6 +188,10 @@
     <Page Include="Control\Other\BacklogNotificatin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\Other\CustomIconUrlDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Control\UserControls\Backlog\BacklogControl.xaml">
       <SubType>Designer</SubType>
@@ -256,6 +264,10 @@
     <Page Include="Resource\Dictionary\Geometry.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

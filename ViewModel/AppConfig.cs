@@ -4,7 +4,6 @@ using GeekDesk.Util;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -38,11 +37,38 @@ namespace GeekDesk.ViewModel
         private int pannelCornerRadius = 4;  //面板圆角 默认4
         [field: NonSerialized]
         private ObservableCollection<IconInfo> selectedMenuIcons;
-        private string hotkeyStr = "Ctrl + Q";
-        private HotkeyModifiers hotkeyModifiers = HotkeyModifiers.MOD_CONTROL;
-        private Key hotkey = Key.Q;
+        private string hotkeyStr = "Ctrl + Q";  //默认启动面板快捷键
+        private HotkeyModifiers hotkeyModifiers = HotkeyModifiers.MOD_CONTROL; //默认启动面板快捷键
+        private Key hotkey = Key.Q; //默认启动面板快捷键
+
+        private string customIconUrl; //自定义图标url
+        private string customIconJsonUrl;  //自定义图标json信息url
 
         #region GetSet
+        public string CustomIconUrl
+        {
+            get
+            {
+                return customIconUrl;
+            }
+            set
+            {
+                customIconUrl = value;
+                OnPropertyChanged("CustomIconUrl");
+            }
+        }
+        public string CustomIconJsonUrl
+        {
+            get
+            {
+                return customIconJsonUrl;
+            }
+            set
+            {
+                customIconJsonUrl = value;
+                OnPropertyChanged("CustomIconJsonUrl");
+            }
+        }
         public Key Hotkey
         {
             get

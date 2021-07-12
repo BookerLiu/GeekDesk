@@ -107,7 +107,7 @@
 
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel MouseLeftButtonDown="MenuClick" Tag="{Binding}">
+                        <StackPanel MouseLeftButtonDown="MenuClick" MouseRightButtonDown="MenuClick" Tag="{Binding}">
                                 <hc:TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
                                      HorizontalAlignment="Left"
                                      Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}}"
@@ -119,27 +119,19 @@
                                      IsVisibleChanged="MenuEditWhenVisibilityChanged"
                                      Visibility="{Binding MenuEdit}"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <!--<Button Background="Transparent" 
-                                        BorderThickness="0"
-                                        hc:IconElement.Geometry="{StaticResource test}" 
-                                        hc:IconElement.Height="18"
-                                        hc:IconElement.Width="18"
-                                        />-->
-                                <!--<Button Background="Transparent" BorderThickness="0" Height="10" Width="10">
-                                    <Canvas>
-                                        <Path Fill="#92E3C3" Data="M391.68 957.44h-66.56v-158.4128H66.56v-66.56h258.56v-174.08H66.56v-66.56h258.56V307.2h66.56l-0.0512 184.6272h240.6912V307.2h66.56l-0.0512 184.6272H957.44v307.2h-258.6112V957.44h-66.4576l-0.0512-158.4128H391.6288V957.44z m-0.0512-224.9728h240.6912v-174.08H391.6288v174.08z m565.8112-174.08h-258.6112v174.08H957.44v-174.08z"/>
-                                        <Path Fill="#5D7092" Data="M51.2 51.2h921.6v256H51.2z"/>
-                                        <Path Fill="#5D7092" Data="M921.6 0a102.4 102.4 0 0 1 102.4 102.4v819.2a102.4 102.4 0 0 1-102.4 102.4H102.4a102.4 102.4 0 0 1-102.4-102.4V102.4a102.4 102.4 0 0 1 102.4-102.4h819.2z m0 66.56H102.4a35.84 35.84 0 0 0-35.5328 30.976L66.56 102.4v819.2a35.84 35.84 0 0 0 30.976 35.5328L102.4 957.44h819.2a35.84 35.84 0 0 0 35.5328-30.976L957.44 921.6V102.4a35.84 35.84 0 0 0-30.976-35.5328L921.6 66.56z"/>
-                                    </Canvas>
-                                </Button>-->
-                                <!--<TextBlock Text="&#xe606;" Style="{StaticResource MyIcon}"/>-->
-                                <TextBlock Text="{Binding MenuName}"
-                                           HorizontalAlignment="Center"
-                                           TextAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           IsVisibleChanged="MenuWhenVisibilityChanged"
-                                           Visibility="{Binding NotMenuEdit}"
-                                           />
+                                    <Button Background="Transparent" 
+                                            BorderThickness="0"
+                                            hc:IconElement.Geometry="{Binding MenuGeometry}" 
+                                            hc:IconElement.Height="18"
+                                            hc:IconElement.Width="18"
+                                            />
+                                    <TextBlock Text="{Binding MenuName}"
+                                               HorizontalAlignment="Center"
+                                               TextAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               IsVisibleChanged="MenuWhenVisibilityChanged"
+                                               Visibility="{Binding NotMenuEdit}"
+                                               />
                                 </StackPanel>
                             </StackPanel>
                         </DataTemplate>

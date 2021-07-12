@@ -19,12 +19,6 @@
     </Border.Background>
     <hc:SimplePanel Margin="10">
         <Grid Margin="8,20,8,20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="93*"/>
-                <ColumnDefinition Width="38*"/>
-                <ColumnDefinition Width="126*"/>
-                <ColumnDefinition Width="7*"/>
-            </Grid.ColumnDefinitions>
             <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4">
                 <TextBlock Text="名称:"  Style="{StaticResource LeftTB}"/>
                 <TextBox x:Name="IconName" Text="{Binding Name, Mode=OneWay}" Width="180" FontSize="14"/>

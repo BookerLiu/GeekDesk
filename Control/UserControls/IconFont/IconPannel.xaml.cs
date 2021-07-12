@@ -23,6 +23,7 @@ namespace GeekDesk.Control.UserControls.IconFont
     {
         public IconPannel()
         {
+            //DataContext = this;
             InitializeComponent();
         }
 

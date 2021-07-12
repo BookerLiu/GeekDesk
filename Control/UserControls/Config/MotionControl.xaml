@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cvt="clr-namespace:GeekDesk.Converts"
-             xmlns:local="clr-namespace:GeekDesk.Control.UserControls"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" 
              Background="AliceBlue"
