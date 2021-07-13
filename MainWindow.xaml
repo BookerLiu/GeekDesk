@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GeekDesk"
-        xmlns:tp="clr-namespace:GeekDesk.EditTextBlock"
         xmlns:uc="clr-namespace:GeekDesk.Control.UserControls.PannelCard"
         mc:Ignorable="d"
         xmlns:cvt="clr-namespace:GeekDesk.Converts"

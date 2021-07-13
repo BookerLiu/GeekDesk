@@ -166,8 +166,6 @@
     <Compile Include="Converts\OpcityConvert.cs" />
     <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.cs" />
     <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.Drag.cs" />
-    <Compile Include="EditTextBlock\EditableTextBlock.cs" />
-    <Compile Include="EditTextBlock\EditableTextBlockAdorner.cs" />
     <Compile Include="Converts\HideTypeConvert.cs" />
     <Compile Include="Task\BacklogTask.cs" />
     <Compile Include="Util\AeroGlassHelper.cs" />
