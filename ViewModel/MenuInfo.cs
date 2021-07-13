@@ -1,4 +1,5 @@
-﻿using GeekDesk.Util;
+﻿using GeekDesk.Constant;
+using GeekDesk.Util;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -25,6 +26,10 @@ namespace GeekDesk.ViewModel
         {
             get
             {
+                if (menuGeometry == null)
+                {
+                    return Constants.DEFAULT_MENU_GEOMETRY;
+                }
                 return menuGeometry;
             }
             set
@@ -38,6 +43,10 @@ namespace GeekDesk.ViewModel
         {
             get
             {
+                if (geometryColor == null)
+                {
+                    return Constants.DEFAULT_MENU_GEOMETRY_COLOR;
+                }
                 return geometryColor;
             }
             set

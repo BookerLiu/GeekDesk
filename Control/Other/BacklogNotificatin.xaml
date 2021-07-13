@@ -9,7 +9,7 @@
         Height="450">
     <Grid>
 
-        <Image Source="/Resource/Image/CompleteLogo.png" Margin="22,22,22,361" />
+        <Image Source="/Resource/Image/BacklogImg.png" Margin="22,35,22,361" />
 
         
         <hc:Card MaxWidth="250" Height="200" BorderThickness="0" Effect="{DynamicResource EffectShadow2}" Margin="8">

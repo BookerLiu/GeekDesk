@@ -43,7 +43,7 @@
                         <Grid ClipToBounds="True">
                             <Image Source="{Binding AppConfig.BitmapImage}" Margin="-30" Opacity="{Binding AppConfig.BgOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}">
                                 <Image.Effect>
-                                    <BlurEffect Radius="100"/>
+                                    <BlurEffect Radius="{Binding AppConfig.BlurValue}"/>
                                 </Image.Effect>
                             </Image>
                         </Grid>
@@ -110,7 +110,7 @@
 
                 <uc:RightCardControl Grid.Row="1" Grid.Column="1"/>
                 
-                <hc:NotifyIcon Icon="/Resource/Image/Ico.png" Text="GeekDesk" Click="NotifyIcon_Click">
+                <hc:NotifyIcon Icon="/Resource/Image/About.png" Text="GeekDesk" Click="NotifyIcon_Click">
                     <hc:NotifyIcon.ContextMenu>
                         <ContextMenu Width="130">
                             <MenuItem Header="打开面板" Click="ShowApp"/>

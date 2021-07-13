@@ -76,6 +76,7 @@ namespace GeekDesk.Control.Windows
                     {
                         if (customIcons == null)
                         {
+                            vm.Iconfonts = null;
                             LoadingOnlineIcon();
                         } else
                         {

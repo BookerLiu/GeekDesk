@@ -31,7 +31,10 @@
         <Grid Margin="0,0,0,8">
             <hc:SimplePanel Margin="20" HorizontalAlignment="Center">
                 <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4">
-                    <TextBlock Text="待办任务*:"  Style="{StaticResource LeftTB}"/>
+                    <WrapPanel>
+                        <TextBlock Text="待办任务:"  Style="{StaticResource LeftTB}"/>
+                        <TextBlock Text="*" Foreground="Red" />
+                    </WrapPanel>
                     <TextBox x:Name="Title" Width="290" FontSize="14" />
                 </hc:UniformSpacingPanel>
 

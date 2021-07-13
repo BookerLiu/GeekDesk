@@ -44,7 +44,43 @@ namespace GeekDesk.ViewModel
         private string customIconUrl; //自定义图标url
         private string customIconJsonUrl;  //自定义图标json信息url
 
+        private bool blurEffect = false; //毛玻璃效果 默认否
+        private double blurValue;
+
         #region GetSet
+
+        public double BlurValue
+        {
+            get
+            {
+                return blurValue;
+            }
+            set
+            {
+                blurValue = value;
+                OnPropertyChanged("BlurValue");
+            }
+        }
+
+        public bool BlurEffect
+        {
+            get
+            {
+                return blurEffect;
+            }
+            set
+            {
+                blurEffect = value;
+                if (blurEffect)
+                {
+                    BlurValue = 100;
+                } else
+                {
+                    BlurValue = 0;
+                }
+                OnPropertyChanged("BlurEffect");
+            }
+        }
         public string CustomIconUrl
         {
             get

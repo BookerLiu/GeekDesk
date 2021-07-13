@@ -24,7 +24,18 @@
                        />
             <Button Content="修改" Click="BGButton_Click"/>
         </hc:UniformSpacingPanel>
-        <hc:Divider LineStrokeDashArray="3,3" Margin="0,60,0,66" LineStroke="Black" Grid.ColumnSpan="4"/>
+
+        <hc:UniformSpacingPanel Spacing="10" Margin="19,50,11,-36.433" Grid.ColumnSpan="4">
+            <CheckBox x:Name="IconIsAdmin" Content="毛玻璃效果" IsChecked="{Binding BlurEffect}">
+                <CheckBox.Background>
+                    <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                        <GradientStop Color="#FF9EA3A6"/>
+                    </LinearGradientBrush>
+                </CheckBox.Background>
+            </CheckBox>
+        </hc:UniformSpacingPanel>
+
+        <!--<hc:Divider LineStrokeDashArray="3,3" Margin="0,60,0,66" LineStroke="Black" Grid.ColumnSpan="4"/>-->
 
         <hc:UniformSpacingPanel Spacing="10" Margin="0,80,-40,-89.5" Grid.ColumnSpan="4">
             <TextBlock Text="托盘不透明度" VerticalAlignment="Center"/>

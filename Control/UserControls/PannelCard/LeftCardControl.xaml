@@ -121,9 +121,12 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Button Background="Transparent" 
                                             BorderThickness="0"
-                                            hc:IconElement.Geometry="{Binding MenuGeometry}" 
+                                            hc:IconElement.Geometry="{Binding MenuGeometry}"
                                             hc:IconElement.Height="18"
                                             hc:IconElement.Width="18"
+                                            IsEnabled="False"
+                                            Opacity="1"
+                                            Foreground="{Binding GeometryColor}"
                                             />
                                     <TextBlock Text="{Binding MenuName}"
                                                HorizontalAlignment="Center"

@@ -258,10 +258,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Resource\DefaultIconfont\MyIcon.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Resource\Dictionary\Geometry.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -301,15 +297,19 @@
   <ItemGroup>
     <Resource Include="Resource\Image\图片.png" />
     <Resource Include="Resource\Image\文件夹.png" />
-    <Resource Include="Resource\Image\Ico.png" />
-    <Resource Include="Resource\Image\Ico.ico" />
     <Resource Include="Resource\Image\WindowLogo.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resource\Image\CompleteLogo.png" />
+    <Resource Include="Resource\Iconfont\iconfont.js" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resource\Iconfont\iconfont.js" />
+    <Resource Include="Resource\Image\About.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\Image\公众号.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\Image\BacklogImg.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
