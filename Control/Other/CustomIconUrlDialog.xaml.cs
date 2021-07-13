@@ -1,4 +1,5 @@
-﻿using GeekDesk.Util;
+﻿using GeekDesk.Control.Windows;
+using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using Microsoft.Win32;
 using System;
@@ -17,8 +18,8 @@ namespace GeekDesk.Control.Other
 
         public CustomIconUrlDialog(AppConfig appConfig)
         {
-            this.DataContext = appConfig;
             InitializeComponent();
+            this.DataContext = appConfig;
         }
 
         public CustomIconUrlDialog()
@@ -26,5 +27,18 @@ namespace GeekDesk.Control.Other
             InitializeComponent();
         }
 
+        private void Confirm_Click(object sender, RoutedEventArgs e)
+        {
+            AppConfig appConfig = this.DataContext as AppConfig;
+            appConfig.CustomIconJsonUrl = JsonUrl.Text.Trim();
+            appConfig.CustomIconUrl = IconUrl.Text.Trim();
+            if (!StringUtil.IsEmpty(IconUrl.Text) && !StringUtil.IsEmpty(JsonUrl.Text)) 
+            {
+                IconfontWindow.vm.IsSettingUrl = "true";
+            } else
+            {
+                IconfontWindow.vm.IsSettingUrl = "false";
+            }
+        }
     }
 }

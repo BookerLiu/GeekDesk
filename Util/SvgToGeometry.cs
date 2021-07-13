@@ -26,6 +26,18 @@ namespace GeekDesk.Util
 
             StreamReader streamReader = new StreamReader(svgStream);
             string svgJsStr = streamReader.ReadToEnd();
+            JObject jo = ReadJson(jsonStream);
+
+            return GetIconfonts(svgJsStr, jo);
+        }
+
+        public static List<IconfontInfo> GetIconfonts(string svgJsStr, string jsonStr)
+        {
+            return GetIconfonts(svgJsStr, JObject.Parse(jsonStr));
+        }
+
+        public static List<IconfontInfo> GetIconfonts(string svgJsStr, JObject json)
+        {
 
             svgJsStr = svgJsStr.Substring(svgJsStr.IndexOf("<svg>"),
                 svgJsStr.Length - (svgJsStr.Length - (svgJsStr.IndexOf("</svg>") + "</svg>".Length)) - svgJsStr.IndexOf("<svg>"));
@@ -34,8 +46,7 @@ namespace GeekDesk.Util
             xmlDoc.LoadXml(svgJsStr);
             XmlNodeList nodeList = xmlDoc.SelectNodes("/svg/symbol");
 
-            JObject jo = ReadJson(jsonStream);
-            JArray ja = JArray.Parse(jo["glyphs"].ToString());
+            JArray ja = JArray.Parse(json["glyphs"].ToString());
 
             List<IconfontInfo> listInfo = new List<IconfontInfo>();
             for (int i = 0; i < nodeList.Count; i++)

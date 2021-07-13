@@ -4,17 +4,13 @@ using GeekDesk.ViewModel;
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
+
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 
 namespace GeekDesk.Control.Windows
 {
@@ -23,17 +19,24 @@ namespace GeekDesk.Control.Windows
     /// </summary>
     public partial class IconfontWindow : Window
     {
-
+        private static AppConfig appConfig = MainWindow.appData.AppConfig;
         private static MenuInfo menuInfo;
         private static List<IconfontInfo> systemIcons;
         private static List<IconfontInfo> customIcons;
+        public static IconfontViewModel vm;
         private IconfontWindow(List<IconfontInfo> icons, MenuInfo menuInfo)
         {
+            
+            InitializeComponent();
+
             systemIcons = icons;
-            this.DataContext = systemIcons;
             this.Topmost = true;
             IconfontWindow.menuInfo = menuInfo;
-            InitializeComponent();
+            vm = new IconfontViewModel
+            {
+                Iconfonts = systemIcons
+            };
+            this.DataContext = vm;
         }
 
 
@@ -64,14 +67,33 @@ namespace GeekDesk.Control.Windows
             {
                 case "Custom":
                     CustomButton.IsEnabled = true;
-                    this.DataContext = customIcons;
+                    if (StringUtil.IsEmpty(appConfig.CustomIconUrl) || StringUtil.IsEmpty(appConfig.CustomIconJsonUrl))
+                    {
+                        LoadingEle.Visibility = Visibility.Visible;
+                        CustomIcon.Visibility = Visibility.Collapsed;
+                        HandyControl.Controls.Dialog.Show(new CustomIconUrlDialog(appConfig));
+                    } else
+                    {
+                        if (customIcons == null)
+                        {
+                            LoadingOnlineIcon();
+                        } else
+                        {
+                            vm.Iconfonts = customIcons;
+                            LoadingEle.Visibility = Visibility.Collapsed;
+                            CustomIcon.Visibility = Visibility.Visible;
+                        }
+                    }
                     break;
                 default:
                     if (CustomButton != null)
                     {
                         CustomButton.IsEnabled = false;
                     }
-                    this.DataContext = systemIcons;
+                    if (vm != null)
+                    {
+                        vm.Iconfonts = systemIcons;
+                    }
                     break;
             }
         }
@@ -113,8 +135,80 @@ namespace GeekDesk.Control.Windows
 
         private void CustomButton_Click(object sender, RoutedEventArgs e)
         {
-            
-            
+            HandyControl.Controls.Dialog.Show(new CustomIconUrlDialog(appConfig));
         }
+
+
+        private void CheckSettingUrl_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (CheckSettingUrl.Text == "true")
+            {
+                LoadingOnlineIcon();
+            } else
+            {
+                LoadingEle.IsRunning = true;
+                CustomIcon.Visibility = Visibility.Collapsed;
+            }
+        }
+
+
+        private void LoadingOnlineIcon()
+        {
+            try
+            {
+                string svgJsStr = HttpUtil.Get(appConfig.CustomIconUrl);
+                string jsonStr = HttpUtil.Get(appConfig.CustomIconJsonUrl);
+                List<IconfontInfo> icons = SvgToGeometry.GetIconfonts(svgJsStr, jsonStr);
+                customIcons = icons;
+                vm.Iconfonts = customIcons;
+                LoadingEle.Visibility = Visibility.Collapsed;
+                CustomIcon.Visibility = Visibility.Visible;
+            }
+            catch (Exception)
+            {
+                HandyControl.Controls.Growl.WarningGlobal("加载远程图标异常!");
+            }
+        }
+
+
+        public class IconfontViewModel : INotifyPropertyChanged
+        {
+            private List<IconfontInfo> iconfonts;
+            private string isSettingUrl;
+
+            public List<IconfontInfo> Iconfonts
+            {
+                get
+                {
+                    return iconfonts;
+                }
+                set
+                {
+                    iconfonts = value;
+                    OnPropertyChanged("Iconfonts");
+                }
+            }
+
+            public string IsSettingUrl
+            {
+                get
+                {
+                    return isSettingUrl;
+                }
+                set
+                {
+                    isSettingUrl = value;
+                    OnPropertyChanged("IsSettingUrl");
+                }
+            }
+
+
+            public event PropertyChangedEventHandler PropertyChanged;
+            private void OnPropertyChanged(string propertyName)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
     }
 }

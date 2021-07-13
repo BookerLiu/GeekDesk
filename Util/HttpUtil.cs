@@ -11,7 +11,7 @@ namespace GeekDesk.Util
     public class HttpUtil
     {
         #region Get请求
-        public string Get(string url)
+        public static string Get(string url)
         {
             //创建Web访问对  象
             HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);

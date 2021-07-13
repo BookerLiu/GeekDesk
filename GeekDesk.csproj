@@ -177,6 +177,7 @@
     <Compile Include="Util\MouseUtil.cs" />
     <Compile Include="Util\MouseUtilities.cs" />
     <Compile Include="Util\ShellContextMenu.cs" />
+    <Compile Include="Util\StringUtil.cs" />
     <Compile Include="Util\SvgToGeometry.cs" />
     <Compile Include="Util\SystemIcon.cs" />
     <Compile Include="ViewModel\AppConfig.cs" />
@@ -265,10 +266,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -290,9 +287,6 @@
     </EmbeddedResource>
     <Resource Include="Resource\Iconfont\iconfont.json" />
     <Resource Include="Fonts\iconfont.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="iconfont.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <None Include="packages.config" />

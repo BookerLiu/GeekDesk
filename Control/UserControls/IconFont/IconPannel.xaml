@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              >
     <WrapPanel  HorizontalAlignment="Center" VerticalAlignment="Top">
-        <ListBox x:Name="IconListBox" ItemsSource="{Binding}" BorderThickness="0" Background="AliceBlue">
+        <ListBox x:Name="IconListBox" ItemsSource="{Binding Iconfonts}" BorderThickness="0" Background="AliceBlue">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Orientation="Horizontal" Background="Transparent"/>
@@ -22,7 +22,7 @@
 
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Tag="{Binding}" Width="80" Height="80">
+                    <StackPanel Width="80" Height="80">
                         <Button Background="Transparent" 
                                 BorderThickness="0"
                                 IsEnabled="False"

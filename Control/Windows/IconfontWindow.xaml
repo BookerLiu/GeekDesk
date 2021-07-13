@@ -27,25 +27,17 @@
 
     <Border MouseDown="DragMove">
         <Grid MouseDown="DragMove">
-            
+            <TextBox x:Name="CheckSettingUrl" Visibility="Collapsed" Text="{Binding IsSettingUrl}" TextChanged="CheckSettingUrl_TextChanged"/>
             <hc:TabControl x:Name="MyTabControl" IsAnimationEnabled="True" SelectionChanged="TabControl_SelectionChanged" ShowContextMenu="True"  IsTabFillEnabled="True" Margin="20,30,20,20" Height="350" VerticalAlignment="Top">
                 <hc:TabItem Tag="System"  IsSelected="True" Header="系统图标" hc:IconElement.Height="16" hc:IconElement.Width="16" hc:IconElement.Geometry="{StaticResource CalendarGeometry}" >
                     <hc:SimplePanel Background="AliceBlue">
-                        <!--<hc:UniformSpacingPanel Spacing="10" Margin="0,10,0,-10">
-                            <TextBlock Text="SVG 图标地址:"  Style="{StaticResource LeftTB}"/>
-                            <TextBox x:Name="IconUrl1" Text="{Binding Name, Mode=OneWay}" Width="240" FontSize="11"/>
-                        </hc:UniformSpacingPanel>
-                        <hc:UniformSpacingPanel Spacing="10" Margin="0,40,0,-40">
-                            <TextBlock Text="JSON 配置地址:"  Style="{StaticResource LeftTB}"/>
-                            <TextBox x:Name="JsonUrl2" Text="{Binding Name, Mode=OneWay}" Width="240" FontSize="11"/>
-                        </hc:UniformSpacingPanel>-->
                         <uc:IconPannel x:Name="SystemIcon"/>
                     </hc:SimplePanel>
                 </hc:TabItem>
                 <hc:TabItem Tag="Custom" Header="自定义图标" hc:IconElement.Height="16" hc:IconElement.Width="16" hc:IconElement.Geometry="{StaticResource CalendarGeometry}">
                     <hc:SimplePanel Background="AliceBlue">
-                        <hc:LoadingCircle/>
                         <uc:IconPannel x:Name="CustomIcon"/>
+                        <hc:LoadingCircle x:Name="LoadingEle"/>
                     </hc:SimplePanel>
                 </hc:TabItem>
             </hc:TabControl>
