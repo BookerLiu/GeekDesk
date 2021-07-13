@@ -112,7 +112,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 {
                     HandyControl.Controls.Growl.WarningGlobal("程序启动失败(文件路径不存在或已删除)!");
                     return;
-                }
+                } 
 
                 Process p = new Process();
                 p.StartInfo.FileName = icon.Path;
@@ -127,13 +127,15 @@ namespace GeekDesk.Control.UserControls.PannelCard
                         p.StartInfo.ErrorDialog = false;
                         if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
                         {
-                            this.Visibility = Visibility.Collapsed;
+                            Window parentWin = Window.GetWindow(this);
+                            parentWin.Visibility = Visibility.Collapsed;
                         }
                         break;// c#好像不能case穿透
                     case IconStartType.DEFAULT_STARTUP:
                         if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
                         {
-                            this.Visibility = Visibility.Collapsed;
+                            Window parentWin = Window.GetWindow(this);
+                            parentWin.Visibility = Visibility.Collapsed;
                         }
                         break;
                     case IconStartType.SHOW_IN_EXPLORE:
