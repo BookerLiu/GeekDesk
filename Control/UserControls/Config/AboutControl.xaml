@@ -12,9 +12,9 @@
     <UserControl.Resources>
         
     </UserControl.Resources>
-    <hc:SimplePanel Margin="20">
+    <hc:SimplePanel Margin="20,50,20,20">
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
-            <Image Source="/Resource/Image/About.png" Width="200" Height="200"/>
+            <Image Source="/Resource/Image/About.png" Width="400" Height="100"/>
             <TextBlock   TextAlignment="Center"  Text="Copyright ©  2021 GeekDesk 1.0 beta"/>
             <WrapPanel Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <hc:Shield Subject=".net" Status=">=4.72" Margin="0,0,10,0" Color="#1182c3"/>
@@ -29,7 +29,7 @@
                     </hc:Poptip.Instance>
                 </hc:Shield>
             </WrapPanel>
-            <TextBlock Margin="0,20,0,0" FontSize="15" Width="200" TextAlignment="Center" Text="这是个人开发的程序,所有人可任意修改和免费使用(商用请联系作者)" TextWrapping="Wrap"/>
+            <TextBlock Margin="0,20,0,0" FontSize="13" Width="200" TextAlignment="Center" Text="这是个人开发的程序,所有人可任意修改和免费使用(商用请联系作者)" TextWrapping="Wrap"/>
         </StackPanel>
     </hc:SimplePanel>
 </UserControl>

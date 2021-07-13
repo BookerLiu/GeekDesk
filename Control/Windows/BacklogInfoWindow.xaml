@@ -9,6 +9,7 @@
            WindowStartupLocation="CenterScreen"
            Height="670" 
            Width="450" 
+           Title="TaskInfo"
            WindowStyle="None"
            AllowsTransparency="True"
            Background="Transparent" ShowInTaskbar="False"

@@ -11,7 +11,7 @@
         xmlns:DraggAnimatedPanel="clr-namespace:DraggAnimatedPanel"
         x:Name="window"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        Title="MainWindow" 
+        Title="GeekDesk" 
         d:DesignHeight="500" d:DesignWidth="700"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -66,7 +66,7 @@
                     <DockPanel.Background>
                         <SolidColorBrush Opacity="0.01"/>
                     </DockPanel.Background>
-                    <Image Source="/Resource/Image/WindowLogo.png" Margin="10,0,0,0" Width="94" Height="30" HorizontalAlignment="Left"/>
+                    <Image Source="/Resource/Image/TitleLogo.png" Margin="10,0,0,0" Width="94" Height="30" HorizontalAlignment="Left"/>
                 </DockPanel>
 
                 <DockPanel Grid.Row="0" Grid.Column="2" MouseMove="DragMove">
@@ -110,7 +110,7 @@
 
                 <uc:RightCardControl Grid.Row="1" Grid.Column="1"/>
                 
-                <hc:NotifyIcon Icon="/Resource/Image/About.png" Text="GeekDesk" Click="NotifyIcon_Click">
+                <hc:NotifyIcon Icon="/Resource/Image/Taskbar.png" Text="GeekDesk" Click="NotifyIcon_Click">
                     <hc:NotifyIcon.ContextMenu>
                         <ContextMenu Width="130">
                             <MenuItem Header="打开面板" Click="ShowApp"/>

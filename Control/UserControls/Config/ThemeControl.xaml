@@ -7,7 +7,7 @@
              xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" 
              Background="AliceBlue"
-             d:DesignHeight="350" d:DesignWidth="450">
+             d:DesignHeight="380" d:DesignWidth="450">
     <hc:SimplePanel Margin="20">
 
         <hc:UniformSpacingPanel Spacing="10" Margin="0,0,-40,-12" Grid.ColumnSpan="4">
@@ -25,7 +25,7 @@
             <Button Content="修改" Click="BGButton_Click"/>
         </hc:UniformSpacingPanel>
 
-        <hc:UniformSpacingPanel Spacing="10" Margin="19,50,11,-36.433" Grid.ColumnSpan="4">
+        <hc:UniformSpacingPanel Spacing="10" Margin="19,60,11,-36.433" Grid.ColumnSpan="4">
             <CheckBox x:Name="IconIsAdmin" Content="毛玻璃效果" IsChecked="{Binding BlurEffect}">
                 <CheckBox.Background>
                     <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
@@ -35,65 +35,68 @@
             </CheckBox>
         </hc:UniformSpacingPanel>
 
-        <!--<hc:Divider LineStrokeDashArray="3,3" Margin="0,60,0,66" LineStroke="Black" Grid.ColumnSpan="4"/>-->
+        <hc:Divider LineStrokeDashArray="3,3" Margin="0,91.5,0,34.5" LineStroke="Black" Grid.ColumnSpan="4"/>
 
-        <hc:UniformSpacingPanel Spacing="10" Margin="0,80,-40,-89.5" Grid.ColumnSpan="4">
-            <TextBlock Text="托盘不透明度" VerticalAlignment="Center"/>
-        </hc:UniformSpacingPanel>
-        <hc:UniformSpacingPanel Spacing="10" Margin="0,110,-40,-122" Grid.ColumnSpan="4">
-            <hc:PreviewSlider Value="{Binding CardOpacity}"
+        <StackPanel Margin="0,30,0,0">
+            <hc:UniformSpacingPanel Spacing="10" Margin="0,80,-40,-89.5" Grid.ColumnSpan="4">
+                <TextBlock Text="托盘不透明度" VerticalAlignment="Center"/>
+            </hc:UniformSpacingPanel>
+            <hc:UniformSpacingPanel Spacing="10" Margin="0,110,-40,-122" Grid.ColumnSpan="4">
+                <hc:PreviewSlider Value="{Binding CardOpacity}"
                               Maximum="100"
                               Margin="0,-12,-313.5,19.5"
                               >
-                <hc:PreviewSlider.PreviewContent>
-                    <Label Style="{StaticResource LabelPrimary}" Content="{Binding Path=(hc:PreviewSlider.PreviewPosition),RelativeSource={RelativeSource Self}}" ContentStringFormat="#0"/>
-                </hc:PreviewSlider.PreviewContent>
-            </hc:PreviewSlider>
-        </hc:UniformSpacingPanel>
+                    <hc:PreviewSlider.PreviewContent>
+                        <Label Style="{StaticResource LabelPrimary}" Content="{Binding Path=(hc:PreviewSlider.PreviewPosition),RelativeSource={RelativeSource Self}}" ContentStringFormat="#0"/>
+                    </hc:PreviewSlider.PreviewContent>
+                </hc:PreviewSlider>
+            </hc:UniformSpacingPanel>
 
 
-        <hc:UniformSpacingPanel Spacing="10" Margin="0,135,-40,-161.626" Grid.ColumnSpan="4">
-            <TextBlock Text="背景图片不透明度" VerticalAlignment="Center"/>
-        </hc:UniformSpacingPanel>
-        <hc:UniformSpacingPanel Spacing="10" Margin="0,155,-40,-183" Grid.ColumnSpan="4">
-            <hc:PreviewSlider Value="{Binding BgOpacity}"
+            <hc:UniformSpacingPanel Spacing="10" Margin="0,135,-40,-161.626" Grid.ColumnSpan="4">
+                <TextBlock Text="背景图片不透明度" VerticalAlignment="Center"/>
+            </hc:UniformSpacingPanel>
+            <hc:UniformSpacingPanel Spacing="10" Margin="0,155,-40,-183" Grid.ColumnSpan="4">
+                <hc:PreviewSlider Value="{Binding BgOpacity}"
                               Maximum="100"
                               Margin="0,0,-313.5,7.5"
                               >
-                <hc:PreviewSlider.PreviewContent>
-                    <Label Style="{StaticResource LabelPrimary}" Content="{Binding Path=(hc:PreviewSlider.PreviewPosition),RelativeSource={RelativeSource Self}}" ContentStringFormat="#0"/>
-                </hc:PreviewSlider.PreviewContent>
-            </hc:PreviewSlider>
-        </hc:UniformSpacingPanel>
+                    <hc:PreviewSlider.PreviewContent>
+                        <Label Style="{StaticResource LabelPrimary}" Content="{Binding Path=(hc:PreviewSlider.PreviewPosition),RelativeSource={RelativeSource Self}}" ContentStringFormat="#0"/>
+                    </hc:PreviewSlider.PreviewContent>
+                </hc:PreviewSlider>
+            </hc:UniformSpacingPanel>
 
 
-        <hc:UniformSpacingPanel Spacing="10" Margin="0,195,-40,-208.813" Grid.ColumnSpan="4">
-            <TextBlock Text="主面板不透明度" VerticalAlignment="Center"/>
-        </hc:UniformSpacingPanel>
-        <hc:UniformSpacingPanel Spacing="10" Margin="0,215,-40,-241" Grid.ColumnSpan="4">
-            <hc:PreviewSlider Value="{Binding PannelOpacity}"
+            <hc:UniformSpacingPanel Spacing="10" Margin="0,195,-40,-208.813" Grid.ColumnSpan="4">
+                <TextBlock Text="主面板不透明度" VerticalAlignment="Center"/>
+            </hc:UniformSpacingPanel>
+            <hc:UniformSpacingPanel Spacing="10" Margin="0,215,-40,-241" Grid.ColumnSpan="4">
+                <hc:PreviewSlider Value="{Binding PannelOpacity}"
                               Minimum="50"
                               Maximum="100"
                               Margin="0,0,-313.5,7.5"
                               >
-                <hc:PreviewSlider.PreviewContent>
-                    <Label Style="{StaticResource LabelPrimary}" Content="{Binding Path=(hc:PreviewSlider.PreviewPosition),RelativeSource={RelativeSource Self}}" ContentStringFormat="#0"/>
-                </hc:PreviewSlider.PreviewContent>
-            </hc:PreviewSlider>
-        </hc:UniformSpacingPanel>
+                    <hc:PreviewSlider.PreviewContent>
+                        <Label Style="{StaticResource LabelPrimary}" Content="{Binding Path=(hc:PreviewSlider.PreviewPosition),RelativeSource={RelativeSource Self}}" ContentStringFormat="#0"/>
+                    </hc:PreviewSlider.PreviewContent>
+                </hc:PreviewSlider>
+            </hc:UniformSpacingPanel>
 
-        <hc:UniformSpacingPanel Spacing="10" Margin="0,245,-40,-279.313" Grid.ColumnSpan="4">
-            <TextBlock Text="主面板圆角大小" VerticalAlignment="Center"/>
-        </hc:UniformSpacingPanel>
-        <hc:UniformSpacingPanel Spacing="10" Margin="0,265,-40,-321" Grid.ColumnSpan="4">
-            <hc:PreviewSlider Value="{Binding PannelCornerRadius}"
+            <hc:UniformSpacingPanel Spacing="10" Margin="0,245,-40,-279.313" Grid.ColumnSpan="4">
+                <TextBlock Text="主面板圆角大小" VerticalAlignment="Center"/>
+            </hc:UniformSpacingPanel>
+            <hc:UniformSpacingPanel Spacing="10" Margin="0,265,-40,-321" Grid.ColumnSpan="4">
+                <hc:PreviewSlider Value="{Binding PannelCornerRadius}"
                               Maximum="25"
                               Margin="0,0,-313.5,7.5"
                               >
-                <hc:PreviewSlider.PreviewContent>
-                    <Label Style="{StaticResource LabelPrimary}" Content="{Binding Path=(hc:PreviewSlider.PreviewPosition),RelativeSource={RelativeSource Self}}" ContentStringFormat="#0"/>
-                </hc:PreviewSlider.PreviewContent>
-            </hc:PreviewSlider>
-        </hc:UniformSpacingPanel>
+                    <hc:PreviewSlider.PreviewContent>
+                        <Label Style="{StaticResource LabelPrimary}" Content="{Binding Path=(hc:PreviewSlider.PreviewPosition),RelativeSource={RelativeSource Self}}" ContentStringFormat="#0"/>
+                    </hc:PreviewSlider.PreviewContent>
+                </hc:PreviewSlider>
+            </hc:UniformSpacingPanel>
+        </StackPanel>
+        
     </hc:SimplePanel>
 </UserControl>

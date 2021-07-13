@@ -40,6 +40,12 @@
   <PropertyGroup>
     <StartupObject>GeekDesk.App</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Taskbar.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Apex.WinForms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=98d06957926c086d, processorArchitecture=MSIL">
       <HintPath>packages\SharpShellTools.2.2.0.0\lib\Apex.WinForms.dll</HintPath>
@@ -282,9 +288,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="Resource\Iconfont\iconfont.json" />
-    <Resource Include="Fonts\iconfont.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -297,19 +300,27 @@
   <ItemGroup>
     <Resource Include="Resource\Image\图片.png" />
     <Resource Include="Resource\Image\文件夹.png" />
-    <Resource Include="Resource\Image\WindowLogo.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\Iconfont\iconfont.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resource\Image\About.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\Image\公众号.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\Image\BacklogImg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\Image\Taskbar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\Image\TitleLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\Image\About.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Taskbar.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

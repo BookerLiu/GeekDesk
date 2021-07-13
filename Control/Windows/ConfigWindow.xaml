@@ -5,6 +5,7 @@
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
            xmlns:hc="https://handyorg.github.io/handycontrol"
            xmlns:local="clr-namespace:GeekDesk"
+           Title="Setting"
            mc:Ignorable="d"
            WindowStartupLocation="CenterScreen"
            Height="450" 
@@ -105,7 +106,7 @@
                 </hc:SideMenu>
             </hc:Card>
             <hc:ScrollViewer  Grid.Row="0" Grid.Column="1">
-                <hc:Card x:Name="RightCard" Height="450"  MouseDown="DragMove">
+                <hc:Card x:Name="RightCard" Height="448"  MouseDown="DragMove">
                 </hc:Card>
             </hc:ScrollViewer>
 
