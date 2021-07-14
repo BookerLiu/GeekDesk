@@ -309,22 +309,19 @@
     <Resource Include="Resource\Image\BacklogImg.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resource\Image\Taskbar.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resource\Image\TitleLogo.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\Image\About.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Taskbar.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resource\Image\WeChatCode.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\Image\ZFBCode.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Taskbar.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

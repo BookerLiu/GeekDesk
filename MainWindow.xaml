@@ -109,7 +109,7 @@
 
                 <uc:RightCardControl Grid.Row="1" Grid.Column="1"/>
                 
-                <hc:NotifyIcon Icon="/Resource/Image/Taskbar.png" Text="GeekDesk" Click="NotifyIcon_Click">
+                <hc:NotifyIcon Icon="/Taskbar.ico" Text="GeekDesk" Click="NotifyIcon_Click">
                     <hc:NotifyIcon.ContextMenu>
                         <ContextMenu Width="130">
                             <MenuItem Header="打开面板" Click="ShowApp"/>
