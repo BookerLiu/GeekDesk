@@ -320,5 +320,11 @@
   <ItemGroup>
     <Resource Include="Taskbar.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\Image\WeChatCode.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\Image\ZFBCode.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
