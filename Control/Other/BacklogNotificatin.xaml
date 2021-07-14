@@ -1,0 +1,49 @@
+﻿<Border x:Class="GeekDesk.Control.Other.BacklogNotificatin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        Background="AliceBlue"
+        BorderThickness="1"
+        BorderBrush="{DynamicResource BorderBrush}"
+        Width="320"
+        Height="450">
+    <Grid>
+
+        <Image Source="/Resource/Image/BacklogImg.png" Margin="22,35,22,361" />
+
+        
+        <hc:Card MaxWidth="250" Height="200" BorderThickness="0" Effect="{DynamicResource EffectShadow2}" Margin="8">
+            <!--Card 的内容部分-->
+            <Border CornerRadius="4,4,0,0" Width="160" Height="160">
+                <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Msg}"/>
+            </Border>
+            <!--Card 的尾部部分-->
+            <hc:Card.Footer>
+                <StackPanel Margin="10" Width="160">
+                    <!--Card 的一级内容-->
+                    <TextBlock TextWrapping="NoWrap" FontSize="20"  Style="{DynamicResource TextBlockLargeBold}" TextTrimming="CharacterEllipsis" 
+                                       Text="{Binding Title}" 
+                                       HorizontalAlignment="Left"/>
+                    <!--Card 的二级内容-->
+                    <TextBlock TextWrapping="NoWrap" Style="{DynamicResource TextBlockDefault}" TextTrimming="CharacterEllipsis" 
+                                       Text="{Binding ExeTime}" Margin="0,6,0,0"
+                                       HorizontalAlignment="Left"/>
+                </StackPanel>
+            </hc:Card.Footer>
+        </hc:Card>
+
+        <hc:UniformSpacingPanel Spacing="20" HorizontalAlignment="Center" Margin="0,346,0,0">
+            <hc:TextBox x:Name="DelayTime" Height="20" Width="60" Text="10" PreviewTextInput="DelayTime_PreviewTextInput" PreviewLostKeyboardFocus="DelayTime_PreviewLostKeyboardFocus" />
+            <ComboBox x:Name="DelayType" hc:DropDownElement.ConsistentWidth="False" SelectedIndex="0" Height="20" Width="60">
+                <ComboBox.Items>
+                    <ComboBoxItem Content="分"/>
+                    <ComboBoxItem Content="时"/>
+                </ComboBox.Items>
+            </ComboBox>
+            <Button Content="推迟提醒" Click="DelayButton_Click"/>
+        </hc:UniformSpacingPanel>
+
+
+        <Button Click="BacklogDone_Click" Content="朕已阅" Margin="10,0,10,20" Width="298" VerticalAlignment="Bottom"/>
+    </Grid>
+</Border>

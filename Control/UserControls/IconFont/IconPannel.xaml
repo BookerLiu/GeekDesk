@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="GeekDesk.Control.UserControls.IconFont.IconPannel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:local="clr-namespace:GeekDesk.Control.UserControls.IconFont"
+             mc:Ignorable="d" 
+             >
+    <WrapPanel  HorizontalAlignment="Center" VerticalAlignment="Top">
+        <ListBox x:Name="IconListBox" ItemsSource="{Binding Iconfonts}" BorderThickness="0" Background="AliceBlue">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" Background="Transparent"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <ListBox.ItemContainerStyle>
+                <Style>
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Width="80" Height="80">
+                        <Button Background="Transparent" 
+                                BorderThickness="0"
+                                IsEnabled="False"
+                                Opacity="0.8"
+                                hc:IconElement.Geometry="{Binding Text}"
+                                hc:IconElement.Height="35"
+                                hc:IconElement.Width="35"
+                                Height="60"
+                                Width="60"
+                                />
+                        <TextBlock TextAlignment="Center" 
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center" 
+                                       Width="100" Text="{Binding Name}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </WrapPanel>
+</UserControl>

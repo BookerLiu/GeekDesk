@@ -37,7 +37,19 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>GeekDesk.App</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Taskbar.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Apex.WinForms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=98d06957926c086d, processorArchitecture=MSIL">
+      <HintPath>packages\SharpShellTools.2.2.0.0\lib\Apex.WinForms.dll</HintPath>
+    </Reference>
     <Reference Include="CommonServiceLocator, Version=2.0.6.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>packages\CommonServiceLocator.2.0.6\lib\net45\CommonServiceLocator.dll</HintPath>
     </Reference>
@@ -50,18 +62,32 @@
     <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
       <HintPath>packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
     </Reference>
+    <Reference Include="GlobalHotKey, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\GlobalHotKey.1.1.0\lib\GlobalHotKey.dll</HintPath>
+    </Reference>
     <Reference Include="HandyControl, Version=3.1.0.0, Culture=neutral, PublicKeyToken=45be8712787a1e5b, processorArchitecture=MSIL">
-      <HintPath>packages\HandyControl.3.1.0\lib\net452\HandyControl.dll</HintPath>
+      <HintPath>packages\HandyControl.3.1.0\lib\net472\HandyControl.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="ServerManager, Version=2.2.0.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>packages\SharpShellTools.2.2.0.0\lib\ServerManager.exe</HintPath>
+    </Reference>
+    <Reference Include="SharpShell, Version=2.2.0.0, Culture=neutral, PublicKeyToken=f14dc899472fe6fb, processorArchitecture=MSIL">
+      <HintPath>packages\SharpShellTools.2.2.0.0\lib\SharpShell.dll</HintPath>
+    </Reference>
+    <Reference Include="srm, Version=2.2.0.0, Culture=neutral, PublicKeyToken=68bd4561cc3495fc, processorArchitecture=MSIL">
+      <HintPath>packages\SharpShellTools.2.2.0.0\lib\srm.exe</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Common, Version=4.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>packages\System.Drawing.Common.5.0.2\lib\net461\System.Drawing.Common.dll</HintPath>
+      <HintPath>packages\System.Drawing.Common.6.0.0-preview.3.21201.4\lib\net461\System.Drawing.Common.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -85,23 +111,145 @@
     </ApplicationDefinition>
     <Compile Include="Command\DelegateCommand.cs" />
     <Compile Include="Command\DelegateCommandBase.cs" />
+    <Compile Include="Constant\AppHideType.cs" />
+    <Compile Include="Constant\Constants.cs" />
     <Compile Include="Constant\DefaultConstant.cs" />
+    <Compile Include="Constant\IconStartType.cs" />
     <Compile Include="Constant\SortType.cs" />
+    <Compile Include="Control\Other\BacklogNotificatin.xaml.cs">
+      <DependentUpon>BacklogNotificatin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Other\CustomIconUrlDialog.xaml.cs">
+      <DependentUpon>CustomIconUrlDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\UserControls\Backlog\BacklogControl.xaml.cs">
+      <DependentUpon>BacklogControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\UserControls\IconFont\IconPannel.xaml.cs">
+      <DependentUpon>IconPannel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Windows\BacklogInfoWindow.xaml.cs">
+      <DependentUpon>BacklogInfoWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Windows\BacklogWindow.xaml.cs">
+      <DependentUpon>BacklogWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Windows\ConfigWindow.xaml.cs">
+      <DependentUpon>ConfigWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Other\IconInfoDialog.xaml.cs">
+      <DependentUpon>IconInfoDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Other\MenuGeometryDialog.xaml.cs">
+      <DependentUpon>MenuGeometryDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\UserControls\Config\AboutControl.xaml.cs">
+      <DependentUpon>AboutControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\UserControls\PannelCard\LeftCardControl.xaml.cs">
+      <DependentUpon>LeftCardControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\UserControls\Config\ThemeControl.xaml.cs">
+      <DependentUpon>ThemeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\UserControls\PannelCard\RightCardControl.xaml.cs">
+      <DependentUpon>RightCardControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\UserControls\Config\MotionControl.xaml.cs">
+      <DependentUpon>MotionControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Windows\IconfontWindow.xaml.cs">
+      <DependentUpon>IconfontWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converts\DoubleToGridLength.cs" />
+    <Compile Include="Converts\IntToCornerRadius.cs" />
+    <Compile Include="Converts\OpcityConvert.cs" />
     <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.cs" />
     <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.Drag.cs" />
+    <Compile Include="Converts\HideTypeConvert.cs" />
+    <Compile Include="Task\BacklogTask.cs" />
+    <Compile Include="Util\AeroGlassHelper.cs" />
     <Compile Include="Util\CommonCode.cs" />
     <Compile Include="Util\ConsoleManager.cs" />
     <Compile Include="Util\DragAdorner.cs" />
     <Compile Include="Util\FileIcon.cs" />
+    <Compile Include="Util\HotKey.cs" />
+    <Compile Include="Util\HttpUtil.cs" />
+    <Compile Include="Util\ImageUtil.cs" />
     <Compile Include="Util\ListViewDragDropManager.cs" />
-    <Compile Include="Util\MenuWidthConvert.cs" />
+    <Compile Include="Converts\MenuWidthConvert.cs" />
+    <Compile Include="Util\MouseUtil.cs" />
     <Compile Include="Util\MouseUtilities.cs" />
+    <Compile Include="Util\ShellContextMenu.cs" />
+    <Compile Include="Util\StringUtil.cs" />
+    <Compile Include="Util\SvgToGeometry.cs" />
     <Compile Include="Util\SystemIcon.cs" />
     <Compile Include="ViewModel\AppConfig.cs" />
-    <Compile Include="ViewModel\DataInfos.cs" />
-    <Compile Include="ViewModel\MainModel.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\MenuViewModel.cs" />
+    <Compile Include="ViewModel\AppData.cs" />
+    <Compile Include="ViewModel\BacklogInfo.cs" />
+    <Compile Include="ViewModel\IconfontInfo.cs" />
+    <Compile Include="ViewModel\IconInfo.cs" />
+    <Compile Include="ViewModel\MenuInfo.cs" />
+    <Page Include="Control\Other\BacklogNotificatin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\Other\CustomIconUrlDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\UserControls\Backlog\BacklogControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\UserControls\IconFont\IconPannel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\Windows\BacklogInfoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\Windows\BacklogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\Windows\ConfigWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\Other\IconInfoDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\Other\MenuGeometryDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\UserControls\Config\AboutControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\UserControls\PannelCard\LeftCardControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\UserControls\Config\ThemeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\UserControls\PannelCard\RightCardControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\UserControls\Config\MotionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\Windows\IconfontWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -114,6 +262,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Resource\Dictionary\Geometry.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -133,6 +285,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Resource\Iconfont\iconfont.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -141,6 +294,31 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\Image\图片.png" />
+    <Resource Include="Resource\Image\文件夹.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\Iconfont\iconfont.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\Image\公众号.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\Image\BacklogImg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\Image\Taskbar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\Image\TitleLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\Image\About.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Taskbar.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

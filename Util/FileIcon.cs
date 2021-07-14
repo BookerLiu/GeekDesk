@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using System.Runtime.InteropServices;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows.Media.Imaging;
 
 namespace GeekDesk.Util
@@ -25,33 +19,16 @@ namespace GeekDesk.Util
 
         public static BitmapImage GetBitmapImage(string filePath)
         {
-            //Icon ico;
-            //BitmapImage bmpImage = null;
-            //MemoryStream strm;
-            //using (ico = GetIcon(filePath))
-            //{
-            //    Bitmap bmp = ico.ToBitmap();
-            //    using (strm = new MemoryStream())
-            //    {
-            //        bmp.Save(strm, System.Drawing.Imaging.ImageFormat.Png);
-            //        bmpImage = new BitmapImage();
-            //        bmpImage.BeginInit();
-            //        strm.Seek(0, SeekOrigin.Begin);
-            //        bmpImage.StreamSource = strm;
-            //        bmpImage.EndInit();
-            //    }
-            //}
-            //return bmpImage;
             Icon ico = GetIcon(filePath);
             Bitmap bmp = ico.ToBitmap();
             MemoryStream strm = new MemoryStream();
             bmp.Save(strm, System.Drawing.Imaging.ImageFormat.Png);
-            BitmapImage  bmpImage = new BitmapImage();
+            BitmapImage bmpImage = new BitmapImage();
             bmpImage.BeginInit();
             strm.Seek(0, SeekOrigin.Begin);
             bmpImage.StreamSource = strm;
             bmpImage.EndInit();
-            
+
             return bmpImage.Clone();
         }
 
