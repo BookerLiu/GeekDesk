@@ -30,17 +30,16 @@ namespace GeekDesk.Util
         /// <param name="fsModifiers">组合键</param>
         /// <param name="key">快捷键</param>
         /// <param name="callBack">回调函数</param>
-        public static int Regist(Window window, HotkeyModifiers fsModifiers, Key key, HotKeyCallBackHanlder callBack)
+        public static int Regist(IntPtr windowHandle, HotkeyModifiers fsModifiers, Key key, HotKeyCallBackHanlder callBack)
         {
-            var hwnd = new WindowInteropHelper(window).Handle;
-            var _hwndSource = HwndSource.FromHwnd(hwnd);
+            var _hwndSource = HwndSource.FromHwnd(windowHandle);
             _hwndSource.AddHook(WndProc);
 
             int id = keyid++;
 
             var vk = KeyInterop.VirtualKeyFromKey(key);
-            keymap[id] = callBack;
-            if (!RegisterHotKey(hwnd, id, fsModifiers, (uint)vk)) throw new Exception("RegisterHotKey Failed");
+            keymap.Add(id, callBack);
+            if (!RegisterHotKey(windowHandle, id, fsModifiers, (uint)vk)) throw new Exception("RegisterHotKey Failed");
             return id;
         }
 
@@ -67,10 +66,15 @@ namespace GeekDesk.Util
         /// <param name="callBack">回调函数</param>
         public static void UnRegist(IntPtr hWnd, HotKeyCallBackHanlder callBack)
         {
-            foreach (KeyValuePair<int, HotKeyCallBackHanlder> var in keymap)
+
+            List<int> list = new List<int>(keymap.Keys);
+            for (int i=0; i < list.Count; i++)
             {
-                if (var.Value == callBack)
-                    UnregisterHotKey(hWnd, var.Key);
+                if (keymap[list[i]] == callBack)
+                {
+                    UnregisterHotKey(hWnd, list[i]);
+                    keymap.Remove(list[i]);
+                }
             }
         }
 

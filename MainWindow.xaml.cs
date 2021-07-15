@@ -1,6 +1,7 @@
 ﻿using DraggAnimatedPanelExample;
 using GeekDesk.Constant;
 using GeekDesk.Control;
+using GeekDesk.Control.UserControls.Config;
 using GeekDesk.Control.Windows;
 using GeekDesk.Task;
 using GeekDesk.Util;
@@ -29,12 +30,14 @@ namespace GeekDesk
     {
 
         public static AppData appData = CommonCode.GetAppDataByFile();
-        public int hotKeyId = -1;
+        public static int hotKeyId = -1;
+        public static MainWindow mainWindow;
         public HotKeyManager hkm = new HotKeyManager();
         public MainWindow()
         {
             LoadData();
             InitializeComponent();
+            mainWindow = this;
             this.Topmost = true;
             this.Loaded += Window_Loaded;
             this.SizeChanged += MainWindow_Resize;
@@ -58,28 +61,43 @@ namespace GeekDesk
             if (!appData.AppConfig.StartedShowPanel)
             {
                 this.Visibility = Visibility.Collapsed;
+            } else
+            {
+                ShowApp();
             }
+           
+
+        }
+
+        /// <summary>
+        /// 注册当前窗口的热键
+        /// </summary>
+        public static void RegisterHotKey()
+        {
             try
             {
-                HotKey hk =  hkm.Register(Key.Y, ModifierKeys.Control);
-                hkm.KeyPressed += DisplayWindowHotKeyPress;
-                ////加载完毕注册热键
-                //hotKeyId = Hotkey.Regist(this, appData.AppConfig.HotkeyModifiers, appData.AppConfig.Hotkey, () =>
-                //{
-                //    if (this.Visibility == Visibility.Collapsed)
-                //    {
-                //        ShowApp();
-                //    }
-                //    else
-                //    {
-                //        this.Visibility = Visibility.Collapsed;
-                //    }
-                //});
-            } catch (Exception)
+                //加载完毕注册热键
+                hotKeyId = Hotkey.Regist(new WindowInteropHelper(MainWindow.mainWindow).Handle, appData.AppConfig.HotkeyModifiers, appData.AppConfig.Hotkey, () =>
+                {
+                    if (MotionControl.hotkeyFinished)
+                    {
+                        if (mainWindow.Visibility == Visibility.Collapsed)
+                        {
+                            ShowApp();
+                        }
+                        else
+                        {
+                            mainWindow.Visibility = Visibility.Collapsed;
+                        }
+                    }
+                });
+                //HandyControl.Controls.Growl.SuccessGlobal("快捷键注册成功(" + appData.AppConfig.HotkeyStr + ")!");
+            }
+            catch (Exception)
             {
                 HandyControl.Controls.Growl.WarningGlobal("启动快捷键已被其它程序占用(" + appData.AppConfig.HotkeyStr + ")!");
             }
-
+            
         }
 
         private void DisplayWindowHotKeyPress(object sender, KeyPressedEventArgs e)
@@ -180,22 +198,22 @@ namespace GeekDesk
         {
             ShowApp();
         }
-        public void ShowApp()
+        public static void ShowApp()
         {
             if (appData.AppConfig.FollowMouse)
             {
                 ShowAppAndFollowMouse();
             } else
             {
-                this.Visibility = Visibility.Visible;
+                mainWindow.Visibility = Visibility.Visible;
             }
-            Keyboard.Focus(this);
+            Keyboard.Focus(mainWindow);
         }
 
         /// <summary>
         /// 随鼠标位置显示面板 (鼠标始终在中间)
         /// </summary>
-        private void ShowAppAndFollowMouse()
+        private static void ShowAppAndFollowMouse()
         {
             //获取鼠标位置
             System.Windows.Point p = MouseUtil.GetMousePosition();
@@ -207,38 +225,38 @@ namespace GeekDesk
             double bottom = height - Math.Abs(top);
 
 
-            if (p.X - this.Width / 2 < left)
+            if (p.X - mainWindow.Width / 2 < left)
             {
                 //判断是否在最左边缘
-                this.Left = left;
+                mainWindow.Left = left;
             }
-            else if (p.X + this.Width / 2 > right)
+            else if (p.X + mainWindow.Width / 2 > right)
             {
                 //判断是否在最右边缘
-                this.Left = right - this.Width;
+                mainWindow.Left = right - mainWindow.Width;
             }
             else
             {
-                this.Left = p.X - this.Width / 2;
+                mainWindow.Left = p.X - mainWindow.Width / 2;
             }
 
 
-            if (p.Y - this.Height / 2 < top)
+            if (p.Y - mainWindow.Height / 2 < top)
             {
                 //判断是否在最上边缘
-                this.Top = top;
+                mainWindow.Top = top;
             }
-            else if (p.Y + this.Height / 2 > bottom)
+            else if (p.Y + mainWindow.Height / 2 > bottom)
             {
                 //判断是否在最下边缘
-                this.Top = bottom - this.Height;
+                mainWindow.Top = bottom - mainWindow.Height;
             }
             else
             {
-                this.Top = p.Y - this.Height / 2;
+                mainWindow.Top = p.Y - mainWindow.Height / 2;
             }
 
-            this.Visibility = Visibility.Visible;
+            mainWindow.Visibility = Visibility.Visible;
         }
 
 
