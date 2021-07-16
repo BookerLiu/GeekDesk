@@ -82,6 +82,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Common, Version=4.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -113,7 +114,7 @@
     <Compile Include="Command\DelegateCommandBase.cs" />
     <Compile Include="Constant\AppHideType.cs" />
     <Compile Include="Constant\Constants.cs" />
-    <Compile Include="Constant\DefaultConstant.cs" />
+    <Compile Include="Constant\MainWindowEnum.cs" />
     <Compile Include="Constant\IconStartType.cs" />
     <Compile Include="Constant\SortType.cs" />
     <Compile Include="Control\Other\BacklogNotificatin.xaml.cs">
@@ -168,6 +169,7 @@
     <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.Drag.cs" />
     <Compile Include="Converts\HideTypeConvert.cs" />
     <Compile Include="Task\BacklogTask.cs" />
+    <Compile Include="Thread\UpdateThread.cs" />
     <Compile Include="Util\AeroGlassHelper.cs" />
     <Compile Include="Util\CommonCode.cs" />
     <Compile Include="Util\ConsoleManager.cs" />
@@ -303,9 +305,6 @@
     <Resource Include="Resource\Iconfont\iconfont.js" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resource\Image\公众号.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resource\Image\BacklogImg.png" />
   </ItemGroup>
   <ItemGroup>
@@ -313,12 +312,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\Image\About.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resource\Image\WeChatCode.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resource\Image\ZFBCode.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Taskbar.ico" />

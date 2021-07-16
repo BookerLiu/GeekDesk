@@ -32,12 +32,11 @@ namespace GeekDesk.Util
         /// <param name="callBack">回调函数</param>
         public static int Regist(IntPtr windowHandle, HotkeyModifiers fsModifiers, Key key, HotKeyCallBackHanlder callBack)
         {
-            var _hwndSource = HwndSource.FromHwnd(windowHandle);
-            _hwndSource.AddHook(WndProc);
+            HwndSource hs = HwndSource.FromHwnd(windowHandle);
+            hs.AddHook(WndProc);
 
             int id = keyid++;
-
-            var vk = KeyInterop.VirtualKeyFromKey(key);
+            int vk = KeyInterop.VirtualKeyFromKey(key);
             keymap.Add(id, callBack);
             if (!RegisterHotKey(windowHandle, id, fsModifiers, (uint)vk)) throw new Exception("RegisterHotKey Failed");
             return id;
@@ -46,7 +45,7 @@ namespace GeekDesk.Util
         /// <summary>
         /// 快捷键消息处理
         /// </summary>
-        static IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        static IntPtr WndProc(IntPtr windowHandle, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             if (msg == WM_HOTKEY)
             {
@@ -64,20 +63,20 @@ namespace GeekDesk.Util
         /// </summary>
         /// <param name="hWnd">持有快捷键窗口的句柄</param>
         /// <param name="callBack">回调函数</param>
-        public static void UnRegist(IntPtr hWnd, HotKeyCallBackHanlder callBack)
+        public static void UnRegist(IntPtr windowHandle, HotKeyCallBackHanlder callBack)
         {
-
             List<int> list = new List<int>(keymap.Keys);
             for (int i=0; i < list.Count; i++)
             {
                 if (keymap[list[i]] == callBack)
                 {
-                    UnregisterHotKey(hWnd, list[i]);
+                    HwndSource hs = HwndSource.FromHwnd(windowHandle);
+                    hs.RemoveHook(WndProc);
+                    UnregisterHotKey(windowHandle, list[i]);
                     keymap.Remove(list[i]);
                 }
             }
         }
-
 
         const int WM_HOTKEY = 0x312;
         static int keyid = 10;

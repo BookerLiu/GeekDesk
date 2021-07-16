@@ -95,7 +95,7 @@ namespace GeekDesk
             }
             catch (Exception)
             {
-                HandyControl.Controls.Growl.WarningGlobal("启动快捷键已被其它程序占用(" + appData.AppConfig.HotkeyStr + ")!");
+                HandyControl.Controls.Growl.WarningGlobal("GeekDesk启动快捷键已被其它程序占用(" + appData.AppConfig.HotkeyStr + ")!");
             }
             
         }

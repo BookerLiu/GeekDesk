@@ -161,6 +161,7 @@ namespace GeekDesk.Control.UserControls.Config
                 }
                 if (allKeyUp && !hotkeyFinished)
                 {
+                    keysTemp.Clear();
                     hotkeyFinished = true;
                     if (MainWindow.hotKeyId != -1)
                     {

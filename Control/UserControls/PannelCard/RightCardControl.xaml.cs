@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -172,7 +173,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
             {
                 string path = (string)obj;
 
-                //string base64 = ImageUtil.FileImageToBase64(path, ImageFormat.Jpeg);
+                string base64 = ImageUtil.FileImageToBase64(path, ImageFormat.Png);
 
                 IconInfo iconInfo = new IconInfo
                 {

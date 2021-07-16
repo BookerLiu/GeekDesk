@@ -19,9 +19,9 @@ namespace GeekDesk.ViewModel
     {
         private SortType menuSortType = SortType.CUSTOM; //菜单排序类型
         private SortType iconSortType = SortType.CUSTOM; //图表排序类型
-        private double windowWidth = (double)DefaultConstant.WINDOW_WIDTH;  //窗口宽度
-        private double windowHeight = (double)DefaultConstant.WINDOW_HEIGHT; //窗口高度
-        private double menuCardWidth = (double)DefaultConstant.MENU_CARD_WIDHT;//菜单栏宽度
+        private double windowWidth = (double)MainWindowEnum.WINDOW_WIDTH;  //窗口宽度
+        private double windowHeight = (double)MainWindowEnum.WINDOW_HEIGHT; //窗口高度
+        private double menuCardWidth = (double)MainWindowEnum.MENU_CARD_WIDHT;//菜单栏宽度
         private int selectedMenuIndex = 0;  //上次选中菜单索引
         private bool followMouse = true;  //面板跟随鼠标 默认是
         private Visibility configIconVisible = Visibility.Visible; // 设置按钮是否显示
