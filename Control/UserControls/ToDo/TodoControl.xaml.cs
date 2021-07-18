@@ -22,22 +22,22 @@ namespace GeekDesk.Control.UserControls.Backlog
     /// <summary>
     /// BacklogControl.xaml 的交互逻辑
     /// </summary>
-    public partial class BacklogControl : UserControl
+    public partial class TodoControl : UserControl
     {
         private AppData appData = MainWindow.appData;
-        public BacklogControl()
+        public TodoControl()
         {
             InitializeComponent();
         }
 
         private void DeleteMenu_Click(object sender, RoutedEventArgs e)
         {
-            BacklogInfo info = BacklogList.SelectedItem as BacklogInfo;
+            ToDoInfo info = BacklogList.SelectedItem as ToDoInfo;
             Growl.Ask("确认删除吗?", isConfirmed =>
             {
                 if (isConfirmed)
                 {
-                    appData.ExeBacklogList.Remove(info);
+                    appData.ToDoList.Remove(info);
                     CommonCode.SaveAppData(MainWindow.appData);
                 }
                 return true;
@@ -46,8 +46,8 @@ namespace GeekDesk.Control.UserControls.Backlog
 
         private void DetailMenu_Click(object sender, RoutedEventArgs e)
         {
-            BacklogInfo info = BacklogList.SelectedItem as BacklogInfo;
-            BacklogInfoWindow.ShowDetail(info);
+            ToDoInfo info = BacklogList.SelectedItem as ToDoInfo;
+            ToDoInfoWindow.ShowDetail(info);
         }
 
         /// <summary>

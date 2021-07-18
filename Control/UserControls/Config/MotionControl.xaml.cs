@@ -46,23 +46,48 @@ namespace GeekDesk.Control.UserControls.Config
         /// <param name="e"></param>
         private void HotKeyDown(object sender, KeyEventArgs e)
         {
+            string tag = (sender as TextBox).Tag.ToString();
+
+            bool main = false;
+            if ("Main".Equals(tag))
+            {
+                main = true;
+            }
+
             if (!e.IsRepeat)
             {
                 if (hotkeyFinished)
                 {
-                    appConfig.Hotkey = 0;
-                    appConfig.HotkeyStr = "";
-                    appConfig.HotkeyModifiers = 0;
+                    if (main)
+                    {
+                        appConfig.Hotkey = 0;
+                        appConfig.HotkeyStr = "";
+                        appConfig.HotkeyModifiers = 0;
+                    } else
+                    {
+                        appConfig.ToDoHotkey = 0;
+                        appConfig.ToDoHotkeyStr = "";
+                        appConfig.ToDoHotkeyModifiers = 0;
+                    }
                     hotkeyFinished = false;
+
                 }
                 //首次按下按键
-                if (appConfig.HotkeyStr == null || appConfig.HotkeyStr.Length == 0)
+                if ((main && (appConfig.HotkeyStr == null || appConfig.HotkeyStr.Length == 0)) 
+                    || (!main && (appConfig.ToDoHotkeyStr == null || appConfig.ToDoHotkeyStr.Length == 0)))
                 {
                     if (CheckModifierKeys(e))
                     {
                         //辅助键
-                        appConfig.HotkeyStr = GetKeyName(e);
-                        appConfig.HotkeyModifiers = GetModifierKeys(e);
+                        if (main)
+                        {
+                            appConfig.HotkeyStr = GetKeyName(e);
+                            appConfig.HotkeyModifiers = GetModifierKeys(e);
+                        } else
+                        {
+                            appConfig.ToDoHotkeyStr = GetKeyName(e);
+                            appConfig.ToDoHotkeyModifiers = GetModifierKeys(e);
+                        }
                         prevKeyTemp = e;
                         keysTemp.Add(e);
                     }
@@ -75,15 +100,30 @@ namespace GeekDesk.Control.UserControls.Config
                         || (e.Key >= Key.F1 && e.Key <= Key.F12)
                         || (e.Key >= Key.D0 && e.Key <= Key.D9)))
                     {
-                        appConfig.Hotkey = e.Key;
-                        appConfig.HotkeyStr += e.Key.ToString();
+                        if (main)
+                        {
+                            appConfig.Hotkey = e.Key;
+                            appConfig.HotkeyStr += e.Key.ToString();
+                        } else
+                        {
+                            appConfig.ToDoHotkey = e.Key;
+                            appConfig.ToDoHotkeyStr += e.Key.ToString();
+                        }
                         prevKeyTemp = e;
                         keysTemp.Add(e);
                     }
                     else if (CheckModifierKeys(e))
                     {
-                        appConfig.HotkeyStr += GetKeyName(e);
-                        appConfig.HotkeyModifiers |= GetModifierKeys(e);
+                        if (main)
+                        {
+                            appConfig.HotkeyStr += GetKeyName(e);
+                            appConfig.HotkeyModifiers |= GetModifierKeys(e);
+                        } else
+                        {
+                            appConfig.ToDoHotkeyStr += GetKeyName(e);
+                            appConfig.ToDoHotkeyModifiers |= GetModifierKeys(e);
+                        }
+                        
                         prevKeyTemp = e;
                         keysTemp.Add(e);
                     }
@@ -146,13 +186,18 @@ namespace GeekDesk.Control.UserControls.Config
         [MethodImpl(MethodImplOptions.Synchronized)]
         private  void HotKeyUp(object sender, KeyEventArgs e)
         {
+            string tag = (sender as TextBox).Tag.ToString();
+            bool main = false;
+            if ("Main".Equals(tag))
+            {
+                main = true;
+            }
             lock(this)
             {
                 bool allKeyUp = true;
                 //判断所有键是否都松开
                 foreach (KeyEventArgs key in keysTemp)
                 {
-                    HandyControl.Controls.Growl.SuccessGlobal(key.Key.ToString() + "=" + key.KeyStates);
                     if (key.KeyStates == KeyStates.Down)
                     {
                         allKeyUp = false;
@@ -163,11 +208,24 @@ namespace GeekDesk.Control.UserControls.Config
                 {
                     keysTemp.Clear();
                     hotkeyFinished = true;
-                    if (MainWindow.hotKeyId != -1)
+
+                    if (main)
                     {
-                        Hotkey.UnRegist(new WindowInteropHelper(MainWindow.mainWindow).Handle, Hotkey.keymap[MainWindow.hotKeyId]);
+                        if (MainWindow.hotKeyId != -1)
+                        {
+                            Hotkey.UnRegist(new WindowInteropHelper(MainWindow.mainWindow).Handle, Hotkey.keymap[MainWindow.hotKeyId]);
+                        }
+                        MainWindow.RegisterHotKey(false);
+                    } else
+                    {
+                        if (MainWindow.toDoHotKeyId != -1)
+                        {
+                            Hotkey.UnRegist(new WindowInteropHelper(MainWindow.toDoInfoWindow).Handle, Hotkey.keymap[MainWindow.toDoHotKeyId]);
+                        }
+                        MainWindow.RegisterCreateToDoHotKey(false);
                     }
-                    MainWindow.RegisterHotKey();
+
+                    
                 }
             }
         }

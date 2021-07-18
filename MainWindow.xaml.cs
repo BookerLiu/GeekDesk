@@ -30,7 +30,9 @@ namespace GeekDesk
     {
 
         public static AppData appData = CommonCode.GetAppDataByFile();
+        public static ToDoInfoWindow toDoInfoWindow = (ToDoInfoWindow)ToDoInfoWindow.GetThis();
         public static int hotKeyId = -1;
+        public static int toDoHotKeyId = -1;
         public static MainWindow mainWindow;
         public HotKeyManager hkm = new HotKeyManager();
         public MainWindow()
@@ -41,7 +43,7 @@ namespace GeekDesk
             this.Topmost = true;
             this.Loaded += Window_Loaded;
             this.SizeChanged += MainWindow_Resize;
-            BacklogTask.BackLogCheck();
+            ToDoTask.BackLogCheck();
         }
 
         private void LoadData()
@@ -54,6 +56,7 @@ namespace GeekDesk
 
             this.Width = appData.AppConfig.WindowWidth;
             this.Height = appData.AppConfig.WindowHeight;
+            
         }
 
         void Window_Loaded(object sender, RoutedEventArgs e)
@@ -65,39 +68,88 @@ namespace GeekDesk
             {
                 ShowApp();
             }
-           
-
+            RegisterHotKey(true);
+            RegisterCreateToDoHotKey(true);
         }
 
         /// <summary>
         /// 注册当前窗口的热键
         /// </summary>
-        public static void RegisterHotKey()
+        public static void RegisterHotKey(bool first)
         {
             try
             {
-                //加载完毕注册热键
-                hotKeyId = Hotkey.Regist(new WindowInteropHelper(MainWindow.mainWindow).Handle, appData.AppConfig.HotkeyModifiers, appData.AppConfig.Hotkey, () =>
+                if (appData.AppConfig.HotkeyModifiers != 0)
                 {
-                    if (MotionControl.hotkeyFinished)
+                    //加载完毕注册热键
+                    hotKeyId = Hotkey.Regist(new WindowInteropHelper(MainWindow.mainWindow).Handle, appData.AppConfig.HotkeyModifiers, appData.AppConfig.Hotkey, () =>
                     {
-                        if (mainWindow.Visibility == Visibility.Collapsed)
+                        if (MotionControl.hotkeyFinished)
                         {
-                            ShowApp();
+                            if (mainWindow.Visibility == Visibility.Collapsed)
+                            {
+                                ShowApp();
+                            }
+                            else
+                            {
+                                mainWindow.Visibility = Visibility.Collapsed;
+                            }
                         }
-                        else
-                        {
-                            mainWindow.Visibility = Visibility.Collapsed;
-                        }
-                    }
-                });
-                //HandyControl.Controls.Growl.SuccessGlobal("快捷键注册成功(" + appData.AppConfig.HotkeyStr + ")!");
+                    });
+                }
+                if (!first)
+                {
+                    HandyControl.Controls.Growl.Success("GeekDesk快捷键注册成功(" + appData.AppConfig.HotkeyStr + ")!", "HotKeyGrowl");
+                }
             }
             catch (Exception)
             {
-                HandyControl.Controls.Growl.WarningGlobal("GeekDesk启动快捷键已被其它程序占用(" + appData.AppConfig.HotkeyStr + ")!");
+                if (first)
+                {
+                    HandyControl.Controls.Growl.WarningGlobal("GeekDesk启动快捷键已被其它程序占用(" + appData.AppConfig.HotkeyStr + ")!");
+                }
+                else
+                {
+                    HandyControl.Controls.Growl.Warning("GeekDesk启动快捷键已被其它程序占用(" + appData.AppConfig.HotkeyStr + ")!", "HotKeyGrowl");
+
+                }
             }
-            
+        }
+
+        /// <summary>
+        /// 注册新建待办的热键
+        /// </summary>
+        public static void RegisterCreateToDoHotKey(bool first)
+        {
+            try
+            {
+                if (appData.AppConfig.ToDoHotkeyModifiers!=0)
+                {
+                    //加载完毕注册热键
+                    toDoHotKeyId = Hotkey.Regist(new WindowInteropHelper(toDoInfoWindow).Handle, appData.AppConfig.ToDoHotkeyModifiers, appData.AppConfig.ToDoHotkey, () =>
+                    {
+                        if (MotionControl.hotkeyFinished)
+                        {
+                            ToDoInfoWindow.ShowNone();
+                        }
+                    });
+                }
+                if (!first)
+                {
+                    HandyControl.Controls.Growl.Success("新建待办任务快捷键注册成功(" + appData.AppConfig.ToDoHotkeyStr + ")!", "HotKeyGrowl");
+                }
+            }
+            catch (Exception)
+            {
+                if (first)
+                {
+                    HandyControl.Controls.Growl.WarningGlobal("新建待办任务快捷键已被其它程序占用(" + appData.AppConfig.ToDoHotkeyStr + ")!");
+                }
+                else
+                {
+                    HandyControl.Controls.Growl.Warning("新建待办任务快捷键已被其它程序占用(" + appData.AppConfig.ToDoHotkeyStr + ")!", "HotKeyGrowl");
+                }
+            }
         }
 
         private void DisplayWindowHotKeyPress(object sender, KeyPressedEventArgs e)
@@ -336,7 +388,7 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void BacklogMenuClick(object sender, RoutedEventArgs e)
         {
-            BacklogWindow.Show();
+            ToDoWindow.Show();
         }
         /// <summary>
         /// 禁用设置按钮右键菜单

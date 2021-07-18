@@ -14,12 +14,12 @@ using System.Timers;
 
 namespace GeekDesk.Task
 {
-    public class BacklogTask
+    public class ToDoTask
     {
 
-        ///public static ObservableCollection<BacklogInfo> activityBacklog = new ObservableCollection<BacklogInfo>();
+        ///public static ObservableCollection<ToDoInfo> activityBacklog = new ObservableCollection<ToDoInfo>();
 
-        public static Dictionary<BacklogInfo, Notification> activityBacklog = new Dictionary<BacklogInfo, Notification>();
+        public static Dictionary<ToDoInfo, Notification> activityBacklog = new Dictionary<ToDoInfo, Notification>();
 
         public static void BackLogCheck()
         {
@@ -36,11 +36,11 @@ namespace GeekDesk.Task
         {
             App.Current.Dispatcher.Invoke((Action)(() =>
             {
-                if (MainWindow.appData.ExeBacklogList.Count > 0)
+                if (MainWindow.appData.ToDoList.Count > 0)
                 {
                     string nowTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                    ObservableCollection<BacklogInfo> exeBacklogList = MainWindow.appData.ExeBacklogList;
-                    foreach (BacklogInfo info in exeBacklogList)
+                    ObservableCollection<ToDoInfo> exeBacklogList = MainWindow.appData.ToDoList;
+                    foreach (ToDoInfo info in exeBacklogList)
                     {
                         if (info.ExeTime.CompareTo(nowTime) == -1 && !activityBacklog.ContainsKey(info))
                         {

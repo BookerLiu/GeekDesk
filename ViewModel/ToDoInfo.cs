@@ -10,7 +10,7 @@ namespace GeekDesk.ViewModel
 {
 
     [Serializable]
-    public class BacklogInfo : INotifyPropertyChanged
+    public class ToDoInfo : INotifyPropertyChanged
     {
         //private string id;   //任务唯一id
         private string title; //待办事项

@@ -21,15 +21,15 @@ namespace GeekDesk.Control.Windows
     /// <summary>
     /// BacklogWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class BacklogWindow
+    public partial class ToDoWindow
     {
-        private static BacklogControl backlog = new BacklogControl();
+        private static TodoControl backlog = new TodoControl();
         private AppData appData = MainWindow.appData;
-        private BacklogWindow()
+        private ToDoWindow()
         {
             InitializeComponent();
             RightCard.Content = backlog;
-            backlog.BacklogList.ItemsSource = appData.ExeBacklogList;
+            backlog.BacklogList.ItemsSource = appData.ToDoList;
             this.Topmost = true;
         }
 
@@ -63,10 +63,10 @@ namespace GeekDesk.Control.Windows
             switch (smi.Tag.ToString())
             {
                 case "History":
-                    backlog.BacklogList.ItemsSource = appData.HiBacklogList;
+                    backlog.BacklogList.ItemsSource = appData.HiToDoList;
                     break;
                 default:
-                    backlog.BacklogList.ItemsSource = appData.ExeBacklogList;
+                    backlog.BacklogList.ItemsSource = appData.ToDoList;
                     break;
             }
         }
@@ -78,7 +78,7 @@ namespace GeekDesk.Control.Windows
         /// <param name="e"></param>
         private void CreateBacklog_BtnClick(object sender, RoutedEventArgs e)
         {
-            BacklogInfoWindow.ShowNone();
+            ToDoInfoWindow.ShowNone();
         }
 
 
@@ -87,7 +87,7 @@ namespace GeekDesk.Control.Windows
         {
             if (window == null || !window.Activate())
             {
-                window = new BacklogWindow();
+                window = new ToDoWindow();
             }
             window.Show();
         }
