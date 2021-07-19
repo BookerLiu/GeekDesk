@@ -30,24 +30,22 @@ namespace GeekDesk.Util
         /// <param name="fsModifiers">组合键</param>
         /// <param name="key">快捷键</param>
         /// <param name="callBack">回调函数</param>
-        public static int Regist(Window window, HotkeyModifiers fsModifiers, Key key, HotKeyCallBackHanlder callBack)
+        public static int Regist(IntPtr windowHandle, HotkeyModifiers fsModifiers, Key key, HotKeyCallBackHanlder callBack)
         {
-            var hwnd = new WindowInteropHelper(window).Handle;
-            var _hwndSource = HwndSource.FromHwnd(hwnd);
-            _hwndSource.AddHook(WndProc);
+            HwndSource hs = HwndSource.FromHwnd(windowHandle);
+            hs.AddHook(WndProc);
 
             int id = keyid++;
-
-            var vk = KeyInterop.VirtualKeyFromKey(key);
-            keymap[id] = callBack;
-            if (!RegisterHotKey(hwnd, id, fsModifiers, (uint)vk)) throw new Exception("RegisterHotKey Failed");
+            int vk = KeyInterop.VirtualKeyFromKey(key);
+            keymap.Add(id, callBack);
+            if (!RegisterHotKey(windowHandle, id, fsModifiers, (uint)vk)) throw new Exception("RegisterHotKey Failed");
             return id;
         }
 
         /// <summary>
         /// 快捷键消息处理
         /// </summary>
-        static IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        static IntPtr WndProc(IntPtr windowHandle, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             if (msg == WM_HOTKEY)
             {
@@ -65,15 +63,20 @@ namespace GeekDesk.Util
         /// </summary>
         /// <param name="hWnd">持有快捷键窗口的句柄</param>
         /// <param name="callBack">回调函数</param>
-        public static void UnRegist(IntPtr hWnd, HotKeyCallBackHanlder callBack)
+        public static void UnRegist(IntPtr windowHandle, HotKeyCallBackHanlder callBack)
         {
-            foreach (KeyValuePair<int, HotKeyCallBackHanlder> var in keymap)
+            List<int> list = new List<int>(keymap.Keys);
+            for (int i=0; i < list.Count; i++)
             {
-                if (var.Value == callBack)
-                    UnregisterHotKey(hWnd, var.Key);
+                if (keymap[list[i]] == callBack)
+                {
+                    HwndSource hs = HwndSource.FromHwnd(windowHandle);
+                    hs.RemoveHook(WndProc);
+                    UnregisterHotKey(windowHandle, list[i]);
+                    keymap.Remove(list[i]);
+                }
             }
         }
-
 
         const int WM_HOTKEY = 0x312;
         static int keyid = 10;

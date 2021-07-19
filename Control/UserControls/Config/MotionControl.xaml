@@ -54,8 +54,9 @@
             <TextBlock Text="热键设置" VerticalAlignment="Center" Margin="-26,0,26,0"/>
         </hc:UniformSpacingPanel>
         <hc:UniformSpacingPanel Spacing="10" Margin="30,193,0,-180.337" Grid.ColumnSpan="4">
-            <TextBlock Text="当前热键:"/>
+            <TextBlock Text="主面板:" Width="55"/>
             <hc:TextBox HorizontalAlignment="Left" 
+                        Tag="Main"
                         VerticalAlignment="Top" 
                         IsReadOnly="True" 
                         IsReadOnlyCaretVisible="True" 
@@ -65,6 +66,20 @@
                         KeyUp="HotKeyUp"
                         Margin="12.967,-7.38,-12.967,0"/>
         </hc:UniformSpacingPanel>
+        <!--<hc:UniformSpacingPanel Spacing="10" Margin="30,229,0,-216.337" Grid.ColumnSpan="4">
+            <TextBlock Text="新建待办:"  Width="55"/>
+            <hc:TextBox HorizontalAlignment="Left" 
+                        Tag="ToDo"
+                        VerticalAlignment="Top" 
+                        IsReadOnly="True" 
+                        IsReadOnlyCaretVisible="True" 
+                        Width="200"
+                        Text="{Binding ToDoHotkeyStr}" 
+                        KeyDown="HotKeyDown"
+                        KeyUp="HotKeyUp"
+                        Margin="12.967,-7.38,-12.967,0"/>
+        </hc:UniformSpacingPanel>-->
+        <StackPanel hc:Growl.GrowlParent="True" hc:Growl.Token="HotKeyGrowl" VerticalAlignment="Top"/>
     </hc:SimplePanel>
    
 </UserControl>

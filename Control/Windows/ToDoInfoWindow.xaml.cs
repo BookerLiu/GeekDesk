@@ -20,24 +20,24 @@ namespace GeekDesk.Control.Windows
     /// <summary>
     /// BacklogInfoWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class BacklogInfoWindow
+    public partial class ToDoInfoWindow
     {
 
         private static int windowType = -1;
-        private static readonly int NEW_BACKLOG = 1;
-        private static readonly int DETAIL_BACKLOG = 2;
+        private static readonly int NEW_TODO = 1;
+        private static readonly int DETAIL_TODO = 2;
 
         private AppData appData = MainWindow.appData;
 
-        private BacklogInfo info;
+        private ToDoInfo info;
 
-        private BacklogInfoWindow()
+        private ToDoInfoWindow()
         {
             InitializeComponent();
             ExeTime.SelectedDateTime = DateTime.Now.AddMinutes(10);
             this.Topmost = true;
         }
-        private BacklogInfoWindow(BacklogInfo info)
+        private ToDoInfoWindow(ToDoInfo info)
         {
             InitializeComponent();
             this.Topmost = true;
@@ -96,24 +96,24 @@ namespace GeekDesk.Control.Windows
                     return;
                 }
             }
-            if (windowType == NEW_BACKLOG)
+            if (windowType == NEW_TODO)
             {
-                info = new BacklogInfo
+                info = new ToDoInfo
                 {
                     Title = Title.Text,
                     Msg = Msg.Text,
                     ExeTime = ExeTime.Text
                 };
-                appData.ExeBacklogList.Add(info);
+                appData.ToDoList.Add(info);
             } else
             {
-                int index =appData.ExeBacklogList.IndexOf(info);
-                appData.ExeBacklogList.Remove(info);
+                int index =appData.ToDoList.IndexOf(info);
+                appData.ToDoList.Remove(info);
                 info.Title = Title.Text;
                 info.Msg = Msg.Text;
                 info.ExeTime = ExeTime.Text;
                 info.DoneTime = DoneTime.Text;
-                appData.ExeBacklogList.Insert(index, info);
+                appData.ToDoList.Insert(index, info);
             }
             CommonCode.SaveAppData(MainWindow.appData);
             this.Close();
@@ -124,21 +124,34 @@ namespace GeekDesk.Control.Windows
         {
             if (window == null || !window.Activate())
             {
-                window = new BacklogInfoWindow();
-                
+                window = new ToDoInfoWindow();
+                window.Show();
             }
-            windowType = NEW_BACKLOG;
-            window.Show();
+            windowType = NEW_TODO;
+            window.Visibility = Visibility.Visible;
+        }
+
+
+        public static System.Windows.Window GetThis()
+        {
+            if (window == null || !window.Activate())
+            {
+                window = new ToDoInfoWindow();
+                window.Show();
+            }
+            window.Visibility = Visibility.Collapsed;
+            windowType = NEW_TODO;
+            return window;
         }
 
         private static System.Windows.Window window2 = null;
-        public static void ShowDetail(BacklogInfo info)
+        public static void ShowDetail(ToDoInfo info)
         {
             if (window2 == null || !window2.Activate())
             {
-                window2 = new BacklogInfoWindow(info);
+                window2 = new ToDoInfoWindow(info);
             }
-            windowType = DETAIL_BACKLOG;
+            windowType = DETAIL_TODO;
             window2.Show();
         }
     }

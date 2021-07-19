@@ -25,7 +25,13 @@ namespace GeekDesk.Control.UserControls.PannelCard
         public LeftCardControl()
         {
             InitializeComponent();
-            appData.AppConfig.SelectedMenuIcons = appData.MenuList[appData.AppConfig.SelectedMenuIndex].IconList;
+            if (appData.AppConfig.SelectedMenuIndex >= appData.MenuList.Count || appData.AppConfig.SelectedMenuIndex == -1)
+            {
+                appData.AppConfig.SelectedMenuIcons = appData.MenuList[0].IconList;
+            } else
+            {
+                appData.AppConfig.SelectedMenuIcons = appData.MenuList[appData.AppConfig.SelectedMenuIndex].IconList;
+            }
 
         }
 
@@ -46,7 +52,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
                             var dragged = menuList[fromS];
                             menuList.Remove(dragged);
                             menuList.Insert(to, dragged);
-                            menus.SelectedIndex = to;
+                            MenuListBox.SelectedIndex = to;
                             MainWindow.appData.MenuList = menuList;
                         }
                     );
@@ -73,14 +79,14 @@ namespace GeekDesk.Control.UserControls.PannelCard
             TextBlock tb = sender as TextBlock;
             if (tb.Visibility == Visibility.Collapsed)
             {
-                if (menus.SelectedIndex != -1)
+                if (MenuListBox.SelectedIndex != -1)
                 {
-                    menuSelectIndexTemp = menus.SelectedIndex;
-                    menus.SelectedIndex = -1;
+                    menuSelectIndexTemp = MenuListBox.SelectedIndex;
+                    MenuListBox.SelectedIndex = -1;
                 }
                 else
                 {
-                    menus.SelectedIndex = menuSelectIndexTemp;
+                    MenuListBox.SelectedIndex = menuSelectIndexTemp;
                 }
             }
         }
@@ -94,9 +100,9 @@ namespace GeekDesk.Control.UserControls.PannelCard
         {
             MenuInfo info = new MenuInfo() { MenuEdit = Visibility.Collapsed, MenuId = System.Guid.NewGuid().ToString(), MenuName = "NewMenu" };
             appData.MenuList.Add(info);
-            menus.Items.Refresh();
-            menus.SelectedIndex = appData.MenuList.Count - 1;
-            appData.AppConfig.SelectedMenuIndex = menus.SelectedIndex;
+            MenuListBox.Items.Refresh();
+            MenuListBox.SelectedIndex = appData.MenuList.Count - 1;
+            appData.AppConfig.SelectedMenuIndex = MenuListBox.SelectedIndex;
             appData.AppConfig.SelectedMenuIcons = info.IconList;
         }
 
@@ -124,14 +130,20 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 //如果删除以后没有菜单的话 先创建一个
                 CreateMenu(null, null);
             }
-            appData.MenuList.Remove(menuInfo);
-            if (menus.SelectedIndex == -1)
+            int index = appData.MenuList.IndexOf(menuInfo);
+            if(index == 0)
             {
-                // 选中下一个菜单
-                menus.SelectedIndex = 0;
-                appData.AppConfig.SelectedMenuIndex = menus.SelectedIndex;
-                appData.AppConfig.SelectedMenuIcons = appData.MenuList[0].IconList;
+                index = 0;
+            } else
+            {
+                index = index - 1;
             }
+
+            appData.MenuList.Remove(menuInfo);
+            // 选中下一个菜单
+            MenuListBox.SelectedIndex = index;
+            appData.AppConfig.SelectedMenuIndex = MenuListBox.SelectedIndex;
+            appData.AppConfig.SelectedMenuIcons = appData.MenuList[index].IconList;
         }
 
         /// <summary>
@@ -188,6 +200,18 @@ namespace GeekDesk.Control.UserControls.PannelCard
         {
             MenuInfo menuInfo = ((MenuItem)sender).Tag as MenuInfo;
             IconfontWindow.Show(SvgToGeometry.GetIconfonts(), menuInfo);
+        }
+
+        private void menus_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //设置对应菜单的图标列表
+            if (MenuListBox.SelectedIndex == -1)
+            {
+                appData.AppConfig.SelectedMenuIcons = appData.MenuList[appData.MenuList.Count-1].IconList;
+            } else
+            {
+                appData.AppConfig.SelectedMenuIcons = appData.MenuList[MenuListBox.SelectedIndex].IconList;
+            }
         }
     }
 }

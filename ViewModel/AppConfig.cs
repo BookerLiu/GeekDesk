@@ -19,9 +19,9 @@ namespace GeekDesk.ViewModel
     {
         private SortType menuSortType = SortType.CUSTOM; //菜单排序类型
         private SortType iconSortType = SortType.CUSTOM; //图表排序类型
-        private double windowWidth = (double)DefaultConstant.WINDOW_WIDTH;  //窗口宽度
-        private double windowHeight = (double)DefaultConstant.WINDOW_HEIGHT; //窗口高度
-        private double menuCardWidth = (double)DefaultConstant.MENU_CARD_WIDHT;//菜单栏宽度
+        private double windowWidth = (double)MainWindowEnum.WINDOW_WIDTH;  //窗口宽度
+        private double windowHeight = (double)MainWindowEnum.WINDOW_HEIGHT; //窗口高度
+        private double menuCardWidth = (double)MainWindowEnum.MENU_CARD_WIDHT;//菜单栏宽度
         private int selectedMenuIndex = 0;  //上次选中菜单索引
         private bool followMouse = true;  //面板跟随鼠标 默认是
         private Visibility configIconVisible = Visibility.Visible; // 设置按钮是否显示
@@ -37,9 +37,14 @@ namespace GeekDesk.ViewModel
         private int pannelCornerRadius = 4;  //面板圆角 默认4
         [field: NonSerialized]
         private ObservableCollection<IconInfo> selectedMenuIcons;
+
         private string hotkeyStr = "Ctrl + Q";  //默认启动面板快捷键
         private HotkeyModifiers hotkeyModifiers = HotkeyModifiers.MOD_CONTROL; //默认启动面板快捷键
         private Key hotkey = Key.Q; //默认启动面板快捷键
+
+        private string toDoHotkeyStr;  //待办任务快捷键
+        private HotkeyModifiers toDoHotkeyModifiers; //待办任务快捷键
+        private Key toDoHotkey; //待办任务快捷键
 
         private string customIconUrl; //自定义图标url
         private string customIconJsonUrl;  //自定义图标json信息url
@@ -47,7 +52,63 @@ namespace GeekDesk.ViewModel
         private bool blurEffect = false; //毛玻璃效果 默认否
         private double blurValue;
 
+        private UpdateType updateType = UpdateType.Gitee; //更新源 默认gitee源
+
         #region GetSet
+
+
+        public Key ToDoHotkey
+        {
+            get
+            {
+                return toDoHotkey;
+            }
+            set
+            {
+                toDoHotkey = value;
+                OnPropertyChanged("ToDoHotkey");
+            }
+        }
+
+
+        public HotkeyModifiers ToDoHotkeyModifiers
+        {
+            get
+            {
+                return toDoHotkeyModifiers;
+            }
+            set
+            {
+                toDoHotkeyModifiers = value;
+                OnPropertyChanged("ToDoHotkeyModifiers");
+            }
+        }
+
+        public string ToDoHotkeyStr
+        {
+            get
+            {
+                return toDoHotkeyStr;
+            }
+            set
+            {
+                toDoHotkeyStr = value;
+                OnPropertyChanged("ToDoHotkeyStr");
+            }
+        }
+
+        public UpdateType UpdateType
+        {
+            get
+            {
+                return updateType;
+            }
+            set
+            {
+                updateType = value;
+                OnPropertyChanged("UpdateType");
+            }
+        }
 
         public double BlurValue
         {

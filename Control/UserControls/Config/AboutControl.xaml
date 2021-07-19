@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cvt="clr-namespace:GeekDesk.Converts"
              xmlns:local="clr-namespace:GeekDesk.Control.UserControls.PannelCard"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" 
@@ -10,26 +11,68 @@
              d:DesignHeight="400" d:DesignWidth="500">
 
     <UserControl.Resources>
-        
+        <cvt:UpdateTypeConvert x:Key="UpdateTypeConvert"/>
     </UserControl.Resources>
     <hc:SimplePanel Margin="20,50,20,20">
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
             <Image Source="/Resource/Image/About.png" Width="400" Height="100"/>
-            <TextBlock   TextAlignment="Center"  Text="Copyright ©  2021 GeekDesk 1.0 beta"/>
-            <WrapPanel Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock x:Name="AppInfo"  TextAlignment="Center"  Text="Copyright ©  2021 GeekDesk "/>
+            <hc:UniformSpacingPanel Spacing="5" HorizontalAlignment="Center" Margin="10,10,0,0" VerticalAlignment="Center">
                 <hc:Shield Subject=".net" Status=">=4.72" Margin="0,0,10,0" Color="#1182c3"/>
-                <hc:Shield Subject="IDE" Status="VS2019" Margin="0,0,10,0" Color="#1182c3"/>
-                <hc:Shield Subject="公众号" Status="抓几个娃"  Color="#04913B">
+                    <hc:Shield Subject="IDE" Status="VS2019" Margin="0,0,10,0" Color="#1182c3"/>
+                    
+                    <hc:Shield Subject="GitHub" Status="Demo-liu"
+                           Command="hc:ControlCommands.OpenLink" 
+                           CommandParameter="https://github.com/Demo-Liu/GeekDesk"
+                           Margin="0,0,10,0" Color="#24292F"/>
+                    <hc:Shield Subject="码云" Status="Demo-liu" 
+                           Command="hc:ControlCommands.OpenLink" 
+                           CommandParameter="" 
+                           Margin="0,5,10,0" Color="#C71D23"/>
+                    
+                
+            </hc:UniformSpacingPanel>
+            <hc:UniformSpacingPanel Spacing="10" HorizontalAlignment="Center" Margin="0,5,0,0">
+                <hc:Shield Subject="公众号" Status="抓几个娃" Margin="0,0,5,0"  Color="#04913B">
                     <hc:Poptip.Instance>
                         <hc:Poptip PlacementType="Top">
                             <hc:Poptip.Content>
-                                <Image Source="/Resource/Image/公众号.jpg" Width="150" Height="150" />
+                                <Image x:Name="PublicWeChat" Width="150" Height="150" />
                             </hc:Poptip.Content>
                         </hc:Poptip>
                     </hc:Poptip.Instance>
                 </hc:Shield>
-            </WrapPanel>
+                <hc:Shield Subject="赞赏" Status="支付宝" Margin="0,0,10,0" Color="#1577FE">
+                    <hc:Poptip.Instance>
+                        <hc:Poptip PlacementType="Top">
+                            <hc:Poptip.Content>
+                                <Image x:Name="ZFBCode" Width="150" Height="150" />
+                            </hc:Poptip.Content>
+                        </hc:Poptip>
+                    </hc:Poptip.Instance>
+                </hc:Shield>
+                <hc:Shield Subject="赞赏" Status="微信" Margin="0,0,10,0" Color="#04913B">
+                    <hc:Poptip.Instance>
+                        <hc:Poptip PlacementType="Top">
+                            <hc:Poptip.Content>
+                                <Image x:Name="WeChatCode" Width="150" Height="150" />
+                            </hc:Poptip.Content>
+                        </hc:Poptip>
+                    </hc:Poptip.Instance>
+                </hc:Shield>
+            </hc:UniformSpacingPanel>
             <TextBlock Margin="0,20,0,0" FontSize="13" Width="200" TextAlignment="Center" Text="这是个人开发的程序,所有人可任意修改和免费使用(商用请联系作者)" TextWrapping="Wrap"/>
+
+            <hc:UniformSpacingPanel Spacing="10" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0">
+                <TextBlock Text="更新源:" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}" 
+                         Style="{StaticResource RadioButtonIcon}" Content="Gitee"
+                         IsChecked="{Binding UpdateType, Mode=TwoWay, Converter={StaticResource UpdateTypeConvert}, ConverterParameter=1}"/>
+                <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}"
+                         Style="{StaticResource RadioButtonIcon}" Content="GitHub" 
+                         IsChecked="{Binding UpdateType, Mode=TwoWay, Converter={StaticResource UpdateTypeConvert}, ConverterParameter=2}"/>
+            </hc:UniformSpacingPanel>
         </StackPanel>
     </hc:SimplePanel>
+    
 </UserControl>

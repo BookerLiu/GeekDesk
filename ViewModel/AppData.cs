@@ -14,42 +14,42 @@ namespace GeekDesk.ViewModel
     {
         private ObservableCollection<MenuInfo> menuList; //菜单信息及菜单对应icon信息
         private AppConfig appConfig = new AppConfig(); //程序设置信息
-        private ObservableCollection<BacklogInfo> hiBacklogList; //历史待办
-        private ObservableCollection<BacklogInfo> exeBacklogList; //未处理待办 为了提高任务效率 分开处理
+        private ObservableCollection<ToDoInfo> hiToDoList; //历史待办
+        private ObservableCollection<ToDoInfo> toDoList; //未处理待办 为了提高任务效率 分开处理
 
 
-        public ObservableCollection<BacklogInfo> HiBacklogList
+        public ObservableCollection<ToDoInfo> HiToDoList
         {
             get
             {
-                if (hiBacklogList == null)
+                if (hiToDoList == null)
                 {
-                    hiBacklogList = new ObservableCollection<BacklogInfo>();
+                    hiToDoList = new ObservableCollection<ToDoInfo>();
 
                 }
-                return hiBacklogList;
+                return hiToDoList;
             }
             set
             {
-                hiBacklogList = value;
-                OnPropertyChanged("HiBacklogList");
+                hiToDoList = value;
+                OnPropertyChanged("HiToDoList");
             }
         }
 
-        public ObservableCollection<BacklogInfo> ExeBacklogList
+        public ObservableCollection<ToDoInfo> ToDoList
         {
             get
             {
-                if (exeBacklogList == null)
+                if (toDoList == null)
                 {
-                    exeBacklogList = new ObservableCollection<BacklogInfo>();
+                    toDoList = new ObservableCollection<ToDoInfo>();
                 }
-                return exeBacklogList;
+                return toDoList;
             }
             set
             {
-                exeBacklogList = value;
-                OnPropertyChanged("ExeBacklogList");
+                toDoList = value;
+                OnPropertyChanged("ToDoList");
             }
         }
 

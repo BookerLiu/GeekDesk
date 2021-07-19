@@ -82,6 +82,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Common, Version=4.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -113,26 +114,27 @@
     <Compile Include="Command\DelegateCommandBase.cs" />
     <Compile Include="Constant\AppHideType.cs" />
     <Compile Include="Constant\Constants.cs" />
-    <Compile Include="Constant\DefaultConstant.cs" />
+    <Compile Include="Constant\MainWindowEnum.cs" />
     <Compile Include="Constant\IconStartType.cs" />
     <Compile Include="Constant\SortType.cs" />
+    <Compile Include="Constant\UpdateType.cs" />
     <Compile Include="Control\Other\BacklogNotificatin.xaml.cs">
       <DependentUpon>BacklogNotificatin.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\Other\CustomIconUrlDialog.xaml.cs">
       <DependentUpon>CustomIconUrlDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\UserControls\Backlog\BacklogControl.xaml.cs">
-      <DependentUpon>BacklogControl.xaml</DependentUpon>
+    <Compile Include="Control\UserControls\ToDo\TodoControl.xaml.cs">
+      <DependentUpon>TodoControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\UserControls\IconFont\IconPannel.xaml.cs">
       <DependentUpon>IconPannel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\Windows\BacklogInfoWindow.xaml.cs">
-      <DependentUpon>BacklogInfoWindow.xaml</DependentUpon>
+    <Compile Include="Control\Windows\ToDoInfoWindow.xaml.cs">
+      <DependentUpon>ToDoInfoWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\Windows\BacklogWindow.xaml.cs">
-      <DependentUpon>BacklogWindow.xaml</DependentUpon>
+    <Compile Include="Control\Windows\ToDoWindow.xaml.cs">
+      <DependentUpon>ToDoWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\Windows\ConfigWindow.xaml.cs">
       <DependentUpon>ConfigWindow.xaml</DependentUpon>
@@ -164,10 +166,12 @@
     <Compile Include="Converts\DoubleToGridLength.cs" />
     <Compile Include="Converts\IntToCornerRadius.cs" />
     <Compile Include="Converts\OpcityConvert.cs" />
+    <Compile Include="Converts\UpdateTypeConvert.cs" />
     <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.cs" />
     <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.Drag.cs" />
     <Compile Include="Converts\HideTypeConvert.cs" />
-    <Compile Include="Task\BacklogTask.cs" />
+    <Compile Include="Task\ToDoTask.cs" />
+    <Compile Include="Thread\UpdateThread.cs" />
     <Compile Include="Util\AeroGlassHelper.cs" />
     <Compile Include="Util\CommonCode.cs" />
     <Compile Include="Util\ConsoleManager.cs" />
@@ -186,7 +190,7 @@
     <Compile Include="Util\SystemIcon.cs" />
     <Compile Include="ViewModel\AppConfig.cs" />
     <Compile Include="ViewModel\AppData.cs" />
-    <Compile Include="ViewModel\BacklogInfo.cs" />
+    <Compile Include="ViewModel\ToDoInfo.cs" />
     <Compile Include="ViewModel\IconfontInfo.cs" />
     <Compile Include="ViewModel\IconInfo.cs" />
     <Compile Include="ViewModel\MenuInfo.cs" />
@@ -198,7 +202,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Control\UserControls\Backlog\BacklogControl.xaml">
+    <Page Include="Control\UserControls\ToDo\TodoControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -206,11 +210,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Control\Windows\BacklogInfoWindow.xaml">
+    <Page Include="Control\Windows\ToDoInfoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Control\Windows\BacklogWindow.xaml">
+    <Page Include="Control\Windows\ToDoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -303,13 +307,7 @@
     <Resource Include="Resource\Iconfont\iconfont.js" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resource\Image\公众号.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resource\Image\BacklogImg.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resource\Image\Taskbar.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\Image\TitleLogo.png" />

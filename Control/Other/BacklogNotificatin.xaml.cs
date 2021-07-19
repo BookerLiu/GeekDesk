@@ -24,7 +24,7 @@ namespace GeekDesk.Control.Other
     {
 
         private AppData appData = MainWindow.appData;
-        public BacklogNotificatin(BacklogInfo info)
+        public BacklogNotificatin(ToDoInfo info)
         {
             InitializeComponent();
             this.DataContext = info;
@@ -32,12 +32,12 @@ namespace GeekDesk.Control.Other
 
         private void BacklogDone_Click(object sender, RoutedEventArgs e)
         {
-            BacklogInfo info = this.DataContext as BacklogInfo;
+            ToDoInfo info = this.DataContext as ToDoInfo;
             info.DoneTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            appData.ExeBacklogList.Remove(info); //执行任务删除
-            appData.HiBacklogList.Add(info);  //添加历史任务
-            BacklogTask.activityBacklog[info].Close(); //关闭桌面通知
-            BacklogTask.activityBacklog.Remove(info);//激活任务删除
+            appData.ToDoList.Remove(info); //执行任务删除
+            appData.HiToDoList.Add(info);  //添加历史任务
+            ToDoTask.activityBacklog[info].Close(); //关闭桌面通知
+            ToDoTask.activityBacklog.Remove(info);//激活任务删除
             CommonCode.SaveAppData(appData);
         }
 
@@ -86,7 +86,7 @@ namespace GeekDesk.Control.Other
         /// <param name="e"></param>
         private void DelayButton_Click(object sender, RoutedEventArgs e)
         {
-            BacklogInfo info = this.DataContext as BacklogInfo;
+            ToDoInfo info = this.DataContext as ToDoInfo;
             int time = int.Parse(DelayTime.Text);
             string type = DelayType.Text;
             switch(type)
@@ -98,8 +98,8 @@ namespace GeekDesk.Control.Other
                     info.ExeTime = DateTime.Now.AddHours(time).ToString("yyyy-MM-dd HH:mm:ss");
                     break;
             }
-            BacklogTask.activityBacklog[info].Close(); //关闭桌面通知
-            BacklogTask.activityBacklog.Remove(info);//激活任务删除
+            ToDoTask.activityBacklog[info].Close(); //关闭桌面通知
+            ToDoTask.activityBacklog.Remove(info);//激活任务删除
         }
     }
 }

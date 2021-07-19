@@ -29,12 +29,12 @@
         <Grid MouseDown="DragMove">
             <TextBox x:Name="CheckSettingUrl" Visibility="Collapsed" Text="{Binding IsSettingUrl}" TextChanged="CheckSettingUrl_TextChanged"/>
             <hc:TabControl x:Name="MyTabControl" IsAnimationEnabled="True" SelectionChanged="TabControl_SelectionChanged" ShowContextMenu="True"  IsTabFillEnabled="True" Margin="20,30,20,20" Height="350" VerticalAlignment="Top">
-                <hc:TabItem Tag="System"  IsSelected="True" Header="系统图标" hc:IconElement.Height="16" hc:IconElement.Width="16" hc:IconElement.Geometry="{StaticResource CalendarGeometry}" >
+                <hc:TabItem Tag="System"  IsSelected="True" Header="系统图标" hc:IconElement.Height="16" hc:IconElement.Width="16" hc:IconElement.Geometry="{StaticResource SystemIcon}" >
                     <hc:SimplePanel Background="AliceBlue">
                         <uc:IconPannel x:Name="SystemIcon"/>
                     </hc:SimplePanel>
                 </hc:TabItem>
-                <hc:TabItem Tag="Custom" Header="自定义图标" hc:IconElement.Height="16" hc:IconElement.Width="16" hc:IconElement.Geometry="{StaticResource CalendarGeometry}">
+                <hc:TabItem Tag="Custom" Header="自定义图标" hc:IconElement.Height="16" hc:IconElement.Width="16" hc:IconElement.Geometry="{StaticResource CustomIcon}">
                     <hc:SimplePanel Background="AliceBlue">
                         <uc:IconPannel x:Name="CustomIcon"/>
                         <hc:LoadingCircle x:Name="LoadingEle"/>

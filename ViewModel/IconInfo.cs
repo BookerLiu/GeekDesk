@@ -20,8 +20,8 @@ namespace GeekDesk.ViewModel
         private BitmapImage bitmapImage; //位图
         private byte[] imageByteArr; //图片 byte数组
         private string content; //显示信息
-        private int imageWidth = (int)DefaultConstant.IMAGE_WIDTH; //图片宽度
-        private int imageHeight = (int)DefaultConstant.IMAGE_HEIGHT; //图片高度
+        private int imageWidth = (int)MainWindowEnum.IMAGE_WIDTH; //图片宽度
+        private int imageHeight = (int)MainWindowEnum.IMAGE_HEIGHT; //图片高度
         private bool adminStartUp = false; //始终管理员方式启动  默认否
         private byte[] defaultImage; //默认图标
 

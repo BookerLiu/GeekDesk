@@ -20,7 +20,8 @@
                     <SolidColorBrush Opacity="0"/>
                 </Setter.Value>
             </Setter>
-
+            <EventSetter Event="MouseLeftButtonDown" Handler="MenuClick"/>
+            <EventSetter Event="MouseRightButtonDown" Handler="MenuClick"/>
             <Style.Triggers>
                 <MultiTrigger>
                     <MultiTrigger.Conditions>
@@ -74,12 +75,13 @@
                 </ContextMenu>
             </hc:Card.ContextMenu>
             <WrapPanel Orientation="Horizontal">
-                <ListBox x:Name="menus"
+                <ListBox x:Name="MenuListBox"
                          ItemsSource="{Binding MenuList}"
                          Tag="{Binding AppConfig.MenuCardWidth}"
                          BorderThickness="0" Foreground="{x:Null}"
                          SelectedIndex="{Binding AppConfig.SelectedMenuIndex}"
                          VirtualizingPanel.VirtualizationMode="Recycling"
+                         SelectionChanged="menus_SelectionChanged"
                          >
                     <ListBox.Resources>
                         <ContextMenu x:Key="menuDialog" Width="200">
@@ -108,6 +110,9 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                         <StackPanel MouseLeftButtonDown="MenuClick" MouseRightButtonDown="MenuClick" Tag="{Binding}">
+                            <StackPanel.Background>
+                                <SolidColorBrush Color="AliceBlue" Opacity="0.01"/>
+                            </StackPanel.Background>
                                 <hc:TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
                                      HorizontalAlignment="Left"
                                      Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}}"
