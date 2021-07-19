@@ -66,7 +66,7 @@
                         KeyUp="HotKeyUp"
                         Margin="12.967,-7.38,-12.967,0"/>
         </hc:UniformSpacingPanel>
-        <hc:UniformSpacingPanel Spacing="10" Margin="30,229,0,-216.337" Grid.ColumnSpan="4">
+        <!--<hc:UniformSpacingPanel Spacing="10" Margin="30,229,0,-216.337" Grid.ColumnSpan="4">
             <TextBlock Text="新建待办:"  Width="55"/>
             <hc:TextBox HorizontalAlignment="Left" 
                         Tag="ToDo"
@@ -78,7 +78,7 @@
                         KeyDown="HotKeyDown"
                         KeyUp="HotKeyUp"
                         Margin="12.967,-7.38,-12.967,0"/>
-        </hc:UniformSpacingPanel>
+        </hc:UniformSpacingPanel>-->
         <StackPanel hc:Growl.GrowlParent="True" hc:Growl.Token="HotKeyGrowl" VerticalAlignment="Top"/>
     </hc:SimplePanel>
    

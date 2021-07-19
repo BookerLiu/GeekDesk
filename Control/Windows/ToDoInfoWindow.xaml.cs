@@ -125,10 +125,10 @@ namespace GeekDesk.Control.Windows
             if (window == null || !window.Activate())
             {
                 window = new ToDoInfoWindow();
-                
+                window.Show();
             }
             windowType = NEW_TODO;
-            window.Show();
+            window.Visibility = Visibility.Visible;
         }
 
 
@@ -137,8 +137,9 @@ namespace GeekDesk.Control.Windows
             if (window == null || !window.Activate())
             {
                 window = new ToDoInfoWindow();
-
+                window.Show();
             }
+            window.Visibility = Visibility.Collapsed;
             windowType = NEW_TODO;
             return window;
         }

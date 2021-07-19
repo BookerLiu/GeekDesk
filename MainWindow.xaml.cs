@@ -30,7 +30,8 @@ namespace GeekDesk
     {
 
         public static AppData appData = CommonCode.GetAppDataByFile();
-        public static ToDoInfoWindow toDoInfoWindow = (ToDoInfoWindow)ToDoInfoWindow.GetThis();
+        //public static ToDoInfoWindow toDoInfoWindow = (ToDoInfoWindow)ToDoInfoWindow.GetThis();
+        public static ToDoInfoWindow toDoInfoWindow;
         public static int hotKeyId = -1;
         public static int toDoHotKeyId = -1;
         public static MainWindow mainWindow;
@@ -69,7 +70,7 @@ namespace GeekDesk
                 ShowApp();
             }
             RegisterHotKey(true);
-            RegisterCreateToDoHotKey(true);
+            //RegisterCreateToDoHotKey(true);
         }
 
         /// <summary>
@@ -126,7 +127,7 @@ namespace GeekDesk
                 if (appData.AppConfig.ToDoHotkeyModifiers!=0)
                 {
                     //加载完毕注册热键
-                    toDoHotKeyId = Hotkey.Regist(new WindowInteropHelper(toDoInfoWindow).Handle, appData.AppConfig.ToDoHotkeyModifiers, appData.AppConfig.ToDoHotkey, () =>
+                    toDoHotKeyId = Hotkey.Regist(new WindowInteropHelper(MainWindow.mainWindow).Handle, appData.AppConfig.ToDoHotkeyModifiers, appData.AppConfig.ToDoHotkey, () =>
                     {
                         if (MotionControl.hotkeyFinished)
                         {
