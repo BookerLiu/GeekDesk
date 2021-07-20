@@ -4,6 +4,7 @@ using GeekDesk.Control;
 using GeekDesk.Control.UserControls.Config;
 using GeekDesk.Control.Windows;
 using GeekDesk.Task;
+using GeekDesk.Thread;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using GlobalHotKey;
@@ -45,6 +46,7 @@ namespace GeekDesk
             this.Loaded += Window_Loaded;
             this.SizeChanged += MainWindow_Resize;
             ToDoTask.BackLogCheck();
+            UpdateThread.Update();
         }
 
         private void LoadData()
