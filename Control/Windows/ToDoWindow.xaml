@@ -97,7 +97,7 @@
                     Background="#5BC0DE"
                     Foreground="White"
                     Grid.Column="1"
-                    Margin="590,29,10,384"
+                    Margin="590.01,29,10,384"
                     Click="CreateBacklog_BtnClick"/>
         </Grid>
     </Border>
