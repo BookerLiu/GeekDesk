@@ -1,5 +1,9 @@
 {
-	"version" : "1.0-beta",
-	"msg" : "",
-	"log" : ""
+	"title" : "",
+	"subTitle" : "",
+	"msgTitle" : "",
+	"msg" : [],
+	"githubUrl" : "",
+	"giteeUrl" : "",
+	"version": ""
 }

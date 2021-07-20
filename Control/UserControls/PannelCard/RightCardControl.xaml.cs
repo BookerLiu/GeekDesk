@@ -173,7 +173,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
             {
                 string path = (string)obj;
 
-                string base64 = ImageUtil.FileImageToBase64(path, ImageFormat.Jpeg);
+                //string base64 = ImageUtil.FileImageToBase64(path, ImageFormat.Jpeg);
 
                 IconInfo iconInfo = new IconInfo
                 {

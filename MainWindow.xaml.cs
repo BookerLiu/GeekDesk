@@ -7,9 +7,7 @@ using GeekDesk.Task;
 using GeekDesk.Thread;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
-using GlobalHotKey;
 using HandyControl.Data;
-using SharpShell.SharpContextMenu;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -36,7 +34,6 @@ namespace GeekDesk
         public static int hotKeyId = -1;
         public static int toDoHotKeyId = -1;
         public static MainWindow mainWindow;
-        public HotKeyManager hkm = new HotKeyManager();
         public MainWindow()
         {
             LoadData();
@@ -46,7 +43,6 @@ namespace GeekDesk
             this.Loaded += Window_Loaded;
             this.SizeChanged += MainWindow_Resize;
             ToDoTask.BackLogCheck();
-            UpdateThread.Update();
         }
 
         private void LoadData()
@@ -73,6 +69,8 @@ namespace GeekDesk
             }
             RegisterHotKey(true);
             //RegisterCreateToDoHotKey(true);
+            UpdateThread.Update();
+
         }
 
         /// <summary>
@@ -155,21 +153,21 @@ namespace GeekDesk
             }
         }
 
-        private void DisplayWindowHotKeyPress(object sender, KeyPressedEventArgs e)
-        {
-            if (e.HotKey.Key == Key.Y)
-            {
-                if (this.Visibility == Visibility.Collapsed)
-                {
-                    ShowApp();
-                }
-                else
-                {
-                    this.Visibility = Visibility.Collapsed;
-                }
-            }
+        //private void DisplayWindowHotKeyPress(object sender, KeyPressedEventArgs e)
+        //{
+        //    if (e.HotKey.Key == Key.Y)
+        //    {
+        //        if (this.Visibility == Visibility.Collapsed)
+        //        {
+        //            ShowApp();
+        //        }
+        //        else
+        //        {
+        //            this.Visibility = Visibility.Collapsed;
+        //        }
+        //    }
 
-        }
+        //}
 
 
         void MainWindow_Resize(object sender, System.EventArgs e)

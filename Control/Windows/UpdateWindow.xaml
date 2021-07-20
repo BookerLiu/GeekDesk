@@ -4,13 +4,41 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GeekDesk.Control.Windows"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
         mc:Ignorable="d"
-        Title="UpdateWindow" Height="450" Width="800"
+        Title="UpdateWindow" Height="300" Width="450"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent" ShowInTaskbar="False">
-    <Border Background="White">
-        
+    <Border Background="AliceBlue" MouseDown="DragMove">
+        <StackPanel HorizontalAlignment="Center">
+            <hc:Card BorderThickness="0" Effect="{DynamicResource EffectShadow2}" Margin="20,20,20,0">
+                <!--Card 的内容部分-->
+                <Border CornerRadius="4,4,0,0" Height="160">
+                    <StackPanel>
+                        <TextBlock Margin="10" x:Name="MsgTitle" TextWrapping="Wrap" FontSize="16" HorizontalAlignment="Left" Style="{DynamicResource TextBlockLargeBold}" Text="测试"/>
+                        <TextBlock Margin="15" x:Name="Msg" TextWrapping="Wrap" VerticalAlignment="Center" Text=""/>
+                    </StackPanel>
+                </Border>
+                <!--Card 的尾部部分-->
+                <hc:Card.Footer>
+                    <StackPanel Margin="10" Width="420">
+                        <!--Card 的一级内容-->
+                        <TextBlock TextWrapping="NoWrap" x:Name="Title"  Style="{DynamicResource TextBlockLargeBold}" TextTrimming="CharacterEllipsis" 
+                                       Text="" 
+                                       HorizontalAlignment="Left"/>
+                        <!--Card 的二级内容-->
+                        <TextBlock TextWrapping="NoWrap" x:Name="SubTitle" Style="{DynamicResource TextBlockDefault}" TextTrimming="CharacterEllipsis" 
+                                       Margin="0,6,0,0"
+                                       HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </hc:Card.Footer>
+            </hc:Card>
+            <hc:UniformSpacingPanel Spacing="100" HorizontalAlignment="Center" Margin="0,10,0,0">
+                <Button Content="暂不更新" Click="Close_Click" />
+                <Button Content="前往更新" Click="Confirm_Click" Background="#5BC0DE" Foreground="White" RenderTransformOrigin="0.696,0.45"/>
+            </hc:UniformSpacingPanel>
+        </StackPanel>
         
     </Border>
 </Window>
