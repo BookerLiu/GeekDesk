@@ -11,15 +11,21 @@ namespace GeekDesk
     /// </summary>
     public partial class App : Application
     {
+
         System.Threading.Mutex mutex;
+
+        public App()
+        {
+            this.Startup += new StartupEventHandler(App_Startup);
+        }
+
         private void App_Startup(object sender, StartupEventArgs e)
         {
+
             bool ret;
             mutex = new System.Threading.Mutex(true, "GeekDesk", out ret);
-
             if (!ret)
             {
-                MessageBox.Show("已有一个客户端正在运行,请先结束原来客户端!");
                 Environment.Exit(0);
             }
             #region 设置程序开机自动运行(+注册表项)
