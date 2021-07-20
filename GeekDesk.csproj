@@ -163,6 +163,9 @@
     <Compile Include="Control\Windows\IconfontWindow.xaml.cs">
       <DependentUpon>IconfontWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\Windows\UpdateWindow.xaml.cs">
+      <DependentUpon>UpdateWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converts\DoubleToGridLength.cs" />
     <Compile Include="Converts\IntToCornerRadius.cs" />
     <Compile Include="Converts\OpcityConvert.cs" />
@@ -254,6 +257,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Control\Windows\UpdateWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -290,7 +297,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="Resource\Iconfont\iconfont.json" />
-    <Resource Include="Update.json" />
+    <Content Include="index.html" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

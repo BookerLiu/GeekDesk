@@ -26,7 +26,7 @@ namespace GeekDesk.Control.UserControls.Config
         public AboutControl()
         {
             InitializeComponent();
-            AppInfo.Text += ConfigurationManager.AppSettings["version"];
+            AppInfo.Text += ConfigurationManager.AppSettings["Version"];
             PublicWeChat.Source = ImageUtil.Base64ToBitmapImage(Constants.PUBLIC_WE_CHAT_IMG_BASE64);
             WeChatCode.Source = ImageUtil.Base64ToBitmapImage(Constants.WE_CHAT_CODE_IMG_BASE64);
             ZFBCode.Source = ImageUtil.Base64ToBitmapImage(Constants.ZFB_CODE_IMG_BASE64);
