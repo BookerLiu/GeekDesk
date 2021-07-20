@@ -41,9 +41,5 @@
  <img src="https://z3.ax1x.com/2021/07/19/WJaI9e.jpg" alt="WJaI9e.jpg" border="0" />
  
  ### 佛系赞赏
- 我知道没人赞赏但我还是要放上来
- #### 微信
- <img src="https://z3.ax1x.com/2021/07/19/WJdAEV.jpg" alt="WJdAEV.jpg" border="0" width="250"/>  
- 
- #### 支付宝
- <img src="https://z3.ax1x.com/2021/07/19/WJdngJ.jpg" alt="WJdngJ.jpg" border="0" width="250" />
+ 我知道没人赞赏但我还是要放上来  
+ <img src="https://z3.ax1x.com/2021/07/20/WYdfmR.jpg" alt="WYdfmR.jpg" border="0" width="500px"/>
