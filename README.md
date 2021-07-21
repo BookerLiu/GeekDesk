@@ -33,7 +33,7 @@
 ## 定时提醒 永不忘记
 <img src="https://z3.ax1x.com/2021/07/19/WJU6df.gif" alt="WJU6df.gif" border="0" width="800px"/>
 
-## Release
+## LICENSE
 - 这是个人开发的程序,任何人可任意修改和免费使用(未做较大功能性改动不允许修改赞赏码,重新修改发布需注明出处)
 - 商用需联系作者
 
