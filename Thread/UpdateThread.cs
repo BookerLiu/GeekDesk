@@ -1,4 +1,5 @@
 ﻿using GeekDesk.Constant;
+using GeekDesk.Control.Windows;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using Newtonsoft.Json.Linq;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GeekDesk.Thread
 {
@@ -46,15 +48,17 @@ namespace GeekDesk.Thread
                     string onlineVersion = jo["version"].ToString();
                     if (onlineVersion.CompareTo(nowVersion) > 0)
                     {
-                        //检测到版本更新
+                        App.Current.Dispatcher.Invoke((Action)(() =>
+                        {
+                            //检测到版本更新
+                            UpdateWindow.Show(jo);
+                        }));
                     }
                 }
-            } catch (Exception)
+            } catch (Exception e)
             {
-
+                MessageBox.Show(e.Message);
             }
-            
-            
         }
     }
 }

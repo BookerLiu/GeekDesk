@@ -47,7 +47,7 @@ namespace GeekDesk.Util
         public static IntPtr GetJumboIcon(int iImage)
         {
             IImageList spiml = null;
-            Guid guil = new Guid(IID_IImageList2);//or IID_IImageList
+            Guid guil = new Guid(IID_IImageList);//or IID_IImageList
 
             Shell32.SHGetImageList(Shell32.SHIL_JUMBO, ref guil, ref spiml);
             IntPtr hIcon = IntPtr.Zero;

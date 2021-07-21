@@ -10,9 +10,9 @@ namespace GeekDesk.Util
     {
 
 
-        public static bool IsEmpty(string str)
+        public static bool IsEmpty(object str)
         {
-            if (str == null || str.Length == 0 || str.Trim().Length == 0)
+            if (str == null || str.ToString().Length == 0 || str.ToString().Trim().Length == 0)
             {
                 return true;
             }

@@ -1,7 +1,6 @@
 ﻿using GeekDesk.Control.Windows;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
-using GlobalHotKey;
 using HandyControl.Data;
 using Microsoft.Win32;
 using System;

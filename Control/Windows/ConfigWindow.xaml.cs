@@ -1,5 +1,4 @@
 ﻿
-using GalaSoft.MvvmLight.Command;
 using GeekDesk.Control.UserControls;
 using GeekDesk.Control.UserControls.Config;
 using GeekDesk.ViewModel;
