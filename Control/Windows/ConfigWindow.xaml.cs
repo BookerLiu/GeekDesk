@@ -18,6 +18,7 @@ namespace GeekDesk.Control.Windows
         private static AboutControl about = new AboutControl();
         private static ThemeControl theme = new ThemeControl();
         private static MotionControl motion = new MotionControl();
+        private static OtherControl other = new OtherControl();
         public MainWindow mainWindow;
 
         private ConfigWindow(AppConfig appConfig, MainWindow mainWindow)
@@ -63,6 +64,9 @@ namespace GeekDesk.Control.Windows
                     break;
                 case "Theme":
                     RightCard.Content = theme;
+                    break;
+                case "Other":
+                    RightCard.Content = other;
                     break;
                 default:
                     RightCard.Content = about;
