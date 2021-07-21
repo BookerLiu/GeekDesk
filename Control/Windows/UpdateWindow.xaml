@@ -10,7 +10,7 @@
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent" ShowInTaskbar="False">
-    <Border Background="AliceBlue" MouseDown="DragMove">
+    <Border CornerRadius="4" Background="AliceBlue" BorderThickness="1" BorderBrush="Green" MouseDown="DragMove">
         <StackPanel HorizontalAlignment="Center">
             <hc:Card BorderThickness="0" Effect="{DynamicResource EffectShadow2}" Margin="20,20,20,0">
                 <!--Card 的内容部分-->

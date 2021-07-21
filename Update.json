@@ -2,7 +2,7 @@
 	"title" : "版本更新",
 	"subTitle" : "V1.0-beta",
 	"msgTitle" : "本次更新内容如下",
-	"msg" : "[更新测试],[更新测试2]",
+	"msg" : "['更新测试1','更新测试2']",
 	"githubUrl" : "https://github.com/Demo-Liu/GeekDesk/releases/tag/1.0-beta",
 	"giteeUrl" : "https://gitee.com/demo_liu/GeekDesk/releases/1.0-beta",
 	"version": "1.0-beta"

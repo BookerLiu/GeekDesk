@@ -29,7 +29,7 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    <Border CornerRadius="8" BorderThickness="0">
+    <Border CornerRadius="4" BorderThickness="0">
         <Border.Background>
             <SolidColorBrush Color="AliceBlue" Opacity="0.9"/>
         </Border.Background>
