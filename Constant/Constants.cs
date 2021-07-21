@@ -9,6 +9,9 @@ namespace GeekDesk.Constant
     public class Constants
     {
         public static string APP_DIR = AppDomain.CurrentDomain.BaseDirectory.Trim();
+
+        public static string MY_NAME = "GeekDesk";
+
         /// <summary>
         /// app数据文件路径
         /// </summary>

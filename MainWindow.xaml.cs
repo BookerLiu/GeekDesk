@@ -69,6 +69,11 @@ namespace GeekDesk
             }
             RegisterHotKey(true);
             //RegisterCreateToDoHotKey(true);
+
+            if (!appData.AppConfig.SelfStartUped)
+            {
+                RegisterUtil.SetSelfStarting(appData.AppConfig.SelfStartUp, Constants.MY_NAME);
+            }
             UpdateThread.Update();
 
         }

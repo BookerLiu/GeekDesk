@@ -103,6 +103,21 @@
                             />
                         </hc:SideMenuItem.Icon>
                     </hc:SideMenuItem>
+                    <hc:SideMenuItem Header="其它"
+                                     Tag="Other"
+                                     Selected="MemuClick">
+                        <hc:SideMenuItem.Icon>
+                            <Button Background="Transparent" 
+                                    IsEnabled="False"
+                                    Opacity="1"
+                            BorderThickness="0"
+                            hc:IconElement.Geometry="{StaticResource Other}"
+                            hc:IconElement.Height="18"
+                            hc:IconElement.Width="18"
+                            HorizontalAlignment="Right"
+                            />
+                        </hc:SideMenuItem.Icon>
+                    </hc:SideMenuItem>
                 </hc:SideMenu>
             </hc:Card>
             <hc:ScrollViewer  Grid.Row="0" Grid.Column="1">

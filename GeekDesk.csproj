@@ -102,6 +102,9 @@
     <Compile Include="Control\Other\CustomIconUrlDialog.xaml.cs">
       <DependentUpon>CustomIconUrlDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\UserControls\Config\OtherControl.xaml.cs">
+      <DependentUpon>OtherControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Control\UserControls\ToDo\TodoControl.xaml.cs">
       <DependentUpon>TodoControl.xaml</DependentUpon>
     </Compile>
@@ -165,6 +168,7 @@
     <Compile Include="Converts\MenuWidthConvert.cs" />
     <Compile Include="Util\MouseUtil.cs" />
     <Compile Include="Util\MouseUtilities.cs" />
+    <Compile Include="Util\RegisterUtil.cs" />
     <Compile Include="Util\StringUtil.cs" />
     <Compile Include="Util\SvgToGeometry.cs" />
     <Compile Include="Util\SystemIcon.cs" />
@@ -181,6 +185,10 @@
     <Page Include="Control\Other\CustomIconUrlDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\UserControls\Config\OtherControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Control\UserControls\ToDo\TodoControl.xaml">
       <SubType>Designer</SubType>

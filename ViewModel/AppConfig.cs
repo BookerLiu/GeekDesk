@@ -54,8 +54,38 @@ namespace GeekDesk.ViewModel
 
         private UpdateType updateType = UpdateType.Gitee; //更新源 默认gitee源
 
+        private bool selfStartUp = true; //开机自启动设置
+        private bool selfStartUped = false;  //是否已设置
+
         #region GetSet
 
+
+        public bool SelfStartUped
+        {
+            get
+            {
+                return selfStartUped;
+            }
+            set
+            {
+                selfStartUped = value;
+                OnPropertyChanged("SelfStartUped");
+            }
+        }
+
+        public bool SelfStartUp
+        {
+            get
+            {
+                return selfStartUp;
+            }
+            set
+            {
+                selfStartUp = value;
+                selfStartUped = true;
+                OnPropertyChanged("SelfStartUp");
+            }
+        }
 
         public Key ToDoHotkey
         {
