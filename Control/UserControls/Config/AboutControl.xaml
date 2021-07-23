@@ -20,12 +20,12 @@
             <hc:UniformSpacingPanel Spacing="5" HorizontalAlignment="Center" Margin="10,10,0,0" VerticalAlignment="Center">
                 <hc:Shield Subject=".net" Status=">=4.72" Margin="0,0,10,0" Color="#1182c3"/>
                     <hc:Shield Subject="IDE" Status="VS2019" Margin="0,0,10,0" Color="#1182c3"/>
-                    
-                    <hc:Shield Subject="GitHub" Status="Demo-liu"
+
+                <hc:Shield Subject="GitHub" Visibility="Visible" Status="Demo-liu"
                            Command="hc:ControlCommands.OpenLink" 
                            CommandParameter="https://github.com/Demo-Liu/GeekDesk"
                            Margin="0,0,10,0" Color="#24292F"/>
-                    <hc:Shield Subject="Gitee" Status="Demo-liu" 
+                <hc:Shield Subject="Gitee" Visibility="Visible" Status="Demo-liu" 
                            Command="hc:ControlCommands.OpenLink" 
                            CommandParameter="" 
                            Margin="0,5,10,0" Color="#C71D23"/>
@@ -33,7 +33,7 @@
                 
             </hc:UniformSpacingPanel>
             <hc:UniformSpacingPanel Spacing="10" HorizontalAlignment="Center" Margin="0,5,0,0">
-                <hc:Shield Subject="公众号" Status="抓几个娃" Margin="0,0,5,0"  Color="#04913B">
+                <hc:Shield Subject="公众号" Visibility="Visible" Status="抓几个娃" Margin="0,0,5,0"  Color="#04913B">
                     <hc:Poptip.Instance>
                         <hc:Poptip PlacementType="Top">
                             <hc:Poptip.Content>
@@ -63,7 +63,7 @@
             </hc:UniformSpacingPanel>
             <TextBlock Margin="0,20,0,0" FontSize="13" Width="200" TextAlignment="Center" Text="这是个人开发的程序,所有人可任意修改和免费使用(商用请联系作者)" TextWrapping="Wrap"/>
 
-            <!--<hc:UniformSpacingPanel Spacing="10" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0">
+            <hc:UniformSpacingPanel Spacing="10" Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0">
                 <TextBlock Text="更新源:" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}" 
                          Style="{StaticResource RadioButtonIcon}" Content="Gitee"
@@ -71,7 +71,7 @@
                 <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}"
                          Style="{StaticResource RadioButtonIcon}" Content="GitHub" 
                          IsChecked="{Binding UpdateType, Mode=TwoWay, Converter={StaticResource UpdateTypeConvert}, ConverterParameter=2}"/>
-            </hc:UniformSpacingPanel>-->
+            </hc:UniformSpacingPanel>
         </StackPanel>
     </hc:SimplePanel>
     
