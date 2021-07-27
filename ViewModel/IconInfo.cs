@@ -141,7 +141,8 @@ namespace GeekDesk.ViewModel
         {
             get
             {
-                return imageWidth;
+                // 为了兼容旧版 暂时使用默认
+                return (int)MainWindowEnum.IMAGE_WIDTH;
             }
             set
             {
@@ -154,7 +155,8 @@ namespace GeekDesk.ViewModel
         {
             get
             {
-                return imageHeight;
+                // 为了兼容旧版 暂时使用默认
+                return (int)MainWindowEnum.IMAGE_HEIGHT;
             }
             set
             {

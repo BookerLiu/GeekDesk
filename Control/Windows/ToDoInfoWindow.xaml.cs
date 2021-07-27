@@ -79,8 +79,6 @@ namespace GeekDesk.Control.Windows
         /// <param name="e"></param>
         private void Save_Button_Click(object sender, RoutedEventArgs e)
         {
-
-
             if (Title.Text.Trim() == "" || ExeTime.Text.Trim() == "")
             {
                 Growl.Warning("任务标题 和 待办时间不能为空!");
@@ -107,13 +105,12 @@ namespace GeekDesk.Control.Windows
                 appData.ToDoList.Add(info);
             } else
             {
-                int index =appData.ToDoList.IndexOf(info);
-                appData.ToDoList.Remove(info);
+                appData.HiToDoList.Remove(info);
                 info.Title = Title.Text;
                 info.Msg = Msg.Text;
                 info.ExeTime = ExeTime.Text;
                 info.DoneTime = DoneTime.Text;
-                appData.ToDoList.Insert(index, info);
+                appData.ToDoList.Add(info);
             }
             CommonCode.SaveAppData(MainWindow.appData);
             this.Close();
