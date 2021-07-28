@@ -11,33 +11,21 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <!--右侧栏样式动画-->
-        <Style x:Key="imageStyle" TargetType="Image">
-            <Setter Property="Width"  Value="{Binding ImageWidth}"/>
-            <Setter Property="Height" Value="{Binding ImageHeight}"/>
-            <Setter Property="Source" Value="{Binding BitmapImage}"/>
-            <Style.Triggers>
-                <MultiTrigger>
-                    <MultiTrigger.Conditions>
-                        <Condition Property="IsMouseOver" Value="True"/>
-                    </MultiTrigger.Conditions>
-                    <MultiTrigger.EnterActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation To="80" Duration="0:0:0.001" Storyboard.TargetProperty="Width"/>
-                                <DoubleAnimation To="80" Duration="0:0:0.001" Storyboard.TargetProperty="Height"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </MultiTrigger.EnterActions>
-                    <MultiTrigger.ExitActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation To="60" Duration="0:0:0.5" Storyboard.TargetProperty="Width"/>
-                                <DoubleAnimation To="60" Duration="0:0:0.5" Storyboard.TargetProperty="Height"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </MultiTrigger.ExitActions>
-                </MultiTrigger>
-            </Style.Triggers>
+        <Style x:Key="ImageStyle" TargetType="Image">
+            <Setter Property="Width"   Value="{Binding ImageWidth}"/>
+            <Setter Property="Height"  Value="{Binding ImageHeight}"/>
+            <Setter Property="Source"  Value="{Binding BitmapImage}"/>
+        </Style>
+        <Style x:Key="MyListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <cvt:MenuWidthConvert x:Key="MenuWidthConvert"/>
@@ -47,7 +35,6 @@
     <!--右侧栏-->
     <hc:Card AllowDrop="True" 
              Drop="Wrap_Drop" 
-              
              BorderThickness="1" 
              Effect="{DynamicResource EffectShadow2}" 
              Margin="5,0,5,5" Grid.ColumnSpan="2">
@@ -58,55 +45,62 @@
             <SolidColorBrush Color="#FFFFFFFF" Opacity="0"/>
         </hc:Card.BorderBrush>
         <WrapPanel Orientation="Horizontal">
-            <ListBox x:Name="icons" ItemsSource="{Binding AppConfig.SelectedMenuIcons, Mode=TwoWay}" 
+            <ListBox x:Name="IconListBox" ItemsSource="{Binding AppConfig.SelectedMenuIcons, Mode=TwoWay}" 
                                  BorderThickness="0"
-                                 SelectionChanged="IconSelectionChanged "
-                                 VirtualizingPanel.VirtualizationMode="Recycling"
                                  >
                 <ListBox.Background>
                     <SolidColorBrush Opacity="0"/>
                 </ListBox.Background>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <DraggAnimatedPanel:DraggAnimatedPanel ItemsHeight="115" ItemsWidth="100"  HorizontalAlignment="Center" SwapCommand="{Binding SwapCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
+                        <DraggAnimatedPanel:DraggAnimatedPanel ItemsHeight="110" 
+                                                               ItemsWidth="110"
+                                                               Background="#00FFFFFF"
+                                                               HorizontalAlignment="Center" 
+                                                               SwapCommand="{Binding SwapCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
 
                 <ListBox.Resources>
-                    <ContextMenu x:Key="iconDialog" Width="200">
+                    <ContextMenu x:Key="IconDialog" Width="200">
                         <MenuItem Header="管理员方式运行" Click="IconAdminStart" Tag="{Binding}"/>
                         <MenuItem Header="打开文件所在位置" Click="ShowInExplore" Tag="{Binding}"/>
-                        <MenuItem Header="资源管理器菜单" Click="MenuItem_Click" Tag="{Binding}"/>
+                        <MenuItem Header="资源管理器菜单" Click="SystemContextMenu" Tag="{Binding}"/>
                         <MenuItem Header="属性" Click="PropertyConfig" Tag="{Binding}"/>
                         <MenuItem Header="从列表移除" Click="RemoveIcon" Tag="{Binding}"/>
                     </ContextMenu>
                 </ListBox.Resources>
 
                 <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="ContextMenu" Value="{StaticResource iconDialog}"/>
+                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource MyListBoxItemStyle}">
+                        <Setter Property="ContextMenu" Value="{StaticResource IconDialog}"/>
                     </Style>
                 </ListBox.ItemContainerStyle>
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Tag="{Binding}"
-                                        MouseLeftButtonUp="IconClick"
+                                        Height="110"
+                                        Width="110"
                                         HorizontalAlignment="Center"
-                                        Margin="5,5,5,5"
                                         hc:Poptip.HitMode="None" 
                                         hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
                                         hc:Poptip.Content="{Binding Content}" 
                                         hc:Poptip.Placement="BottomLeft"
+                                        Background="#00FFFFFF"
+                                        MouseLeftButtonUp="IconClick"
+                                        MouseEnter="StackPanel_MouseEnter"
+                                        MouseLeave="StackPanel_MouseLeave"
                                         >
-                            <Image Style="{StaticResource imageStyle}" />
+                            <Image Style="{StaticResource ImageStyle}"/>
                             <TextBlock MaxWidth="80"
-                                               MaxHeight="40"
-                                               TextWrapping="Wrap" 
-                                               TextTrimming="WordEllipsis"
-                                               TextAlignment="Center" 
-                                               VerticalAlignment="Center" 
-                                               Text="{Binding Name}"/>
+                                       Margin="0,5,0,0"
+                                       MaxHeight="40"
+                                       TextWrapping="Wrap" 
+                                       TextTrimming="WordEllipsis"
+                                       TextAlignment="Center" 
+                                       VerticalAlignment="Center" 
+                                       Text="{Binding Name}"/>
 
                         </StackPanel>
                     </DataTemplate>

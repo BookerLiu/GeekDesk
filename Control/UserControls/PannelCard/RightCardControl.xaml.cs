@@ -18,6 +18,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -154,15 +155,6 @@ namespace GeekDesk.Control.UserControls.PannelCard
         }
 
 
-        /// <summary>
-        /// data选中事件 设置不可选中
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void IconSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (icons.SelectedIndex != -1) icons.SelectedIndex = -1;
-        }
 
 
         private void Wrap_Drop(object sender, DragEventArgs e)
@@ -175,6 +167,17 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
                 //string base64 = ImageUtil.FileImageToBase64(path, ImageFormat.Jpeg);
 
+                string ext = System.IO.Path.GetExtension(path).ToLower();
+
+                if (".lnk".Equals(ext))
+                {
+                    string targetPath = FileUtil.GetTargetPathByLnk(path);
+                    if (targetPath!=null)
+                    {
+                        path = targetPath;
+                    }
+                }
+
                 IconInfo iconInfo = new IconInfo
                 {
                     Path = path,
@@ -182,6 +185,10 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 };
                 iconInfo.DefaultImage = iconInfo.ImageByteArr;
                 iconInfo.Name = System.IO.Path.GetFileNameWithoutExtension(path);
+                if (StringUtil.IsEmpty(iconInfo.Name))
+                {
+                    iconInfo.Name = path;
+                }
                 MainWindow.appData.MenuList[appData.AppConfig.SelectedMenuIndex].IconList.Add(iconInfo);
             }
         }
@@ -196,13 +203,16 @@ namespace GeekDesk.Control.UserControls.PannelCard
             appData.MenuList[appData.AppConfig.SelectedMenuIndex].IconList.Remove((IconInfo)((MenuItem)sender).Tag);
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void SystemContextMenu(object sender, RoutedEventArgs e)
         {
-
             IconInfo icon = (IconInfo)((MenuItem)sender).Tag;
-            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("Explorer.exe");
-            psi.Arguments = "/e,/select," + icon.Path;
-            System.Diagnostics.Process.Start(psi);
+            DirectoryInfo[] folders = new DirectoryInfo[1];
+            folders[0] = new DirectoryInfo(icon.Path);
+            ShellContextMenu scm = new ShellContextMenu();
+            System.Drawing.Point p = System.Windows.Forms.Cursor.Position;
+            p.X -= 80;
+            p.Y -= 80;
+            scm.ShowContextMenu(folders, p);
         }
 
         /// <summary>
@@ -213,6 +223,42 @@ namespace GeekDesk.Control.UserControls.PannelCard
         private void PropertyConfig(object sender, RoutedEventArgs e)
         {
             HandyControl.Controls.Dialog.Show(new IconInfoDialog((IconInfo)((MenuItem)sender).Tag));
+        }
+
+        private void StackPanel_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ImgStroyBoard(sender, (int)MainWindowEnum.IMAGE_HEIGHT_AM, (int)MainWindowEnum.IMAGE_WIDTH_AM, 1);
+        }
+
+        private void StackPanel_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ImgStroyBoard(sender, (int)MainWindowEnum.IMAGE_HEIGHT, (int)MainWindowEnum.IMAGE_WIDTH, 500);
+        }
+
+
+        private void ImgStroyBoard(object sender, int height, int width, int milliseconds)
+        {
+
+            if (appData.AppConfig.PMModel) return;
+
+            StackPanel sp = sender as StackPanel;
+
+            Image img = sp.Children[0] as Image;
+
+            DoubleAnimation heightAnimation = new DoubleAnimation();
+            DoubleAnimation widthAnimation = new DoubleAnimation();
+
+            heightAnimation.From = img.Height;
+            widthAnimation.From = img.Width;
+
+            heightAnimation.To = height;
+            widthAnimation.To = width;
+
+            heightAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(milliseconds));
+            widthAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(milliseconds));
+
+            img.BeginAnimation(HeightProperty, heightAnimation);
+            img.BeginAnimation(WidthProperty, widthAnimation);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using IWshRuntimeLibrary;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -6,20 +8,61 @@ using System.Windows.Media.Imaging;
 
 namespace GeekDesk.Util
 {
-    class FileIcon
+    public class FileIcon
     {
 
-
-        public static Icon GetIcon(string filePath)
+        private static List<string> GetBlurExts()
         {
-            IntPtr hIcon = GetJumboIcon(GetIconIndex(filePath));
-            Icon ico = Icon.FromHandle(hIcon);
-            return ico;
+            List<string> list = new List<string>();
+            list.Add(".exe");
+            list.Add(".cer");
+            list.Add(".lnk");
+            return list;
         }
+
+          [DllImport("User32.dll")]
+         public static extern int PrivateExtractIcons(
+             string lpszFile, //文件名可以是exe,dll,ico,cur,ani,bmp
+             int nIconIndex,  //从第几个图标开始获取
+             int cxIcon,      //获取图标的尺寸x
+             int cyIcon,      //获取图标的尺寸y
+             IntPtr[] phicon, //获取到的图标指针数组
+             int[] piconid,   //图标对应的资源编号
+             int nIcons,      //指定获取的图标数量，仅当文件类型为.exe 和 .dll时候可用
+             int flags        //标志，默认0就可以，具体可以看LoadImage函数
+         );
+
 
         public static BitmapImage GetBitmapImage(string filePath)
         {
-            Icon ico = GetIcon(filePath);
+            Icon ico;
+            //选中文件中的图标总数
+            var iconTotalCount = PrivateExtractIcons(filePath, 0, 0, 0, null, null, 0, 0);
+            //用于接收获取到的图标指针
+            IntPtr[] hIcons = new IntPtr[iconTotalCount];
+            //对应的图标id
+            int[] ids = new int[iconTotalCount];
+            //成功获取到的图标个数
+            var successCount = PrivateExtractIcons(filePath, 0, 256, 256, hIcons, ids, iconTotalCount, 0);
+
+            string ext = Path.GetExtension(filePath).ToLower();
+
+            IntPtr ip = IntPtr.Zero;
+            if (successCount > 0)
+            {
+                ip = hIcons[0];
+                ico = Icon.FromHandle(ip);
+            }
+            else if (GetBlurExts().Contains(ext))
+            {
+                ico = Icon.ExtractAssociatedIcon(filePath);
+            }
+            else
+            {
+                ip = GetJumboIcon(GetIconIndex(filePath));
+                ico = Icon.FromHandle(ip);
+            }
+
             Bitmap bmp = ico.ToBitmap();
             MemoryStream strm = new MemoryStream();
             bmp.Save(strm, System.Drawing.Imaging.ImageFormat.Png);
@@ -28,9 +71,14 @@ namespace GeekDesk.Util
             strm.Seek(0, SeekOrigin.Begin);
             bmpImage.StreamSource = strm;
             bmpImage.EndInit();
-
+            if (ip != IntPtr.Zero)
+            {
+                Shell32.DestroyIcon(ip);
+            }
             return bmpImage.Clone();
         }
+
+       
 
         public static int GetIconIndex(string pszFile)
         {

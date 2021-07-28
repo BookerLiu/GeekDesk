@@ -57,8 +57,22 @@ namespace GeekDesk.ViewModel
         private bool selfStartUp = true; //开机自启动设置
         private bool selfStartUped = false;  //是否已设置
 
+        private bool pmModel = false; //性能模式
+
         #region GetSet
 
+        public bool PMModel
+        {
+            get
+            {
+                return pmModel;
+            }
+            set
+            {
+                pmModel = value;
+                OnPropertyChanged("PMModel");
+            }
+        }
 
         public bool SelfStartUped
         {

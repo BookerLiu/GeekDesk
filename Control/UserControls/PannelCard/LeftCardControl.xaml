@@ -43,9 +43,9 @@
                         </BeginStoryboard>
                     </MultiTrigger.ExitActions>
                 </MultiTrigger>
-                <Trigger Property="IsMouseOver" Value="True">
+                <!--<Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="#FFE4DBDB"/>
-                </Trigger>
+                </Trigger>-->
                 <Trigger Property="IsSelected" Value="true">
                     <Setter Property="Background" Value="#FFECECEC"/>
                     <Setter Property="Foreground" Value="Black"/>
@@ -84,7 +84,7 @@
                          SelectionChanged="menus_SelectionChanged"
                          >
                     <ListBox.Resources>
-                        <ContextMenu x:Key="menuDialog" Width="200">
+                        <ContextMenu x:Key="MenuDialog" Width="200">
                             <MenuItem Header="新建菜单" Click="CreateMenu"/>
                             <MenuItem Header="重命名"  Click="RenameMenu" Tag="{Binding}"/>
                             <MenuItem Header="修改图标"  Click="EditMenuGeometry" Tag="{Binding}"/>
@@ -94,7 +94,7 @@
 
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem" BasedOn="{StaticResource MenuStyle}">
-                            <Setter Property="ContextMenu" Value="{StaticResource menuDialog}"/>
+                            <Setter Property="ContextMenu" Value="{StaticResource MenuDialog}"/>
                         </Style>
                     </ListBox.ItemContainerStyle>
                     <ListBox.Background>
@@ -110,9 +110,6 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                         <StackPanel MouseLeftButtonDown="MenuClick" MouseRightButtonDown="MenuClick" Tag="{Binding}">
-                            <StackPanel.Background>
-                                <SolidColorBrush Color="AliceBlue" Opacity="0.01"/>
-                            </StackPanel.Background>
                                 <hc:TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
                                      HorizontalAlignment="Left"
                                      Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}}"

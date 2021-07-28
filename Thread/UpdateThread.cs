@@ -57,7 +57,8 @@ namespace GeekDesk.Thread
                 }
             } catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                //不做处理
+                //MessageBox.Show(e.Message);
             }
         }
     }
