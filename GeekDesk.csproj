@@ -170,6 +170,7 @@
     <Compile Include="Util\MouseUtil.cs" />
     <Compile Include="Util\MouseUtilities.cs" />
     <Compile Include="Util\RegisterUtil.cs" />
+    <Compile Include="Util\ShellContextMenu.cs" />
     <Compile Include="Util\StringUtil.cs" />
     <Compile Include="Util\SvgToGeometry.cs" />
     <Compile Include="ViewModel\AppConfig.cs" />

@@ -53,8 +53,8 @@
                 </ListBox.Background>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <DraggAnimatedPanel:DraggAnimatedPanel ItemsHeight="95" 
-                                                               ItemsWidth="95"
+                        <DraggAnimatedPanel:DraggAnimatedPanel ItemsHeight="110" 
+                                                               ItemsWidth="110"
                                                                Background="#00FFFFFF"
                                                                HorizontalAlignment="Center" 
                                                                SwapCommand="{Binding SwapCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
@@ -65,7 +65,7 @@
                     <ContextMenu x:Key="IconDialog" Width="200">
                         <MenuItem Header="管理员方式运行" Click="IconAdminStart" Tag="{Binding}"/>
                         <MenuItem Header="打开文件所在位置" Click="ShowInExplore" Tag="{Binding}"/>
-                        <!--<MenuItem Header="资源管理器菜单" Click="MenuItem_Click" Tag="{Binding}"/>-->
+                        <MenuItem Header="资源管理器菜单" Click="SystemContextMenu" Tag="{Binding}"/>
                         <MenuItem Header="属性" Click="PropertyConfig" Tag="{Binding}"/>
                         <MenuItem Header="从列表移除" Click="RemoveIcon" Tag="{Binding}"/>
                     </ContextMenu>
@@ -80,15 +80,15 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Tag="{Binding}"
-                                        Height="95"
-                                        Width="95"
+                                        Height="110"
+                                        Width="110"
                                         HorizontalAlignment="Center"
                                         hc:Poptip.HitMode="None" 
                                         hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
                                         hc:Poptip.Content="{Binding Content}" 
                                         hc:Poptip.Placement="BottomLeft"
                                         Background="#00FFFFFF"
-                                        MouseLeftButtonDown="IconClick"
+                                        MouseLeftButtonUp="IconClick"
                                         MouseEnter="StackPanel_MouseEnter"
                                         MouseLeave="StackPanel_MouseLeave"
                                         >

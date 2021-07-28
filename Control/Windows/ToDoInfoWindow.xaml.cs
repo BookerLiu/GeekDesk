@@ -79,6 +79,8 @@ namespace GeekDesk.Control.Windows
         /// <param name="e"></param>
         private void Save_Button_Click(object sender, RoutedEventArgs e)
         {
+
+            DateTime dt;
             if (Title.Text.Trim() == "" || ExeTime.Text.Trim() == "")
             {
                 Growl.Warning("任务标题 和 待办时间不能为空!");
@@ -87,7 +89,7 @@ namespace GeekDesk.Control.Windows
             {
                 try
                 {
-                    Convert.ToDateTime(ExeTime.Text);
+                    dt = Convert.ToDateTime(ExeTime.Text);
                 } catch (Exception)
                 {
                     Growl.Warning("请输入正确的时间!");
@@ -109,9 +111,28 @@ namespace GeekDesk.Control.Windows
                 info.Title = Title.Text;
                 info.Msg = Msg.Text;
                 info.ExeTime = ExeTime.Text;
-                info.DoneTime = DoneTime.Text;
+                info.DoneTime = null;
                 appData.ToDoList.Add(info);
             }
+
+            DateTime dtNow = DateTime.Now;
+            TimeSpan ts = dt.Subtract(dtNow);
+            int minutes = (int)Math.Ceiling(ts.TotalMinutes);
+            if (minutes < 0)
+            {
+                minutes = 0;
+            }
+            if (minutes > 60)
+            {
+                int m = minutes % 60;
+                int h = minutes / 60;
+                Growl.SuccessGlobal("设置待办任务成功, 系统将在 " + h + " 小时零 " + m + " 分钟后提醒您!");
+
+            } else
+            {
+                Growl.SuccessGlobal("设置待办任务成功, 系统将在 " + minutes + " 分钟后提醒您!");
+            }
+
             CommonCode.SaveAppData(MainWindow.appData);
             this.Close();
         }

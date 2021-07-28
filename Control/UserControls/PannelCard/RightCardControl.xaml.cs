@@ -203,13 +203,16 @@ namespace GeekDesk.Control.UserControls.PannelCard
             appData.MenuList[appData.AppConfig.SelectedMenuIndex].IconList.Remove((IconInfo)((MenuItem)sender).Tag);
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void SystemContextMenu(object sender, RoutedEventArgs e)
         {
-
             IconInfo icon = (IconInfo)((MenuItem)sender).Tag;
-            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("Explorer.exe");
-            psi.Arguments = "/e,/select," + icon.Path;
-            System.Diagnostics.Process.Start(psi);
+            DirectoryInfo[] folders = new DirectoryInfo[1];
+            folders[0] = new DirectoryInfo(icon.Path);
+            ShellContextMenu scm = new ShellContextMenu();
+            System.Drawing.Point p = System.Windows.Forms.Cursor.Position;
+            p.X -= 80;
+            p.Y -= 80;
+            scm.ShowContextMenu(folders, p);
         }
 
         /// <summary>
@@ -236,6 +239,8 @@ namespace GeekDesk.Control.UserControls.PannelCard
         private void ImgStroyBoard(object sender, int height, int width, int milliseconds)
         {
 
+            if (appData.AppConfig.PMModel) return;
+
             StackPanel sp = sender as StackPanel;
 
             Image img = sp.Children[0] as Image;
@@ -255,6 +260,5 @@ namespace GeekDesk.Control.UserControls.PannelCard
             img.BeginAnimation(HeightProperty, heightAnimation);
             img.BeginAnimation(WidthProperty, widthAnimation);
         }
-
     }
 }
