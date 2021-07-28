@@ -96,12 +96,12 @@
                             <TextBlock MaxWidth="80"
                                        Margin="0,5,0,0"
                                        MaxHeight="40"
+                                       FontSize="13"
                                        TextWrapping="Wrap" 
                                        TextTrimming="WordEllipsis"
                                        TextAlignment="Center" 
                                        VerticalAlignment="Center" 
                                        Text="{Binding Name}"/>
-
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

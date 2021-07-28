@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
 namespace GeekDesk
