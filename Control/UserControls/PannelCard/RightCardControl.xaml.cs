@@ -190,6 +190,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
                     iconInfo.Name = path;
                 }
                 MainWindow.appData.MenuList[appData.AppConfig.SelectedMenuIndex].IconList.Add(iconInfo);
+                CommonCode.SaveAppData(MainWindow.appData);
             }
         }
 
@@ -232,7 +233,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
         private void StackPanel_MouseLeave(object sender, MouseEventArgs e)
         {
-            ImgStroyBoard(sender, (int)MainWindowEnum.IMAGE_HEIGHT, (int)MainWindowEnum.IMAGE_WIDTH, 500);
+            ImgStroyBoard(sender, (int)MainWindowEnum.IMAGE_HEIGHT, (int)MainWindowEnum.IMAGE_WIDTH, 250);
         }
 
 
@@ -245,6 +246,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
             Image img = sp.Children[0] as Image;
 
+
             DoubleAnimation heightAnimation = new DoubleAnimation();
             DoubleAnimation widthAnimation = new DoubleAnimation();
 
@@ -256,6 +258,10 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
             heightAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(milliseconds));
             widthAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(milliseconds));
+
+
+            Timeline.SetDesiredFrameRate(heightAnimation, 60);
+            Timeline.SetDesiredFrameRate(widthAnimation, 60);
 
             img.BeginAnimation(HeightProperty, heightAnimation);
             img.BeginAnimation(WidthProperty, widthAnimation);
