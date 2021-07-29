@@ -178,10 +178,11 @@ namespace GeekDesk.Control.UserControls.PannelCard
                     }
                 }
 
+                BitmapImage bi = ImageUtil.GetBitmapIconByPath(path);
                 IconInfo iconInfo = new IconInfo
                 {
                     Path = path,
-                    BitmapImage = ImageUtil.GetBitmapIconByPath(path)
+                    BitmapImage = bi
                 };
                 iconInfo.DefaultImage = iconInfo.ImageByteArr;
                 iconInfo.Name = System.IO.Path.GetFileNameWithoutExtension(path);
