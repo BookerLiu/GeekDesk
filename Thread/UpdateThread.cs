@@ -30,6 +30,10 @@ namespace GeekDesk.Thread
         {
             try
             {
+
+                //等待1分钟后再检查更新  有的网络连接过慢
+                System.Threading.Thread.Sleep(60 * 1000);
+
                 string updateUrl;
                 string nowVersion = ConfigurationManager.AppSettings["Version"];
                 switch (appConfig.UpdateType)
