@@ -1,7 +1,9 @@
 ﻿using GeekDesk.Constant;
 using GeekDesk.ViewModel;
+using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows;
 
 /// <summary>
 /// 提取一些代码
@@ -50,8 +52,7 @@ namespace GeekDesk.Util
             }
         }
 
-
-
+        
 
 
     }

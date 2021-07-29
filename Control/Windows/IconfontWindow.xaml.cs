@@ -10,7 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 
 using System.Windows.Input;
-
+using static GeekDesk.Util.ShowWindowFollowMouse;
 
 namespace GeekDesk.Control.Windows
 {
@@ -132,6 +132,7 @@ namespace GeekDesk.Control.Windows
                 window = new IconfontWindow(listInfo, menuInfo);
             }
             window.Show();
+            ShowWindowFollowMouse.Show(window, MousePosition.LEFT_CENTER, 0, 0);
         }
 
         private void CustomButton_Click(object sender, RoutedEventArgs e)
