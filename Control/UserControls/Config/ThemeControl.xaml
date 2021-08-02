@@ -7,7 +7,7 @@
              xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" 
              Background="AliceBlue"
-             d:DesignHeight="380" d:DesignWidth="450">
+             d:DesignHeight="500" d:DesignWidth="450">
     <hc:SimplePanel Margin="20">
 
         <hc:UniformSpacingPanel Spacing="10" Margin="0,0,-40,-12" Grid.ColumnSpan="4">
@@ -97,6 +97,8 @@
                 </hc:PreviewSlider>
             </hc:UniformSpacingPanel>
         </StackPanel>
+        <hc:Divider LineStrokeDashArray="3,3" Margin="0,341.5,0,-215.5" LineStroke="Black" Grid.ColumnSpan="4"/>
+        <TextBlock Text="图标字体颜色:" Margin="0,358,0,-358" />
         
     </hc:SimplePanel>
 </UserControl>

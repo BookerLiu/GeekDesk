@@ -118,7 +118,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
                 Process p = new Process();
                 p.StartInfo.FileName = icon.Path;
-
+                p.StartInfo.WorkingDirectory = icon.Path.Substring(0, icon.Path.LastIndexOf("\\"));
                 switch (type)
                 {
                     case IconStartType.ADMIN_STARTUP:
