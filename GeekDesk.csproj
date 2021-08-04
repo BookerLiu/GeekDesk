@@ -94,7 +94,8 @@
     <Compile Include="Command\DelegateCommandBase.cs" />
     <Compile Include="Constant\AppHideType.cs" />
     <Compile Include="Constant\Constants.cs" />
-    <Compile Include="Constant\MainWindowEnum.cs" />
+    <Compile Include="Constant\IconType.cs" />
+    <Compile Include="Constant\CommonEnum.cs" />
     <Compile Include="Constant\IconStartType.cs" />
     <Compile Include="Constant\SortType.cs" />
     <Compile Include="Constant\UpdateType.cs" />
@@ -103,6 +104,9 @@
     </Compile>
     <Compile Include="Control\Other\CustomIconUrlDialog.xaml.cs">
       <DependentUpon>CustomIconUrlDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Other\IconInfoUrlDialog.xaml.cs">
+      <DependentUpon>IconInfoUrlDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\UserControls\Config\OtherControl.xaml.cs">
       <DependentUpon>OtherControl.xaml</DependentUpon>
@@ -124,9 +128,6 @@
     </Compile>
     <Compile Include="Control\Other\IconInfoDialog.xaml.cs">
       <DependentUpon>IconInfoDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Control\Other\MenuGeometryDialog.xaml.cs">
-      <DependentUpon>MenuGeometryDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\UserControls\Config\AboutControl.xaml.cs">
       <DependentUpon>AboutControl.xaml</DependentUpon>
@@ -190,6 +191,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Control\Other\IconInfoUrlDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Control\UserControls\Config\OtherControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -215,10 +220,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Control\Other\IconInfoDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Control\Other\MenuGeometryDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

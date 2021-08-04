@@ -31,18 +31,7 @@ namespace GeekDesk.Control.Windows
         }
 
          
-        /// <summary>
-        /// 移动窗口
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DragMove(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                DragMove();
-            }
-        }
+        
 
         /// <summary>
         /// 点击关闭按钮

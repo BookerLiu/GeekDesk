@@ -1,4 +1,5 @@
-﻿using GeekDesk.Util;
+﻿using GeekDesk.Constant;
+using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using Microsoft.Win32;
 using System;
@@ -12,18 +13,28 @@ namespace GeekDesk.Control.Other
     /// <summary>
     /// TextDialog.xaml 的交互逻辑
     /// </summary>
-    public partial class IconInfoDialog
+    public partial class IconInfoUrlDialog
     {
         public HandyControl.Controls.Dialog dialog;
 
-        public IconInfoDialog()
+        private bool newIconInfo;
+        public IconInfoUrlDialog()
         {
+            newIconInfo = true;
+            IconInfo info = new IconInfo
+            {
+                BitmapImage = ImageUtil.Base64ToBitmapImage(Constants.URL_ICON_IMG_BASE64),
+            };
+            info.DefaultImage = info.ImageByteArr;
+            info.IconType = IconType.URL;
+            this.DataContext = info;
             InitializeComponent();
         }
 
-        public IconInfoDialog(IconInfo info)
+        public IconInfoUrlDialog(IconInfo info)
         {
             this.DataContext = info;
+            newIconInfo = false;
             InitializeComponent();
         }
 
@@ -37,7 +48,11 @@ namespace GeekDesk.Control.Other
             IconInfo info = this.DataContext as IconInfo;
             info.BitmapImage = IconImg.Source as BitmapImage;
             info.Name = IconName.Text;
-            info.AdminStartUp = IconIsAdmin.IsChecked.Value;
+            info.Path = IconUrl.Text;
+            if (newIconInfo)
+            {
+                MainWindow.appData.MenuList[MainWindow.appData.AppConfig.SelectedMenuIndex].IconList.Add(info);
+            }
             CommonCode.SaveAppData(MainWindow.appData);
             dialog.Close();
         }

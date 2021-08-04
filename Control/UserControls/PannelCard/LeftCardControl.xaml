@@ -13,7 +13,7 @@
 
         <!--左侧栏样式动画-->
         <Style x:Key="MenuStyle" TargetType="ListBoxItem" BasedOn="{StaticResource ListBoxItemBaseStyle}">
-            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontSize" Value="16"/>
             <Setter Property="Margin" Value="0,0,0,1"/>
             <Setter Property="Background">
                 <Setter.Value>
@@ -30,8 +30,8 @@
                     </MultiTrigger.Conditions>
                     <MultiTrigger.EnterActions>
                         <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation To="15" Duration="0:0:0.5" Storyboard.TargetProperty="FontSize"/>
+                            <Storyboard Timeline.DesiredFrameRate="60">
+                                <DoubleAnimation To="16" Duration="0:0:0.2" Storyboard.TargetProperty="FontSize"/>
                             </Storyboard>
                         </BeginStoryboard>
                     </MultiTrigger.EnterActions>
@@ -103,24 +103,27 @@
 
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                        <DraggAnimatedPanel:DraggAnimatedPanel ItemsHeight="30" ItemsWidth="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}}"   HorizontalAlignment="Center" VerticalAlignment="Top" SwapCommand="{Binding SwapCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
+                        <DraggAnimatedPanel:DraggAnimatedPanel ItemsHeight="33" ItemsWidth="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}, ConverterParameter=10}"   HorizontalAlignment="Center" VerticalAlignment="Top" SwapCommand="{Binding SwapCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
 
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                         <StackPanel MouseLeftButtonDown="MenuClick" MouseRightButtonDown="MenuClick" Tag="{Binding}">
-                                <hc:TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
-                                     HorizontalAlignment="Left"
-                                     Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}}"
-                                     FontSize="15"
-                                     TextAlignment="Left"
-                                     LostFocus="LostFocusOrEnterDown"
-                                     KeyDown="LostFocusOrEnterDown"
-                                     Tag="{Binding}"
-                                     IsVisibleChanged="MenuEditWhenVisibilityChanged"
-                                     Visibility="{Binding MenuEdit}"/>
-                                <StackPanel Orientation="Horizontal">
+                            <hc:TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
+                                        HorizontalAlignment="Left"
+                                        Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}, ConverterParameter=35}"
+                                        FontSize="16"
+                                        Height="25"
+                                        VerticalAlignment="Center"
+                                        TextAlignment="Left"
+                                        LostFocus="LostFocusOrEnterDown"
+                                        KeyDown="LostFocusOrEnterDown"
+                                        Tag="{Binding}"
+                                        Margin="2"
+                                        IsVisibleChanged="MenuEditWhenVisibilityChanged"
+                                        Visibility="{Binding MenuEdit}"/>
+                            <StackPanel Orientation="Horizontal">
                                     <Button Background="Transparent" 
                                             BorderThickness="0"
                                             hc:IconElement.Geometry="{Binding MenuGeometry}"

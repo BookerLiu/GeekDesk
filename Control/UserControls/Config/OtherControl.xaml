@@ -14,45 +14,48 @@
     <UserControl.Resources>
         <cvt:UpdateTypeConvert x:Key="UpdateTypeConvert"/>
     </UserControl.Resources>
-    <hc:SimplePanel Margin="20">
-        <StackPanel >
-            <TextBlock Text="程序设置" />
-            <hc:UniformSpacingPanel Spacing="10" Margin="20,8,0,0">
-                <CheckBox x:Name="SelfStartUpBox" Content="开机自启动" IsChecked="{Binding SelfStartUp}" Click="SelfStartUpBox_Click">
-                    <CheckBox.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                            <GradientStop Color="#FF9EA3A6"/>
-                        </LinearGradientBrush>
-                    </CheckBox.Background>
-                </CheckBox>
-            </hc:UniformSpacingPanel>
-            <hc:UniformSpacingPanel Spacing="10" Margin="20,6,0,0">
-                <CheckBox  Content="性能模式" IsChecked="{Binding PMModel}" 
+    <Grid MouseDown="DragMove" Background="AliceBlue">
+        <hc:SimplePanel Margin="20" >
+            <StackPanel >
+                <TextBlock Text="程序设置" />
+                <hc:UniformSpacingPanel Spacing="10" Margin="20,8,0,0">
+                    <CheckBox x:Name="SelfStartUpBox" Content="开机自启动" IsChecked="{Binding SelfStartUp}" Click="SelfStartUpBox_Click">
+                        <CheckBox.Background>
+                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                                <GradientStop Color="#FF9EA3A6"/>
+                            </LinearGradientBrush>
+                        </CheckBox.Background>
+                    </CheckBox>
+                </hc:UniformSpacingPanel>
+                <hc:UniformSpacingPanel Spacing="10" Margin="20,6,0,0">
+                    <CheckBox  Content="性能模式" IsChecked="{Binding PMModel}" 
                            hc:Poptip.HitMode="None" 
                            hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
                            hc:Poptip.Content="开启性能模式将取消图标动画效果" 
                            hc:Poptip.Placement="TopLeft">
-                    <CheckBox.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                            <GradientStop Color="#FF9EA3A6"/>
-                        </LinearGradientBrush>
-                    </CheckBox.Background>
-                </CheckBox>
-            </hc:UniformSpacingPanel>
-            <TextBlock Text="更新源"  Margin="0,25,0,0"/>
-            <hc:UniformSpacingPanel Spacing="10" Margin="20,8,0,0">
-                <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}" 
+                        <CheckBox.Background>
+                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                                <GradientStop Color="#FF9EA3A6"/>
+                            </LinearGradientBrush>
+                        </CheckBox.Background>
+                    </CheckBox>
+                </hc:UniformSpacingPanel>
+                <TextBlock Text="更新源"  Margin="0,25,0,0"/>
+                <hc:UniformSpacingPanel Spacing="10" Margin="20,8,0,0">
+                    <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}" 
                              Style="{StaticResource RadioButtonIcon}" Content="Gitee"
                              hc:IconElement.Geometry="{StaticResource Gitee}"
                              Foreground="#B32225"
                              IsChecked="{Binding UpdateType, Mode=TwoWay, Converter={StaticResource UpdateTypeConvert}, ConverterParameter=1}"/>
-                <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}"
+                    <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}"
                              hc:IconElement.Geometry="{StaticResource GitHub}"
                              Style="{StaticResource RadioButtonIcon}" Content="GitHub" 
                              Foreground="Black"
                              IsChecked="{Binding UpdateType, Mode=TwoWay, Converter={StaticResource UpdateTypeConvert}, ConverterParameter=2}"/>
-            </hc:UniformSpacingPanel>
-        </StackPanel>
-    </hc:SimplePanel>
+                </hc:UniformSpacingPanel>
+            </StackPanel>
+        </hc:SimplePanel>
+    </Grid>
+   
 
 </UserControl>

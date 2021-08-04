@@ -33,5 +33,18 @@ namespace GeekDesk.Control.UserControls.Config
             AppConfig appConfig = MainWindow.appData.AppConfig;
             RegisterUtil.SetSelfStarting(appConfig.SelfStartUp, Constants.MY_NAME);
         }
+
+        /// <summary>
+        /// 移动窗口
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DragMove(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                Window.GetWindow(this).DragMove();
+            }
+        }
     }
 }

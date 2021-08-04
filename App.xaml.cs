@@ -28,7 +28,7 @@ namespace GeekDesk
             mutex = new System.Threading.Mutex(true, Constants.MY_NAME, out ret);
             if (!ret)
             {
-                //Environment.Exit(0);
+                Environment.Exit(0);
             }
         }
     }

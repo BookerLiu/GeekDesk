@@ -31,6 +31,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
     public partial class RightCardControl : UserControl
     {
         private AppData appData = MainWindow.appData;
+
         public RightCardControl()
         {
             InitializeComponent();
@@ -109,41 +110,42 @@ namespace GeekDesk.Control.UserControls.PannelCard
         {
             try
             {
-
-                if (!File.Exists(icon.Path) && !Directory.Exists(icon.Path))
-                {
-                    HandyControl.Controls.Growl.WarningGlobal("程序启动失败(文件路径不存在或已删除)!");
-                    return;
-                } 
-
                 Process p = new Process();
                 p.StartInfo.FileName = icon.Path;
-                p.StartInfo.WorkingDirectory = icon.Path.Substring(0, icon.Path.LastIndexOf("\\"));
-                switch (type)
+                if (icon.IconType == IconType.OTHER)
                 {
-                    case IconStartType.ADMIN_STARTUP:
-                        p.StartInfo.Arguments = "1";//启动参数
-                        p.StartInfo.Verb = "runas";
-                        p.StartInfo.CreateNoWindow = false; //设置显示窗口
-                        p.StartInfo.UseShellExecute = false;//不使用操作系统外壳程序启动进程
-                        p.StartInfo.ErrorDialog = false;
-                        if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
-                        {
-                            Window parentWin = Window.GetWindow(this);
-                            parentWin.Visibility = Visibility.Collapsed;
-                        }
-                        break;// c#好像不能case穿透
-                    case IconStartType.DEFAULT_STARTUP:
-                        if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
-                        {
-                            Window parentWin = Window.GetWindow(this);
-                            parentWin.Visibility = Visibility.Collapsed;
-                        }
-                        break;
-                    case IconStartType.SHOW_IN_EXPLORE:
-                        p.StartInfo.FileName = "Explorer.exe";
-                        p.StartInfo.Arguments = "/e,/select," + icon.Path;
-                        break;
+                    if (!File.Exists(icon.Path) && !Directory.Exists(icon.Path))
+                    {
+                        HandyControl.Controls.Growl.WarningGlobal("程序启动失败(文件路径不存在或已删除)!");
+                        return;
+                    }
+                    p.StartInfo.WorkingDirectory = icon.Path.Substring(0, icon.Path.LastIndexOf("\\"));
+                    switch (type)
+                    {
+                        case IconStartType.ADMIN_STARTUP:
+                            p.StartInfo.Arguments = "1";//启动参数
+                            p.StartInfo.Verb = "runas";
+                            p.StartInfo.CreateNoWindow = false; //设置显示窗口
+                            p.StartInfo.UseShellExecute = false;//不使用操作系统外壳程序启动进程
+                            p.StartInfo.ErrorDialog = false;
+                            if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
+                            {
+                                Window parentWin = Window.GetWindow(this);
+                                parentWin.Visibility = Visibility.Collapsed;
+                            }
+                            break;// c#好像不能case穿透
+                        case IconStartType.DEFAULT_STARTUP:
+                            if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
+                            {
+                                Window parentWin = Window.GetWindow(this);
+                                parentWin.Visibility = Visibility.Collapsed;
+                            }
+                            break;
+                        case IconStartType.SHOW_IN_EXPLORE:
+                            p.StartInfo.FileName = "Explorer.exe";
+                            p.StartInfo.Arguments = "/e,/select," + icon.Path;
+                            break;
+                    }
                 }
                 p.Start();
                 icon.Count++;
@@ -165,7 +167,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
             {
                 string path = (string)obj;
 
-                //string base64 = ImageUtil.FileImageToBase64(path, ImageFormat.Jpeg);
+                //string base64 = ImageUtil.FileImageToBase64(path, ImageFormat.Png);
 
                 string ext = System.IO.Path.GetExtension(path).ToLower();
 
@@ -224,17 +226,29 @@ namespace GeekDesk.Control.UserControls.PannelCard
         /// <param name="e"></param>
         private void PropertyConfig(object sender, RoutedEventArgs e)
         {
-            HandyControl.Controls.Dialog.Show(new IconInfoDialog((IconInfo)((MenuItem)sender).Tag));
+            IconInfo info = (IconInfo)((MenuItem)sender).Tag;
+            switch (info.IconType)
+            {
+                case IconType.URL:
+                    IconInfoUrlDialog urlDialog = new IconInfoUrlDialog(info);
+                    urlDialog.dialog = HandyControl.Controls.Dialog.Show(urlDialog);
+                    break;
+                default:
+                    IconInfoDialog dialog = new IconInfoDialog(info);
+                    dialog.dialog = HandyControl.Controls.Dialog.Show(dialog);
+                    break;
+            }
+            
         }
 
         private void StackPanel_MouseEnter(object sender, MouseEventArgs e)
         {
-            ImgStroyBoard(sender, (int)MainWindowEnum.IMAGE_HEIGHT_AM, (int)MainWindowEnum.IMAGE_WIDTH_AM, 1);
+            ImgStroyBoard(sender, (int)CommonEnum.IMAGE_HEIGHT_AM, (int)CommonEnum.IMAGE_WIDTH_AM, 1);
         }
 
         private void StackPanel_MouseLeave(object sender, MouseEventArgs e)
         {
-            ImgStroyBoard(sender, (int)MainWindowEnum.IMAGE_HEIGHT, (int)MainWindowEnum.IMAGE_WIDTH, 250);
+            ImgStroyBoard(sender, (int)CommonEnum.IMAGE_HEIGHT, (int)CommonEnum.IMAGE_WIDTH, 500);
         }
 
 
@@ -266,6 +280,12 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
             img.BeginAnimation(HeightProperty, heightAnimation);
             img.BeginAnimation(WidthProperty, widthAnimation);
+        }
+
+        private void AddUrlIcon(object sender, RoutedEventArgs e)
+        {
+            IconInfoUrlDialog urlDialog = new IconInfoUrlDialog();
+            urlDialog.dialog = HandyControl.Controls.Dialog.Show(urlDialog);
         }
     }
 }

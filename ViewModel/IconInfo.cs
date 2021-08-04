@@ -20,12 +20,27 @@ namespace GeekDesk.ViewModel
         private BitmapImage bitmapImage; //位图
         private byte[] imageByteArr; //图片 byte数组
         private string content; //显示信息
-        private int imageWidth = (int)MainWindowEnum.IMAGE_WIDTH; //图片宽度
-        private int imageHeight = (int)MainWindowEnum.IMAGE_HEIGHT; //图片高度
+        private int imageWidth = (int)CommonEnum.IMAGE_WIDTH; //图片宽度
+        private int imageHeight = (int)CommonEnum.IMAGE_HEIGHT; //图片高度
         private bool adminStartUp = false; //始终管理员方式启动  默认否
         private byte[] defaultImage; //默认图标
 
+        private IconType iconType = IconType.OTHER;
 
+
+        public IconType IconType
+        {
+            get
+            {
+                if (iconType == 0) return IconType.OTHER;
+                return iconType;
+            }
+            set
+            {
+                iconType = value;
+                OnPropertyChanged("IconType");
+            }
+        }
 
         public byte[] DefaultImage
         {
@@ -142,7 +157,7 @@ namespace GeekDesk.ViewModel
             get
             {
                 // 为了兼容旧版 暂时使用默认
-                return (int)MainWindowEnum.IMAGE_WIDTH;
+                return (int)CommonEnum.IMAGE_WIDTH;
             }
             set
             {
@@ -156,7 +171,7 @@ namespace GeekDesk.ViewModel
             get
             {
                 // 为了兼容旧版 暂时使用默认
-                return (int)MainWindowEnum.IMAGE_HEIGHT;
+                return (int)CommonEnum.IMAGE_HEIGHT;
             }
             set
             {

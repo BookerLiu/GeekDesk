@@ -12,7 +12,8 @@
     <UserControl.Resources>
         <cvt:HideTypeConvert x:Key="HideTypeConvert"/>
     </UserControl.Resources>
-        <hc:SimplePanel Margin="20">
+    <Grid Background="AliceBlue" MouseDown="DragMove">
+        <hc:SimplePanel Margin="20" >
             <hc:UniformSpacingPanel Spacing="10" Margin="0,0,0,10" Grid.ColumnSpan="4">
                 <TextBlock Text="面板动作设置" VerticalAlignment="Center"/>
             </hc:UniformSpacingPanel>
@@ -50,12 +51,12 @@
                          IsChecked="{Binding AppHideType, Mode=TwoWay, Converter={StaticResource HideTypeConvert}, ConverterParameter=3}"/>
             </hc:UniformSpacingPanel>
 
-        <hc:UniformSpacingPanel Spacing="10" Margin="30,164.49,-30,-154.49" Grid.ColumnSpan="4">
-            <TextBlock Text="热键设置" VerticalAlignment="Center" Margin="-26,0,26,0"/>
-        </hc:UniformSpacingPanel>
-        <hc:UniformSpacingPanel Spacing="10" Margin="30,193,0,-180.337" Grid.ColumnSpan="4">
-            <TextBlock Text="主面板:" Width="55"/>
-            <hc:TextBox HorizontalAlignment="Left" 
+            <hc:UniformSpacingPanel Spacing="10" Margin="30,164.49,-30,-154.49" Grid.ColumnSpan="4">
+                <TextBlock Text="热键设置" VerticalAlignment="Center" Margin="-26,0,26,0"/>
+            </hc:UniformSpacingPanel>
+            <hc:UniformSpacingPanel Spacing="10" Margin="30,193,0,-180.337" Grid.ColumnSpan="4">
+                <TextBlock Text="主面板:" Width="55"/>
+                <hc:TextBox HorizontalAlignment="Left" 
                         Tag="Main"
                         VerticalAlignment="Top" 
                         IsReadOnly="True" 
@@ -65,8 +66,8 @@
                         KeyDown="HotKeyDown"
                         KeyUp="HotKeyUp"
                         Margin="12.967,-7.38,-12.967,0"/>
-        </hc:UniformSpacingPanel>
-        <!--<hc:UniformSpacingPanel Spacing="10" Margin="30,229,0,-216.337" Grid.ColumnSpan="4">
+            </hc:UniformSpacingPanel>
+            <!--<hc:UniformSpacingPanel Spacing="10" Margin="30,229,0,-216.337" Grid.ColumnSpan="4">
             <TextBlock Text="新建待办:"  Width="55"/>
             <hc:TextBox HorizontalAlignment="Left" 
                         Tag="ToDo"
@@ -79,7 +80,9 @@
                         KeyUp="HotKeyUp"
                         Margin="12.967,-7.38,-12.967,0"/>
         </hc:UniformSpacingPanel>-->
-        <StackPanel hc:Growl.GrowlParent="True" hc:Growl.Token="HotKeyGrowl" VerticalAlignment="Top"/>
-    </hc:SimplePanel>
+            <StackPanel hc:Growl.GrowlParent="True" hc:Growl.Token="HotKeyGrowl" VerticalAlignment="Top"/>
+        </hc:SimplePanel>
+    </Grid>
+   
    
 </UserControl>

@@ -229,6 +229,19 @@ namespace GeekDesk.Control.UserControls.Config
             }
         }
 
+        /// <summary>
+        /// 移动窗口
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DragMove(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                Window.GetWindow(this).DragMove();
+            }
+        }
+
         //private void ShowApp(MainWindow mainWindow)
         //{
         //    if (appConfig.FollowMouse)
