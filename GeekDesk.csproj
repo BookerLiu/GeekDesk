@@ -26,6 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -69,6 +70,7 @@
     <Reference Include="System.Drawing.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Drawing.Common.6.0.0-preview.6.21352.12\lib\net461\System.Drawing.Common.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -92,7 +94,8 @@
     <Compile Include="Command\DelegateCommandBase.cs" />
     <Compile Include="Constant\AppHideType.cs" />
     <Compile Include="Constant\Constants.cs" />
-    <Compile Include="Constant\MainWindowEnum.cs" />
+    <Compile Include="Constant\IconType.cs" />
+    <Compile Include="Constant\CommonEnum.cs" />
     <Compile Include="Constant\IconStartType.cs" />
     <Compile Include="Constant\SortType.cs" />
     <Compile Include="Constant\UpdateType.cs" />
@@ -101,6 +104,9 @@
     </Compile>
     <Compile Include="Control\Other\CustomIconUrlDialog.xaml.cs">
       <DependentUpon>CustomIconUrlDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Other\IconInfoUrlDialog.xaml.cs">
+      <DependentUpon>IconInfoUrlDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\UserControls\Config\OtherControl.xaml.cs">
       <DependentUpon>OtherControl.xaml</DependentUpon>
@@ -122,9 +128,6 @@
     </Compile>
     <Compile Include="Control\Other\IconInfoDialog.xaml.cs">
       <DependentUpon>IconInfoDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Control\Other\MenuGeometryDialog.xaml.cs">
-      <DependentUpon>MenuGeometryDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\UserControls\Config\AboutControl.xaml.cs">
       <DependentUpon>AboutControl.xaml</DependentUpon>
@@ -171,6 +174,7 @@
     <Compile Include="Util\MouseUtilities.cs" />
     <Compile Include="Util\RegisterUtil.cs" />
     <Compile Include="Util\ShellContextMenu.cs" />
+    <Compile Include="Util\ShowWindowFollowMouse.cs" />
     <Compile Include="Util\StringUtil.cs" />
     <Compile Include="Util\SvgToGeometry.cs" />
     <Compile Include="ViewModel\AppConfig.cs" />
@@ -184,6 +188,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Control\Other\CustomIconUrlDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\Other\IconInfoUrlDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -212,10 +220,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Control\Other\IconInfoDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Control\Other\MenuGeometryDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

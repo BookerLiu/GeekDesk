@@ -1,9 +1,9 @@
 {
 	"title" : "版本更新",
-	"subTitle" : "V2.0 正式版",
+	"subTitle" : "V2.1 正式版",
 	"msgTitle" : "本次更新内容如下",
-	"msg" : "['断网时检测更新不再弹框提示了','修复历史待办任务保存时程序崩溃bug','修复某些图标获取过小的bug','添加待办任务设置成功提醒功能','添加性能模式','添加调用系统菜单']",
-	"githubUrl" : "https://github.com/Demo-Liu/GeekDesk/releases/tag/2.0",
-	"giteeUrl" : "https://gitee.com/demo_liu/GeekDesk/releases/2.0",
-	"version": "2.0"
+	"msg" : "['部分程序启动报错修复', '重置图标功能程序崩溃修复','添加自定义字体颜色功能','添加URL项目功能']",
+	"githubUrl" : "https://github.com/Demo-Liu/GeekDesk/releases/tag/2.1",
+	"giteeUrl" : "https://gitee.com/demo_liu/GeekDesk/releases/2.1",
+	"version": "2.1"
 }

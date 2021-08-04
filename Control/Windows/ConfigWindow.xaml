@@ -121,7 +121,7 @@
                 </hc:SideMenu>
             </hc:Card>
             <hc:ScrollViewer  Grid.Row="0" Grid.Column="1">
-                <hc:Card x:Name="RightCard" Height="448"  MouseDown="DragMove">
+                <hc:Card x:Name="RightCard" Height="448">
                 </hc:Card>
             </hc:ScrollViewer>
 

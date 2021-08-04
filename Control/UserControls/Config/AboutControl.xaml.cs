@@ -31,5 +31,18 @@ namespace GeekDesk.Control.UserControls.Config
             WeChatCode.Source = ImageUtil.Base64ToBitmapImage(Constants.WE_CHAT_CODE_IMG_BASE64);
             ZFBCode.Source = ImageUtil.Base64ToBitmapImage(Constants.ZFB_CODE_IMG_BASE64);
         }
+
+        /// <summary>
+        /// 移动窗口
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DragMove(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                Window.GetWindow(this).DragMove();
+            }
+        }
     }
 }

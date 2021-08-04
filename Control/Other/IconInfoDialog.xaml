@@ -5,7 +5,7 @@
         CornerRadius="4"
         Width="300"
         Height="300"
-        Opacity="0.9">
+        >
     <Border.Resources>
         <Style x:Key="LeftTB" TargetType="TextBlock" BasedOn="{StaticResource TextBlockBaseStyle}">
             <Setter Property="Width" Value="40"/>
@@ -15,7 +15,7 @@
         </Style>
     </Border.Resources>
     <Border.Background>
-        <SolidColorBrush Color="AliceBlue" Opacity="0.9"/>
+        <SolidColorBrush Color="AliceBlue" Opacity="0.98"/>
     </Border.Background>
     <hc:SimplePanel Margin="10">
         <Grid Margin="8,20,8,20">
@@ -42,9 +42,9 @@
             </hc:UniformSpacingPanel>
             <hc:Divider LineStrokeDashArray="3,3" Margin="0,200,0,-27" LineStroke="Black" Grid.ColumnSpan="4"/>
             <hc:UniformSpacingPanel Spacing="10" Margin="0,218,0,-38" Grid.ColumnSpan="4">
-                <Button Content="保存" Command="hc:ControlCommands.Close" Click="SaveProperty" Margin="208,6,-208,-10"/>
+                <Button Content="保存" Click="SaveProperty" Margin="208,6,-208,-10"/>
             </hc:UniformSpacingPanel>
         </Grid>
-        <Button Width="22" Height="22" Command="hc:ControlCommands.Close" Style="{StaticResource ButtonIcon}" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,4,4,0"/>
+        <Button Width="22"  Height="22" Command="hc:ControlCommands.Close" Style="{StaticResource ButtonIcon}" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,4,4,0"/>
     </hc:SimplePanel>
 </Border>

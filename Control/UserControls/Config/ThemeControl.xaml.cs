@@ -23,6 +23,8 @@ namespace GeekDesk.Control.UserControls.Config
     /// </summary>
     public partial class ThemeControl : System.Windows.Controls.UserControl
     {
+
+        private static AppConfig appConfig = MainWindow.appData.AppConfig;
         public ThemeControl()
         {
             InitializeComponent();
@@ -35,8 +37,7 @@ namespace GeekDesk.Control.UserControls.Config
         /// <param name="e"></param>
         private void BGButton_Click(object sender, RoutedEventArgs e)
         {
-            AppConfig appConfig = MainWindow.appData.AppConfig;
-
+           
             try
             {
                 OpenFileDialog ofd = new OpenFileDialog
@@ -55,6 +56,36 @@ namespace GeekDesk.Control.UserControls.Config
                 HandyControl.Controls.Growl.WarningGlobal("修改背景失败,已重置为默认背景!");
             }
 
+        }
+
+        private void ColorButton_Click(object sender, RoutedEventArgs e)
+        {
+            ColorPanel.Visibility = Visibility.Visible;
+        }
+
+        private void ColorPicker_Canceled(object sender, EventArgs e)
+        {
+            ColorPanel.Visibility = Visibility.Collapsed;
+        }
+
+        private void ColorPicker_SelectedColorChanged(object sender, HandyControl.Data.FunctionEventArgs<Color> e)
+        {
+            SolidColorBrush scb =  ColorPicker.SelectedBrush;
+            appConfig.TextColor = scb.ToString();
+            ColorPanel.Visibility = Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// 移动窗口
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DragMove(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                Window.GetWindow(this).DragMove();
+            }
         }
     }
 }

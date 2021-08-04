@@ -19,8 +19,9 @@ namespace GeekDesk.Util
             HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
             //通过Web访问对象获取响应内容
             HttpWebResponse myResponse = (HttpWebResponse)myRequest.GetResponse();
+
             //通过响应内容流创建StreamReader对象，因为StreamReader更高级更快
-            StreamReader reader = new StreamReader(myResponse.GetResponseStream(), Encoding.GetEncoding("gbk"));
+            StreamReader reader = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
             string returnStr = reader.ReadToEnd();//利用StreamReader就可以从响应内容从头读到尾
             reader.Close();
             myResponse.Close();

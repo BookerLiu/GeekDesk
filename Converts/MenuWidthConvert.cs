@@ -10,7 +10,9 @@ namespace GeekDesk.Converts
         {
             if (value != null && value.ToString().Length > 0)
             {
-                return System.Convert.ToDouble(value.ToString()) - 10d;
+                if (parameter == null) parameter = 0.00;
+                double p = System.Convert.ToDouble(parameter.ToString());
+                return System.Convert.ToDouble(value.ToString()) - p;
             }
             else
             {

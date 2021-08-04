@@ -19,9 +19,9 @@ namespace GeekDesk.ViewModel
     {
         private SortType menuSortType = SortType.CUSTOM; //菜单排序类型
         private SortType iconSortType = SortType.CUSTOM; //图表排序类型
-        private double windowWidth = (double)MainWindowEnum.WINDOW_WIDTH;  //窗口宽度
-        private double windowHeight = (double)MainWindowEnum.WINDOW_HEIGHT; //窗口高度
-        private double menuCardWidth = (double)MainWindowEnum.MENU_CARD_WIDHT;//菜单栏宽度
+        private double windowWidth = (double)CommonEnum.WINDOW_WIDTH;  //窗口宽度
+        private double windowHeight = (double)CommonEnum.WINDOW_HEIGHT; //窗口高度
+        private double menuCardWidth = (double)CommonEnum.MENU_CARD_WIDHT;//菜单栏宽度
         private int selectedMenuIndex = 0;  //上次选中菜单索引
         private bool followMouse = true;  //面板跟随鼠标 默认是
         private Visibility configIconVisible = Visibility.Visible; // 设置按钮是否显示
@@ -56,10 +56,55 @@ namespace GeekDesk.ViewModel
 
         private bool selfStartUp = true; //开机自启动设置
         private bool selfStartUped = false;  //是否已设置
-
         private bool pmModel = false; //性能模式
+        private string textColor = "#000000"; //字体颜色
+        private double imgPanelWidth = (double)CommonEnum.IMAGE_PANEL_WIDTH;
+        private double imgPanelHeight = (double)CommonEnum.IMAGE_PANEL_HEIGHT;
+
 
         #region GetSet
+
+        public double ImgPanelWidth
+        {
+            get
+            {
+                if (imgPanelWidth == 0d) return (double)CommonEnum.IMAGE_PANEL_WIDTH;
+                return imgPanelWidth;
+            }
+            set
+            {
+                imgPanelWidth = value;
+                OnPropertyChanged("ImgPanelWidth");
+            }
+        }
+
+        public double ImgPanelHeight
+        {
+            get
+            {
+                if (imgPanelHeight == 0d) return (double)CommonEnum.IMAGE_PANEL_HEIGHT;
+                return imgPanelHeight;
+            }
+            set
+            {
+                imgPanelHeight = value;
+                OnPropertyChanged("ImgPanelHeight");
+            }
+        }
+
+        public string TextColor
+        {
+            get
+            {
+                if (textColor == null) return "#000000";
+                return textColor;
+            }
+            set
+            {
+                textColor = value;
+                OnPropertyChanged("TextColor");
+            }
+        }
 
         public bool PMModel
         {
