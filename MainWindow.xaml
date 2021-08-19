@@ -14,10 +14,12 @@
         d:DesignHeight="500" d:DesignWidth="700"
         WindowStyle="None"
         AllowsTransparency="True"
-        Background="Transparent"
+        Background="#00FFFFFF"
         OpacityMask ="White"
-        Deactivated="window_Deactivated"
-        SizeChanged="window_SizeChanged"
+        ShowInTaskbar="False"
+        Opacity="0"
+        Deactivated="Window_Deactivated"
+        SizeChanged="Window_SizeChanged"
         >
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="10"/>
@@ -114,7 +116,9 @@
                         <ContextMenu Width="130">
                             <MenuItem Header="打开面板" Click="ShowApp"/>
                             <MenuItem Header="待办"  Click="BacklogMenuClick"/>
+                            <MenuItem Header="程序目录"  Click="OpenThisDir"/>
                             <MenuItem Header="设置"  Click="ConfigApp"/>
+                            <MenuItem Header="重启"  Click="ReStartApp"/>
                             <MenuItem Header="退出" Click="ExitApp"/>
                         </ContextMenu>
                     </hc:NotifyIcon.ContextMenu>

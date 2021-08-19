@@ -100,7 +100,7 @@
                                         MouseEnter="StackPanel_MouseEnter"
                                         MouseLeave="StackPanel_MouseLeave"
                                         >
-                            <Image CacheMode="{Binding BitmapCache}" Style="{StaticResource ImageStyle}"/>
+                            <Image Style="{StaticResource ImageStyle}"/>
                             <TextBlock MaxWidth="80"
                                        Margin="0,5,0,0"
                                        MaxHeight="40"

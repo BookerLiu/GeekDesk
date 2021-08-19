@@ -17,7 +17,7 @@
         <hc:SimplePanel Margin="20,50,20,20" >
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Image Source="/Resource/Image/About.png" Width="400" Height="100"/>
-                <TextBlock x:Name="AppInfo"  TextAlignment="Center"  Text="Copyright ©  2021 GeekDesk "/>
+                <TextBlock x:Name="AppInfo"  TextAlignment="Center"  Text="Copyright ©  2021 GeekDesk V"/>
                 <hc:UniformSpacingPanel Spacing="5" HorizontalAlignment="Center" Margin="10,10,0,0" VerticalAlignment="Center">
                     <hc:Shield Subject=".net" Status=">=4.72" Margin="0,0,10,0" Color="#1182c3"/>
                     <hc:Shield Subject="IDE" Status="VS2019" Margin="0,0,10,0" Color="#1182c3"/>

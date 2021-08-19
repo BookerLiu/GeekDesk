@@ -149,6 +149,18 @@ namespace GeekDesk.Control.Windows
             window.Visibility = Visibility.Visible;
         }
 
+        public static void ShowOrHide()
+        {
+            if (window == null || !window.Activate())
+            {
+                window = new ToDoInfoWindow();
+                window.Show();
+            } else
+            {
+                window.Close();
+            }
+        }
+
 
         public static System.Windows.Window GetThis()
         {

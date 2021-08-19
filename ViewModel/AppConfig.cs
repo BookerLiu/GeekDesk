@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using static GeekDesk.Util.GlobalHotKey;
 
 /// <summary>
 /// 程序设置
@@ -42,9 +43,9 @@ namespace GeekDesk.ViewModel
         private HotkeyModifiers hotkeyModifiers = HotkeyModifiers.MOD_CONTROL; //默认启动面板快捷键
         private Key hotkey = Key.Q; //默认启动面板快捷键
 
-        private string toDoHotkeyStr;  //待办任务快捷键
+        private string toDoHotkeyStr = "Ctrl + Shift + Q";  //待办任务快捷键
         private HotkeyModifiers toDoHotkeyModifiers; //待办任务快捷键
-        private Key toDoHotkey; //待办任务快捷键
+        private Key toDoHotkey = Key.E; //待办任务快捷键
 
         private string customIconUrl; //自定义图标url
         private string customIconJsonUrl;  //自定义图标json信息url
@@ -61,8 +62,38 @@ namespace GeekDesk.ViewModel
         private double imgPanelWidth = (double)CommonEnum.IMAGE_PANEL_WIDTH;
         private double imgPanelHeight = (double)CommonEnum.IMAGE_PANEL_HEIGHT;
 
+        private bool marginHide = false; //贴边隐藏
+
+        private bool appAnimation = false; //主窗口动画效果
+
 
         #region GetSet
+
+        public bool AppAnimation
+        {
+            get
+            {
+                return appAnimation;
+            }
+            set
+            {
+                appAnimation = value;
+                OnPropertyChanged("AppAnimation");
+            }
+        }
+
+        public bool MarginHide
+        {
+            get
+            {
+                return marginHide;
+            }
+            set
+            {
+                marginHide = value;
+                OnPropertyChanged("MarginHide");
+            }
+        }
 
         public double ImgPanelWidth
         {
@@ -150,6 +181,11 @@ namespace GeekDesk.ViewModel
         {
             get
             {
+                //兼容老版本
+                if (toDoHotkey == Key.None)
+                {
+                    toDoHotkey = Key.Q;
+                }
                 return toDoHotkey;
             }
             set
@@ -164,6 +200,10 @@ namespace GeekDesk.ViewModel
         {
             get
             {
+                if (toDoHotkeyModifiers == 0)
+                {
+                    toDoHotkeyModifiers = HotkeyModifiers.MOD_CONTROL | HotkeyModifiers.MOD_SHIFT;
+                }
                 return toDoHotkeyModifiers;
             }
             set
@@ -177,6 +217,11 @@ namespace GeekDesk.ViewModel
         {
             get
             {
+                //兼容老版本
+                if (toDoHotkeyStr == null)
+                {
+                    toDoHotkeyStr = "Ctrl + Shift + Q";
+                }
                 return toDoHotkeyStr;
             }
             set
@@ -283,6 +328,10 @@ namespace GeekDesk.ViewModel
         {
             get
             {
+                if (hotkeyModifiers == 0)
+                {
+                    hotkeyModifiers = HotkeyModifiers.MOD_CONTROL;
+                }
                 return hotkeyModifiers;
             }
             set
