@@ -135,12 +135,12 @@ namespace GeekDesk.Control.UserControls.PannelCard
                                 {
                                     if (!MainWindow.hide.IsMargin())
                                     {
-                                        MainWindow.mainWindow.Visibility = Visibility.Collapsed;
+                                        MainWindow.HideApp();
                                     }
                                 }
                                 else
                                 {
-                                    MainWindow.mainWindow.Visibility = Visibility.Collapsed;
+                                    MainWindow.HideApp();
                                 }
 
                             }
@@ -153,11 +153,11 @@ namespace GeekDesk.Control.UserControls.PannelCard
                                 {
                                     if (!MainWindow.hide.IsMargin())
                                     {
-                                        MainWindow.mainWindow.Visibility = Visibility.Collapsed;
+                                        MainWindow.HideApp();
                                     }
                                 } else
                                 {
-                                    MainWindow.mainWindow.Visibility = Visibility.Collapsed;
+                                    MainWindow.HideApp();
                                 }
                             }
                             break;
