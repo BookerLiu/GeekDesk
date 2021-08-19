@@ -1,9 +1,9 @@
 {
 	"title" : "版本更新",
-	"subTitle" : "V2.1 正式版",
+	"subTitle" : "V2.2 正式版",
 	"msgTitle" : "本次更新内容如下",
-	"msg" : "['部分程序启动报错修复', '重置图标功能程序崩溃修复','添加自定义字体颜色功能','添加URL项目功能']",
-	"githubUrl" : "https://github.com/Demo-Liu/GeekDesk/releases/tag/2.1",
-	"giteeUrl" : "https://gitee.com/demo_liu/GeekDesk/releases/2.1",
-	"version": "2.1"
+	"msg" : "['边缘吸附功能','窗口淡入淡出动画','待办任务快捷键(默认Ctrl+Shift+Q)','右键任务栏图标打开程序目录菜单']",
+	"githubUrl" : "https://github.com/Demo-Liu/GeekDesk/releases/tag",
+	"giteeUrl" : "https://gitee.com/demo_liu/GeekDesk/releases",
+	"version": "2.2"
 }

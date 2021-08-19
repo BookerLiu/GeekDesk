@@ -13,11 +13,11 @@
         <cvt:HideTypeConvert x:Key="HideTypeConvert"/>
     </UserControl.Resources>
     <Grid Background="AliceBlue" MouseDown="DragMove">
-        <hc:SimplePanel Margin="20" >
-            <hc:UniformSpacingPanel Spacing="10" Margin="0,0,0,10" Grid.ColumnSpan="4">
+        <StackPanel Margin="10">
+            <hc:UniformSpacingPanel Spacing="10"  Grid.ColumnSpan="4">
                 <TextBlock Text="面板动作设置" VerticalAlignment="Center"/>
             </hc:UniformSpacingPanel>
-            <hc:UniformSpacingPanel Spacing="10" Margin="30,26.394,0,-16.394" Grid.ColumnSpan="4">
+            <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0"  Grid.ColumnSpan="4">
                 <CheckBox x:Name="IconIsAdmin" Content="启动时显示主面板" IsChecked="{Binding StartedShowPanel}">
                     <CheckBox.Background>
                         <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
@@ -27,7 +27,7 @@
                 </CheckBox>
             </hc:UniformSpacingPanel>
 
-            <hc:UniformSpacingPanel Spacing="10" Margin="30,50,0,-102.337" Grid.ColumnSpan="4">
+            <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
                 <CheckBox  Content="显示时追随鼠标位置" IsChecked="{Binding FollowMouse}">
                     <CheckBox.Background>
                         <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
@@ -36,10 +36,31 @@
                     </CheckBox.Background>
                 </CheckBox>
             </hc:UniformSpacingPanel>
-            <hc:UniformSpacingPanel Spacing="10" Margin="30,89.49,-30,-79.49" Grid.ColumnSpan="4">
-                <TextBlock Text="面板关闭方式" VerticalAlignment="Center" Margin="-26,0,26,0"/>
+
+            <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
+                <CheckBox  Content="贴边隐藏" IsChecked="{Binding MarginHide}" Checked="MarginHide_Changed" Unchecked="MarginHide_Changed">
+                    <CheckBox.Background>
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                            <GradientStop Color="#FF9EA3A6"/>
+                        </LinearGradientBrush>
+                    </CheckBox.Background>
+                </CheckBox>
             </hc:UniformSpacingPanel>
-            <hc:UniformSpacingPanel Spacing="10" Margin="10,115,20,-102.337" Grid.ColumnSpan="4">
+
+            <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
+                <CheckBox  Content="主窗口动画效果" IsChecked="{Binding AppAnimation}" Checked="Animation_Checked">
+                    <CheckBox.Background>
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                            <GradientStop Color="#FF9EA3A6"/>
+                        </LinearGradientBrush>
+                    </CheckBox.Background>
+                </CheckBox>
+            </hc:UniformSpacingPanel>
+            
+            <hc:UniformSpacingPanel Spacing="10" Margin="0,10,0,0" Grid.ColumnSpan="4">
+                <TextBlock Text="面板关闭方式" VerticalAlignment="Center"/>
+            </hc:UniformSpacingPanel>
+            <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
                 <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}" 
                          Style="{StaticResource RadioButtonIcon}" Content="失去焦点后"
                          IsChecked="{Binding AppHideType, Mode=TwoWay, Converter={StaticResource HideTypeConvert}, ConverterParameter=1}"/>
@@ -51,11 +72,11 @@
                          IsChecked="{Binding AppHideType, Mode=TwoWay, Converter={StaticResource HideTypeConvert}, ConverterParameter=3}"/>
             </hc:UniformSpacingPanel>
 
-            <hc:UniformSpacingPanel Spacing="10" Margin="30,164.49,-30,-154.49" Grid.ColumnSpan="4">
-                <TextBlock Text="热键设置" VerticalAlignment="Center" Margin="-26,0,26,0"/>
+            <hc:UniformSpacingPanel Spacing="10"  Margin="0,10,0,0" Grid.ColumnSpan="4">
+                <TextBlock Text="热键设置" VerticalAlignment="Center"/>
             </hc:UniformSpacingPanel>
-            <hc:UniformSpacingPanel Spacing="10" Margin="30,193,0,-180.337" Grid.ColumnSpan="4">
-                <TextBlock Text="主面板:" Width="55"/>
+            <hc:UniformSpacingPanel Spacing="10"  Margin="10,5,0,0" Grid.ColumnSpan="4">
+                <TextBlock Text="主面板:" VerticalAlignment="Center" Width="55"/>
                 <hc:TextBox HorizontalAlignment="Left" 
                         Tag="Main"
                         VerticalAlignment="Top" 
@@ -65,9 +86,9 @@
                         Text="{Binding HotkeyStr}" 
                         KeyDown="HotKeyDown"
                         KeyUp="HotKeyUp"
-                        Margin="12.967,-7.38,-12.967,0"/>
+                        />
             </hc:UniformSpacingPanel>
-            <!--<hc:UniformSpacingPanel Spacing="10" Margin="30,229,0,-216.337" Grid.ColumnSpan="4">
+            <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
             <TextBlock Text="新建待办:"  Width="55"/>
             <hc:TextBox HorizontalAlignment="Left" 
                         Tag="ToDo"
@@ -78,10 +99,10 @@
                         Text="{Binding ToDoHotkeyStr}" 
                         KeyDown="HotKeyDown"
                         KeyUp="HotKeyUp"
-                        Margin="12.967,-7.38,-12.967,0"/>
-        </hc:UniformSpacingPanel>-->
+                        />
+        </hc:UniformSpacingPanel>
             <StackPanel hc:Growl.GrowlParent="True" hc:Growl.Token="HotKeyGrowl" VerticalAlignment="Top"/>
-        </hc:SimplePanel>
+        </StackPanel>
     </Grid>
    
    

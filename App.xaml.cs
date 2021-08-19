@@ -24,11 +24,15 @@ namespace GeekDesk
         private void App_Startup(object sender, StartupEventArgs e)
         {
 
-            bool ret;
-            mutex = new System.Threading.Mutex(true, Constants.MY_NAME, out ret);
+            mutex = new System.Threading.Mutex(true, Constants.MY_NAME, out bool ret);
             if (!ret)
             {
-                Environment.Exit(0);
+                System.Threading.Thread.Sleep(2000);
+                mutex = new System.Threading.Mutex(true, Constants.MY_NAME, out ret);
+                if (!ret)
+                {
+                    Environment.Exit(0);
+                }
             }
         }
     }

@@ -18,6 +18,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using static GeekDesk.Util.ShowWindowFollowMouse;
 
 namespace GeekDesk
@@ -35,6 +36,7 @@ namespace GeekDesk
         public static int hotKeyId = -1;
         public static int toDoHotKeyId = -1;
         public static MainWindow mainWindow;
+        public static MarginHide hide;
         public MainWindow()
         {
             LoadData();
@@ -44,6 +46,13 @@ namespace GeekDesk
             this.Loaded += Window_Loaded;
             this.SizeChanged += MainWindow_Resize;
             ToDoTask.BackLogCheck();
+
+            ////实例化隐藏 Hide类，进行时间timer设置
+            hide = new MarginHide(this);
+            if (appData.AppConfig.MarginHide)
+            {
+                hide.TimerSet();
+            }
         }
 
         private void LoadData()
@@ -63,13 +72,19 @@ namespace GeekDesk
         {
             if (!appData.AppConfig.StartedShowPanel)
             {
-                this.Visibility = Visibility.Collapsed;
+                if (appData.AppConfig.AppAnimation)
+                {
+                    this.Opacity = 0;
+                } else
+                {
+                    this.Visibility = Visibility.Collapsed;
+                }
             } else
             {
                 ShowApp();
             }
             RegisterHotKey(true);
-            //RegisterCreateToDoHotKey(true);
+            RegisterCreateToDoHotKey(true);
 
             if (!appData.AppConfig.SelfStartUped)
             {
@@ -88,18 +103,18 @@ namespace GeekDesk
             {
                 if (appData.AppConfig.HotkeyModifiers != 0)
                 {
-                    //加载完毕注册热键
-                    hotKeyId = Hotkey.Regist(new WindowInteropHelper(MainWindow.mainWindow).Handle, appData.AppConfig.HotkeyModifiers, appData.AppConfig.Hotkey, () =>
+
+                    hotKeyId = GlobalHotKey.RegisterHotKey(appData.AppConfig.HotkeyModifiers, appData.AppConfig.Hotkey, () =>
                     {
                         if (MotionControl.hotkeyFinished)
                         {
-                            if (mainWindow.Visibility == Visibility.Collapsed)
+                            if (mainWindow.Visibility == Visibility.Collapsed || mainWindow.Opacity == 0)
                             {
                                 ShowApp();
                             }
                             else
                             {
-                                mainWindow.Visibility = Visibility.Collapsed;
+                                HideApp();
                             }
                         }
                     });
@@ -123,6 +138,39 @@ namespace GeekDesk
             }
         }
 
+        public static void FadeStoryBoard(int opacity, int milliseconds, Visibility visibility)
+        {
+            if (appData.AppConfig.AppAnimation)
+            {
+                DoubleAnimation opacityAnimation = new DoubleAnimation
+                {
+                    From = mainWindow.Opacity,
+                    To = opacity,
+                    Duration = new Duration(TimeSpan.FromMilliseconds(milliseconds))
+                };
+                opacityAnimation.Completed += (s, e) =>
+                {
+                    mainWindow.BeginAnimation(OpacityProperty, null);
+                    if (visibility == Visibility.Visible)
+                    {
+                        mainWindow.Opacity = 1;
+                    } else
+                    {
+                        mainWindow.Opacity = 0;
+                    }
+                };
+                Timeline.SetDesiredFrameRate(opacityAnimation, 30);
+                mainWindow.BeginAnimation(OpacityProperty, opacityAnimation);
+            } else
+            {
+                //防止关闭动画后 窗体仍是0透明度
+                mainWindow.Opacity = 1;
+                mainWindow.Visibility = visibility;
+            }
+            
+
+        }
+
         /// <summary>
         /// 注册新建待办的热键
         /// </summary>
@@ -130,14 +178,15 @@ namespace GeekDesk
         {
             try
             {
+
                 if (appData.AppConfig.ToDoHotkeyModifiers!=0)
                 {
                     //加载完毕注册热键
-                    toDoHotKeyId = Hotkey.Regist(new WindowInteropHelper(MainWindow.mainWindow).Handle, appData.AppConfig.ToDoHotkeyModifiers, appData.AppConfig.ToDoHotkey, () =>
+                    toDoHotKeyId = GlobalHotKey.RegisterHotKey(appData.AppConfig.ToDoHotkeyModifiers, appData.AppConfig.ToDoHotkey, () =>
                     {
                         if (MotionControl.hotkeyFinished)
                         {
-                            ToDoInfoWindow.ShowNone();
+                            ToDoInfoWindow.ShowOrHide();
                         }
                     });
                 }
@@ -158,22 +207,6 @@ namespace GeekDesk
                 }
             }
         }
-
-        //private void DisplayWindowHotKeyPress(object sender, KeyPressedEventArgs e)
-        //{
-        //    if (e.HotKey.Key == Key.Y)
-        //    {
-        //        if (this.Visibility == Visibility.Collapsed)
-        //        {
-        //            ShowApp();
-        //        }
-        //        else
-        //        {
-        //            this.Visibility = Visibility.Collapsed;
-        //        }
-        //    }
-
-        //}
 
 
         void MainWindow_Resize(object sender, System.EventArgs e)
@@ -231,7 +264,13 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void CloseButtonClick(object sender, RoutedEventArgs e)
         {
-            this.Visibility = Visibility.Collapsed;
+            if (appData.AppConfig.AppAnimation)
+            {
+                FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
+            } else
+            {
+                this.Visibility = Visibility.Collapsed;
+            }
         }
 
        
@@ -261,15 +300,18 @@ namespace GeekDesk
         {
             if (appData.AppConfig.FollowMouse)
             {
-                ShowWindowFollowMouse.Show(mainWindow, MousePosition.CENTER, 0, 0);
-            } else
-            {
-                mainWindow.Visibility = Visibility.Visible;
+                ShowWindowFollowMouse.Show(mainWindow, MousePosition.CENTER, 0, 0, false);
             }
+            FadeStoryBoard(1, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Visible);
             Keyboard.Focus(mainWindow);
         }
 
-       
+        public static void HideApp()
+        {
+            FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
+        }
+
+
 
 
         /// <summary>
@@ -279,13 +321,13 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void NotifyIcon_Click(object sender, RoutedEventArgs e)
         {
-            if (this.Visibility == Visibility.Collapsed)
+            if (this.Visibility == Visibility.Collapsed || this.Opacity == 0)
             {
                 ShowApp();
             }
             else
             {
-                this.Visibility = Visibility.Collapsed;
+                HideApp();
             }
         }
 
@@ -299,6 +341,20 @@ namespace GeekDesk
             ConfigWindow.Show(appData.AppConfig, this);
         }
 
+
+        /// <summary>
+        /// 右键任务栏图标打开程序目录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenThisDir(object sender, RoutedEventArgs e)
+        {
+            Process p = new Process();
+            p.StartInfo.FileName = "Explorer.exe";
+            p.StartInfo.Arguments = "/e,/select," + Constants.APP_DIR + Constants.MY_NAME + ".exe";
+            p.Start();
+        }
+
         /// <summary>
         /// 右键任务栏图标退出
         /// </summary>
@@ -310,17 +366,6 @@ namespace GeekDesk
         }
 
 
-
-        //public static void ShowContextMenu(IntPtr hAppWnd, Window taskBar, System.Windows.Point pt)
-        //{
-        //    WindowInteropHelper helper = new WindowInteropHelper(taskBar);
-        //    IntPtr callingTaskBarWindow = helper.Handle;
-        //    IntPtr wMenu = GetSystemMenu(hAppWnd, false);
-        //    // Display the menu 
-        //    uint command = TrackPopupMenuEx(wMenu, TPM.LEFTBUTTON | TPM.RETURNCMD, (int) pt.X, (int) pt.Y, callingTaskBarWindow, IntPtr.Zero);
-        //    if (command == 0) return; 
-        //    PostMessage(hAppWnd, WM.SYSCOMMAND, new IntPtr(command), IntPtr.Zero);
-        //}
 
         /// <summary>
         /// 设置图标
@@ -364,11 +409,15 @@ namespace GeekDesk
         {
             if (appData.AppConfig.AppHideType == AppHideType.LOST_FOCUS)
             {
-                this.Visibility = Visibility.Collapsed;
+                //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
+                if (appData.AppConfig.MarginHide && !hide.IsMargin())
+                {
+                    this.Visibility = Visibility.Collapsed;
+                }
             }
         }
 
-        private void window_Deactivated(object sender, EventArgs e)
+        private void Window_Deactivated(object sender, EventArgs e)
         {
             if (appData.AppConfig.AppHideType == AppHideType.LOST_FOCUS)
             {
@@ -376,7 +425,7 @@ namespace GeekDesk
             }
         }
 
-        private void window_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (this.DataContext != null)
             {
@@ -384,6 +433,20 @@ namespace GeekDesk
                 appData.AppConfig.WindowWidth = this.Width;
                 appData.AppConfig.WindowHeight = this.Height;
             }
+        }
+
+        /// <summary>
+        /// 重启
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ReStartApp(object sender, RoutedEventArgs e)
+        {
+            Process p = new Process();
+            p.StartInfo.FileName = Constants.APP_DIR + Constants.MY_NAME + ".exe";
+            p.StartInfo.WorkingDirectory = Constants.APP_DIR;
+            p.Start();
+            Application.Current.Shutdown();
         }
     }
 

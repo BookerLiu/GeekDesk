@@ -1,4 +1,5 @@
-﻿using GeekDesk.Control.Windows;
+﻿using GeekDesk.Constant;
+using GeekDesk.Control.Windows;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using HandyControl.Data;
@@ -19,6 +20,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static GeekDesk.Util.GlobalHotKey;
 
 namespace GeekDesk.Control.UserControls.Config
 {
@@ -212,14 +214,16 @@ namespace GeekDesk.Control.UserControls.Config
                     {
                         if (MainWindow.hotKeyId != -1)
                         {
-                            Hotkey.UnRegist(new WindowInteropHelper(MainWindow.mainWindow).Handle, Hotkey.keymap[MainWindow.hotKeyId]);
+                            //Hotkey.UnRegist(new WindowInteropHelper(MainWindow.mainWindow).Handle, Hotkey.keymap[MainWindow.hotKeyId]);
+                            GlobalHotKey.Dispose(MainWindow.hotKeyId);
                         }
                         MainWindow.RegisterHotKey(false);
                     } else
                     {
                         if (MainWindow.toDoHotKeyId != -1)
                         {
-                            Hotkey.UnRegist(new WindowInteropHelper(MainWindow.toDoInfoWindow).Handle, Hotkey.keymap[MainWindow.toDoHotKeyId]);
+                            //Hotkey.UnRegist(new WindowInteropHelper(MainWindow.toDoInfoWindow).Handle, Hotkey.keymap[MainWindow.toDoHotKeyId]);
+                            GlobalHotKey.Dispose(MainWindow.toDoHotKeyId);
                         }
                         MainWindow.RegisterCreateToDoHotKey(false);
                     }
@@ -242,66 +246,30 @@ namespace GeekDesk.Control.UserControls.Config
             }
         }
 
-        //private void ShowApp(MainWindow mainWindow)
-        //{
-        //    if (appConfig.FollowMouse)
-        //    {
-        //        ShowAppAndFollowMouse(mainWindow);
-        //    }
-        //    else
-        //    {
-        //        this.Visibility = Visibility.Visible;
-        //    }
-        //    Keyboard.Focus(this);
-        //}
+        private void MarginHide_Changed(object sender, RoutedEventArgs e)
+        {
+            if (appConfig.MarginHide)
+            {
+                MainWindow.hide.TimerSet();
+            } else
+            {
+                if (MainWindow.hide.timer != null)
+                {
+                    MainWindow.hide.TimerStop();
+                }
+            }
+        }
 
-        ///// <summary>
-        ///// 随鼠标位置显示面板 (鼠标始终在中间)
-        ///// </summary>
-        //private void ShowAppAndFollowMouse(MainWindow mainWindow)
-        //{
-        //    //获取鼠标位置
-        //    System.Windows.Point p = MouseUtil.GetMousePosition();
-        //    double left = SystemParameters.VirtualScreenLeft;
-        //    double top = SystemParameters.VirtualScreenTop;
-        //    double width = SystemParameters.VirtualScreenWidth;
-        //    double height = SystemParameters.VirtualScreenHeight;
-        //    double right = width - Math.Abs(left);
-        //    double bottom = height - Math.Abs(top);
+        private void Animation_Checked(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.mainWindow.Visibility == Visibility.Collapsed)
+            {
+                MainWindow.mainWindow.Visibility = Visibility.Visible;
+                // 执行一下动画 防止太过突兀
+                MainWindow.FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
+            }
+        }
 
 
-        //    if (p.X - mainWindow.Width / 2 < left)
-        //    {
-        //        //判断是否在最左边缘
-        //        mainWindow.Left = left;
-        //    }
-        //    else if (p.X + mainWindow.Width / 2 > right)
-        //    {
-        //        //判断是否在最右边缘
-        //        mainWindow.Left = right - mainWindow.Width;
-        //    }
-        //    else
-        //    {
-        //        mainWindow.Left = p.X - mainWindow.Width / 2;
-        //    }
-
-
-        //    if (p.Y - mainWindow.Height / 2 < top)
-        //    {
-        //        //判断是否在最上边缘
-        //        mainWindow.Top = top;
-        //    }
-        //    else if (p.Y + mainWindow.Height / 2 > bottom)
-        //    {
-        //        //判断是否在最下边缘
-        //        mainWindow.Top = bottom - mainWindow.Height;
-        //    }
-        //    else
-        //    {
-        //        mainWindow.Top = p.Y - mainWindow.Height / 2;
-        //    }
-
-        //    mainWindow.Visibility = Visibility.Visible;
-        //}
     }
 }

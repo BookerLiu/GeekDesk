@@ -160,12 +160,13 @@
     <Compile Include="Task\ToDoTask.cs" />
     <Compile Include="Thread\UpdateThread.cs" />
     <Compile Include="Util\AeroGlassHelper.cs" />
+    <Compile Include="Util\GlobalHotKey.cs" />
     <Compile Include="Util\CommonCode.cs" />
     <Compile Include="Util\ConsoleManager.cs" />
     <Compile Include="Util\DragAdorner.cs" />
     <Compile Include="Util\FileIcon.cs" />
     <Compile Include="Util\FileUtil.cs" />
-    <Compile Include="Util\HotKey.cs" />
+    <Compile Include="Util\MarginHide.cs" />
     <Compile Include="Util\HttpUtil.cs" />
     <Compile Include="Util\ImageUtil.cs" />
     <Compile Include="Util\ListViewDragDropManager.cs" />

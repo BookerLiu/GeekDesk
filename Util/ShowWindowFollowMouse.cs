@@ -18,9 +18,9 @@ namespace GeekDesk.Util
         }
 
         /// <summary>
-        /// 随鼠标位置显示面板 (鼠标始终在中间)
+        /// 随鼠标位置显示面板 
         /// </summary>
-        public static void Show(Window window, MousePosition position, double widthOffset, double heightOffset)
+        public static void Show(Window window, MousePosition position, double widthOffset = 0, double heightOffset = 0, bool visibility = true)
         {
             //获取鼠标位置
             System.Windows.Point p = MouseUtil.GetMousePosition();
@@ -100,7 +100,11 @@ namespace GeekDesk.Util
             {
                 window.Top = p.Y - afterHeight;
             }
-            window.Visibility = Visibility.Visible;
+            if (visibility)
+            {
+                window.Opacity = 0;
+                window.Visibility = Visibility.Visible;
+            }
         }
 
     }

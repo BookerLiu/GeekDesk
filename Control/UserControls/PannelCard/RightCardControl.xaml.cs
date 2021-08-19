@@ -130,15 +130,35 @@ namespace GeekDesk.Control.UserControls.PannelCard
                             p.StartInfo.ErrorDialog = false;
                             if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
                             {
-                                Window parentWin = Window.GetWindow(this);
-                                parentWin.Visibility = Visibility.Collapsed;
+                                //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
+                                if (appData.AppConfig.MarginHide)
+                                {
+                                    if (!MainWindow.hide.IsMargin())
+                                    {
+                                        MainWindow.mainWindow.Visibility = Visibility.Collapsed;
+                                    }
+                                }
+                                else
+                                {
+                                    MainWindow.mainWindow.Visibility = Visibility.Collapsed;
+                                }
+
                             }
                             break;// c#好像不能case穿透
                         case IconStartType.DEFAULT_STARTUP:
                             if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
                             {
-                                Window parentWin = Window.GetWindow(this);
-                                parentWin.Visibility = Visibility.Collapsed;
+                                //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
+                                if (appData.AppConfig.MarginHide)
+                                {
+                                    if (!MainWindow.hide.IsMargin())
+                                    {
+                                        MainWindow.mainWindow.Visibility = Visibility.Collapsed;
+                                    }
+                                } else
+                                {
+                                    MainWindow.mainWindow.Visibility = Visibility.Collapsed;
+                                }
                             }
                             break;
                         case IconStartType.SHOW_IN_EXPLORE:
@@ -243,16 +263,16 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
         private void StackPanel_MouseEnter(object sender, MouseEventArgs e)
         {
-            ImgStroyBoard(sender, (int)CommonEnum.IMAGE_HEIGHT_AM, (int)CommonEnum.IMAGE_WIDTH_AM, 1);
+            ImgStoryBoard(sender, (int)CommonEnum.IMAGE_HEIGHT_AM, (int)CommonEnum.IMAGE_WIDTH_AM, 1);
         }
 
         private void StackPanel_MouseLeave(object sender, MouseEventArgs e)
         {
-            ImgStroyBoard(sender, (int)CommonEnum.IMAGE_HEIGHT, (int)CommonEnum.IMAGE_WIDTH, 500);
+            ImgStoryBoard(sender, (int)CommonEnum.IMAGE_HEIGHT, (int)CommonEnum.IMAGE_WIDTH, 220);
         }
 
 
-        private void ImgStroyBoard(object sender, int height, int width, int milliseconds)
+        private void ImgStoryBoard(object sender, int height, int width, int milliseconds)
         {
 
             if (appData.AppConfig.PMModel) return;
@@ -277,6 +297,9 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
             Timeline.SetDesiredFrameRate(heightAnimation, 60);
             Timeline.SetDesiredFrameRate(widthAnimation, 60);
+
+            img.BeginAnimation(HeightProperty, null);
+            img.BeginAnimation(WidthProperty, null);
 
             img.BeginAnimation(HeightProperty, heightAnimation);
             img.BeginAnimation(WidthProperty, widthAnimation);
