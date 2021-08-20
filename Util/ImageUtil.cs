@@ -6,6 +6,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
 using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace GeekDesk.Util
@@ -22,9 +23,10 @@ namespace GeekDesk.Util
         {
             using (var ms = new System.IO.MemoryStream(array))
             {
-                var image = new BitmapImage();
+                BitmapImage image = new BitmapImage();
                 image.BeginInit();
                 image.CacheOption = BitmapCacheOption.OnLoad; // here
+                RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.LowQuality);
                 image.StreamSource = ms;
                 image.EndInit();
                 return image;
@@ -184,7 +186,7 @@ namespace GeekDesk.Util
                     Bitmap bmpOut = new Bitmap(lnNewWidth, lnNewHeight);
                     Graphics g = Graphics.FromImage(bmpOut);
                     g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                    g.FillRectangle(Brushes.White, 0, 0, lnNewWidth, lnNewHeight);
+                    g.FillRectangle(System.Drawing.Brushes.White, 0, 0, lnNewWidth, lnNewHeight);
                     g.DrawImage(loBMP, 0, 0, lnNewWidth, lnNewHeight);
                     loBMP.Dispose();
                     string tempPath = Constants.APP_DIR + "\\temp";
@@ -211,6 +213,7 @@ namespace GeekDesk.Util
             BitmapImage bmImg = new BitmapImage();
             bmImg.BeginInit();
             bmImg.CacheOption = BitmapCacheOption.OnLoad;
+            RenderOptions.SetBitmapScalingMode(bmImg, BitmapScalingMode.LowQuality);
             using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
                 bmImg.StreamSource = fs;

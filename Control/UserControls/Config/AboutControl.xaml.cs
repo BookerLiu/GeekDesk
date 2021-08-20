@@ -32,6 +32,7 @@ namespace GeekDesk.Control.UserControls.Config
             ZFBCode.Source = ImageUtil.Base64ToBitmapImage(Constants.ZFB_CODE_IMG_BASE64);
         }
 
+
         /// <summary>
         /// 移动窗口
         /// </summary>
