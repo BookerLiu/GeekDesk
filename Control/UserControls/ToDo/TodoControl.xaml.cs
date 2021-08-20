@@ -19,12 +19,18 @@ using System.Windows.Shapes;
 
 namespace GeekDesk.Control.UserControls.Backlog
 {
+
+    public enum ToDoType
+    {
+        HISTORY = 1,
+        NEW = 2
+    }
     /// <summary>
     /// BacklogControl.xaml 的交互逻辑
     /// </summary>
     public partial class TodoControl : UserControl
     {
-        private AppData appData = MainWindow.appData;
+        public ToDoType type;
         public TodoControl()
         {
             InitializeComponent();
@@ -37,7 +43,14 @@ namespace GeekDesk.Control.UserControls.Backlog
             {
                 if (isConfirmed)
                 {
-                    appData.ToDoList.Remove(info);
+                    if (type == ToDoType.NEW)
+                    {
+                        MainWindow.appData.ToDoList.Remove(info);
+                    }
+                    else
+                    {
+                        MainWindow.appData.HiToDoList.Remove(info);
+                    }
                     CommonCode.SaveAppData(MainWindow.appData);
                 }
                 return true;
