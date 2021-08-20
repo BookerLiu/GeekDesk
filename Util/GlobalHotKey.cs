@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 
@@ -18,9 +19,7 @@ namespace GeekDesk.Util
         }
 
         private static int currentID;
-        const int WM_HOTKEY = 0x312;
-        private static Dictionary<int, Window> handleTemp = new Dictionary<int, Window>();
-        public static Dictionary<int, HotKeyCallBackHanlder> callbackTemp = new Dictionary<int, HotKeyCallBackHanlder>();
+        private static readonly Dictionary<int, InvisibleWindowForMessages> handleTemp = new Dictionary<int, InvisibleWindowForMessages>();
 
         public delegate void HotKeyCallBackHanlder();
         /// <summary>
@@ -38,50 +37,22 @@ namespace GeekDesk.Util
 
         public static int RegisterHotKey(HotkeyModifiers aModifier, Key key, HotKeyCallBackHanlder callback)
         {
-            Window window = new Window
-            {
-                WindowStyle = WindowStyle.None,
-                Height = 0,
-                Width = 0,
-                Visibility = Visibility.Collapsed,
-                ShowInTaskbar = false
-            };
-            window.Show();
-            IntPtr handle = new WindowInteropHelper(window).Handle;
-            HwndSource hs = HwndSource.FromHwnd(handle);
-            hs.AddHook(WndProc);
+            InvisibleWindowForMessages window = new InvisibleWindowForMessages(callback);
             currentID += 1;
-            if (!RegisterHotKey(handle, currentID, aModifier, (uint)KeyInterop.VirtualKeyFromKey(key)))
+            if (!RegisterHotKey(window.Handle, currentID, aModifier, (uint)KeyInterop.VirtualKeyFromKey(key)))
             {
-                window.Close();
+                window.Dispose();
                 throw new Exception("RegisterHotKey Failed");
             }
             handleTemp.Add(currentID, window);
-            callbackTemp.Add(currentID, callback);
             return currentID;
-        }
-        /// <summary>
-        /// 快捷键消息处理
-        /// </summary>
-        static IntPtr WndProc(IntPtr windowHandle, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-        {
-            if (msg == WM_HOTKEY)
-            {
-                int id = wParam.ToInt32();
-                if (callbackTemp.TryGetValue(id, out var callback))
-                {
-                    callback();
-                }
-            }
-            return IntPtr.Zero;
         }
 
         public static void Dispose(int id)
         {
-            bool test = UnregisterHotKey(new WindowInteropHelper(handleTemp[id]).Handle, id);
-            GlobalHotKey.handleTemp[id].Close();
+            bool test = UnregisterHotKey(handleTemp[id].Handle, id);
+            GlobalHotKey.handleTemp[id].Dispose();
             GlobalHotKey.handleTemp.Remove(id);
-            GlobalHotKey.callbackTemp.Remove(id);
             Console.WriteLine(test);
         }
 
@@ -91,5 +62,31 @@ namespace GeekDesk.Util
         // Unregisters the hot key with Windows.
         [DllImport("user32.dll")]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+        private class InvisibleWindowForMessages : NativeWindow, IDisposable
+        {
+            public event HotKeyCallBackHanlder callback;
+            public InvisibleWindowForMessages(HotKeyCallBackHanlder callback)
+            {
+                CreateHandle(new CreateParams());
+                this.callback += callback;
+            } 
+
+            private static readonly int WM_HOTKEY = 0x0312;
+            protected override void WndProc(ref Message m)
+            {
+                base.WndProc(ref m);
+                if (m.Msg == WM_HOTKEY)
+                {
+                    callback();
+                }
+            }
+            public void Dispose()
+            {
+                this.DestroyHandle();
+            }
+        }
+
+
     }
-}
+    }
