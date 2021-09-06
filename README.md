@@ -9,7 +9,6 @@
 ## 全局热键 鼠标跟随 快速启动 随时随地
 - 支持自定义热键
 - 支持鼠标跟随  
-- 
 <img src="https://z3.ax1x.com/2021/07/19/WJt4hQ.gif" alt="WJt4hQ.gif" border="0" width="800px"/>
 
 ## 自定义壁纸
