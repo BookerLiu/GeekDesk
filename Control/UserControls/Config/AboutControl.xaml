@@ -28,7 +28,7 @@
                            Margin="0,0,10,0" Color="#24292F"/>
                     <hc:Shield Subject="Gitee" Visibility="Visible" Status="Demo-liu" 
                            Command="hc:ControlCommands.OpenLink" 
-                           CommandParameter="" 
+                           CommandParameter="https://gitee.com/demo_liu/GeekDesk" 
                            Margin="0,5,10,0" Color="#C71D23"/>
 
 
