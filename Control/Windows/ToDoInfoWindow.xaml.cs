@@ -38,9 +38,12 @@ namespace GeekDesk.Control.Windows
             InitializeComponent();
 
             this.Topmost = true;
-            ExeTime.SelectedDateTime = DateTime.Now.AddMinutes(10);
+            DateTime time = DateTime.Now.AddMinutes(10);
+            ExeTime.SelectedDateTime = time;
             SetTimePanel.Visibility = Visibility.Visible;
-            this.DataContext = new ToDoInfo();
+            this.DataContext = new ToDoInfo {
+                ExeTime = time.ToString("yyyy-MM-dd HH:mm:ss")
+            };
         }
         private ToDoInfoWindow(ToDoInfo info)
         {
