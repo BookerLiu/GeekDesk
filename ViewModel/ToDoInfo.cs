@@ -1,4 +1,5 @@
-﻿using GeekDesk.Util;
+﻿using GeekDesk.Constant;
+using GeekDesk.Util;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,8 +18,38 @@ namespace GeekDesk.ViewModel
         private string msg;  //事项详情
         private string exeTime;  //待办时间
         private string doneTime; //完成时间
+        private TodoTaskExecType execType = TodoTaskExecType.SET_TIME;
+        private string cron;  //cron表达式
         //private int status;  //状态 0 未处理  1 已处理
 
+        public string Cron
+        {
+            get
+            {
+                return cron;
+            }
+            set
+            {
+                cron = value;
+                OnPropertyChanged("Cron");
+            }
+        }
+
+
+        public TodoTaskExecType ExecType
+        {
+            get
+            {
+                //兼容老版本 需要给个默认值
+                if (execType == 0) return TodoTaskExecType.SET_TIME;
+                return execType;
+            }
+            set
+            {
+                execType = value;
+                OnPropertyChanged("ExecType");
+            }
+        }
 
         public string DoneTime
         {

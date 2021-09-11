@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,9 +25,11 @@ namespace GeekDesk.Task
         public static void BackLogCheck()
         {
 
-            System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Enabled = true;
-            timer.Interval = 5000;
+            System.Timers.Timer timer = new System.Timers.Timer
+            {
+                Enabled = true,
+                Interval = 5000
+            };
             timer.Start();
             timer.Elapsed += new System.Timers.ElapsedEventHandler(Check);
         }
@@ -48,9 +51,27 @@ namespace GeekDesk.Task
                         }
                     }
                 }
+                ClearMemory();
             }));
         }
 
+        /// <summary>
+        /// 释放内存
+        /// </summary>
+        public static void ClearMemory()
+        {
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            {
+                SetProcessWorkingSetSize(System.Diagnostics.Process.GetCurrentProcess().Handle, -1, -1);
+            }
+        }
+
+        #region 内存回收
+        [DllImport("kernel32.dll", EntryPoint = "SetProcessWorkingSetSize")]
+        public static extern int SetProcessWorkingSetSize(IntPtr process, int minSize, int maxSize);
+        #endregion
 
 
     }

@@ -30,9 +30,9 @@ namespace GeekDesk.Control.UserControls.Config
     public partial class MotionControl : UserControl
     {
         public static bool hotkeyFinished = true; //热键设置结束
-        private static KeyEventArgs prevKeyTemp; //上一个按键
-        private static List<KeyEventArgs> keysTemp = new List<KeyEventArgs>();//存储一次快捷键集合
-        private static AppConfig appConfig = MainWindow.appData.AppConfig;
+        private  KeyEventArgs prevKeyTemp; //上一个按键
+        private readonly List<KeyEventArgs> keysTemp = new List<KeyEventArgs>();//存储一次快捷键集合
+        private readonly AppConfig appConfig = MainWindow.appData.AppConfig;
 
         public MotionControl()
         {

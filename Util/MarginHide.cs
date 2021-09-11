@@ -25,9 +25,11 @@ namespace GeekDesk.Util
     {
         readonly Window window;//定义使用该方法的窗体
 
-        private readonly int hideTime = 150;
+        private readonly int hideTime = 80;
 
         private readonly int taskTime = 200;
+
+        private double showMarginWidth = 1;
 
         private bool isHide;
 
@@ -89,39 +91,39 @@ namespace GeekDesk.Util
                 //上方隐藏条件
                 if (windowTop <= screenTop)
                 {
-                    HideAnimation(windowTop, screenTop - windowHeight + 1, Window.TopProperty);
+                    HideAnimation(windowTop, screenTop - windowHeight + showMarginWidth, Window.TopProperty);
                     isHide = true;
                     return;
                 }
                 //左侧隐藏条件
                 if (windowLeft <= screenLeft)
                 {
-                    HideAnimation(windowLeft, screenLeft - windowWidth + 1, Window.LeftProperty);
+                    HideAnimation(windowLeft, screenLeft - windowWidth + showMarginWidth, Window.LeftProperty);
                     return;
                 }
                 //右侧隐藏条件
                 if (windowLeft + windowWidth + Math.Abs(screenLeft) >= screenWidth)
                 {
-                    HideAnimation(windowLeft, screenWidth - Math.Abs(screenLeft) - 1, Window.LeftProperty);
+                    HideAnimation(windowLeft, screenWidth - Math.Abs(screenLeft) - showMarginWidth, Window.LeftProperty);
                     return;
                 }
             } else if (mouseX >= windowLeft && mouseX <= windowLeft + windowWidth 
                 && mouseY >= windowTop && mouseY <= windowTop + windowHeight)
             {
                 //上方显示
-                if (windowTop <= screenTop - 1)
+                if (windowTop <= screenTop - showMarginWidth)
                 {
                     HideAnimation(windowTop, screenTop, Window.TopProperty);
                     return;
                 }
                 //左侧显示
-                if (windowLeft <= screenLeft -1)
+                if (windowLeft <= screenLeft - showMarginWidth)
                 {
                     HideAnimation(windowLeft, screenLeft, Window.LeftProperty);
                     return;
                 }
                 //右侧显示
-                if (windowLeft + Math.Abs(screenLeft) == screenWidth -1)
+                if (windowLeft + Math.Abs(screenLeft) == screenWidth - showMarginWidth)
                 {
                     HideAnimation(windowLeft, screenWidth - Math.Abs(screenLeft) - windowWidth, Window.LeftProperty);
                     return;
@@ -134,6 +136,7 @@ namespace GeekDesk.Util
 
         public void TimerSet()
         {
+            if (timer != null) return;
             timer = new Timer();//添加timer计时器，隐藏功能
             #region 计时器设置，隐藏功能
             timer.Interval = taskTime;
@@ -145,6 +148,8 @@ namespace GeekDesk.Util
         public void TimerStop()
         {
             timer.Stop();
+            timer.Dispose();
+            timer = null;
             //功能关闭 如果界面是隐藏状态  那么要显示界面 ↓
 
             double screenLeft = SystemParameters.VirtualScreenLeft;
@@ -157,21 +162,21 @@ namespace GeekDesk.Util
             double windowLeft = window.Left;
 
             //左侧显示
-            if (windowLeft <= screenLeft - 1)
+            if (windowLeft <= screenLeft - showMarginWidth)
             {
                 HideAnimation(windowLeft, screenLeft, Window.LeftProperty);
                 return;
             }
 
             //上方显示
-            if (windowTop <= screenTop - 1)
+            if (windowTop <= screenTop - showMarginWidth)
             {
                 HideAnimation(windowTop, screenTop, Window.TopProperty);
                 return;
             }
 
             //右侧显示
-            if (windowLeft + Math.Abs(screenLeft) == screenWidth - 1)
+            if (windowLeft + Math.Abs(screenLeft) == screenWidth - showMarginWidth)
             {
                 HideAnimation(windowLeft, screenWidth - Math.Abs(screenLeft) - windowWidth, Window.LeftProperty);
                 return;
@@ -191,7 +196,7 @@ namespace GeekDesk.Util
             {
                 window.BeginAnimation(property, null);
             };
-            Timeline.SetDesiredFrameRate(da, 30);
+            Timeline.SetDesiredFrameRate(da, 60);
             window.BeginAnimation(property, da);
         }
     }

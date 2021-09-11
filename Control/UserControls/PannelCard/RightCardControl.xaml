@@ -12,12 +12,9 @@
     <UserControl.Resources>
         <!--右侧栏样式动画-->
         <Style x:Key="ImageStyle" TargetType="Image">
-            <Setter Property="Width"   Value="{Binding ImageWidth}"/>
-            <Setter Property="Height"  Value="{Binding ImageHeight}"/>
+            <Setter Property="Width"   Value="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImageWidth, Mode=OneWay}"/>
+            <Setter Property="Height"  Value="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImageHeight, Mode=OneWay}"/>
             <Setter Property="Source"  Value="{Binding BitmapImage}"/>
-            <Setter Property="RenderOptions.BitmapScalingMode" Value="LowQuality" />
-            <Setter Property="RenderOptions.CachingHint" Value="Cache" />
-            
         </Style>
         <Style x:Key="MyListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
             <Setter Property="Template">
@@ -60,9 +57,9 @@
                 </ListBox.Background>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <DraggAnimatedPanel:DraggAnimatedPanel ItemsHeight="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelHeight}" 
-                                                               ItemsWidth="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelWidth}"
-                                                               Background="#00FFFFFF"
+                        <DraggAnimatedPanel:DraggAnimatedPanel Background="#00FFFFFF"
+                                                               ItemsWidth="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelWidth, Mode=OneWay}"
+                                                               ItemsHeight="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelHeight, Mode=OneWay}"
                                                                HorizontalAlignment="Center" 
                                                                SwapCommand="{Binding SwapCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
                     </ItemsPanelTemplate>
@@ -82,18 +79,22 @@
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem" BasedOn="{StaticResource MyListBoxItemStyle}">
                         <Setter Property="ContextMenu" Value="{StaticResource IconDialog}"/>
+                        <!--<Setter Property="Width" Value="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelWidth, Mode=OneWay}"/>
+                        <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelHeight, Mode=OneWay}"/>-->
                     </Style>
                 </ListBox.ItemContainerStyle>
+                <!--Height="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelHeight, Mode=OneWay}" 
+                                        Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelWidth, Mode=OneWay}"-->
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Tag="{Binding}"
-                                        Height="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelHeight}"
-                                        Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelWidth}"
+                        <hc:SimpleStackPanel Tag="{Binding}"
+                                        Height="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelHeight, Mode=OneWay}" 
+                                        Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelWidth, Mode=OneWay}"
                                         HorizontalAlignment="Center"
-                                        hc:Poptip.HitMode="None" 
+                                        hc:Poptip.HitMode="None"
                                         hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
-                                        hc:Poptip.Content="{Binding Content}" 
+                                        hc:Poptip.Content="{Binding Content}"
                                         hc:Poptip.Placement="BottomLeft"
                                         Background="#00FFFFFF"
                                         MouseLeftButtonUp="IconClick"
@@ -111,7 +112,7 @@
                                        VerticalAlignment="Center" 
                                        Foreground="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.TextColor}"
                                        Text="{Binding Name}"/>
-                        </StackPanel>
+                        </hc:SimpleStackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

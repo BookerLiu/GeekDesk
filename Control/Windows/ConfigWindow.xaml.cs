@@ -15,10 +15,10 @@ namespace GeekDesk.Control.Windows
     /// </summary>
     public partial class ConfigWindow
     {
-        private static AboutControl about = new AboutControl();
-        private static ThemeControl theme = new ThemeControl();
-        private static MotionControl motion = new MotionControl();
-        private static OtherControl other = new OtherControl();
+        private static readonly AboutControl about = new AboutControl();
+        private static readonly ThemeControl theme = new ThemeControl();
+        private static readonly MotionControl motion = new MotionControl();
+        private static readonly OtherControl other = new OtherControl();
         public MainWindow mainWindow;
 
         private ConfigWindow(AppConfig appConfig, MainWindow mainWindow)

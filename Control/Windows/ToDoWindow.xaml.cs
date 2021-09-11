@@ -64,9 +64,11 @@ namespace GeekDesk.Control.Windows
             {
                 case "History":
                     backlog.BacklogList.ItemsSource = appData.HiToDoList;
+                    backlog.type = ToDoType.HISTORY;
                     break;
                 default:
                     backlog.BacklogList.ItemsSource = appData.ToDoList;
+                    backlog.type = ToDoType.NEW;
                     break;
             }
         }

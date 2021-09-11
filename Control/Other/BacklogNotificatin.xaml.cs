@@ -1,6 +1,9 @@
-﻿using GeekDesk.Task;
+﻿using GeekDesk.Constant;
+using GeekDesk.Task;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
+using HandyControl.Controls;
+using Quartz;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,8 +37,36 @@ namespace GeekDesk.Control.Other
         {
             ToDoInfo info = this.DataContext as ToDoInfo;
             info.DoneTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            appData.ToDoList.Remove(info); //执行任务删除
-            appData.HiToDoList.Add(info);  //添加历史任务
+            if (info.ExecType == TodoTaskExecType.CRON)
+            {
+                CronExpression exp = new CronExpression(info.Cron);
+                DateTime dtNow = DateTime.Now;
+                DateTimeOffset ddo = DateTime.SpecifyKind(dtNow, DateTimeKind.Local);
+                string nextExecTime = ddo.LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+                info.ExeTime = nextExecTime;
+
+                DateTime nextTime = ddo.LocalDateTime;
+                TimeSpan ts = nextTime.Subtract(dtNow);
+                int minutes = (int)Math.Ceiling(ts.TotalMinutes);
+                if (minutes < 0)
+                {
+                    minutes = 0;
+                }
+                if (minutes > 60)
+                {
+                    int m = minutes % 60;
+                    int h = minutes / 60;
+                    Growl.SuccessGlobal("下次任务将在 " + h + " 小时零 " + m + " 分钟后提醒您!");
+                }
+                else
+                {
+                    Growl.SuccessGlobal("下次任务将在 " + minutes + " 分钟后提醒您!");
+                }
+            } else
+            {
+                appData.ToDoList.Remove(info); //执行任务删除
+                appData.HiToDoList.Add(info);  //添加历史任务
+            }
             ToDoTask.activityBacklog[info].Close(); //关闭桌面通知
             ToDoTask.activityBacklog.Remove(info);//激活任务删除
             CommonCode.SaveAppData(appData);
@@ -93,9 +124,11 @@ namespace GeekDesk.Control.Other
             {
                 case "分":
                     info.ExeTime = DateTime.Now.AddMinutes(time).ToString("yyyy-MM-dd HH:mm:ss");
+                    Growl.SuccessGlobal("将在 " + time + " 分钟后再次提醒您!");
                     break;
                 case "时":
                     info.ExeTime = DateTime.Now.AddHours(time).ToString("yyyy-MM-dd HH:mm:ss");
+                    Growl.SuccessGlobal("将在 " + time + " 小时后再次提醒您!");
                     break;
             }
             ToDoTask.activityBacklog[info].Close(); //关闭桌面通知
