@@ -75,7 +75,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
         /// <param name="e"></param>
         private void IconClick(object sender, MouseButtonEventArgs e)
         {
-            IconInfo icon = (IconInfo)((StackPanel)sender).Tag;
+            IconInfo icon = (IconInfo)((SimpleStackPanel)sender).Tag;
             if (icon.AdminStartUp)
             {
                 StartIconApp(icon, IconStartType.ADMIN_STARTUP);
