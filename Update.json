@@ -1,9 +1,9 @@
 {
 	"title" : "版本更新",
-	"subTitle" : "V2.3 正式版",
+	"subTitle" : "V2.3.10 正式版",
 	"msgTitle" : "本次更新内容如下",
-	"msg" : "['边缘吸附功能','窗口淡入淡出动画','待办任务快捷键(默认Ctrl+Shift+Q)','右键任务栏图标打开程序目录菜单']",
+	"msg" : "['修复打开显示设置后,贴边隐藏卡顿的问题','修复无法删除历史待办任务的BUG','添加定时内存回收,现在可占用更小的内存','修复启动时桌面会有两个黑点窗口的BUG','添加自定义图标大小','待办任务可使用CRON表达式自定义提醒频率']",
 	"githubUrl" : "https://github.com/Demo-Liu/GeekDesk/releases/tag",
 	"giteeUrl" : "https://gitee.com/demo_liu/GeekDesk/releases",
-	"version": "2.3"
+	"version": "2.3.10"
 }

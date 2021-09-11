@@ -4,10 +4,11 @@
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
            xmlns:hc="https://handyorg.github.io/handycontrol"
+           xmlns:cvt="clr-namespace:GeekDesk.Converts"
            xmlns:local="clr-namespace:GeekDesk"
            mc:Ignorable="d"
            WindowStartupLocation="CenterScreen"
-           Height="670" 
+           Height="700" 
            Width="450" 
            Title="TaskInfo"
            WindowStyle="None"
@@ -15,7 +16,7 @@
            Background="Transparent" ShowInTaskbar="False"
         >
     <Window.Resources>
-       
+        <cvt:TodoTaskExecConvert x:Key="TodoTaskExecConvert"/>
     </Window.Resources>
     <Border CornerRadius="3" BorderThickness="2" BorderBrush="Black" Margin="0,0,0,313.323"  MouseDown="DragMove">
         <Border.Background>
@@ -23,48 +24,72 @@
         </Border.Background>
         <Border.Resources>
             <Style x:Key="LeftTB" TargetType="TextBlock" BasedOn="{StaticResource TextBlockBaseStyle}">
-                <Setter Property="Width" Value="65"/>
+                <Setter Property="Width" Value="67"/>
                 <Setter Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="TextAlignment" Value="Center"/>
                 <Setter Property="FontSize" Value="14"/>
             </Style>
         </Border.Resources>
         <Grid Margin="0,0,0,8">
-            <hc:SimplePanel Margin="20" HorizontalAlignment="Center">
+            <StackPanel Margin="20" HorizontalAlignment="Center">
                 <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4">
-                    <WrapPanel>
+                    <WrapPanel VerticalAlignment="Center">
                         <TextBlock Text="待办任务:"  Style="{StaticResource LeftTB}"/>
                         <TextBlock Text="*" Foreground="Red" />
                     </WrapPanel>
-                    <TextBox x:Name="Title" Width="290" FontSize="14" />
+                    <TextBox x:Name="Title" Width="290" Text="{Binding Title, Mode=OneWay}" FontSize="14" />
                 </hc:UniformSpacingPanel>
 
-                <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4" Margin="0,48.997,0,-48.997">
+                <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4" Margin="0,10,0,0">
                     <TextBlock Text="待办详情:"  Style="{StaticResource LeftTB}"/>
                     <TextBox x:Name="Msg" TextWrapping="Wrap"
+                             Margin="5,0,0,0"
+                             Text="{Binding Msg, Mode=OneWay}"
                              AcceptsReturn="True"
                              VerticalScrollBarVisibility="Visible" 
                              Height="100" MaxHeight="150"  MinHeight="100" Width="290" MinWidth="290" 
                              VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </hc:UniformSpacingPanel>
 
-                <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4" Margin="0,167.622,0,-167.622">
-                    <TextBlock Text="待办时间*:" Style="{StaticResource LeftTB}"/>
-                    <hc:DateTimePicker x:Name="ExeTime" ErrorStr="test"  Width="200"/>
+                <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4" Margin="0,10,0,0">
+                    <TextBlock Text="运行方式:"  Style="{StaticResource LeftTB}"/>
+                    <RadioButton Margin="10,0,0,0" Checked="ExecType_Checked" Tag="1" Background="{DynamicResource SecondaryRegionBrush}" 
+                         Style="{StaticResource RadioButtonIcon}" Content="指定时间"
+                         IsChecked="{Binding ExecType, Mode=OneWay, Converter={StaticResource TodoTaskExecConvert}, ConverterParameter=1}"/>
+                    <RadioButton Margin="10,0,0,0" Checked="ExecType_Checked" Background="{DynamicResource SecondaryRegionBrush}"  Tag="2"
+                         Style="{StaticResource RadioButtonIcon}" Content="CRON表达式"
+                         IsChecked="{Binding ExecType, Mode=OneWay, Converter={StaticResource TodoTaskExecConvert}, ConverterParameter=2}"/>
                 </hc:UniformSpacingPanel>
 
-                <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4" Margin="0,228,0,-228">
+                <hc:UniformSpacingPanel x:Name="SetTimePanel" Visibility="Visible" Spacing="10" Grid.ColumnSpan="4" Margin="0,10,0,0">
+                    <TextBlock Text="指定时间:"  Style="{StaticResource LeftTB}"/>
+                    <TextBlock Text="*" Foreground="Red" Margin="-10,0,0,0"/>
+                    <hc:DateTimePicker x:Name="ExeTime" Text="{Binding ExeTime, Mode=OneWay}" ErrorStr="Error!"  Width="200" Margin="-5.2,0,0,0"/>
+                </hc:UniformSpacingPanel>
+
+                <hc:UniformSpacingPanel x:Name="CronPanel" Visibility="Collapsed" Spacing="10" Grid.ColumnSpan="4" Margin="0,10,0,0">
+                    <WrapPanel VerticalAlignment="Center">
+                        <TextBlock Text="CRON:"  Style="{StaticResource LeftTB}"/>
+                        <TextBlock Text="*" Foreground="Red" />
+                    </WrapPanel>
+                    <TextBox x:Name="Cron" Width="290" Text="{Binding Cron, Mode=OneWay}" FontSize="14" />
+                </hc:UniformSpacingPanel>
+
+
+
+                <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4" Margin="0,10,0,0">
                     <TextBlock Text="完成时间:"  Style="{StaticResource LeftTB}"/>
-                    <TextBlock x:Name="DoneTime" Width="200"/>
+                    <TextBlock x:Name="DoneTime" Text="{Binding DoneTime, Mode=OneWay}" Width="200"/>
                 </hc:UniformSpacingPanel>
 
 
-                <hc:UniformSpacingPanel Spacing="10" Margin="0,273.333,0,-93.333" Grid.ColumnSpan="4">
+                <hc:UniformSpacingPanel Spacing="10" Margin="0,10,0,0" Grid.ColumnSpan="4">
                     <Button Content="保存" Background="#5BC0DE"
                             Foreground="White" Margin="320,6,-208,-10"
                             Click="Save_Button_Click"/>
                 </hc:UniformSpacingPanel>
-            </hc:SimplePanel>
+            </StackPanel>
             <Button Panel.ZIndex="2" Width="22" Height="22" Click="Close_Button_Click" Style="{StaticResource ButtonIcon}" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0"/>
             <StackPanel hc:Growl.GrowlParent="True" VerticalAlignment="Top" Margin="0,10,10,0"/>
         </Grid>

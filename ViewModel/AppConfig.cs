@@ -61,13 +61,89 @@ namespace GeekDesk.ViewModel
         private string textColor = "#000000"; //字体颜色
         private double imgPanelWidth = (double)CommonEnum.IMAGE_PANEL_WIDTH;
         private double imgPanelHeight = (double)CommonEnum.IMAGE_PANEL_HEIGHT;
-
         private bool marginHide = false; //贴边隐藏
-
         private bool appAnimation = false; //主窗口动画效果
-
+        private int imageWidth = (int)CommonEnum.IMAGE_WIDTH; //图片宽度
+        private int imageHeight = (int)CommonEnum.IMAGE_HEIGHT; //图片高度
 
         #region GetSet
+        public int ImageWidth
+        {
+            get
+            {
+                // 为了兼容旧版 暂时使用默认
+                if (imageWidth == 0)
+                {
+                    return (int)CommonEnum.IMAGE_WIDTH;
+                } else
+                {
+                    return imageWidth;
+                }
+                
+            }
+            set
+            {
+                imageWidth = value;
+                //同时设置高度
+                ImageHeight = value;
+                
+
+                //计算 容器宽度因子
+                double i = ((double)imageWidth - (double)CommonEnum.IMAGE_WIDTH) / 5d;
+                double s = 2.44;
+                i *= 2d;
+                while (i > 1)
+                {
+                    i /= 10d;
+                }
+                
+                if (i > 0d)
+                {
+                    s -= i;
+                }
+                //设置容器宽度
+                ImgPanelWidth = (int)(ImageWidth * s);
+
+                OnPropertyChanged("ImageWidth");
+            }
+        }
+
+        public int ImageHeight
+        {
+            get
+            {
+                //都使用宽度来确定大小
+                // 为了兼容旧版 暂时使用默认
+                if (imageHeight == 0)
+                {
+                    return (int)CommonEnum.IMAGE_HEIGHT;
+                }
+                else
+                {
+                    return imageHeight;
+                }
+            }
+            set
+            {
+                imageHeight = value;
+
+                //计算容器高度因子
+                double i = ((double)imageHeight - (double)CommonEnum.IMAGE_HEIGHT) / 5d;
+                while (i > 1)
+                {
+                    i /= 10d;
+                }
+                double s = 2.00;
+                if (i > 0d)
+                {
+                    s -= i;
+                }
+
+                //设置容器高度
+                ImgPanelHeight = ImageHeight * s;
+                OnPropertyChanged("ImageHeight");
+            }
+        }
 
         public bool AppAnimation
         {

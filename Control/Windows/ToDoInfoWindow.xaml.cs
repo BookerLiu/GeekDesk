@@ -1,6 +1,8 @@
-﻿using GeekDesk.Util;
+﻿using GeekDesk.Constant;
+using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using HandyControl.Controls;
+using Quartz;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,23 +31,28 @@ namespace GeekDesk.Control.Windows
 
         private AppData appData = MainWindow.appData;
 
-        private ToDoInfo info;
+        //private ToDoInfo info;
 
         private ToDoInfoWindow()
         {
             InitializeComponent();
-            ExeTime.SelectedDateTime = DateTime.Now.AddMinutes(10);
+
             this.Topmost = true;
+            ExeTime.SelectedDateTime = DateTime.Now.AddMinutes(10);
+            SetTimePanel.Visibility = Visibility.Visible;
+            this.DataContext = new ToDoInfo();
         }
         private ToDoInfoWindow(ToDoInfo info)
         {
             InitializeComponent();
             this.Topmost = true;
-            Title.Text = info.Title;
-            Msg.Text = info.Msg;
-            ExeTime.Text = info.ExeTime;
-            DoneTime.Text = info.DoneTime;
-            this.info = info;
+            this.DataContext = info;
+            SetTimePanel.Visibility = Visibility.Visible;
+            //Title.Text = info.Title;
+            //Msg.Text = info.Msg;
+            //ExeTime.Text = info.ExeTime;
+            //DoneTime.Text = info.DoneTime;
+            //this.info = info;
         }
 
 
@@ -79,41 +86,70 @@ namespace GeekDesk.Control.Windows
         /// <param name="e"></param>
         private void Save_Button_Click(object sender, RoutedEventArgs e)
         {
-
             DateTime dt;
-            if (Title.Text.Trim() == "" || ExeTime.Text.Trim() == "")
+            string execTime;
+            TodoTaskExecType execType;
+            if (Title.Text.Trim() == "")
             {
-                Growl.Warning("任务标题 和 待办时间不能为空!");
+                Growl.Warning("任务标题不能为空!");
                 return;
             } else
             {
-                try
+                if (SetTimePanel.Visibility == Visibility.Visible)
                 {
-                    dt = Convert.ToDateTime(ExeTime.Text);
-                } catch (Exception)
-                {
-                    Growl.Warning("请输入正确的时间!");
-                    return;
+                    execType = TodoTaskExecType.SET_TIME;
+                    if (ExeTime.Text.Trim() == "")
+                    {
+                        Growl.Warning("执行时间不能为空!");
+                        return;
+                    }
+                    try
+                    {
+                        dt = Convert.ToDateTime(ExeTime.Text);
+                    }
+                    catch (Exception)
+                    {
+                        Growl.Warning("请输入正确的时间!");
+                        return;
+                    }
+                    execTime = ExeTime.Text;
+                } else {
+                    execType = TodoTaskExecType.CRON;
+                    if (Cron.Text.Trim() == "")
+                    {
+                        Growl.Warning("Cron表达式不能为空!");
+                        return;
+                    }
+                    try
+                    {
+                        bool isValid = CronExpression.IsValidExpression(Cron.Text);
+                        if (!isValid) throw new Exception();
+                    } catch (Exception)
+                    {
+                        Growl.Warning("请输入正确的Cron表达式!");
+                        return;
+                    }
+                    CronExpression exp = new CronExpression(Cron.Text);
+                    DateTime dd = DateTime.Now;
+                    DateTimeOffset ddo = DateTime.SpecifyKind(dd, DateTimeKind.Local);
+                    ddo = (DateTimeOffset)exp.GetNextValidTimeAfter(ddo);
+                    execTime = ddo.LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss");
                 }
             }
-            if (windowType == NEW_TODO)
+            dt = Convert.ToDateTime(execTime);
+            ToDoInfo info = new ToDoInfo
             {
-                info = new ToDoInfo
-                {
-                    Title = Title.Text,
-                    Msg = Msg.Text,
-                    ExeTime = ExeTime.Text
-                };
-                appData.ToDoList.Add(info);
-            } else
+                Title = Title.Text,
+                Msg = Msg.Text,
+                ExeTime = execTime,
+                ExecType = execType,
+                Cron = Cron.Text
+            };
+            if (windowType != NEW_TODO)
             {
-                appData.HiToDoList.Remove(info);
-                info.Title = Title.Text;
-                info.Msg = Msg.Text;
-                info.ExeTime = ExeTime.Text;
-                info.DoneTime = null;
-                appData.ToDoList.Add(info);
-            }
+                appData.HiToDoList.Remove(this.DataContext as ToDoInfo);
+            } 
+            appData.ToDoList.Add(info);
 
             DateTime dtNow = DateTime.Now;
             TimeSpan ts = dt.Subtract(dtNow);
@@ -183,6 +219,22 @@ namespace GeekDesk.Control.Windows
             }
             windowType = DETAIL_TODO;
             window2.Show();
+        }
+
+        private void ExecType_Checked(object sender, RoutedEventArgs e)
+        {
+            TodoTaskExecType tag = (TodoTaskExecType)Convert.ToInt32((sender as RadioButton).Tag.ToString());
+            switch (tag)
+            {
+                case TodoTaskExecType.SET_TIME:
+                    SetTimePanel.Visibility = Visibility.Visible;
+                    CronPanel.Visibility = Visibility.Collapsed;
+                    break;
+                default:
+                    CronPanel.Visibility = Visibility.Visible;
+                    SetTimePanel.Visibility = Visibility.Collapsed;
+                    break;
+            }
         }
     }
 }

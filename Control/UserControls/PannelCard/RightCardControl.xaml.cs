@@ -3,6 +3,7 @@ using GeekDesk.Constant;
 using GeekDesk.Control.Other;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
+using HandyControl.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,6 +12,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -263,46 +265,142 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
         private void StackPanel_MouseEnter(object sender, MouseEventArgs e)
         {
-            ImgStoryBoard(sender, (int)CommonEnum.IMAGE_HEIGHT_AM, (int)CommonEnum.IMAGE_WIDTH_AM, 1);
+
+            double width = appData.AppConfig.ImageWidth;
+            double height = appData.AppConfig.ImageHeight;
+            width += width * 0.15;
+            height += height * 0.15;
+            ImgStoryBoard(sender, (int)width, (int)height, 1, true);
         }
 
         private void StackPanel_MouseLeave(object sender, MouseEventArgs e)
         {
-            ImgStoryBoard(sender, (int)CommonEnum.IMAGE_HEIGHT, (int)CommonEnum.IMAGE_WIDTH, 220);
+            ImgStoryBoard(sender, appData.AppConfig.ImageWidth, appData.AppConfig.ImageHeight, 220);
         }
 
 
-        private void ImgStoryBoard(object sender, int height, int width, int milliseconds)
+        private void ImgStoryBoard(object sender, int height, int width, int milliseconds, bool checkRmStoryboard = false)
         {
 
             if (appData.AppConfig.PMModel) return;
 
-            StackPanel sp = sender as StackPanel;
+            Panel sp = sender as Panel;
+
+            DependencyObject dos =  sp.Parent;
 
             Image img = sp.Children[0] as Image;
 
+            double afterHeight = img.Height;
+            double afterWidth = img.Width;
 
-            DoubleAnimation heightAnimation = new DoubleAnimation();
-            DoubleAnimation widthAnimation = new DoubleAnimation();
+            //动画定义
+            Storyboard myStoryboard = new Storyboard();
+           
 
-            heightAnimation.From = img.Height;
-            widthAnimation.From = img.Width;
 
-            heightAnimation.To = height;
-            widthAnimation.To = width;
-
-            heightAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(milliseconds));
-            widthAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(milliseconds));
+            DoubleAnimation heightAnimation = new DoubleAnimation 
+            {
+                From = afterHeight,
+                To = height,
+                Duration = new Duration(TimeSpan.FromMilliseconds(milliseconds))
+            };
+            DoubleAnimation widthAnimation = new DoubleAnimation 
+            {
+                From = afterWidth,
+                To = width,
+                Duration = new Duration(TimeSpan.FromMilliseconds(milliseconds))
+            };
 
 
             Timeline.SetDesiredFrameRate(heightAnimation, 60);
             Timeline.SetDesiredFrameRate(widthAnimation, 60);
 
-            img.BeginAnimation(HeightProperty, null);
-            img.BeginAnimation(WidthProperty, null);
+            Storyboard.SetTarget(widthAnimation, img);
+            Storyboard.SetTargetProperty(widthAnimation, new PropertyPath("Width"));
+            Storyboard.SetTarget(heightAnimation, img);
+            Storyboard.SetTargetProperty(heightAnimation, new PropertyPath("Height"));
 
-            img.BeginAnimation(HeightProperty, heightAnimation);
+            myStoryboard.Children.Add(heightAnimation);
+            myStoryboard.Children.Add(widthAnimation);
+
+            CheckRemoveStoryboard crs = new CheckRemoveStoryboard
+            {
+                sb = myStoryboard,
+                sp = sp,
+                heightAnimation = heightAnimation,
+                widthAnimation = widthAnimation,
+                img = img,
+                isMouseOver = !checkRmStoryboard
+            };
+
+            heightAnimation.Completed += (s, e) =>
+            {
+                if (checkRmStoryboard)
+                {
+                    ThreadStart ts = new ThreadStart(crs.Remove);
+                    System.Threading.Thread t = new System.Threading.Thread(ts);
+                    t.Start();
+                } else
+                {
+                    img.BeginAnimation(WidthProperty, null);
+                    img.BeginAnimation(HeightProperty, null);
+                }
+            };
             img.BeginAnimation(WidthProperty, widthAnimation);
+            img.BeginAnimation(HeightProperty, heightAnimation);
+
+            //myStoryboard.Completed += (s, e) =>
+            //{
+            //    if (checkRmStoryboard || true)
+            //    {
+            //        ThreadStart ts = new ThreadStart(crs.Remove);
+            //        System.Threading.Thread t = new System.Threading.Thread(ts);
+            //        t.Start();
+            //    }
+            //    else
+            //    {
+            //        myStoryboard.Remove();
+            //    }
+            //};
+            //myStoryboard.Begin();
+        }
+
+        private class CheckRemoveStoryboard
+        {
+            public Storyboard sb;
+            public Panel sp;
+            public Image img;
+            public DoubleAnimation heightAnimation;
+            public DoubleAnimation widthAnimation;
+            public bool isMouseOver;
+            public void Remove()
+            {
+                while (true)
+                {
+                    if (sp.IsMouseOver == isMouseOver)
+                    {
+                        App.Current.Dispatcher.Invoke((Action)(() =>
+                        {
+                            img.BeginAnimation(WidthProperty, null);
+                            img.BeginAnimation(HeightProperty, null);
+                            //heightAnimation.FillBehavior = FillBehavior.Stop;
+                            //widthAnimation.FillBehavior = FillBehavior.Stop;
+                        }));
+                        return;
+                    }
+                    else
+                    {
+                        System.Threading.Thread.Sleep(500);
+                    }
+                }
+            }
+        }
+
+        public void RemoveSB(Object sb)
+        {
+            Storyboard sb2 = sb as Storyboard;
+            System.Threading.Thread.Sleep(500);
+            sb2.Remove();
         }
 
         private void AddUrlIcon(object sender, RoutedEventArgs e)

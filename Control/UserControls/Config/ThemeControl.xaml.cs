@@ -3,6 +3,7 @@ using GeekDesk.ViewModel;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -85,6 +86,41 @@ namespace GeekDesk.Control.UserControls.Config
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 Window.GetWindow(this).DragMove();
+            }
+        }
+
+        private void PreviewSlider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            CheckButtonUpClass cbu = new CheckButtonUpClass
+            {
+                e = e
+            };
+            System.Threading.ThreadStart ts = new System.Threading.ThreadStart(cbu.CheckButtonUp);
+            System.Threading.Thread t = new System.Threading.Thread(ts);
+            t.Start();
+        }
+
+        private class CheckButtonUpClass
+        {
+            public MouseButtonEventArgs e;
+
+            public void CheckButtonUp()
+            {
+                while (true)
+                {
+                    if (e.LeftButton == MouseButtonState.Released)
+                    {
+                        App.Current.Dispatcher.Invoke((Action)(() =>
+                        {
+                            AppData appData = MainWindow.appData;
+                            ObservableCollection<IconInfo> selectIcons = appData.AppConfig.SelectedMenuIcons;
+                            appData.AppConfig.SelectedMenuIcons = null;
+                            appData.AppConfig.SelectedMenuIcons = selectIcons;
+                        }));
+                        return;
+                    }
+                    System.Threading.Thread.Sleep(50);
+                }
             }
         }
     }
