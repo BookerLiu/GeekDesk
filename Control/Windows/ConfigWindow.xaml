@@ -18,23 +18,27 @@
     <Window.Resources>
         <Style x:Key="MenuStyle" TargetType="hc:SideMenuItem" BasedOn="{StaticResource SideMenuItemBaseStyle}">
             <Style.Setters>
-                <Setter Property="Background" Value="AliceBlue"/>
+                <Setter Property="Background" Value="Transparent"/>
             </Style.Setters>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FFE2E2E2"/>
+                    <Setter Property="Background" Value="Transparent"/>
                 </Trigger>
                 <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#FFDAD7D7"/>
+                    <Setter Property="Background" Value="Transparent"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
     </Window.Resources>
-     <Border CornerRadius="8" BorderThickness="0">
+    <Border CornerRadius="8" BorderThickness="0">
         <Border.Background>
-            <SolidColorBrush Color="AliceBlue" Opacity="0.9"/>
+            <!--<SolidColorBrush Color="AliceBlue" Opacity="0.9"/>-->
+            <LinearGradientBrush>
+                <GradientStop Color="#009A98" Offset="0"/>
+                <GradientStop Color="#00CA68" Offset="1"/>
+            </LinearGradientBrush>
         </Border.Background>
-        <Grid>
+        <Grid Background="Transparent" MouseDown="DragMove">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
@@ -43,14 +47,13 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <hc:Card Grid.Row="0" Grid.Column="0">
-                <hc:SideMenu BorderThickness="1" 
+            <hc:Card Grid.Row="0" Grid.Column="0" Background="Transparent" BorderThickness="0">
+                <hc:SideMenu BorderThickness="0" 
                              AutoSelect="True" 
                              >
                     <hc:SideMenu.Background>
-                        <SolidColorBrush Color="AliceBlue"/>
+                        <SolidColorBrush Color="#00FFFFFF"/>
                     </hc:SideMenu.Background>
-
                     <hc:SideMenu.ItemContainerStyle>
                         <Style TargetType="hc:SideMenuItem" BasedOn="{StaticResource MenuStyle}"/>
                     </hc:SideMenu.ItemContainerStyle>
@@ -63,7 +66,7 @@
                         <hc:SideMenuItem.Icon>
                             <Button Background="Transparent" 
                                     IsEnabled="False"
-                                    Opacity="1"
+                                    Opacity="0.9"
                                     BorderThickness="0"
                                     hc:IconElement.Geometry="{StaticResource About}" 
                                     hc:IconElement.Height="18"
@@ -120,8 +123,11 @@
                     </hc:SideMenuItem>
                 </hc:SideMenu>
             </hc:Card>
-            <hc:ScrollViewer  Grid.Row="0" Grid.Column="1">
-                <hc:Card x:Name="RightCard" Height="480">
+            <hc:ScrollViewer  Grid.Row="0" Grid.Column="1" BorderThickness="0">
+                <hc:Card x:Name="RightCard" Height="480" BorderThickness="0">
+                    <hc:Card.Background>
+                        <SolidColorBrush  Opacity="0"/>
+                    </hc:Card.Background>
                 </hc:Card>
             </hc:ScrollViewer>
 
