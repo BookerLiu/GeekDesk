@@ -7,60 +7,48 @@
            xmlns:local="clr-namespace:GeekDesk"
            mc:Ignorable="d"
            WindowStartupLocation="CenterScreen"
-           Height="450" 
-           Width="850" 
+           Height="550" 
+           Width="1000" 
            Title="Task"
            WindowStyle="None"
            AllowsTransparency="True"
            Background="Transparent" ShowInTaskbar="False"
         >
-    <Window.Resources>
-        <Style x:Key="MenuStyle" TargetType="hc:SideMenuItem" BasedOn="{StaticResource SideMenuItemBaseStyle}">
-            <Style.Setters>
-                <Setter Property="Background" Value="AliceBlue"/>
-            </Style.Setters>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FFE2E2E2"/>
-                </Trigger>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#FFDAD7D7"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
-    <Border CornerRadius="4" BorderThickness="0">
-        <Border.Background>
-            <SolidColorBrush Color="AliceBlue" Opacity="0.9"/>
-        </Border.Background>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="140"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
 
-            <hc:Card Grid.Row="0" Grid.Column="0">
-                <hc:SideMenu BorderThickness="1" 
+    <Grid Margin="50">
+        <Grid.Effect>
+            <DropShadowEffect BlurRadius="20" Direction="-90" Color="Gray"
+                              RenderingBias="Quality" ShadowDepth="2"/>
+        </Grid.Effect>
+
+        <Border Style="{StaticResource BorderBG}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="140"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <hc:Card Grid.Row="0" Grid.Column="0" Background="Transparent" BorderThickness="0">
+                    <hc:SideMenu BorderThickness="0" 
                              AutoSelect="True" 
+                             Background="Transparent"
+                             Margin="5"
                              >
-                    <hc:SideMenu.Background>
-                        <SolidColorBrush Color="AliceBlue"/>
-                    </hc:SideMenu.Background>
 
-                    <hc:SideMenu.ItemContainerStyle>
-                        <Style TargetType="hc:SideMenuItem" BasedOn="{StaticResource MenuStyle}"/>
-                    </hc:SideMenu.ItemContainerStyle>
+                        <hc:SideMenu.ItemContainerStyle>
+                            <Style TargetType="hc:SideMenuItem" BasedOn="{StaticResource MyMenuStyle}"/>
+                        </hc:SideMenu.ItemContainerStyle>
 
-                    <hc:SideMenuItem Header="待办列表"
+                        <hc:SideMenuItem Header="待办列表"
                                      IsSelected="True"
                                      Selected="MemuClick"
                                      Tag="ExeList"
                                      >
-                        <hc:SideMenuItem.Icon>
-                            <Button Background="Transparent" 
+                            <hc:SideMenuItem.Icon>
+                                <Button Background="Transparent" 
                                     IsEnabled="False"
                                     Opacity="1"
                             BorderThickness="0"
@@ -69,13 +57,13 @@
                             hc:IconElement.Width="18"
                             HorizontalAlignment="Right"
                             />
-                        </hc:SideMenuItem.Icon>
-                    </hc:SideMenuItem>
-                    <hc:SideMenuItem Header="历史待办"
+                            </hc:SideMenuItem.Icon>
+                        </hc:SideMenuItem>
+                        <hc:SideMenuItem Header="历史待办"
                                      Tag="History"
                                      Selected="MemuClick">
-                        <hc:SideMenuItem.Icon>
-                            <Button Background="Transparent" 
+                            <hc:SideMenuItem.Icon>
+                                <Button Background="Transparent" 
                                     IsEnabled="False"
                                     Opacity="1"
                             BorderThickness="0"
@@ -84,21 +72,22 @@
                             hc:IconElement.Width="18"
                             HorizontalAlignment="Right"
                             />
-                        </hc:SideMenuItem.Icon>
-                    </hc:SideMenuItem>
-                </hc:SideMenu>
-            </hc:Card>
-            <hc:Card Grid.Row="0" Grid.Column="1" x:Name="RightCard" Height="450"  MouseDown="DragMove" />
+                            </hc:SideMenuItem.Icon>
+                        </hc:SideMenuItem>
+                    </hc:SideMenu>
+                </hc:Card>
+                <hc:Card Grid.Row="0" MouseDown="DragMove" Background="Transparent" BorderThickness="0" Grid.Column="1" x:Name="RightCard" Height="450">
+                </hc:Card>
 
 
-            <Button Width="22" Height="22" Click="Close_Button_Click" Style="{StaticResource ButtonIcon}" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" Grid.Column="1"/>
-            <Button Content="新建待办"
+                <Button Width="22" Height="22" Click="Close_Button_Click" Style="{StaticResource ButtonIcon}" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" Grid.Column="1"/>
+                <Button Content="新建待办"
                     Panel.ZIndex="1"
-                    Background="#5BC0DE"
-                    Foreground="White"
+                    Style="{StaticResource Btn1}"
                     Grid.Column="1"
                     Margin="590.01,29,10,384"
                     Click="CreateBacklog_BtnClick"/>
-        </Grid>
-    </Border>
+            </Grid>
+        </Border>
+    </Grid>
 </Window>

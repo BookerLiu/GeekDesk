@@ -253,14 +253,13 @@ namespace GeekDesk.Control.UserControls.PannelCard
             {
                 case IconType.URL:
                     IconInfoUrlDialog urlDialog = new IconInfoUrlDialog(info);
-                    urlDialog.dialog = HandyControl.Controls.Dialog.Show(urlDialog);
+                    urlDialog.dialog = HandyControl.Controls.Dialog.Show(urlDialog, "IconInfoDialog");
                     break;
                 default:
                     IconInfoDialog dialog = new IconInfoDialog(info);
-                    dialog.dialog = HandyControl.Controls.Dialog.Show(dialog);
+                    dialog.dialog = HandyControl.Controls.Dialog.Show(dialog, "IconInfoDialog");
                     break;
             }
-            
         }
 
         private void StackPanel_MouseEnter(object sender, MouseEventArgs e)
@@ -406,7 +405,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
         private void AddUrlIcon(object sender, RoutedEventArgs e)
         {
             IconInfoUrlDialog urlDialog = new IconInfoUrlDialog();
-            urlDialog.dialog = HandyControl.Controls.Dialog.Show(urlDialog);
+            urlDialog.dialog = HandyControl.Controls.Dialog.Show(urlDialog, "IconInfoDialog");
         }
     }
 }

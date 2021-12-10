@@ -1,4 +1,5 @@
-﻿using GeekDesk.Util;
+﻿using GeekDesk.Constant;
+using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using Microsoft.Win32;
 using System;
@@ -58,6 +59,23 @@ namespace GeekDesk.Control.UserControls.Config
             }
 
         }
+
+
+        private void DefaultButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            try
+            {
+                appConfig.BitmapImage = ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_BAC_IMAGE_BASE64);
+                appConfig.BacImgName = "系统默认";
+            }
+            catch (Exception)
+            {
+                HandyControl.Controls.Growl.WarningGlobal("修改背景失败,已重置为默认背景!");
+            }
+
+        }
+
 
         private void ColorButton_Click(object sender, RoutedEventArgs e)
         {

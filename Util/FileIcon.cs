@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Media.Imaging;
@@ -65,7 +66,15 @@ namespace GeekDesk.Util
 
             Bitmap bmp = ico.ToBitmap();
             MemoryStream strm = new MemoryStream();
-            bmp.Save(strm, System.Drawing.Imaging.ImageFormat.Png);
+
+            ImageCodecInfo myImageCodecInfo = GetEncoderInfo("image/png");
+            Encoder myEncoder = Encoder.Quality;
+            EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 75L);
+            EncoderParameters myEncoderParameters = new EncoderParameters(1);
+            myEncoderParameters.Param[0] = myEncoderParameter;
+
+            bmp.Save(strm, myImageCodecInfo, myEncoderParameters);
+            bmp.Save("d:\\test.png", myImageCodecInfo, myEncoderParameters);
             BitmapImage bmpImage = new BitmapImage();
             bmpImage.BeginInit();
             strm.Seek(0, SeekOrigin.Begin);
@@ -78,7 +87,20 @@ namespace GeekDesk.Util
             return bmpImage.Clone();
         }
 
-       
+        private static ImageCodecInfo GetEncoderInfo(String mimeType)
+        {
+            int j;
+            ImageCodecInfo[] encoders;
+            encoders = ImageCodecInfo.GetImageEncoders();
+            for (j = 0; j < encoders.Length; ++j)
+            {
+                if (encoders[j].MimeType == mimeType)
+                    return encoders[j];
+            }
+            return null;
+        }
+
+
 
         public static int GetIconIndex(string pszFile)
         {

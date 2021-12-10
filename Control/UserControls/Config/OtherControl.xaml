@@ -7,14 +7,14 @@
              xmlns:local="clr-namespace:GeekDesk.Control.UserControls.PannelCard"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" 
-             Background="AliceBlue"
+             Background="Transparent"
              d:DesignHeight="400" d:DesignWidth="500"
              >
 
     <UserControl.Resources>
         <cvt:UpdateTypeConvert x:Key="UpdateTypeConvert"/>
     </UserControl.Resources>
-    <Grid MouseDown="DragMove" Background="AliceBlue">
+    <Grid MouseDown="DragMove" Background="Transparent">
         <hc:SimplePanel Margin="20" >
             <StackPanel >
                 <TextBlock Text="程序设置" />

@@ -6,12 +6,12 @@
              xmlns:local="clr-namespace:GeekDesk.Control.UserControls.Config"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" 
-             Background="AliceBlue"
+             Background="Transparent"
              d:DesignHeight="500" d:DesignWidth="450">
 
 
     <Grid>
-        <Grid  MouseDown="DragMove" Background="AliceBlue">
+        <Grid  MouseDown="DragMove" Background="Transparent">
             <StackPanel Margin="20" >
                 <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4">
                     <TextBlock Text="背景图片" VerticalAlignment="Center"/>
@@ -26,6 +26,7 @@
                            hc:Poptip.Placement="TopLeft"
                            />
                     <Button Content="修改" Click="BGButton_Click"/>
+                    <Button Content="默认" Click="DefaultButton_Click"/>
                 </hc:UniformSpacingPanel>
 
                 <hc:UniformSpacingPanel Spacing="10" Margin="20,0,0,0"  Grid.ColumnSpan="4">

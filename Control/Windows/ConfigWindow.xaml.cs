@@ -1,6 +1,8 @@
 ﻿
+using GeekDesk.Constant;
 using GeekDesk.Control.UserControls;
 using GeekDesk.Control.UserControls.Config;
+using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using HandyControl.Controls;
 using HandyControl.Data;
@@ -24,6 +26,7 @@ namespace GeekDesk.Control.Windows
         private ConfigWindow(AppConfig appConfig, MainWindow mainWindow)
         {
             InitializeComponent();
+            //BG.Source = ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_BAC_IMAGE_BASE64);
             this.DataContext = appConfig;
             RightCard.Content = about;
             this.Topmost = true;

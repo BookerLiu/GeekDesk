@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Interop;
 
 namespace GeekDesk.Util
 {
@@ -50,10 +48,17 @@ namespace GeekDesk.Util
 
         public static void Dispose(int id)
         {
-            bool test = UnregisterHotKey(handleTemp[id].Handle, id);
-            GlobalHotKey.handleTemp[id].Dispose();
-            GlobalHotKey.handleTemp.Remove(id);
-            Console.WriteLine(test);
+            try
+            {
+                UnregisterHotKey(handleTemp[id].Handle, id);
+                GlobalHotKey.handleTemp[id].Dispose();
+                GlobalHotKey.handleTemp.Remove(id);
+            } catch
+            {
+                //nothing
+            }
+
+
         }
 
         // Registers a hot key with Windows.

@@ -5,10 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:local="clr-namespace:GeekDesk.Control.UserControls.IconFont"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
+             Background="#00FFFFFF"
              >
-    <WrapPanel  HorizontalAlignment="Center" VerticalAlignment="Top">
-        <ListBox x:Name="IconListBox" ItemsSource="{Binding Iconfonts}" BorderThickness="0" Background="AliceBlue">
+    <WrapPanel  HorizontalAlignment="Center" VerticalAlignment="Top" Background="Transparent">
+        <ListBox x:Name="IconListBox" ItemsSource="{Binding Iconfonts}" BorderThickness="0" Background="Transparent">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Orientation="Horizontal" Background="Transparent"/>
