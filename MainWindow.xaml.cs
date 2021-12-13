@@ -95,6 +95,8 @@ namespace GeekDesk
                 ShowApp();
             }
 
+            BarIcon.Text = Constants.MY_NAME;
+
             //注册热键
             RegisterHotKey(true);
             RegisterCreateToDoHotKey(true);
@@ -509,6 +511,16 @@ namespace GeekDesk
             p.StartInfo.WorkingDirectory = Constants.APP_DIR;
             p.Start();
             Application.Current.Shutdown();
+        }
+
+        /// <summary>
+        /// 关闭托盘图标
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CloseBarIcon(object sender, RoutedEventArgs e)
+        {
+            appData.AppConfig.ShowBarIcon = false;
         }
     }
 

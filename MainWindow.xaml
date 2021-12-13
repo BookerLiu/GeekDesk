@@ -119,10 +119,12 @@
 
                     <uc:RightCardControl Grid.Row="1" Grid.Column="1"/>
 
-                    <hc:NotifyIcon Icon="/Taskbar.ico" Text="GeekDesk" Click="NotifyIcon_Click">
+                    <hc:NotifyIcon Icon="/Taskbar.ico"  Click="NotifyIcon_Click" x:Name="BarIcon"
+                                   Visibility="{Binding AppConfig.ShowBarIcon, Mode=TwoWay, Converter={StaticResource Boolean2VisibilityConverter}}">
                         <hc:NotifyIcon.ContextMenu>
                             <ContextMenu Width="130">
                                 <MenuItem Header="打开面板" Click="ShowApp"/>
+                                <MenuItem Header="关闭托盘图标" Click="CloseBarIcon"/>
                                 <MenuItem Header="待办"  Click="BacklogMenuClick"/>
                                 <MenuItem Header="程序目录"  Click="OpenThisDir"/>
                                 <MenuItem Header="设置"  Click="ConfigApp"/>

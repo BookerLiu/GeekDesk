@@ -68,7 +68,22 @@ namespace GeekDesk.ViewModel
 
         private bool mouseMiddleShow = false;  //鼠标中键呼出 默认不启用
 
+        private bool showBarIcon = true; //显示托盘图标  默认显示
+
         #region GetSet
+        public bool ShowBarIcon
+        {
+            get
+            {
+                return showBarIcon;
+            }
+            set
+            {
+                showBarIcon = value;
+                OnPropertyChanged("ShowBarIcon");
+            }
+        }
+
         public bool MouseMiddleShow
         {
             get
