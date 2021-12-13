@@ -2,7 +2,7 @@
 	"title": "版本更新",
 	"subTitle": "V2.3.20 正式版",
 	"msgTitle": "本次更新内容如下",
-	"msg": "['一个小更新, 修复了一部分bug并增加了部分功能','修复无法修改菜单图标的bug','修复图标锯齿状bug','修复热键不支持Alt的bug','增加鼠标中键呼出功能','界面美化等','最后去给我点个star呗']",
+	"msg": "['一个小更新, 修复了一部分bug并增加了部分功能','修复无法修改菜单图标的bug','修复图标锯齿状bug','修复热键不支持Alt的bug','增加鼠标中键呼出功能','增加隐藏托盘图标功能','界面美化等','最后去给我点个star呗']",
 	"githubUrl": "https://github.com/Demo-Liu/GeekDesk/releases",
 	"giteeUrl": "https://gitee.com/demo_liu/GeekDesk/releases",
 	"version": "2.3.20"
