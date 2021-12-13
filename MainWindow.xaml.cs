@@ -426,6 +426,7 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void ExitApp(object sender, RoutedEventArgs e)
         {
+            MouseHookThread.Dispose();
             Application.Current.Shutdown();
         }
 
@@ -506,10 +507,13 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void ReStartApp(object sender, RoutedEventArgs e)
         {
+            MouseHookThread.Dispose();
+
             Process p = new Process();
             p.StartInfo.FileName = Constants.APP_DIR + Constants.MY_NAME + ".exe";
             p.StartInfo.WorkingDirectory = Constants.APP_DIR;
             p.Start();
+
             Application.Current.Shutdown();
         }
 

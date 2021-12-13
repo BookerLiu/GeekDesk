@@ -124,7 +124,7 @@
                         <hc:NotifyIcon.ContextMenu>
                             <ContextMenu Width="130">
                                 <MenuItem Header="打开面板" Click="ShowApp"/>
-                                <MenuItem Header="关闭托盘图标" Click="CloseBarIcon"/>
+                                <MenuItem Header="关闭图标" Click="CloseBarIcon"/>
                                 <MenuItem Header="待办"  Click="BacklogMenuClick"/>
                                 <MenuItem Header="程序目录"  Click="OpenThisDir"/>
                                 <MenuItem Header="设置"  Click="ConfigApp"/>
