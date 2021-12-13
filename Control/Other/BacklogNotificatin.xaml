@@ -2,11 +2,15 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        Background="AliceBlue"
-        BorderThickness="1"
+        BorderThickness="0"
+        Style="{StaticResource BorderBG}"
+        Margin="15"
         BorderBrush="{DynamicResource BorderBrush}"
         Width="320"
         Height="450">
+    <Border.Background>
+        <SolidColorBrush Color="AliceBlue" Opacity="0.96"/>
+    </Border.Background>
     <Grid>
 
         <Image Source="/Resource/Image/BacklogImg.png" Margin="22,35,22,361" />

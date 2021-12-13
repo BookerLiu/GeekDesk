@@ -24,7 +24,7 @@
                             <TextBlock Margin="10" x:Name="MsgTitle" TextWrapping="Wrap" FontSize="16" HorizontalAlignment="Left" Style="{DynamicResource TextBlockLargeBold}" Text="测试"/>
                             <StackPanel x:Name="MsgPanel">
                                 <hc:ScrollViewer x:Name="MsgBar"  HorizontalScrollBarVisibility="Visible"  IsInertiaEnabled="True" Margin="10" Width="430">
-                                    <TextBlock  Width="430" LineHeight="20" x:Name="Msg" TextWrapping="Wrap" VerticalAlignment="Center" Text=""/>
+                                    <TextBlock  Width="430" FontSize="15" LineHeight="22" x:Name="Msg" TextWrapping="Wrap" VerticalAlignment="Center" Text="测试"/>
                                 </hc:ScrollViewer>
                             </StackPanel>
                         </StackPanel>

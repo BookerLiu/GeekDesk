@@ -100,7 +100,7 @@ namespace GeekDesk
             RegisterCreateToDoHotKey(true);
 
             //注册自启动
-            if (!appData.AppConfig.SelfStartUped && "GeekDesk".Equals(Constants.MY_NAME))
+            if (!appData.AppConfig.SelfStartUped && !Constants.DEV)
             {
                 RegisterUtil.SetSelfStarting(appData.AppConfig.SelfStartUp, Constants.MY_NAME);
             }

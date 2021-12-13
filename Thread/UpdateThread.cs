@@ -32,7 +32,7 @@ namespace GeekDesk.Thread
             {
 
                 //等待1分钟后再检查更新  有的网络连接过慢
-                System.Threading.Thread.Sleep(1 * 1000);
+                System.Threading.Thread.Sleep(60 * 1000);
 
                 string updateUrl;
                 string nowVersion = ConfigurationManager.AppSettings["Version"];
@@ -50,7 +50,7 @@ namespace GeekDesk.Thread
                 {
                     JObject jo = JObject.Parse(updateInfo);
                     string onlineVersion = jo["version"].ToString();
-                    if (onlineVersion.CompareTo(nowVersion) > 0 || true)
+                    if (onlineVersion.CompareTo(nowVersion) > 0)
                     {
                         App.Current.Dispatcher.Invoke((Action)(() =>
                         {

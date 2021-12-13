@@ -10,7 +10,10 @@ namespace GeekDesk.Constant
     {
         public static string APP_DIR = AppDomain.CurrentDomain.BaseDirectory.Trim();
 
-        public static string MY_NAME = "GeekDesk-D";
+        // 是否为开发模式
+        public static bool DEV = false;
+
+        public static string MY_NAME = DEV ? "GeekDesk-D" : "GeekDesk";
 
         /// <summary>
         /// app数据文件路径
