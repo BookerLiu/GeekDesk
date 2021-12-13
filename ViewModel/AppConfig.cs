@@ -66,7 +66,37 @@ namespace GeekDesk.ViewModel
         private int imageWidth = (int)CommonEnum.IMAGE_WIDTH; //图片宽度
         private int imageHeight = (int)CommonEnum.IMAGE_HEIGHT; //图片高度
 
+        private bool mouseMiddleShow = false;  //鼠标中键呼出 默认不启用
+
+        private bool showBarIcon = true; //显示托盘图标  默认显示
+
         #region GetSet
+        public bool ShowBarIcon
+        {
+            get
+            {
+                return showBarIcon;
+            }
+            set
+            {
+                showBarIcon = value;
+                OnPropertyChanged("ShowBarIcon");
+            }
+        }
+
+        public bool MouseMiddleShow
+        {
+            get
+            {
+                return mouseMiddleShow;
+            }
+            set
+            {
+                mouseMiddleShow = value;
+                OnPropertyChanged("MouseMiddleShow");
+            }
+        }
+
         public int ImageWidth
         {
             get
@@ -100,6 +130,10 @@ namespace GeekDesk.ViewModel
                 if (i > 0d)
                 {
                     s -= i;
+                }
+                if (s < 2.2)
+                {
+                    s = 2.2;
                 }
                 //设置容器宽度
                 ImgPanelWidth = (int)(ImageWidth * s);
@@ -138,6 +172,7 @@ namespace GeekDesk.ViewModel
                 {
                     s -= i;
                 }
+                if (s < 1.5) s = 1.5;
 
                 //设置容器高度
                 ImgPanelHeight = ImageHeight * s;

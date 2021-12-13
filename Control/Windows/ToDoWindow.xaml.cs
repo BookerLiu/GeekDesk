@@ -85,7 +85,9 @@ namespace GeekDesk.Control.Windows
 
 
         private static System.Windows.Window window = null;
+#pragma warning disable CS0108 // “ToDoWindow.Show()”隐藏继承的成员“Window.Show()”。如果是有意隐藏，请使用关键字 new。
         public static void Show()
+#pragma warning restore CS0108 // “ToDoWindow.Show()”隐藏继承的成员“Window.Show()”。如果是有意隐藏，请使用关键字 new。
         {
             if (window == null || !window.Activate())
             {

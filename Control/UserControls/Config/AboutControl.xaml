@@ -7,13 +7,13 @@
              xmlns:local="clr-namespace:GeekDesk.Control.UserControls.PannelCard"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" 
-             Background="AliceBlue"
+             Background="Transparent"
              d:DesignHeight="400" d:DesignWidth="500">
 
     <UserControl.Resources>
         <cvt:UpdateTypeConvert x:Key="UpdateTypeConvert"/>
     </UserControl.Resources>
-    <Grid MouseDown="DragMove" Background="AliceBlue">
+    <Grid MouseDown="DragMove">
         <hc:SimplePanel Margin="20,50,20,20" >
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Image Source="/Resource/Image/About.png" Width="400" Height="100"/>

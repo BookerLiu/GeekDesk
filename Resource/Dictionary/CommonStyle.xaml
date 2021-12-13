@@ -1,0 +1,48 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:hc="https://handyorg.github.io/handycontrol">
+
+
+    <Style x:Key="BorderBG" TargetType="Border">
+        <Style.Setters>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush Opacity="0.97">
+                        <GradientStop Color="#EBF7E3" Offset="0"/>
+                        <GradientStop Color="#A8E4C0" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style.Setters>
+    </Style>
+
+    <Style x:Key="Btn1" TargetType="Button" BasedOn="{StaticResource ButtonInfo}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush Opacity="0.97">
+                    <GradientStop Color="#5BC0DE" Offset="0"/>
+                    <GradientStop Color="#5BC0DE" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <Style x:Key="MyMenuStyle" TargetType="hc:SideMenuItem" BasedOn="{StaticResource SideMenuItemBaseStyle}">
+        <Style.Setters>
+            <Setter Property="Background" Value="Transparent"/>
+        </Style.Setters>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="Transparent"/>
+            </Trigger>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="Transparent"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    
+</ResourceDictionary>

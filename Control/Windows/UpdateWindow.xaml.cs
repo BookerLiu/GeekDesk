@@ -33,6 +33,7 @@ namespace GeekDesk.Control.Windows
             try
             {
                 WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                this.Topmost = true;
                 InitializeComponent();
                 DataHandle(jo);
             }
@@ -68,7 +69,7 @@ namespace GeekDesk.Control.Windows
             string msg = "";
             for (int i=0; i<ja.Count; i++)
             {
-                msg += "•" + ja[i].ToString() + "\n";
+                msg += "• " + ja[i].ToString() + "\n";
             }
             Msg.Text = msg;
         }

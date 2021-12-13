@@ -48,7 +48,9 @@ namespace GeekDesk.Util
                         key.Close();
 
                     }
+#pragma warning disable CS0168 // 声明了变量“ex”，但从未使用过
                     catch (Exception ex)
+#pragma warning restore CS0168 // 声明了变量“ex”，但从未使用过
                     {
                         return false;
                     }
@@ -60,14 +62,18 @@ namespace GeekDesk.Util
                         key.DeleteValue(exeName);//取消开机启动
                         key.Close();
                     }
+#pragma warning disable CS0168 // 声明了变量“ex”，但从未使用过
                     catch (Exception ex)
+#pragma warning restore CS0168 // 声明了变量“ex”，但从未使用过
                     {
                         return false;
                     }
                 }
                 return true;
             }
+#pragma warning disable CS0168 // 声明了变量“ex”，但从未使用过
             catch (Exception ex)
+#pragma warning restore CS0168 // 声明了变量“ex”，但从未使用过
             {
                 if (key != null)
                 {

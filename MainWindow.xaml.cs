@@ -7,7 +7,9 @@ using GeekDesk.Task;
 using GeekDesk.Thread;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
+using Gma.System.MouseKeyHook;
 using HandyControl.Data;
+
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -29,6 +31,8 @@ namespace GeekDesk
     /// 
     public partial class MainWindow : Window
     {
+
+        //public IKeyboardMouseEvents m_GlobalHook = Hook.GlobalEvents();
 
         public static AppData appData = CommonCode.GetAppDataByFile();
         //public static ToDoInfoWindow toDoInfoWindow = (ToDoInfoWindow)ToDoInfoWindow.GetThis();
@@ -55,6 +59,9 @@ namespace GeekDesk
             }
         }
 
+        /// <summary>
+        /// 加载缓存数据
+        /// </summary>
         private void LoadData()
         {
             this.DataContext = appData;
@@ -64,10 +71,14 @@ namespace GeekDesk
             }
 
             this.Width = appData.AppConfig.WindowWidth;
-            this.Height = appData.AppConfig.WindowHeight;
-            
+            this.Height = appData.AppConfig.WindowHeight;            
         }
 
+        /// <summary>
+        /// 窗口加载完毕 执行方法
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (!appData.AppConfig.StartedShowPanel)
@@ -83,16 +94,49 @@ namespace GeekDesk
             {
                 ShowApp();
             }
+
+            BarIcon.Text = Constants.MY_NAME;
+
+            //注册热键
             RegisterHotKey(true);
             RegisterCreateToDoHotKey(true);
 
-            if (!appData.AppConfig.SelfStartUped)
+            //注册自启动
+            if (!appData.AppConfig.SelfStartUped && !Constants.DEV)
             {
                 RegisterUtil.SetSelfStarting(appData.AppConfig.SelfStartUp, Constants.MY_NAME);
             }
-            UpdateThread.Update();
 
+            //注册鼠标中键监听事件
+            //m_GlobalHook.MouseUpExt += M_GlobalHook_MouseUpExt;
+            MouseHookThread.MiddleHook();
+
+            //更新线程开启  检测更新
+            UpdateThread.Update();
         }
+
+        /// <summary>
+        /// 鼠标中键呼出
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //private void M_GlobalHook_MouseUpExt(object sender, System.Windows.Forms.MouseEventArgs e)
+        //{
+        //    if (appData.AppConfig.MouseMiddleShow && e.Button == System.Windows.Forms.MouseButtons.Middle)
+        //    {
+        //        if (MotionControl.hotkeyFinished)
+        //        {
+        //            if (mainWindow.Visibility == Visibility.Collapsed || mainWindow.Opacity == 0)
+        //            {
+        //                ShowApp();
+        //            }
+        //            else
+        //            {
+        //                HideApp();
+        //            }
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// 注册当前窗口的热键
@@ -138,6 +182,12 @@ namespace GeekDesk
             }
         }
 
+        /// <summary>
+        /// 淡入淡出效果
+        /// </summary>
+        /// <param name="opacity"></param>
+        /// <param name="milliseconds"></param>
+        /// <param name="visibility"></param>
         public static void FadeStoryBoard(int opacity, int milliseconds, Visibility visibility)
         {
             if (appData.AppConfig.AppAnimation)
@@ -209,6 +259,11 @@ namespace GeekDesk
         }
 
 
+        /// <summary>
+        /// 重置窗体大小 写入缓存
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void MainWindow_Resize(object sender, System.EventArgs e)
         {
             if (this.DataContext != null)
@@ -221,7 +276,11 @@ namespace GeekDesk
 
 
        
-
+        /// <summary>
+        /// 程序窗体拖动
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DragMove(object sender, MouseEventArgs e)
         {
             //if (e.LeftButton == MouseButtonState.Pressed)
@@ -298,6 +357,11 @@ namespace GeekDesk
         }
         public static void ShowApp()
         {
+            //有全屏化应用则不显示
+            //if (CommonCode.IsPrimaryFullScreen())
+            //{
+            //    return;
+            //}
             if (appData.AppConfig.FollowMouse)
             {
                 ShowWindowFollowMouse.Show(mainWindow, MousePosition.CENTER, 0, 0, false);
@@ -447,6 +511,16 @@ namespace GeekDesk
             p.StartInfo.WorkingDirectory = Constants.APP_DIR;
             p.Start();
             Application.Current.Shutdown();
+        }
+
+        /// <summary>
+        /// 关闭托盘图标
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CloseBarIcon(object sender, RoutedEventArgs e)
+        {
+            appData.AppConfig.ShowBarIcon = false;
         }
     }
 

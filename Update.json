@@ -1,9 +1,9 @@
 {
-	"title": "°æ±¾¸üÐÂ",
-	"subTitle": "V2.3.11 ÕýÊ½°æ",
-	"msgTitle": "±¾´Î¸üÐÂÄÚÈÝÈçÏÂ",
-	"msg": "['2.3.10°æ±¾ÓÐ¸öÐ¡bug,ËùÒÔ½ô½Ó×Å¸üÐÂÁË2.3.11£¬²»ºÃÒâË¼ÐÖdeiÃÇ£¬Èç¹ûÏ²»¶µÄ»°È¥¸øÎÒµã¸öStar°¡(*^__^*)','ÐÞ¸´´ò¿ªÏÔÊ¾ÉèÖÃºó,Ìù±ßÒþ²Ø¿¨¶ÙµÄÎÊÌâ','ÐÞ¸´ÎÞ·¨É¾³ýÀúÊ·´ý°ìÈÎÎñµÄBUG','Ìí¼Ó¶¨Ê±ÄÚ´æ»ØÊÕ,ÏÖÔÚ¿ÉÕ¼ÓÃ¸üÐ¡µÄÄÚ´æ','ÐÞ¸´Æô¶¯Ê±×ÀÃæ»áÓÐÁ½¸öºÚµã´°¿ÚµÄBUG','Ìí¼Ó×Ô¶¨ÒåÍ¼±ê´óÐ¡','´ý°ìÈÎÎñ¿ÉÊ¹ÓÃCRON±í´ïÊ½×Ô¶¨ÒåÌáÐÑÆµÂÊ']",
+	"title": "ç‰ˆæœ¬æ›´æ–°",
+	"subTitle": "V2.3.20 æ­£å¼ç‰ˆ",
+	"msgTitle": "æœ¬æ¬¡æ›´æ–°å†…å®¹å¦‚ä¸‹",
+	"msg": "['ä¸€ä¸ªå°æ›´æ–°, ä¿®å¤äº†ä¸€éƒ¨åˆ†bugå¹¶å¢žåŠ äº†éƒ¨åˆ†åŠŸèƒ½','ä¿®å¤æ— æ³•ä¿®æ”¹èœå•å›¾æ ‡çš„bug','ä¿®å¤å›¾æ ‡é”¯é½¿çŠ¶bug','ä¿®å¤çƒ­é”®ä¸æ”¯æŒAltçš„bug','å¢žåŠ é¼ æ ‡ä¸­é”®å‘¼å‡ºåŠŸèƒ½','ç•Œé¢ç¾ŽåŒ–ç­‰','æœ€åŽåŽ»ç»™æˆ‘ç‚¹ä¸ªstarå‘—']",
 	"githubUrl": "https://github.com/Demo-Liu/GeekDesk/releases",
 	"giteeUrl": "https://gitee.com/demo_liu/GeekDesk/releases",
-	"version": "2.3.11"
+	"version": "2.3.20"
 }

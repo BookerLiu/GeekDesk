@@ -6,19 +6,20 @@
              xmlns:local="clr-namespace:GeekDesk.Control.UserControls.Config"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" 
-             Background="AliceBlue"
+             Background="Transparent"
              d:DesignHeight="500" d:DesignWidth="450">
 
 
     <Grid>
-        <Grid  MouseDown="DragMove" Background="AliceBlue">
+        <Grid  MouseDown="DragMove" Background="Transparent">
             <StackPanel Margin="20" >
                 <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4">
                     <TextBlock Text="背景图片" VerticalAlignment="Center"/>
                 </hc:UniformSpacingPanel>
                 <hc:UniformSpacingPanel Spacing="10" Margin="20,0,0,0" Grid.ColumnSpan="4">
-                    <TextBlock Text="图片路径:" VerticalAlignment="Center"/>
+                    <TextBlock Text="图片路径:" VerticalAlignment="Center" Margin="0,5,0,0"/>
                     <TextBlock Text="{Binding BacImgName}" Width="200" 
+                               Margin="0,5,0,0"
                            VerticalAlignment="Center"
                            hc:Poptip.HitMode="None" 
                            hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
@@ -26,10 +27,21 @@
                            hc:Poptip.Placement="TopLeft"
                            />
                     <Button Content="修改" Click="BGButton_Click"/>
+                    <Button Content="默认" Click="DefaultButton_Click"/>
                 </hc:UniformSpacingPanel>
 
                 <hc:UniformSpacingPanel Spacing="10" Margin="20,0,0,0"  Grid.ColumnSpan="4">
                     <CheckBox x:Name="IconIsAdmin" Content="毛玻璃效果" IsChecked="{Binding BlurEffect}">
+                        <CheckBox.Background>
+                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                                <GradientStop Color="#FF9EA3A6"/>
+                            </LinearGradientBrush>
+                        </CheckBox.Background>
+                    </CheckBox>
+                </hc:UniformSpacingPanel>
+
+                <hc:UniformSpacingPanel Spacing="10" Margin="20,5,0,0"  Grid.ColumnSpan="4">
+                    <CheckBox x:Name="BarIcon" Content="显示托盘图标" IsChecked="{Binding ShowBarIcon}">
                         <CheckBox.Background>
                             <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
                                 <GradientStop Color="#FF9EA3A6"/>

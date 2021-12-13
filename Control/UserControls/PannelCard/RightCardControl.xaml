@@ -8,7 +8,9 @@
              xmlns:cvt="clr-namespace:GeekDesk.Converts"
              xmlns:DraggAnimatedPanel="clr-namespace:DraggAnimatedPanel"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             
+             >
     <UserControl.Resources>
         <!--右侧栏样式动画-->
         <Style x:Key="ImageStyle" TargetType="Image">
@@ -30,7 +32,6 @@
 
         <cvt:OpcityConvert x:Key="OpcityConvert"/>
     </UserControl.Resources>
-
     <!--右侧栏-->
     <hc:Card AllowDrop="True" 
              Drop="Wrap_Drop" 
@@ -48,7 +49,7 @@
                 <MenuItem Header="添加URL项目" Click="AddUrlIcon"/>
             </ContextMenu>
         </hc:Card.ContextMenu>
-        <WrapPanel Orientation="Horizontal">
+        <WrapPanel Orientation="Horizontal" VirtualizingPanel.VirtualizationMode="Recycling"  VirtualizingPanel.IsVirtualizing="True"  VirtualizingPanel.IsContainerVirtualizable="True">
             <ListBox x:Name="IconListBox" ItemsSource="{Binding AppConfig.SelectedMenuIcons, Mode=TwoWay}" 
                                  BorderThickness="0"
                                  >
@@ -101,7 +102,7 @@
                                         MouseEnter="StackPanel_MouseEnter"
                                         MouseLeave="StackPanel_MouseLeave"
                                         >
-                            <Image Style="{StaticResource ImageStyle}"/>
+                            <Image Style="{StaticResource ImageStyle}"  RenderOptions.BitmapScalingMode="HighQuality"/>
                             <TextBlock MaxWidth="80"
                                        Margin="0,5,0,0"
                                        MaxHeight="40"
@@ -116,6 +117,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+            
         </WrapPanel>
     </hc:Card>
 </UserControl>

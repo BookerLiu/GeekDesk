@@ -31,7 +31,9 @@ namespace GeekDesk.Util
 
         private double showMarginWidth = 1;
 
+#pragma warning disable CS0414 // 字段“MarginHide.isHide”已被赋值，但从未使用过它的值
         private bool isHide;
+#pragma warning restore CS0414 // 字段“MarginHide.isHide”已被赋值，但从未使用过它的值
 
         public Timer timer;
         //构造函数，传入将要匹配的窗体      

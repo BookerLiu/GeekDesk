@@ -30,7 +30,7 @@ namespace GeekDesk.Control.UserControls.Config
     public partial class MotionControl : UserControl
     {
         public static bool hotkeyFinished = true; //热键设置结束
-        private  KeyEventArgs prevKeyTemp; //上一个按键
+        private Key prevKeyTemp = Key.None; //上一个按键
         private readonly List<KeyEventArgs> keysTemp = new List<KeyEventArgs>();//存储一次快捷键集合
         private readonly AppConfig appConfig = MainWindow.appData.AppConfig;
 
@@ -49,13 +49,19 @@ namespace GeekDesk.Control.UserControls.Config
         {
             string tag = (sender as TextBox).Tag.ToString();
 
+            Key downKey = e.Key;
+            if (downKey == Key.System)
+            {
+                downKey = e.SystemKey;
+            }
+
             bool main = false;
             if ("Main".Equals(tag))
             {
                 main = true;
             }
 
-            if (!e.IsRepeat)
+            if (prevKeyTemp == Key.None || prevKeyTemp!=downKey)
             {
                 if (hotkeyFinished)
                 {
@@ -71,25 +77,24 @@ namespace GeekDesk.Control.UserControls.Config
                         appConfig.ToDoHotkeyModifiers = 0;
                     }
                     hotkeyFinished = false;
-
                 }
                 //首次按下按键
                 if ((main && (appConfig.HotkeyStr == null || appConfig.HotkeyStr.Length == 0)) 
                     || (!main && (appConfig.ToDoHotkeyStr == null || appConfig.ToDoHotkeyStr.Length == 0)))
                 {
-                    if (CheckModifierKeys(e))
+                    if (CheckModifierKeys(downKey))
                     {
                         //辅助键
                         if (main)
                         {
-                            appConfig.HotkeyStr = GetKeyName(e);
-                            appConfig.HotkeyModifiers = GetModifierKeys(e);
+                            appConfig.HotkeyStr = GetKeyName(downKey);
+                            appConfig.HotkeyModifiers = GetModifierKeys(downKey);
                         } else
                         {
-                            appConfig.ToDoHotkeyStr = GetKeyName(e);
-                            appConfig.ToDoHotkeyModifiers = GetModifierKeys(e);
+                            appConfig.ToDoHotkeyStr = GetKeyName(downKey);
+                            appConfig.ToDoHotkeyModifiers = GetModifierKeys(downKey);
                         }
-                        prevKeyTemp = e;
+                        prevKeyTemp = downKey;
                         keysTemp.Add(e);
                     }
                 }
@@ -97,44 +102,43 @@ namespace GeekDesk.Control.UserControls.Config
                 {
                     //非首次按下  需要判断前一个键值是否为辅助键
                     if (CheckModifierKeys(prevKeyTemp)
-                        && ((e.Key >= Key.A && e.Key <= Key.Z)
-                        || (e.Key >= Key.F1 && e.Key <= Key.F12)
-                        || (e.Key >= Key.D0 && e.Key <= Key.D9)))
+                        && ((downKey >= Key.A && downKey <= Key.Z)
+                        || (downKey >= Key.F1 && downKey <= Key.F12)
+                        || (downKey >= Key.D0 && downKey <= Key.D9)))
                     {
                         if (main)
                         {
-                            appConfig.Hotkey = e.Key;
-                            appConfig.HotkeyStr += e.Key.ToString();
+                            appConfig.Hotkey = downKey;
+                            appConfig.HotkeyStr += downKey.ToString();
                         } else
                         {
-                            appConfig.ToDoHotkey = e.Key;
-                            appConfig.ToDoHotkeyStr += e.Key.ToString();
+                            appConfig.ToDoHotkey = downKey;
+                            appConfig.ToDoHotkeyStr += downKey.ToString();
                         }
-                        prevKeyTemp = e;
+                        prevKeyTemp = downKey;
                         keysTemp.Add(e);
                     }
-                    else if (CheckModifierKeys(e))
+                    else if (CheckModifierKeys(downKey))
                     {
                         if (main)
                         {
-                            appConfig.HotkeyStr += GetKeyName(e);
-                            appConfig.HotkeyModifiers |= GetModifierKeys(e);
+                            appConfig.HotkeyStr += GetKeyName(downKey);
+                            appConfig.HotkeyModifiers |= GetModifierKeys(downKey);
                         } else
                         {
-                            appConfig.ToDoHotkeyStr += GetKeyName(e);
-                            appConfig.ToDoHotkeyModifiers |= GetModifierKeys(e);
+                            appConfig.ToDoHotkeyStr += GetKeyName(downKey);
+                            appConfig.ToDoHotkeyModifiers |= GetModifierKeys(downKey);
                         }
                         
-                        prevKeyTemp = e;
+                        prevKeyTemp = downKey;
                         keysTemp.Add(e);
                     }
                 }
             }
         }
 
-        private string GetKeyName(KeyEventArgs e)
+        private string GetKeyName(Key key)
         {
-            Key key = e.Key;
             if (key == Key.LeftCtrl || key == Key.RightCtrl)
             {
                 return "Ctrl + ";
@@ -150,12 +154,10 @@ namespace GeekDesk.Control.UserControls.Config
             {
                 return "Alt + ";
             }
-
         }
 
-        private HotkeyModifiers GetModifierKeys(KeyEventArgs e)
+        private HotkeyModifiers GetModifierKeys(Key key)
         {
-            Key key = e.Key;
             if (key == Key.LeftCtrl || key == Key.RightCtrl)
             {
                 return HotkeyModifiers.MOD_CONTROL;
@@ -174,9 +176,8 @@ namespace GeekDesk.Control.UserControls.Config
             }
         }
 
-        private bool CheckModifierKeys(KeyEventArgs e)
+        private bool CheckModifierKeys(Key key)
         {
-            Key key = e.Key;
             return key == Key.LeftCtrl || key == Key.RightCtrl
                 || key == Key.LWin || key == Key.RWin
                 || key == Key.LeftShift || key == Key.RightShift
@@ -208,6 +209,7 @@ namespace GeekDesk.Control.UserControls.Config
                 if (allKeyUp && !hotkeyFinished)
                 {
                     keysTemp.Clear();
+                    prevKeyTemp = Key.None;
                     hotkeyFinished = true;
 
                     if (main)
@@ -271,5 +273,19 @@ namespace GeekDesk.Control.UserControls.Config
         }
 
 
+        /// <summary>
+        /// 鼠标中键呼出 change
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MouseMiddle_Changed(object sender, RoutedEventArgs e)
+        {
+     
+        }
+
+        private void HookListener_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            Console.WriteLine(e.KeyChar);
+        }
     }
 }

@@ -4,13 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GeekDesk.Control.UserControls.PannelCard"
-             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:hc="https://handyorg.github.io/handycontrol" xmlns:viewmodel="clr-namespace:GeekDesk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:ToDoInfo}"
              mc:Ignorable="d" 
-             Background="AliceBlue"
+             Background="Transparent"
              >
     
-    <hc:SimplePanel Margin="20">
-        <Grid>
+   <hc:SimplePanel Margin="20" Background="Transparent">
+        <Grid Background="Transparent">
             <DataGrid x:Name="BacklogList" 
                   HeadersVisibility="All"  
                   AutoGenerateColumns="False" 
@@ -26,13 +26,30 @@
                 </DataGrid.ContextMenu>
                 <DataGrid.RowStyle>
                     <Style TargetType="DataGridRow" BasedOn="{StaticResource DataGridRowStyle}">
-                        <EventSetter Event="MouseRightButtonUp" Handler="DataGridRow_MouseRightButtonUp" />
+                        <EventSetter Event="MouseRightButtonDown" Handler="DataGridRow_MouseRightButtonDown" />
+                        <EventSetter Event="Selected" Handler="DataGridRow_Selected"/>
+                        <Setter Property="Background" Value="White"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#5BC0DE"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter Property="Background" Value="White"/>
+                            </Trigger>
+                        </Style.Triggers>
                     </Style>
                 </DataGrid.RowStyle>
 
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell" BasedOn="{StaticResource DataGridCellStyle}">
                         <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                            </Trigger>
+                        </Style.Triggers>
                     </Style>
                 </DataGrid.CellStyle>
                 <DataGrid.ColumnHeaderStyle>
@@ -42,7 +59,7 @@
                 </DataGrid.ColumnHeaderStyle>
 
                 <DataGrid.Background>
-                    <SolidColorBrush Color="AliceBlue"/>
+                    <SolidColorBrush Color="Transparent"/>
                 </DataGrid.Background>
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="120" Binding="{Binding Title}" Header="待办任务"/>

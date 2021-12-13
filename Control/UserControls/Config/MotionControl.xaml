@@ -6,13 +6,16 @@
              xmlns:cvt="clr-namespace:GeekDesk.Converts"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" 
-             Background="AliceBlue"
+             Background="Transparent"
              d:DesignHeight="300" d:DesignWidth="450">
 
     <UserControl.Resources>
         <cvt:HideTypeConvert x:Key="HideTypeConvert"/>
     </UserControl.Resources>
-    <Grid Background="AliceBlue" MouseDown="DragMove">
+    <Grid Background="Transparent" MouseDown="DragMove" 
+          >
+        <StackPanel Panel.ZIndex="1" hc:Growl.GrowlParent="True" hc:Growl.Token="HotKeyGrowl"></StackPanel>
+
         <StackPanel Margin="10">
             <hc:UniformSpacingPanel Spacing="10"  Grid.ColumnSpan="4">
                 <TextBlock Text="面板动作设置" VerticalAlignment="Center"/>
@@ -29,6 +32,16 @@
 
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
                 <CheckBox  Content="显示时追随鼠标位置" IsChecked="{Binding FollowMouse}">
+                    <CheckBox.Background>
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                            <GradientStop Color="#FF9EA3A6"/>
+                        </LinearGradientBrush>
+                    </CheckBox.Background>
+                </CheckBox>
+            </hc:UniformSpacingPanel>
+
+            <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
+                <CheckBox  Content="鼠标中间呼出" Checked="MouseMiddle_Changed" IsChecked="{Binding MouseMiddleShow}">
                     <CheckBox.Background>
                         <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
                             <GradientStop Color="#FF9EA3A6"/>
@@ -101,7 +114,6 @@
                         KeyUp="HotKeyUp"
                         />
         </hc:UniformSpacingPanel>
-            <StackPanel hc:Growl.GrowlParent="True" hc:Growl.Token="HotKeyGrowl" VerticalAlignment="Top"/>
         </StackPanel>
     </Grid>
    

@@ -8,75 +8,59 @@
            Title="Setting"
            mc:Ignorable="d"
            WindowStartupLocation="CenterScreen"
-           Height="450" 
-           Width="600" 
+           Height="550" 
+           Width="750" 
            WindowStyle="None"
+           ResizeMode="NoResize"
            AllowsTransparency="True"
-           Background="Transparent" ShowInTaskbar="False"
+           Background="#00FFFFFF" ShowInTaskbar="False"
+           BorderThickness="0"
            >
 
-    <Window.Resources>
-        <Style x:Key="MenuStyle" TargetType="hc:SideMenuItem" BasedOn="{StaticResource SideMenuItemBaseStyle}">
-            <Style.Setters>
-                <Setter Property="Background" Value="AliceBlue"/>
-            </Style.Setters>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FFE2E2E2"/>
-                </Trigger>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#FFDAD7D7"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
-     <Border CornerRadius="8" BorderThickness="0">
-        <Border.Background>
-            <SolidColorBrush Color="AliceBlue" Opacity="0.9"/>
-        </Border.Background>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="140"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+    <Grid Margin="30">
+        <Grid.Effect>
+            <DropShadowEffect BlurRadius="20" Direction="-90" Color="Gray"
+                              RenderingBias="Quality" ShadowDepth="2"/>
+        </Grid.Effect>
+        <Border Style="{StaticResource BorderBG}">
+            <Grid Background="Transparent">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="140"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-            <hc:Card Grid.Row="0" Grid.Column="0">
-                <hc:SideMenu BorderThickness="1" 
-                             AutoSelect="True" 
-                             >
-                    <hc:SideMenu.Background>
-                        <SolidColorBrush Color="AliceBlue"/>
-                    </hc:SideMenu.Background>
+                <hc:Card Grid.Row="0" Grid.Column="0" Background="Transparent" BorderThickness="0">
 
-                    <hc:SideMenu.ItemContainerStyle>
-                        <Style TargetType="hc:SideMenuItem" BasedOn="{StaticResource MenuStyle}"/>
-                    </hc:SideMenu.ItemContainerStyle>
-                    
-                    <hc:SideMenuItem Header="关于"
+                    <hc:SideMenu AutoSelect="True" Background="Transparent" Margin="1,7,0,3">
+                        <hc:SideMenu.ItemContainerStyle>
+                            <Style TargetType="hc:SideMenuItem" BasedOn="{StaticResource MyMenuStyle}"/>
+                        </hc:SideMenu.ItemContainerStyle>
+
+                        <hc:SideMenuItem Header="关于"
                                      IsSelected="True"
                                      Selected="MemuClick"
                                      Tag="About"
                                      >
-                        <hc:SideMenuItem.Icon>
-                            <Button Background="Transparent" 
+                            <hc:SideMenuItem.Icon>
+                                <Button Background="Transparent" 
                                     IsEnabled="False"
-                                    Opacity="1"
+                                    Opacity="0.9"
                                     BorderThickness="0"
                                     hc:IconElement.Geometry="{StaticResource About}" 
                                     hc:IconElement.Height="18"
                                     hc:IconElement.Width="18"
                                     HorizontalAlignment="Right"
                                     />
-                        </hc:SideMenuItem.Icon>
-                    </hc:SideMenuItem>
-                    <hc:SideMenuItem Header="显示设置"
+                            </hc:SideMenuItem.Icon>
+                        </hc:SideMenuItem>
+                        <hc:SideMenuItem Header="显示设置"
                                      Tag="Theme"
                                      Selected="MemuClick">
-                        <hc:SideMenuItem.Icon>
-                            <Button Background="Transparent" 
+                            <hc:SideMenuItem.Icon>
+                                <Button Background="Transparent" 
                                     IsEnabled="False"
                                     Opacity="1"
                             BorderThickness="0"
@@ -85,14 +69,14 @@
                             hc:IconElement.Width="18"
                             HorizontalAlignment="Right"
                             />
-                        </hc:SideMenuItem.Icon>
-                    </hc:SideMenuItem>
+                            </hc:SideMenuItem.Icon>
+                        </hc:SideMenuItem>
 
-                    <hc:SideMenuItem Header="动作"
+                        <hc:SideMenuItem Header="动作"
                                      Tag="Motion"
                                      Selected="MemuClick">
-                        <hc:SideMenuItem.Icon>
-                            <Button Background="Transparent" 
+                            <hc:SideMenuItem.Icon>
+                                <Button Background="Transparent" 
                                     IsEnabled="False"
                                     Opacity="1"
                             BorderThickness="0"
@@ -101,13 +85,13 @@
                             hc:IconElement.Width="18"
                             HorizontalAlignment="Right"
                             />
-                        </hc:SideMenuItem.Icon>
-                    </hc:SideMenuItem>
-                    <hc:SideMenuItem Header="其它"
+                            </hc:SideMenuItem.Icon>
+                        </hc:SideMenuItem>
+                        <hc:SideMenuItem Header="其它"
                                      Tag="Other"
                                      Selected="MemuClick">
-                        <hc:SideMenuItem.Icon>
-                            <Button Background="Transparent" 
+                            <hc:SideMenuItem.Icon>
+                                <Button Background="Transparent" 
                                     IsEnabled="False"
                                     Opacity="1"
                             BorderThickness="0"
@@ -116,17 +100,21 @@
                             hc:IconElement.Width="18"
                             HorizontalAlignment="Right"
                             />
-                        </hc:SideMenuItem.Icon>
-                    </hc:SideMenuItem>
-                </hc:SideMenu>
-            </hc:Card>
-            <hc:ScrollViewer  Grid.Row="0" Grid.Column="1">
-                <hc:Card x:Name="RightCard" Height="480">
+                            </hc:SideMenuItem.Icon>
+                        </hc:SideMenuItem>
+                    </hc:SideMenu>
                 </hc:Card>
-            </hc:ScrollViewer>
+                <hc:ScrollViewer  Grid.Row="0" Grid.Column="1" BorderThickness="0" Margin="0,5,1,5">
+                    <hc:Card x:Name="RightCard" Height="480" BorderThickness="0"  MouseDown="DragMove">
+                        <hc:Card.Background>
+                            <SolidColorBrush  Opacity="0"/>
+                        </hc:Card.Background>
+                    </hc:Card>
+                </hc:ScrollViewer>
 
-            <Button Width="22" Height="22" Click="Close_Button_Click" Style="{StaticResource ButtonIcon}" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" Grid.Column="1"/>
-        </Grid>
-    </Border>
+                <Button Width="22" Height="22" Click="Close_Button_Click" Style="{StaticResource ButtonIcon}" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" Grid.Column="1"/>
+            </Grid>
+        </Border>
+    </Grid>
 
 </hc:Window>

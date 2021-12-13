@@ -8,46 +8,76 @@
         xmlns:uc="clr-namespace:GeekDesk.Control.UserControls.IconFont"
         mc:Ignorable="d"
         Title="Svg"
-        Height="450" Width="600"
+        Height="520" Width="700"
         WindowStyle="None"
+        ResizeMode="NoResize"
         AllowsTransparency="True"
-        Background="AliceBlue"
-        MouseDown="DragMove"
+        Background="Transparent" ShowInTaskbar="False"
+        BorderThickness="0"
         >
 
     <Window.Resources>
-        <Style x:Key="LeftTB" TargetType="TextBlock" BasedOn="{StaticResource TextBlockBaseStyle}">
-            <Setter Property="Width" Value="80"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="FontSize" Value="11"/>
+        <Style x:Key="HcTabControl" TargetType="hc:TabControl" BasedOn="{StaticResource TabControlInLine}">
+            <Style.Setters>
+                <Setter Property="Background" Value="Transparent"/>
+            </Style.Setters>
+        </Style>
+
+        <Style x:Key="TabTitle" TargetType="hc:TabItem" BasedOn="{StaticResource TabItemInLine}">
+            <Style.Setters>
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="White" Opacity="0.68"/>
+                    </Setter.Value>
+                </Setter>
+            </Style.Setters>
         </Style>
     </Window.Resources>
 
+    <Grid Margin="20">
+        <Grid.Effect>
+            <DropShadowEffect BlurRadius="30" Direction="-90" Color="Gray"
+                              RenderingBias="Quality" ShadowDepth="2"/>
+        </Grid.Effect>
+        <Border MouseDown="DragMove" Style="{StaticResource BorderBG}">
+            <!--<Border.Background>
+                --><!--<SolidColorBrush Color="AliceBlue" Opacity="0.9"/>--><!--
+                <LinearGradientBrush Opacity="0.97">
+                    <GradientStop Color="#D1F0A4" Offset="0"/>
+                    <GradientStop Color="#97D282" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>-->
+            <Grid MouseDown="DragMove">
+                <TextBox x:Name="CheckSettingUrl" Visibility="Collapsed" Text="{Binding IsSettingUrl}" TextChanged="CheckSettingUrl_TextChanged"/>
+                <hc:TabControl x:Name="MyTabControl" 
+                               IsAnimationEnabled="True" 
+                               SelectionChanged="TabControl_SelectionChanged" 
+                               ShowContextMenu="True"  
+                               IsTabFillEnabled="True" 
+                               Margin="20,30,20,20" 
+                               Height="350" 
+                               VerticalAlignment="Top"
+                               Style="{StaticResource HcTabControl}">
+                    <hc:TabItem Tag="System"  IsSelected="True" Header="系统图标" hc:IconElement.Height="16" hc:IconElement.Width="16" hc:IconElement.Geometry="{StaticResource SystemIcon}" Style="{StaticResource TabTitle}">
+                        <hc:SimplePanel>
+                            <uc:IconPannel x:Name="SystemIcon"/>
+                        </hc:SimplePanel>
+                    </hc:TabItem>
+                    <hc:TabItem Tag="Custom" Header="自定义图标" hc:IconElement.Height="16" hc:IconElement.Width="16" hc:IconElement.Geometry="{StaticResource CustomIcon}" Style="{StaticResource TabTitle}">
+                        <hc:SimplePanel>
+                            <uc:IconPannel x:Name="CustomIcon"/>
+                            <hc:LoadingCircle x:Name="LoadingEle"/>
+                        </hc:SimplePanel>
+                    </hc:TabItem>
+                </hc:TabControl>
 
-    <Border MouseDown="DragMove">
-        <Grid MouseDown="DragMove">
-            <TextBox x:Name="CheckSettingUrl" Visibility="Collapsed" Text="{Binding IsSettingUrl}" TextChanged="CheckSettingUrl_TextChanged"/>
-            <hc:TabControl x:Name="MyTabControl" IsAnimationEnabled="True" SelectionChanged="TabControl_SelectionChanged" ShowContextMenu="True"  IsTabFillEnabled="True" Margin="20,30,20,20" Height="350" VerticalAlignment="Top">
-                <hc:TabItem Tag="System"  IsSelected="True" Header="系统图标" hc:IconElement.Height="16" hc:IconElement.Width="16" hc:IconElement.Geometry="{StaticResource SystemIcon}" >
-                    <hc:SimplePanel Background="AliceBlue">
-                        <uc:IconPannel x:Name="SystemIcon"/>
-                    </hc:SimplePanel>
-                </hc:TabItem>
-                <hc:TabItem Tag="Custom" Header="自定义图标" hc:IconElement.Height="16" hc:IconElement.Width="16" hc:IconElement.Geometry="{StaticResource CustomIcon}">
-                    <hc:SimplePanel Background="AliceBlue">
-                        <uc:IconPannel x:Name="CustomIcon"/>
-                        <hc:LoadingCircle x:Name="LoadingEle"/>
-                    </hc:SimplePanel>
-                </hc:TabItem>
-            </hc:TabControl>
 
-            
-            <Button Content="取消" Click="Close_Click" Margin="391,397.5,163,22.5"/>
-            <Button Content="自定义设置" Click="CustomButton_Click" IsEnabled="False" Name="CustomButton" Background="#5BC0DE" Foreground="White"  RenderTransformOrigin="-0.868,0.583" Margin="447,397.5,71,22.5"/>
-            <Button Content="确定" Click="Confirm_Click" Background="#5BC0DE" Foreground="White" Margin="534,397.5,20,22.5" RenderTransformOrigin="0.696,0.45"/>
-        </Grid>
-    </Border>
-    
-    
+                <Button Content="取消" Click="Close_Click" Margin="391,397.5,163,22.5"/>
+                <Button Content="自定义设置" Click="CustomButton_Click" IsEnabled="False" Name="CustomButton" Style="{StaticResource Btn1}" Margin="447,397.5,71,22.5"/>
+                <Button Content="确定" Click="Confirm_Click" Style="{StaticResource Btn1}" Margin="534,397.5,20,22.5" />
+            </Grid>
+        </Border>
+    </Grid>
+
+
 </Window>
