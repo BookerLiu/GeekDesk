@@ -14,6 +14,8 @@
         AllowsTransparency="True"
         Background="Transparent" ShowInTaskbar="False"
         BorderThickness="0"
+        Focusable="True"
+        KeyDown="OnKeyDown"
         >
 
     <Window.Resources>
@@ -39,7 +41,7 @@
             <DropShadowEffect BlurRadius="30" Direction="-90" Color="Gray"
                               RenderingBias="Quality" ShadowDepth="2"/>
         </Grid.Effect>
-        <Border MouseDown="DragMove" Style="{StaticResource BorderBG}">
+        <Border MouseDown="DragMove" Style="{StaticResource BorderBG}"  hc:Dialog.Token="IconUrlDialog">
             <!--<Border.Background>
                 --><!--<SolidColorBrush Color="AliceBlue" Opacity="0.9"/>--><!--
                 <LinearGradientBrush Opacity="0.97">
@@ -47,9 +49,10 @@
                     <GradientStop Color="#97D282" Offset="1"/>
                 </LinearGradientBrush>
             </Border.Background>-->
-            <Grid MouseDown="DragMove">
-                <TextBox x:Name="CheckSettingUrl" Visibility="Collapsed" Text="{Binding IsSettingUrl}" TextChanged="CheckSettingUrl_TextChanged"/>
-                <hc:TabControl x:Name="MyTabControl" 
+            <hc:DialogContainer>
+                <Grid MouseDown="DragMove">
+                    <TextBox x:Name="CheckSettingUrl" Visibility="Collapsed" Text="{Binding IsSettingUrl}" TextChanged="CheckSettingUrl_TextChanged"/>
+                    <hc:TabControl x:Name="MyTabControl" 
                                IsAnimationEnabled="True" 
                                SelectionChanged="TabControl_SelectionChanged" 
                                ShowContextMenu="True"  
@@ -58,24 +61,25 @@
                                Height="350" 
                                VerticalAlignment="Top"
                                Style="{StaticResource HcTabControl}">
-                    <hc:TabItem Tag="System"  IsSelected="True" Header="系统图标" hc:IconElement.Height="16" hc:IconElement.Width="16" hc:IconElement.Geometry="{StaticResource SystemIcon}" Style="{StaticResource TabTitle}">
-                        <hc:SimplePanel>
-                            <uc:IconPannel x:Name="SystemIcon"/>
-                        </hc:SimplePanel>
-                    </hc:TabItem>
-                    <hc:TabItem Tag="Custom" Header="自定义图标" hc:IconElement.Height="16" hc:IconElement.Width="16" hc:IconElement.Geometry="{StaticResource CustomIcon}" Style="{StaticResource TabTitle}">
-                        <hc:SimplePanel>
-                            <uc:IconPannel x:Name="CustomIcon"/>
-                            <hc:LoadingCircle x:Name="LoadingEle"/>
-                        </hc:SimplePanel>
-                    </hc:TabItem>
-                </hc:TabControl>
+                        <hc:TabItem Tag="System"  IsSelected="True" Header="系统图标" hc:IconElement.Height="16" hc:IconElement.Width="16" hc:IconElement.Geometry="{StaticResource SystemIcon}" Style="{StaticResource TabTitle}">
+                            <hc:SimplePanel>
+                                <uc:IconPannel x:Name="SystemIcon"/>
+                            </hc:SimplePanel>
+                        </hc:TabItem>
+                        <hc:TabItem Tag="Custom" Header="自定义图标" hc:IconElement.Height="16" hc:IconElement.Width="16" hc:IconElement.Geometry="{StaticResource CustomIcon}" Style="{StaticResource TabTitle}">
+                            <hc:SimplePanel>
+                                <uc:IconPannel x:Name="CustomIcon"/>
+                                <hc:LoadingCircle x:Name="LoadingEle"/>
+                            </hc:SimplePanel>
+                        </hc:TabItem>
+                    </hc:TabControl>
 
 
-                <Button Content="取消" Click="Close_Click" Margin="391,397.5,163,22.5"/>
-                <Button Content="自定义设置" Click="CustomButton_Click" IsEnabled="False" Name="CustomButton" Style="{StaticResource Btn1}" Margin="447,397.5,71,22.5"/>
-                <Button Content="确定" Click="Confirm_Click" Style="{StaticResource Btn1}" Margin="534,397.5,20,22.5" />
-            </Grid>
+                    <Button Content="取消" Click="Close_Click" Margin="391,397.5,163,22.5"/>
+                    <Button Content="自定义设置" Click="CustomButton_Click" IsEnabled="False" Name="CustomButton" Style="{StaticResource Btn1}" Margin="447,397.5,71,22.5"/>
+                    <Button Content="确定" Click="Confirm_Click" Style="{StaticResource Btn1}" Margin="534,397.5,20,22.5" />
+                </Grid>
+            </hc:DialogContainer>
         </Border>
     </Grid>
 

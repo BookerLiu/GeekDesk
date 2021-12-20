@@ -189,6 +189,7 @@
     <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.cs" />
     <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.Drag.cs" />
     <Compile Include="Converts\HideTypeConvert.cs" />
+    <Compile Include="Interface\WindowCommon.cs" />
     <Compile Include="Task\ToDoTask.cs" />
     <Compile Include="Thread\MouseHookThread.cs" />
     <Compile Include="Thread\DispatcherBuild.cs" />

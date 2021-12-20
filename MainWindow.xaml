@@ -9,7 +9,7 @@
         xmlns:cvt="clr-namespace:GeekDesk.Converts"
         xmlns:DraggAnimatedPanel="clr-namespace:DraggAnimatedPanel"
         x:Name="window"
-        xmlns:hc="https://handyorg.github.io/handycontrol" 
+        xmlns:hc="https://handyorg.github.io/handycontrol" xmlns:viewmodel="clr-namespace:GeekDesk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AppData}"
         Title="GeekDesk" 
         d:DesignHeight="500" d:DesignWidth="700"
         WindowStyle="None"
@@ -19,6 +19,8 @@
         Opacity="0"
         Deactivated="Window_Deactivated"
         SizeChanged="Window_SizeChanged"
+        KeyDown="OnKeyDown"
+        Focusable="True"
         >
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="15"/>
@@ -113,7 +115,8 @@
                     </DockPanel>
 
 
-                    <uc:LeftCardControl  Grid.Row="1" Grid.Column="0"/>
+                    <uc:LeftCardControl Grid.Row="1" Grid.Column="0"/>
+                    
                     <!--分割线-->
                     <GridSplitter Opacity="0" Grid.Row="1" Grid.Column="0" Width="1"  VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
 

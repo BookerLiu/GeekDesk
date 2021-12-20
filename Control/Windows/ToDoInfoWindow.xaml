@@ -11,9 +11,12 @@
            Height="450" 
            Width="510" 
            WindowStyle="None"
+           Title=""
            AllowsTransparency="True"
            Background="Transparent" ShowInTaskbar="False"
-        >
+           Focusable="True"
+           KeyDown="OnKeyDown"
+            >
     <Window.Resources>
         <cvt:TodoTaskExecConvert x:Key="TodoTaskExecConvert"/>
     </Window.Resources>

@@ -9,7 +9,10 @@
         Height="460" Width="610"
         WindowStyle="None"
         AllowsTransparency="True"
-        Background="Transparent" ShowInTaskbar="False">
+        Title=""
+        Background="Transparent" ShowInTaskbar="False"
+        Focusable="True"
+        KeyDown="OnKeyDown">
     <Grid Margin="20">
         <Grid.Effect>
             <DropShadowEffect BlurRadius="30" Direction="-90" Color="Gray"

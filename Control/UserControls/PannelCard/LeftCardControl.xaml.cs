@@ -28,11 +28,11 @@ namespace GeekDesk.Control.UserControls.PannelCard
             if (appData.AppConfig.SelectedMenuIndex >= appData.MenuList.Count || appData.AppConfig.SelectedMenuIndex == -1)
             {
                 appData.AppConfig.SelectedMenuIcons = appData.MenuList[0].IconList;
-            } else
+            }
+            else
             {
                 appData.AppConfig.SelectedMenuIcons = appData.MenuList[appData.AppConfig.SelectedMenuIndex].IconList;
             }
-
         }
 
         DelegateCommand<int[]> _swap;
@@ -207,8 +207,9 @@ namespace GeekDesk.Control.UserControls.PannelCard
             //设置对应菜单的图标列表
             if (MenuListBox.SelectedIndex == -1)
             {
-                appData.AppConfig.SelectedMenuIcons = appData.MenuList[appData.MenuList.Count-1].IconList;
-            } else
+                appData.AppConfig.SelectedMenuIcons = appData.MenuList[appData.MenuList.Count - 1].IconList;
+            }
+            else
             {
                 appData.AppConfig.SelectedMenuIcons = appData.MenuList[MenuListBox.SelectedIndex].IconList;
             }

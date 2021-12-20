@@ -1,4 +1,5 @@
 ﻿using GeekDesk.Constant;
+using GeekDesk.Interface;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using Newtonsoft.Json.Linq;
@@ -23,7 +24,7 @@ namespace GeekDesk.Control.Windows
     /// <summary>
     /// UpdateWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class UpdateWindow : Window
+    public partial class UpdateWindow : Window, IWindowCommon
     {
         private static AppConfig appConfig = MainWindow.appData.AppConfig;
         private static string githubUrl = "";
@@ -103,6 +104,15 @@ namespace GeekDesk.Control.Windows
                 window = new UpdateWindow(jo);
             }
             window.Show();
+            Keyboard.Focus(window);
+        }
+
+        public void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                this.Close();
+            }
         }
     }
 }
