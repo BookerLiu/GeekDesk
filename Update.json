@@ -1,8 +1,8 @@
 {
-	"title": "GeekDesk°æ±¾¸üĞÂ",
+	"title": "GeekDeskç‰ˆæœ¬æ›´æ–°",
 	"subTitle": "V2.3.21",
-	"msgTitle": "±¾´Î¸üĞÂÄÚÈİÈçÏÂ",
-	"msg": "['ËùÓĞ´°¿Ú¿ÉEscÍË³ö','ĞŞ¸´Ò»¸ö²âÊÔÒÅÁôBUG,µ¼ÖÂÃ»ÓĞDÅÌµÄÇé¿öÏÂÎŞ·¨Ìí¼ÓÏîÄ¿','ĞŞ¸´ÒÑÖªÎÊÌâ']",
+	"msgTitle": "æœ¬æ¬¡æ›´æ–°å†…å®¹å¦‚ä¸‹",
+	"msg": "['æ‰€æœ‰çª—å£å¯Escé€€å‡º','ä¿®å¤ä¸€ä¸ªæµ‹è¯•é—ç•™BUG,å¯¼è‡´æ²¡æœ‰Dç›˜çš„æƒ…å†µä¸‹æ— æ³•æ·»åŠ é¡¹ç›®','ä¿®å¤å·²çŸ¥é—®é¢˜']",
 	"githubUrl": "https://github.com/Demo-Liu/GeekDesk/releases",
 	"giteeUrl": "https://gitee.com/demo_liu/GeekDesk/releases",
 	"version": "2.3.21"
