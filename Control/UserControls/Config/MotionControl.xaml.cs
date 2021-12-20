@@ -1,5 +1,6 @@
 ﻿using GeekDesk.Constant;
 using GeekDesk.Control.Windows;
+using GeekDesk.Thread;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using HandyControl.Data;
@@ -280,7 +281,13 @@ namespace GeekDesk.Control.UserControls.Config
         /// <param name="e"></param>
         private void MouseMiddle_Changed(object sender, RoutedEventArgs e)
         {
-     
+            if (appConfig.MouseMiddleShow)
+            {
+                MouseHookThread.MiddleHook();
+            } else
+            {
+                MouseHookThread.Dispose();
+            }
         }
 
         private void HookListener_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)

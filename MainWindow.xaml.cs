@@ -107,7 +107,10 @@ namespace GeekDesk
             }
 
             //注册鼠标中键监听事件
-            MouseHookThread.MiddleHook();
+            if (appData.AppConfig.MouseMiddleShow)
+            {
+                MouseHookThread.MiddleHook();
+            }
 
             //更新线程开启  检测更新
             UpdateThread.Update();
@@ -396,7 +399,10 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void ExitApp(object sender, RoutedEventArgs e)
         {
-            MouseHookThread.Dispose();
+            if (appData.AppConfig.MouseMiddleShow)
+            {
+                MouseHookThread.Dispose();
+            }
             Application.Current.Shutdown();
         }
 

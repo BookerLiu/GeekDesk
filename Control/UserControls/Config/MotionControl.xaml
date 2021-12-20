@@ -41,7 +41,7 @@
             </hc:UniformSpacingPanel>
 
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
-                <CheckBox  Content="鼠标中间呼出" Checked="MouseMiddle_Changed" IsChecked="{Binding MouseMiddleShow}">
+                <CheckBox  Content="鼠标中间呼出" Checked="MouseMiddle_Changed" Unchecked="MouseMiddle_Changed" IsChecked="{Binding MouseMiddleShow}">
                     <CheckBox.Background>
                         <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
                             <GradientStop Color="#FF9EA3A6"/>
