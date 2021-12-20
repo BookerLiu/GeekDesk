@@ -1,9 +1,9 @@
 {
-	"title": "版本更新",
-	"subTitle": "V2.4.10",
+	"title": "GeekDesk版本更新",
+	"subTitle": "V2.3.21",
 	"msgTitle": "本次更新内容如下",
-	"msg": "['所有窗口可Esc退出']",
+	"msg": "['所有窗口可Esc退出','修复一个测试遗留BUG,导致没有D盘的情况下无法添加项目','修复已知问题']",
 	"githubUrl": "https://github.com/Demo-Liu/GeekDesk/releases",
 	"giteeUrl": "https://gitee.com/demo_liu/GeekDesk/releases",
-	"version": "2.4.10"
+	"version": "2.3.21"
 }
