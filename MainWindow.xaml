@@ -94,6 +94,7 @@
                                 Click="ConfigButtonClick"
                                 Initialized="SettingButton_Initialized"
                                 x:Name="SettingButton"
+                                FocusVisualStyle="{x:Null}"
                                 >
                                 <Button.ContextMenu>
                                     <ContextMenu x:Name="SettingMenus" Width="130">
@@ -109,6 +110,7 @@
                                 hc:IconElement.Width="18"
                                 HorizontalAlignment="Right"
                                 Click="CloseButtonClick"
+                                FocusVisualStyle="{x:Null}"
                                 />
                         </hc:UniformSpacingPanel>
 
