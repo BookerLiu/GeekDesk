@@ -290,9 +290,5 @@ namespace GeekDesk.Control.UserControls.Config
             }
         }
 
-        private void HookListener_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
-        {
-            Console.WriteLine(e.KeyChar);
-        }
     }
 }

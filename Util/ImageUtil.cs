@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -13,6 +14,7 @@ namespace GeekDesk.Util
 {
     class ImageUtil
     {
+        private static readonly string SYSTEM_ITEM = "::{.*}";
 
         /// <summary>
         /// 图片数组转 BitmapImage
@@ -84,7 +86,7 @@ namespace GeekDesk.Util
         /// <returns></returns>
         public static BitmapImage GetBitmapIconByPath(string filePath)
         {
-            if (File.Exists(filePath))
+            if (File.Exists(filePath) || IsSystemItem(filePath))
             {
                 if (IsImage(filePath)) {
                     //图片
@@ -331,6 +333,16 @@ namespace GeekDesk.Util
             {
                 return false;
             }
+        }
+
+
+        /// <summary>
+        /// 判断是否为系统项
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsSystemItem(string path)
+        {
+            return Regex.IsMatch(path, SYSTEM_ITEM);
         }
 
 
