@@ -1,4 +1,5 @@
 ﻿using GeekDesk.Control.UserControls.Backlog;
+using GeekDesk.Interface;
 using GeekDesk.ViewModel;
 using HandyControl.Controls;
 using System;
@@ -21,7 +22,7 @@ namespace GeekDesk.Control.Windows
     /// <summary>
     /// BacklogWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class ToDoWindow
+    public partial class ToDoWindow : IWindowCommon
     {
         private static TodoControl backlog = new TodoControl();
         private AppData appData = MainWindow.appData;
@@ -94,8 +95,15 @@ namespace GeekDesk.Control.Windows
                 window = new ToDoWindow();
             }
             window.Show();
+            Keyboard.Focus(window);
         }
 
-        
+        public void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                this.Close();
+            }
+        }
     }
 }

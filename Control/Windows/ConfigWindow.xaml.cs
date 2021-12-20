@@ -2,6 +2,7 @@
 using GeekDesk.Constant;
 using GeekDesk.Control.UserControls;
 using GeekDesk.Control.UserControls.Config;
+using GeekDesk.Interface;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using HandyControl.Controls;
@@ -15,7 +16,7 @@ namespace GeekDesk.Control.Windows
     /// <summary>
     /// ConfigDialog.xaml 的交互逻辑
     /// </summary>
-    public partial class ConfigWindow
+    public partial class ConfigWindow : IWindowCommon
     {
         private static readonly AboutControl about = new AboutControl();
         private static readonly ThemeControl theme = new ThemeControl();
@@ -87,6 +88,15 @@ namespace GeekDesk.Control.Windows
                 window = new ConfigWindow(appConfig, mainWindow);
             }
             window.Show();
+            Keyboard.Focus(window);
+        }
+
+        public void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                this.Close();
+            }
         }
     }
 }

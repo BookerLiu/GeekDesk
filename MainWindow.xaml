@@ -9,7 +9,7 @@
         xmlns:cvt="clr-namespace:GeekDesk.Converts"
         xmlns:DraggAnimatedPanel="clr-namespace:DraggAnimatedPanel"
         x:Name="window"
-        xmlns:hc="https://handyorg.github.io/handycontrol" 
+        xmlns:hc="https://handyorg.github.io/handycontrol" xmlns:viewmodel="clr-namespace:GeekDesk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AppData}"
         Title="GeekDesk" 
         d:DesignHeight="500" d:DesignWidth="700"
         WindowStyle="None"
@@ -19,6 +19,8 @@
         Opacity="0"
         Deactivated="Window_Deactivated"
         SizeChanged="Window_SizeChanged"
+        KeyDown="OnKeyDown"
+        Focusable="True"
         >
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="15"/>
@@ -92,6 +94,7 @@
                                 Click="ConfigButtonClick"
                                 Initialized="SettingButton_Initialized"
                                 x:Name="SettingButton"
+                                FocusVisualStyle="{x:Null}"
                                 >
                                 <Button.ContextMenu>
                                     <ContextMenu x:Name="SettingMenus" Width="130">
@@ -107,13 +110,15 @@
                                 hc:IconElement.Width="18"
                                 HorizontalAlignment="Right"
                                 Click="CloseButtonClick"
+                                FocusVisualStyle="{x:Null}"
                                 />
                         </hc:UniformSpacingPanel>
 
                     </DockPanel>
 
 
-                    <uc:LeftCardControl  Grid.Row="1" Grid.Column="0"/>
+                    <uc:LeftCardControl Grid.Row="1" Grid.Column="0"/>
+                    
                     <!--分割线-->
                     <GridSplitter Opacity="0" Grid.Row="1" Grid.Column="0" Width="1"  VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
 
@@ -124,7 +129,7 @@
                         <hc:NotifyIcon.ContextMenu>
                             <ContextMenu Width="130">
                                 <MenuItem Header="打开面板" Click="ShowApp"/>
-                                <MenuItem Header="关闭托盘图标" Click="CloseBarIcon"/>
+                                <MenuItem Header="关闭图标" Click="CloseBarIcon"/>
                                 <MenuItem Header="待办"  Click="BacklogMenuClick"/>
                                 <MenuItem Header="程序目录"  Click="OpenThisDir"/>
                                 <MenuItem Header="设置"  Click="ConfigApp"/>

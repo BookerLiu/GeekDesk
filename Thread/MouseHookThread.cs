@@ -15,17 +15,26 @@ namespace GeekDesk.Thread
     public class MouseHookThread
     {
         private static AppConfig appConfig = MainWindow.appData.AppConfig;
-        public static IKeyboardMouseEvents m_GlobalHook = Hook.GlobalEvents();
-        
+        private static IKeyboardMouseEvents m_GlobalHook = Hook.GlobalEvents();
+        private static Dispatcher dispatcher;
+
+
 
         public static void MiddleHook()
         {
             //使用dispatcher来单独监听UI线程  防止程序卡顿
-            Dispatcher dispatcher = DispatcherBuild.Build();
+            dispatcher = DispatcherBuild.Build();
             dispatcher.Invoke((Action)(() =>
             {
                 m_GlobalHook.MouseDownExt += M_GlobalHook_MouseDownExt;
             }));
+        }
+
+        public static void Dispose()
+        {
+            m_GlobalHook.MouseDownExt -= M_GlobalHook_MouseDownExt;
+            m_GlobalHook.Dispose();
+            dispatcher.InvokeShutdown();
         }
 
         /// <summary>

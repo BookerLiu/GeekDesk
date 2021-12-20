@@ -1,4 +1,5 @@
 ﻿using GeekDesk.Control.Other;
+using GeekDesk.Interface;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 
@@ -17,7 +18,7 @@ namespace GeekDesk.Control.Windows
     /// <summary>
     /// IconfontWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class IconfontWindow : Window
+    public partial class IconfontWindow : Window, IWindowCommon
     {
         private static AppConfig appConfig = MainWindow.appData.AppConfig;
         private static MenuInfo menuInfo;
@@ -71,7 +72,7 @@ namespace GeekDesk.Control.Windows
                     {
                         LoadingEle.Visibility = Visibility.Visible;
                         CustomIcon.Visibility = Visibility.Collapsed;
-                        HandyControl.Controls.Dialog.Show(new CustomIconUrlDialog(appConfig));
+                        HandyControl.Controls.Dialog.Show(new CustomIconUrlDialog(appConfig), "IconUrlDialog");
                     } else
                     {
                         if (customIcons == null)
@@ -132,6 +133,7 @@ namespace GeekDesk.Control.Windows
                 window = new IconfontWindow(listInfo, menuInfo);
             }
             window.Show();
+            Keyboard.Focus(window);
             ShowWindowFollowMouse.Show(window, MousePosition.LEFT_CENTER, 0, 0, false);
         }
 
@@ -172,6 +174,13 @@ namespace GeekDesk.Control.Windows
             }
         }
 
+        public void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                this.Close();
+            }
+        }
 
         public class IconfontViewModel : INotifyPropertyChanged
         {

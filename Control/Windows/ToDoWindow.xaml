@@ -13,6 +13,8 @@
            WindowStyle="None"
            AllowsTransparency="True"
            Background="Transparent" ShowInTaskbar="False"
+           Focusable="True"
+           KeyDown="OnKeyDown"
         >
 
     <Grid Margin="50">

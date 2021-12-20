@@ -1,4 +1,5 @@
 ﻿using GeekDesk.Constant;
+using GeekDesk.Interface;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using HandyControl.Controls;
@@ -22,7 +23,7 @@ namespace GeekDesk.Control.Windows
     /// <summary>
     /// BacklogInfoWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class ToDoInfoWindow
+    public partial class ToDoInfoWindow : IWindowCommon
     {
 
         private static int windowType = -1;
@@ -207,6 +208,7 @@ namespace GeekDesk.Control.Windows
             {
                 window = new ToDoInfoWindow();
                 window.Show();
+                Keyboard.Focus(window);
             }
             window.Visibility = Visibility.Collapsed;
             windowType = NEW_TODO;
@@ -222,6 +224,7 @@ namespace GeekDesk.Control.Windows
             }
             windowType = DETAIL_TODO;
             window2.Show();
+            Keyboard.Focus(window2);
         }
 
         private void ExecType_Checked(object sender, RoutedEventArgs e)
@@ -237,6 +240,14 @@ namespace GeekDesk.Control.Windows
                     CronPanel.Visibility = Visibility.Visible;
                     SetTimePanel.Visibility = Visibility.Collapsed;
                     break;
+            }
+        }
+
+        public void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                this.Close();
             }
         }
     }

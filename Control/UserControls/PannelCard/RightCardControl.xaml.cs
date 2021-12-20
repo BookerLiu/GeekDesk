@@ -5,25 +5,16 @@ using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using HandyControl.Controls;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace GeekDesk.Control.UserControls.PannelCard
 {
@@ -190,8 +181,11 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 string path = (string)obj;
 
                 //string base64 = ImageUtil.FileImageToBase64(path, ImageFormat.Png);
-
-                string ext = System.IO.Path.GetExtension(path).ToLower();
+                string ext = "";
+                if (!ImageUtil.IsSystemItem(path))
+                {
+                    ext = System.IO.Path.GetExtension(path).ToLower();
+                }
 
                 if (".lnk".Equals(ext))
                 {

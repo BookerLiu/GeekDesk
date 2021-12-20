@@ -3,6 +3,7 @@ using GeekDesk.Constant;
 using GeekDesk.Control;
 using GeekDesk.Control.UserControls.Config;
 using GeekDesk.Control.Windows;
+using GeekDesk.Interface;
 using GeekDesk.Task;
 using GeekDesk.Thread;
 using GeekDesk.Util;
@@ -29,13 +30,10 @@ namespace GeekDesk
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
     /// 
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IWindowCommon
     {
 
-        //public IKeyboardMouseEvents m_GlobalHook = Hook.GlobalEvents();
-
         public static AppData appData = CommonCode.GetAppDataByFile();
-        //public static ToDoInfoWindow toDoInfoWindow = (ToDoInfoWindow)ToDoInfoWindow.GetThis();
         public static ToDoInfoWindow toDoInfoWindow;
         public static int hotKeyId = -1;
         public static int toDoHotKeyId = -1;
@@ -95,6 +93,7 @@ namespace GeekDesk
                 ShowApp();
             }
 
+            //给任务栏图标一个名字
             BarIcon.Text = Constants.MY_NAME;
 
             //注册热键
@@ -108,35 +107,14 @@ namespace GeekDesk
             }
 
             //注册鼠标中键监听事件
-            //m_GlobalHook.MouseUpExt += M_GlobalHook_MouseUpExt;
-            MouseHookThread.MiddleHook();
+            if (appData.AppConfig.MouseMiddleShow)
+            {
+                MouseHookThread.MiddleHook();
+            }
 
             //更新线程开启  检测更新
             UpdateThread.Update();
         }
-
-        /// <summary>
-        /// 鼠标中键呼出
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        //private void M_GlobalHook_MouseUpExt(object sender, System.Windows.Forms.MouseEventArgs e)
-        //{
-        //    if (appData.AppConfig.MouseMiddleShow && e.Button == System.Windows.Forms.MouseButtons.Middle)
-        //    {
-        //        if (MotionControl.hotkeyFinished)
-        //        {
-        //            if (mainWindow.Visibility == Visibility.Collapsed || mainWindow.Opacity == 0)
-        //            {
-        //                ShowApp();
-        //            }
-        //            else
-        //            {
-        //                HideApp();
-        //            }
-        //        }
-        //    }
-        //}
 
         /// <summary>
         /// 注册当前窗口的热键
@@ -283,10 +261,6 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void DragMove(object sender, MouseEventArgs e)
         {
-            //if (e.LeftButton == MouseButtonState.Pressed)
-            //{
-            //    this.DragMove();
-            //}
 
             if (e.LeftButton == MouseButtonState.Pressed)
             {
@@ -302,7 +276,6 @@ namespace GeekDesk
                 /* 当点击拖拽区域的时候，让窗口跟着移动
                 (When clicking the drag area, make the window follow) */
                 DragMove();
-
 
                 if (this.ResizeMode != windowMode)
                 {
@@ -426,6 +399,10 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void ExitApp(object sender, RoutedEventArgs e)
         {
+            if (appData.AppConfig.MouseMiddleShow)
+            {
+                MouseHookThread.Dispose();
+            }
             Application.Current.Shutdown();
         }
 
@@ -506,10 +483,13 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void ReStartApp(object sender, RoutedEventArgs e)
         {
+            MouseHookThread.Dispose();
+
             Process p = new Process();
             p.StartInfo.FileName = Constants.APP_DIR + Constants.MY_NAME + ".exe";
             p.StartInfo.WorkingDirectory = Constants.APP_DIR;
             p.Start();
+
             Application.Current.Shutdown();
         }
 
@@ -521,6 +501,15 @@ namespace GeekDesk
         private void CloseBarIcon(object sender, RoutedEventArgs e)
         {
             appData.AppConfig.ShowBarIcon = false;
+        }
+
+
+        public void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                HideApp();
+            }
         }
     }
 

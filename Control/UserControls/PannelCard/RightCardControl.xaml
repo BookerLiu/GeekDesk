@@ -19,6 +19,7 @@
             <Setter Property="Source"  Value="{Binding BitmapImage}"/>
         </Style>
         <Style x:Key="MyListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">

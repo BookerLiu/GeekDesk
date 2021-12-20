@@ -74,7 +74,6 @@ namespace GeekDesk.Util
             myEncoderParameters.Param[0] = myEncoderParameter;
 
             bmp.Save(strm, myImageCodecInfo, myEncoderParameters);
-            bmp.Save("d:\\test.png", myImageCodecInfo, myEncoderParameters);
             BitmapImage bmpImage = new BitmapImage();
             bmpImage.BeginInit();
             strm.Seek(0, SeekOrigin.Begin);

@@ -20,6 +20,7 @@
                     <SolidColorBrush Opacity="0"/>
                 </Setter.Value>
             </Setter>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
             <EventSetter Event="MouseLeftButtonDown" Handler="MenuClick"/>
             <EventSetter Event="MouseRightButtonDown" Handler="MenuClick"/>
             <Style.Triggers>
