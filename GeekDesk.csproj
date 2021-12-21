@@ -195,6 +195,7 @@
     <Compile Include="Thread\DispatcherBuild.cs" />
     <Compile Include="Thread\UpdateThread.cs" />
     <Compile Include="Util\AeroGlassHelper.cs" />
+    <Compile Include="Util\Functions.cs" />
     <Compile Include="Util\GlobalHotKey.cs" />
     <Compile Include="Util\CommonCode.cs" />
     <Compile Include="Util\ConsoleManager.cs" />
@@ -360,6 +361,15 @@
   <ItemGroup>
     <COMReference Include="IWshRuntimeLibrary">
       <Guid>{F935DC20-1CF0-11D0-ADB9-00C04FD58A0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Shell32">
+      <Guid>{50A7E9B0-70EF-11D1-B75A-00A0C90564FE}</Guid>
       <VersionMajor>1</VersionMajor>
       <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>

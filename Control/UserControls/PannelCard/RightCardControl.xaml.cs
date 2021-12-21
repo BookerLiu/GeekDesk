@@ -66,15 +66,30 @@ namespace GeekDesk.Control.UserControls.PannelCard
         /// <param name="e"></param>
         private void IconClick(object sender, MouseButtonEventArgs e)
         {
-            IconInfo icon = (IconInfo)((SimpleStackPanel)sender).Tag;
-            if (icon.AdminStartUp)
+            if (appData.AppConfig.DoubleOpen && e.ClickCount >= 2)
             {
-                StartIconApp(icon, IconStartType.ADMIN_STARTUP);
-            }
-            else
+                IconInfo icon = (IconInfo)((SimpleStackPanel)sender).Tag;
+                if (icon.AdminStartUp)
+                {
+                    StartIconApp(icon, IconStartType.ADMIN_STARTUP);
+                }
+                else
+                {
+                    StartIconApp(icon, IconStartType.DEFAULT_STARTUP);
+                }
+            } else if (!appData.AppConfig.DoubleOpen && e.ClickCount == 1)
             {
-                StartIconApp(icon, IconStartType.DEFAULT_STARTUP);
+                IconInfo icon = (IconInfo)((SimpleStackPanel)sender).Tag;
+                if (icon.AdminStartUp)
+                {
+                    StartIconApp(icon, IconStartType.ADMIN_STARTUP);
+                }
+                else
+                {
+                    StartIconApp(icon, IconStartType.DEFAULT_STARTUP);
+                }
             }
+            
         }
 
         /// <summary>
@@ -158,6 +173,23 @@ namespace GeekDesk.Control.UserControls.PannelCard
                             p.StartInfo.FileName = "Explorer.exe";
                             p.StartInfo.Arguments = "/e,/select," + icon.Path;
                             break;
+                    }
+                } else
+                {
+                    if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
+                    {
+                        //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
+                        if (appData.AppConfig.MarginHide)
+                        {
+                            if (!MainWindow.hide.IsMargin())
+                            {
+                                MainWindow.HideApp();
+                            }
+                        }
+                        else
+                        {
+                            MainWindow.HideApp();
+                        }
                     }
                 }
                 p.Start();

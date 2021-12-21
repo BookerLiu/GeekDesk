@@ -50,6 +50,16 @@
                 </CheckBox>
             </hc:UniformSpacingPanel>
 
+            <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0"  Grid.ColumnSpan="4">
+                <CheckBox  Content="双击启动" IsChecked="{Binding DoubleOpen}">
+                    <CheckBox.Background>
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                            <GradientStop Color="#FF9EA3A6"/>
+                        </LinearGradientBrush>
+                    </CheckBox.Background>
+                </CheckBox>
+            </hc:UniformSpacingPanel>
+
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
                 <CheckBox  Content="贴边隐藏" IsChecked="{Binding MarginHide}" Checked="MarginHide_Changed" Unchecked="MarginHide_Changed">
                     <CheckBox.Background>

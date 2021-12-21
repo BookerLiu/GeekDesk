@@ -70,7 +70,22 @@ namespace GeekDesk.ViewModel
 
         private bool showBarIcon = true; //显示托盘图标  默认显示
 
+        private bool doubleOpen = false; //双击打开项目  默认关闭
+
         #region GetSet
+        public bool DoubleOpen
+        {
+            get
+            {
+                return doubleOpen;
+            }
+            set
+            {
+                doubleOpen = value;
+                OnPropertyChanged("DoubleOpen");
+            }
+        }
+
         public bool ShowBarIcon
         {
             get

@@ -36,7 +36,7 @@ namespace GeekDesk.Util
 
         public static BitmapImage GetBitmapImage(string filePath)
         {
-            Icon ico;
+            Icon ico = null;
             //选中文件中的图标总数
             var iconTotalCount = PrivateExtractIcons(filePath, 0, 0, 0, null, null, 0, 0);
             //用于接收获取到的图标指针
@@ -53,12 +53,20 @@ namespace GeekDesk.Util
             {
                 ip = hIcons[0];
                 ico = Icon.FromHandle(ip);
+                if (IsMinOrTransparent(ico))
+                {
+                    ico = null;
+                }
             }
-            else if (GetBlurExts().Contains(ext))
+            if (ico == null && GetBlurExts().Contains(ext))
             {
                 ico = Icon.ExtractAssociatedIcon(filePath);
+                if (IsMinOrTransparent(ico))
+                {
+                    ico = null;
+                }
             }
-            else
+            if (ico == null)
             {
                 ip = GetJumboIcon(GetIconIndex(filePath));
                 ico = Icon.FromHandle(ip);
@@ -84,6 +92,36 @@ namespace GeekDesk.Util
                 Shell32.DestroyIcon(ip);
             }
             return bmpImage.Clone();
+        }
+
+
+        private static bool IsMinOrTransparent(Icon ico)
+        {
+            Bitmap bm = ico.ToBitmap();
+            double w = bm.Width;
+            double h = bm.Height;
+
+            Color middleColor = bm.GetPixel((int)(w * 0.50), (int)(h * 0.50));
+            Color transparent = Color.FromArgb(0, 0, 0, 0);
+
+            //如果中间像素不为空 直接判断此icon不为空
+            if (middleColor != Color.Transparent && middleColor != transparent)
+            {
+                return false;
+            }
+
+            //判断中间一条横线像素 有不透明元素即判断 icon不为空
+            Color c;
+            int h2 = (int)h / 2;
+            for (int i=0; i<(int)w; i++)
+            {
+                c = bm.GetPixel(i, h2);
+                if (c!= Color.Transparent && c != transparent)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         private static ImageCodecInfo GetEncoderInfo(String mimeType)
@@ -416,7 +454,6 @@ namespace GeekDesk.Util
             int iOverlay,
             ref int piIndex);
         };
-
     }
 
 }
