@@ -17,11 +17,23 @@ namespace GeekDesk.ViewModel
         private string menuId;
         private Visibility menuEdit = Visibility.Collapsed;
         private Visibility notMenuEdit = Visibility.Visible;
+        private bool isEdit = false;
         private string menuGeometry;  //菜单几何图标
         private string geometryColor; //几何图标颜色
         private ObservableCollection<IconInfo> iconList = new ObservableCollection<IconInfo>();
 
-
+        public bool IsEdit
+        {
+            get
+            {
+                return isEdit;
+            }
+            set
+            {
+                isEdit = value;
+                OnPropertyChanged("IsEdit");
+            }
+        }
         public string MenuGeometry
         {
             get
@@ -93,9 +105,11 @@ namespace GeekDesk.ViewModel
                 menuEdit = value;
                 if (menuEdit == Visibility.Visible)
                 {
+                    IsEdit = true;
                     NotMenuEdit = Visibility.Collapsed;
                 } else
                 {
+                    IsEdit = false;
                     NotMenuEdit = Visibility.Visible;
                 }
                 OnPropertyChanged("MenuEdit");

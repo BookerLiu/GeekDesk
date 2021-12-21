@@ -44,13 +44,24 @@
                         </BeginStoryboard>
                     </MultiTrigger.ExitActions>
                 </MultiTrigger>
-                <!--<Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FFE4DBDB"/>
-                </Trigger>-->
-                <Trigger Property="IsSelected" Value="true">
+                
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFECECEC"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
                     <Setter Property="Background" Value="#FFECECEC"/>
                     <Setter Property="Foreground" Value="Black"/>
                 </Trigger>
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsEdit}" Value="True"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Background" Value="Transparent"/>
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+
             </Style.Triggers>
         </Style>
         <cvt:MenuWidthConvert x:Key="MenuWidthConvert"/>
@@ -111,17 +122,18 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                         <StackPanel MouseLeftButtonDown="MenuClick" MouseRightButtonDown="MenuClick" Tag="{Binding}">
-                            <hc:TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
+                            <TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
                                         HorizontalAlignment="Left"
                                         Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}, ConverterParameter=35}"
                                         FontSize="16"
-                                        Height="25"
+                                        Height="28"
                                         VerticalAlignment="Center"
                                         TextAlignment="Left"
                                         LostFocus="LostFocusOrEnterDown"
                                         KeyDown="LostFocusOrEnterDown"
                                         Tag="{Binding}"
-                                        Margin="2"
+                                        Padding="2"
+                                        BorderThickness="0"
                                         IsVisibleChanged="MenuEditWhenVisibilityChanged"
                                         Visibility="{Binding MenuEdit}"/>
                             <StackPanel Orientation="Horizontal">
