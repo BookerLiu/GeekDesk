@@ -96,8 +96,17 @@ namespace GeekDesk.Util
                     return FileIcon.GetBitmapImage(filePath);
                 }
             } else if(Directory.Exists(filePath)) {
-                //文件夹
-                return ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64);
+
+                if ((filePath.IndexOf("\\") == filePath.LastIndexOf("\\")) && filePath.IndexOf("\\") == filePath.Length - 1)
+                {
+                    //磁盘
+                    return ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_DISK_IMAGE_BASE64);
+                } else
+                {
+                    //文件夹
+                    return ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64);
+                }
+                
             }
             return null;
         }

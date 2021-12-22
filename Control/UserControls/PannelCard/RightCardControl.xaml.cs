@@ -212,8 +212,9 @@ namespace GeekDesk.Control.UserControls.PannelCard
             foreach (object obj in dropObject)
             {
                 string path = (string)obj;
+                string tempPath = path;
 
-                //string base64 = ImageUtil.FileImageToBase64(path, ImageFormat.Png);
+                //string base64 = ImageUtil.FileImageToBase64(path, System.Drawing.Imaging.ImageFormat.Png);
                 string ext = "";
                 if (!ImageUtil.IsSystemItem(path))
                 {
@@ -236,7 +237,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
                     BitmapImage = bi
                 };
                 iconInfo.DefaultImage = iconInfo.ImageByteArr;
-                iconInfo.Name = System.IO.Path.GetFileNameWithoutExtension(path);
+                iconInfo.Name = System.IO.Path.GetFileNameWithoutExtension(tempPath);
                 if (StringUtil.IsEmpty(iconInfo.Name))
                 {
                     iconInfo.Name = path;
