@@ -202,8 +202,9 @@ namespace GeekDesk.Util
                     return bm;
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                LogUtil.WriteErrorLog(e, "获取文件缩略图失败!filePath="+filePath);
                 return Base64ToBitmapImage(Constants.DEFAULT_IMG_IMAGE_BASE64);
             }
             
@@ -302,8 +303,9 @@ namespace GeekDesk.Util
                 ms.Close();
                 return Convert.ToBase64String(arr);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                LogUtil.WriteErrorLog(e, "图片文件转base64失败!Imagefilename=" + Imagefilename + ",ImageFormat="+format);
                 return null;
             }
         }

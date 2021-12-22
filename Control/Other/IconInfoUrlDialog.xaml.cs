@@ -89,9 +89,10 @@ namespace GeekDesk.Control.Other
                     info.BitmapImage = ImageUtil.GetBitmapIconByPath(ofd.FileName);
                     CommonCode.SaveAppData(MainWindow.appData);
                 }
-            } catch (Exception)
+            } catch (Exception e1)
             {
                 HandyControl.Controls.Growl.WarningGlobal("修改图标失败,已重置为默认图标!");
+                LogUtil.WriteErrorLog(e1, "修改图标失败!");
             }
             
         }

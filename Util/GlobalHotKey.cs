@@ -53,9 +53,10 @@ namespace GeekDesk.Util
                 UnregisterHotKey(handleTemp[id].Handle, id);
                 GlobalHotKey.handleTemp[id].Dispose();
                 GlobalHotKey.handleTemp.Remove(id);
-            } catch
+            } catch (Exception e)
             {
                 //nothing
+                LogUtil.WriteErrorLog(e, "取消注册热键异常!");
             }
 
 

@@ -53,9 +53,10 @@ namespace GeekDesk.Control.UserControls.Config
                     appConfig.BacImgName = ofd.FileName;
                 }
             }
-            catch (Exception)
+            catch (Exception e1)
             {
                 HandyControl.Controls.Growl.WarningGlobal("修改背景失败,已重置为默认背景!");
+                LogUtil.WriteErrorLog(e1, "修改背景失败!");
             }
 
         }
@@ -69,9 +70,10 @@ namespace GeekDesk.Control.UserControls.Config
                 appConfig.BitmapImage = ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_BAC_IMAGE_BASE64);
                 appConfig.BacImgName = "系统默认";
             }
-            catch (Exception)
+            catch (Exception e1)
             {
                 HandyControl.Controls.Growl.WarningGlobal("修改背景失败,已重置为默认背景!");
+                LogUtil.WriteErrorLog(e1, "修改默认背景失败!");
             }
 
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,5 +37,11 @@ namespace GeekDesk.ViewModel
                 name = value;
             }
         }
+
+        public override String ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+
     }
 }

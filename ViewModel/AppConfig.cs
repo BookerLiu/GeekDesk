@@ -1,6 +1,7 @@
 ﻿
 using GeekDesk.Constant;
 using GeekDesk.Util;
+using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -722,5 +723,9 @@ namespace GeekDesk.ViewModel
 
         #endregion
 
+        public override String ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

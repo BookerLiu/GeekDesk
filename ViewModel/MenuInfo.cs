@@ -1,5 +1,6 @@
 ﻿using GeekDesk.Constant;
 using GeekDesk.Util;
+using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -140,6 +141,11 @@ namespace GeekDesk.ViewModel
                 iconList = value;
                 OnPropertyChanged("IconList");
             }
+        }
+
+        public override String ToString()
+        {
+            return JsonConvert.SerializeObject(this);
         }
 
         [field: NonSerializedAttribute()]

@@ -1,5 +1,6 @@
 ﻿using GeekDesk.Constant;
 using GeekDesk.Util;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -129,7 +130,10 @@ namespace GeekDesk.ViewModel
         //    }
         //}
 
-
+        public override String ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
 
 
         [field: NonSerializedAttribute()]

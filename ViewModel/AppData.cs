@@ -1,4 +1,5 @@
 ﻿using GeekDesk.Util;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -82,6 +83,11 @@ namespace GeekDesk.ViewModel
                 appConfig = value;
                 OnPropertyChanged("AppConfig");
             }
+        }
+
+        public override String ToString()
+        {
+            return JsonConvert.SerializeObject(this);
         }
 
         [field: NonSerializedAttribute()]

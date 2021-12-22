@@ -168,9 +168,10 @@ namespace GeekDesk.Control.Windows
                 LoadingEle.Visibility = Visibility.Collapsed;
                 CustomIcon.Visibility = Visibility.Visible;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 HandyControl.Controls.Growl.WarningGlobal("加载远程图标异常!");
+                LogUtil.WriteErrorLog(e, "加载远程图标异常!");
             }
         }
 

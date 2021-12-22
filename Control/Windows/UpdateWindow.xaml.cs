@@ -38,9 +38,9 @@ namespace GeekDesk.Control.Windows
                 InitializeComponent();
                 DataHandle(jo);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                LogUtil.WriteErrorLog(e, "更新信息格式化失败!");
             }
            
         }

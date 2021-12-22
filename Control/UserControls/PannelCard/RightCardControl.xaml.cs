@@ -195,9 +195,10 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 p.Start();
                 icon.Count++;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 HandyControl.Controls.Growl.WarningGlobal("程序启动失败(不支持的启动方式)!");
+                LogUtil.WriteErrorLog(e, "程序启动失败:path=" + icon.Path + ",type=" + type);
             }
         }
 

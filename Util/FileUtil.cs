@@ -36,6 +36,7 @@ namespace GeekDesk.Util
             catch (Exception e)
 #pragma warning restore CS0168 // 声明了变量“e”，但从未使用过
             {
+                LogUtil.WriteErrorLog(e, "获取文件图标失败! filePath=" + filePath);
                 return null;
             }
         }

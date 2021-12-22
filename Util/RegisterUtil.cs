@@ -52,6 +52,7 @@ namespace GeekDesk.Util
                     catch (Exception ex)
 #pragma warning restore CS0168 // 声明了变量“ex”，但从未使用过
                     {
+                        LogUtil.WriteErrorLog(ex, "注册启动Error1!");
                         return false;
                     }
                 }
@@ -66,6 +67,7 @@ namespace GeekDesk.Util
                     catch (Exception ex)
 #pragma warning restore CS0168 // 声明了变量“ex”，但从未使用过
                     {
+                        LogUtil.WriteErrorLog(ex, "注册启动Error2!");
                         return false;
                     }
                 }
@@ -79,6 +81,7 @@ namespace GeekDesk.Util
                 {
                     key.Close();
                 }
+                LogUtil.WriteErrorLog(ex, "注册启动Error3!");
                 return false;
             }
         }
