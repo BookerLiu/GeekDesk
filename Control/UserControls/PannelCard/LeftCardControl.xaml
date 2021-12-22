@@ -69,7 +69,7 @@
     </UserControl.Resources>
         <!--左侧栏-->
         <hc:Card x:Name="MyCard"
-                 BorderThickness="1" 
+                 BorderThickness="1"
                  Effect="{DynamicResource EffectShadow2}" 
                  Margin="5,0,0,5"
                  >
@@ -88,6 +88,7 @@
             </hc:Card.ContextMenu>
             <WrapPanel Orientation="Horizontal">
                 <ListBox x:Name="MenuListBox"
+                         Padding="2,3,0,2"
                          ItemsSource="{Binding MenuList}"
                          Tag="{Binding AppConfig.MenuCardWidth}"
                          BorderThickness="0" Foreground="{x:Null}"
@@ -101,7 +102,7 @@
                             <MenuItem Header="重命名"  Click="RenameMenu" Tag="{Binding}"/>
                             <MenuItem Header="修改图标"  Click="EditMenuGeometry" Tag="{Binding}"/>
                             <MenuItem Header="删除" Click="DeleteMenu" Tag="{Binding}"/>
-                    </ContextMenu>
+                        </ContextMenu>
                     </ListBox.Resources>
 
                     <ListBox.ItemContainerStyle>
@@ -115,14 +116,14 @@
 
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                        <DraggAnimatedPanel:DraggAnimatedPanel ItemsHeight="33" ItemsWidth="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}, ConverterParameter=10}"   HorizontalAlignment="Center" VerticalAlignment="Top" SwapCommand="{Binding SwapCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
+                            <DraggAnimatedPanel:DraggAnimatedPanel ItemsHeight="33" ItemsWidth="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}, ConverterParameter=10}"   HorizontalAlignment="Center" VerticalAlignment="Top" SwapCommand="{Binding SwapCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
 
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                        <StackPanel MouseLeftButtonDown="MenuClick" MouseRightButtonDown="MenuClick" Tag="{Binding}">
-                            <TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
+                            <StackPanel MouseLeftButtonDown="MenuClick" MouseRightButtonDown="MenuClick" Tag="{Binding}">
+                                <TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
                                         HorizontalAlignment="Left"
                                         Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}, ConverterParameter=35}"
                                         FontSize="16"
@@ -136,7 +137,7 @@
                                         BorderThickness="0"
                                         IsVisibleChanged="MenuEditWhenVisibilityChanged"
                                         Visibility="{Binding MenuEdit}"/>
-                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal">
                                     <Button Background="Transparent" 
                                             BorderThickness="0"
                                             hc:IconElement.Geometry="{Binding MenuGeometry}"

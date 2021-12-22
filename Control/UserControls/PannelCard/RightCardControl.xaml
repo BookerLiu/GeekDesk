@@ -50,9 +50,13 @@
                 <MenuItem Header="添加URL项目" Click="AddUrlIcon"/>
             </ContextMenu>
         </hc:Card.ContextMenu>
-        <WrapPanel Orientation="Horizontal" VirtualizingPanel.VirtualizationMode="Recycling"  VirtualizingPanel.IsVirtualizing="True"  VirtualizingPanel.IsContainerVirtualizable="True">
+        <WrapPanel Orientation="Horizontal" VirtualizingPanel.VirtualizationMode="Recycling"  
+                   VirtualizingPanel.IsVirtualizing="True"  
+                   VirtualizingPanel.IsContainerVirtualizable="True"
+                   >
             <ListBox x:Name="IconListBox" ItemsSource="{Binding AppConfig.SelectedMenuIcons, Mode=TwoWay}" 
                                  BorderThickness="0"
+                                Padding="0,10,0,0"
                                  >
                 <ListBox.Background>
                     <SolidColorBrush Opacity="0"/>

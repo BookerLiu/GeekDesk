@@ -483,10 +483,13 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void ReStartApp(object sender, RoutedEventArgs e)
         {
-            MouseHookThread.Dispose();
+            if (appData.AppConfig.MouseMiddleShow)
+            {
+                MouseHookThread.Dispose();
+            }
 
             Process p = new Process();
-            p.StartInfo.FileName = Constants.APP_DIR + Constants.MY_NAME + ".exe";
+            p.StartInfo.FileName = Constants.APP_DIR + "GeekDesk.exe";
             p.StartInfo.WorkingDirectory = Constants.APP_DIR;
             p.Start();
 
