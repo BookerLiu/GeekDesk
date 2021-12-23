@@ -72,6 +72,22 @@ namespace GeekDesk.Util
                 ico = Icon.FromHandle(ip);
             }
 
+            IntPtr hIcon2 = IntPtr.Zero;
+            //TODO
+            for (int i=0; i<=1000; i++)
+            {
+                try
+                {
+                    ico = SystemIcon.MyExtractIcon("%SystemRoot%\\system32\\shell32.dll", i, hIcon2);
+                    Bitmap bmp2 = ico.ToBitmap();
+                    bmp2.Save("d:\\test\\" + i + ".png");
+                } catch
+                {
+
+                }
+            }
+            ico = SystemIcon.MyExtractIcon("%SystemRoot%\\system32\\shell32.dll", 16, hIcon2);
+
             Bitmap bmp = ico.ToBitmap();
             MemoryStream strm = new MemoryStream();
 
@@ -80,7 +96,7 @@ namespace GeekDesk.Util
             EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 75L);
             EncoderParameters myEncoderParameters = new EncoderParameters(1);
             myEncoderParameters.Param[0] = myEncoderParameter;
-
+            bmp.Save("d:\\test.png");
             bmp.Save(strm, myImageCodecInfo, myEncoderParameters);
             BitmapImage bmpImage = new BitmapImage();
             bmpImage.BeginInit();

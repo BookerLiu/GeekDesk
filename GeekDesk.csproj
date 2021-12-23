@@ -149,6 +149,9 @@
     <Compile Include="Control\UserControls\IconFont\IconPannel.xaml.cs">
       <DependentUpon>IconPannel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\Windows\SystemItemWindow.xaml.cs">
+      <DependentUpon>SystemItemWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Control\Windows\ToDoInfoWindow.xaml.cs">
       <DependentUpon>ToDoInfoWindow.xaml</DependentUpon>
     </Compile>
@@ -215,6 +218,7 @@
     <Compile Include="Util\ShowWindowFollowMouse.cs" />
     <Compile Include="Util\StringUtil.cs" />
     <Compile Include="Util\SvgToGeometry.cs" />
+    <Compile Include="Util\SystemIcon.cs" />
     <Compile Include="ViewModel\AppConfig.cs" />
     <Compile Include="ViewModel\AppData.cs" />
     <Compile Include="ViewModel\ToDoInfo.cs" />
@@ -244,6 +248,10 @@
     <Page Include="Control\UserControls\IconFont\IconPannel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\Windows\SystemItemWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Control\Windows\ToDoInfoWindow.xaml">
       <SubType>Designer</SubType>
