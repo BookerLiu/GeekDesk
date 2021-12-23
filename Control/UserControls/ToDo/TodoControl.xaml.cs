@@ -84,20 +84,5 @@ namespace GeekDesk.Control.UserControls.Backlog
             Menu.IsOpen = true;
         }
 
-        /// <summary>
-        /// 选中时颜色变化
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DataGridRow_Selected(object sender, RoutedEventArgs e)
-        {
-            Color c = Color.FromRgb(91, 192, 222);
-            SolidColorBrush b = new SolidColorBrush
-            {
-                Color = c,
-                Opacity = 0.9
-            };
-            ((DataGridRow)sender).Background = b;
-        }
     }
 }

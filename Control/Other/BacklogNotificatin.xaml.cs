@@ -40,13 +40,15 @@ namespace GeekDesk.Control.Other
             if (info.ExecType == TodoTaskExecType.CRON)
             {
                 CronExpression exp = new CronExpression(info.Cron);
-                DateTime dtNow = DateTime.Now;
-                DateTimeOffset ddo = DateTime.SpecifyKind(dtNow, DateTimeKind.Local);
-                string nextExecTime = ddo.LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss");
-                info.ExeTime = nextExecTime;
+                DateTime nowTime = DateTime.Now;
 
-                DateTime nextTime = ddo.LocalDateTime;
-                TimeSpan ts = nextTime.Subtract(dtNow);
+                //计算下次执行时间
+                DateTime nextTime = DateTime.SpecifyKind(exp.GetNextValidTimeAfter(nowTime).Value.LocalDateTime, DateTimeKind.Local);
+
+                string nextTimeStr = nextTime.ToString("yyyy-MM-dd HH:mm:ss");
+                info.ExeTime = nextTimeStr;
+
+                TimeSpan ts = nextTime.Subtract(nowTime);
                 int minutes = (int)Math.Ceiling(ts.TotalMinutes);
                 if (minutes < 0)
                 {

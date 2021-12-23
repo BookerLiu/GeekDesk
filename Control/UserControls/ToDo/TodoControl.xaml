@@ -27,11 +27,10 @@
                 <DataGrid.RowStyle>
                     <Style TargetType="DataGridRow" BasedOn="{StaticResource DataGridRowStyle}">
                         <EventSetter Event="MouseRightButtonDown" Handler="DataGridRow_MouseRightButtonDown" />
-                        <EventSetter Event="Selected" Handler="DataGridRow_Selected"/>
                         <Setter Property="Background" Value="White"/>
                         <Style.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="#5BC0DE"/>
+                                <Setter Property="Background" Value="{StaticResource BtnBG}"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="False">
                                 <Setter Property="Background" Value="White"/>
