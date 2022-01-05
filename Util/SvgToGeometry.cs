@@ -21,14 +21,17 @@ namespace GeekDesk.Util
             string svgPath = "/GeekDesk;component/Resource/Iconfont/iconfont.js";
             string jsonPath = "/GeekDesk;component/Resource/Iconfont/iconfont.json";
 
-            Stream svgStream = Application.GetResourceStream(new Uri(svgPath, UriKind.Relative)).Stream;
-            Stream jsonStream = Application.GetResourceStream(new Uri(jsonPath, UriKind.Relative)).Stream;
 
-            StreamReader streamReader = new StreamReader(svgStream);
-            string svgJsStr = streamReader.ReadToEnd();
-            JObject jo = ReadJson(jsonStream);
-
-            return GetIconfonts(svgJsStr, jo);
+            using (Stream svgStream = Application.GetResourceStream(new Uri(svgPath, UriKind.Relative)).Stream,
+                jsonStream = Application.GetResourceStream(new Uri(jsonPath, UriKind.Relative)).Stream)
+            {
+                using (StreamReader streamReader = new StreamReader(svgStream))
+                {
+                    string svgJsStr = streamReader.ReadToEnd();
+                    JObject jo = ReadJson(jsonStream);
+                    return GetIconfonts(svgJsStr, jo);
+                }
+            }
         }
 
         public static List<IconfontInfo> GetIconfonts(string svgJsStr, string jsonStr)
