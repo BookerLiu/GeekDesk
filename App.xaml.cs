@@ -44,7 +44,10 @@ namespace GeekDesk
         {
             e.Handled = true;//使用这一行代码告诉运行时，该异常被处理了，不再作为UnhandledException抛出了。
             LogUtil.WriteErrorLog(e, "未捕获异常!");
-            MessageBox.Show("GeekDesk遇到一个问题, 不用担心, 这不影响其它操作!");
+            if (Constants.DEV)
+            {
+                MessageBox.Show("GeekDesk遇到一个问题, 不用担心, 这不影响其它操作!");
+            }
         }
 
         void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
