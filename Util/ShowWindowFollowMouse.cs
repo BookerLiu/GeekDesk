@@ -27,7 +27,7 @@ namespace GeekDesk.Util
             double left = SystemParameters.VirtualScreenLeft;
             double top = SystemParameters.VirtualScreenTop;
             double width = SystemParameters.VirtualScreenWidth;
-            double height = SystemParameters.VirtualScreenHeight;
+            double height = SystemParameters.WorkArea.Height + 20;
             double right = width - Math.Abs(left);
             double bottom = height - Math.Abs(top);
 
@@ -36,7 +36,6 @@ namespace GeekDesk.Util
 
             switch (position)
             {
-
                 case MousePosition.LEFT_BOTTOM:
                     afterWidth = 0;
                     afterHeight = window.Height;
