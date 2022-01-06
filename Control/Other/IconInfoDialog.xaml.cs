@@ -38,6 +38,7 @@ namespace GeekDesk.Control.Other
             info.BitmapImage = IconImg.Source as BitmapImage;
             info.Name = IconName.Text;
             info.AdminStartUp = IconIsAdmin.IsChecked.Value;
+            info.StartArg = StartArg.Text;
             CommonCode.SaveAppData(MainWindow.appData);
             dialog.Close();
         }

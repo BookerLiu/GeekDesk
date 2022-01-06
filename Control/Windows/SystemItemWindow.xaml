@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GeekDesk.Control.Windows"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        xmlns:uc="clr-namespace:GeekDesk.Control.UserControls.IconFont"
+        xmlns:uc="clr-namespace:GeekDesk.Control.UserControls.SystemItem"
+        xmlns:cvt="clr-namespace:GeekDesk.Converts"
         mc:Ignorable="d"
         Title="Svg"
         Height="520" Width="700"
@@ -33,6 +34,7 @@
                 </Setter>
             </Style.Setters>
         </Style>
+        <cvt:MenuInfoConvert x:Key="MenuInfoConvert"/>
     </Window.Resources>
 
     <Grid Margin="20">
@@ -43,38 +45,52 @@
         <Border MouseDown="DragMove" Style="{StaticResource BorderBG}"  hc:Dialog.Token="IconUrlDialog">
             <hc:DialogContainer>
                 <Grid MouseDown="DragMove">
-                    <TextBox x:Name="CheckSettingUrl" Visibility="Collapsed" Text="{Binding IsSettingUrl}" TextChanged="CheckSettingUrl_TextChanged"/>
+                    <StackPanel HorizontalAlignment="Center" Margin="10">
+                        <Border CornerRadius="8" Height="30" Width="150">
+                            <Border.Background>
+                                <SolidColorBrush Color="White" Opacity="0.7"/>
+                            </Border.Background>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Background="Transparent" 
+                                            BorderThickness="0"                                        
+                                            hc:IconElement.Geometry="{Binding AppConfig.SelectedMenuIndex, Mode=OneWay, Converter={StaticResource MenuInfoConvert}, ConverterParameter=1}"
+                                            hc:IconElement.Height="18"
+                                            hc:IconElement.Width="18"
+                                            IsEnabled="False"
+                                            Opacity="1"
+                                            >
+                                </Button>
+                                <TextBlock x:Name="MenuName" Text="{Binding AppConfig.SelectedMenuIndex, Mode=OneWay, Converter={StaticResource MenuInfoConvert}, ConverterParameter=2}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
                     <hc:TabControl x:Name="MyTabControl" 
                                IsAnimationEnabled="True" 
                                SelectionChanged="TabControl_SelectionChanged" 
-                               ShowContextMenu="True"  
-                               IsTabFillEnabled="True" 
-                               Margin="20,30,20,20" 
+                               ShowContextMenu="True"
+                               IsTabFillEnabled="True"
+                               Margin="20,60,20,20" 
                                Height="350" 
                                VerticalAlignment="Top"
                                Style="{StaticResource HcTabControl}">
                         <hc:TabItem Tag="System"  IsSelected="True" Header="系统应用" hc:IconElement.Height="16" hc:IconElement.Width="16" hc:IconElement.Geometry="{StaticResource SystemIcon}" Style="{StaticResource TabTitle}">
                             <hc:SimplePanel>
-                                <uc:IconPannel x:Name="SystemItem"/>
+                                <uc:SystemItem x:Name="SystemItem"/>
                             </hc:SimplePanel>
                         </hc:TabItem>
-                        <hc:TabItem Tag="System"  IsSelected="True" Header="开始菜单应用" hc:IconElement.Height="16" hc:IconElement.Width="16" hc:IconElement.Geometry="{StaticResource SystemIcon}" Style="{StaticResource TabTitle}">
+                        <hc:TabItem x:Name="StartMenu" Tag="StartMenu" Header="开始菜单应用" hc:IconElement.Height="16" hc:IconElement.Width="16" hc:IconElement.Geometry="{StaticResource SystemIcon}" Style="{StaticResource TabTitle}">
                             <hc:SimplePanel>
-                                <uc:IconPannel x:Name="StartMenuItem"/>
+                                <uc:SystemItem x:Name="StartMenuItem"/>
+                                <hc:LoadingCircle x:Name="StartMenuLoading"/>
                             </hc:SimplePanel>
                         </hc:TabItem>
-                        <hc:TabItem Tag="Custom" Header="商店应用" hc:IconElement.Height="16" hc:IconElement.Width="16" hc:IconElement.Geometry="{StaticResource CustomIcon}" Style="{StaticResource TabTitle}">
+                        <!--<hc:TabItem Tag="Store" Header="商店应用(未开放)" hc:IconElement.Height="16" hc:IconElement.Width="16" hc:IconElement.Geometry="{StaticResource CustomIcon}" Style="{StaticResource TabTitle}">
                             <hc:SimplePanel>
-                                <uc:IconPannel x:Name="CustomIcon"/>
-                                <hc:LoadingCircle x:Name="LoadingEle"/>
+                                <uc:SystemItem x:Name="StoreItem"/>
                             </hc:SimplePanel>
-                        </hc:TabItem>
+                        </hc:TabItem>-->
                     </hc:TabControl>
-
-
-                    <Button Content="取消" Click="Close_Click" Margin="391,397.5,163,22.5"/>
-                    <Button Content="自定义设置" Click="CustomButton_Click" IsEnabled="False" Name="CustomButton" Style="{StaticResource Btn1}" Margin="447,397.5,71,22.5"/>
-                    <Button Content="确定" Click="Confirm_Click" Style="{StaticResource Btn1}" Margin="534,397.5,20,22.5" />
+                    <Button Content="关闭" Click="Close_Click" Margin="594,420,20,31.5"/>
                 </Grid>
             </hc:DialogContainer>
         </Border>

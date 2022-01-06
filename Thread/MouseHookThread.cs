@@ -1,4 +1,5 @@
 ﻿using GeekDesk.Control.UserControls.Config;
+using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using Gma.System.MouseKeyHook;
 using System;
@@ -51,7 +52,9 @@ namespace GeekDesk.Thread
                 {
                     MainWindow.mainWindow.Dispatcher.Invoke((Action)(() =>
                     {
-                        if (MainWindow.mainWindow.Visibility == Visibility.Collapsed || MainWindow.mainWindow.Opacity == 0)
+                        if (MainWindow.mainWindow.Visibility == Visibility.Collapsed 
+                        || MainWindow.mainWindow.Opacity == 0 
+                        || MarginHide.isHide)
                         {
                             MainWindow.ShowApp();
                         }

@@ -143,6 +143,9 @@
     <Compile Include="Control\UserControls\Config\OtherControl.xaml.cs">
       <DependentUpon>OtherControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\UserControls\SystemItem\SystemItem.xaml.cs">
+      <DependentUpon>SystemItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Control\UserControls\ToDo\TodoControl.xaml.cs">
       <DependentUpon>TodoControl.xaml</DependentUpon>
     </Compile>
@@ -186,6 +189,7 @@
       <DependentUpon>UpdateWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converts\DoubleToGridLength.cs" />
+    <Compile Include="Converts\MenuInfoConvert.cs" />
     <Compile Include="Converts\TodoTaskExecConvert.cs" />
     <Compile Include="Converts\IntToCornerRadius.cs" />
     <Compile Include="Converts\OpcityConvert.cs" />
@@ -240,6 +244,10 @@
     <Page Include="Control\UserControls\Config\OtherControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\UserControls\SystemItem\SystemItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Control\UserControls\ToDo\TodoControl.xaml">
       <SubType>Designer</SubType>
@@ -386,6 +394,26 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\Image\SystemIcon\Calculator.png" />
+    <Resource Include="Resource\Image\SystemIcon\Computer.png" />
+    <Resource Include="Resource\Image\SystemIcon\GroupPolicy.png" />
+    <Resource Include="Resource\Image\SystemIcon\Network.png" />
+    <Resource Include="Resource\Image\SystemIcon\RecycleBin.png" />
+    <Resource Include="Resource\Image\SystemIcon\Registry.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\Image\SystemIcon\Notepad.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\Image\SystemIcon\Mstsc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\Image\SystemIcon\Control.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\Image\SystemIcon\CMD.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

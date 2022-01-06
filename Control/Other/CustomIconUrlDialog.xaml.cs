@@ -3,6 +3,8 @@ using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using Microsoft.Win32;
 using System;
+using System.Configuration;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -39,6 +41,13 @@ namespace GeekDesk.Control.Other
             {
                 IconfontWindow.vm.IsSettingUrl = "false";
             }
+        }
+
+
+        private void Teach_Click(object sender, RoutedEventArgs e)
+        {
+            string url = ConfigurationManager.AppSettings["CustomIconTeachUrl"];
+            Process.Start(url);
         }
     }
 }

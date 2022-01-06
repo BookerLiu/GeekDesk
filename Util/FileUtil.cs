@@ -12,7 +12,9 @@ namespace GeekDesk.Util
     public class FileUtil
     {
 
-        private static readonly string NO_PATH = ".*{.*}.*";
+        private static readonly string NO_PATH = "{(.*)}";
+        private static readonly string NO_ICO = "^,(.*)";
+        private static readonly string HAVE_ICO = "(.*),(.*)";
 
         public static string GetTargetPathByLnk(string filePath)
         {
@@ -20,7 +22,6 @@ namespace GeekDesk.Util
             {
                 WshShell shell = new WshShell();
                 IWshRuntimeLibrary.IWshShortcut shortcut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(filePath);
-
                 if (StringUtil.IsEmpty(shortcut.TargetPath))
                 {
                     return null;
@@ -32,11 +33,60 @@ namespace GeekDesk.Util
                 }
                 return path;
             }
-#pragma warning disable CS0168 // 声明了变量“e”，但从未使用过
             catch (Exception e)
-#pragma warning restore CS0168 // 声明了变量“e”，但从未使用过
             {
-                LogUtil.WriteErrorLog(e, "获取文件图标失败! filePath=" + filePath);
+                LogUtil.WriteErrorLog(e, "获取目标路径失败! filePath=" + filePath);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 获取启动参数
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static string GetArgByLnk(string filePath)
+        {
+            try
+            {
+                WshShell shell = new WshShell();
+                IWshRuntimeLibrary.IWshShortcut shortcut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(filePath);
+                return shortcut.Arguments;
+            }
+            catch (Exception e)
+            {
+                LogUtil.WriteErrorLog(e, "获取启动参数失败! filePath=" + filePath);
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// 获取iconpath
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static string GetIconPathByLnk(string filePath)
+        {
+            try
+            {
+                WshShell shell = new WshShell();
+                IWshRuntimeLibrary.IWshShortcut shortcut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(filePath);
+                var iconPath = shortcut.IconLocation;
+
+                if (StringUtil.IsEmpty(iconPath) 
+                    || Regex.IsMatch(iconPath, NO_ICO) 
+                    || Regex.IsMatch(iconPath, NO_PATH) 
+                    || !Regex.IsMatch(iconPath, HAVE_ICO))
+                {
+                    return null;
+                } else
+                {
+                    return iconPath.Split(',')[0];
+                }
+            }
+            catch (Exception e)
+            {
+                LogUtil.WriteErrorLog(e, "获取图标路径失败! filePath=" + filePath);
                 return null;
             }
         }

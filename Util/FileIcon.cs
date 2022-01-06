@@ -32,7 +32,7 @@ namespace GeekDesk.Util
              int nIcons,      //指定获取的图标数量，仅当文件类型为.exe 和 .dll时候可用
              int flags        //标志，默认0就可以，具体可以看LoadImage函数
          );
-
+        
 
         public static BitmapImage GetBitmapImage(string filePath)
         {
@@ -71,24 +71,13 @@ namespace GeekDesk.Util
                 ip = GetJumboIcon(GetIconIndex(filePath));
                 ico = Icon.FromHandle(ip);
             }
+            
+            return IconToBitmapImage(ico, ip);
+        }
 
-            IntPtr hIcon2 = IntPtr.Zero;
-            //TODO
-            for (int i=0; i<=1000; i++)
-            {
-                try
-                {
-                    ico = SystemIcon.MyExtractIcon("%SystemRoot%\\system32\\shell32.dll", i, hIcon2);
-                    Bitmap bmp2 = ico.ToBitmap();
-                    bmp2.Save("d:\\test\\" + i + ".png");
-                } catch
-                {
-
-                }
-            }
-            ico = SystemIcon.MyExtractIcon("%SystemRoot%\\system32\\shell32.dll", 16, hIcon2);
-
-            Bitmap bmp = ico.ToBitmap();
+        private static BitmapImage IconToBitmapImage(Icon icon, IntPtr iconIP)
+        {
+            Bitmap bmp = icon.ToBitmap();
             MemoryStream strm = new MemoryStream();
 
             ImageCodecInfo myImageCodecInfo = GetEncoderInfo("image/png");
@@ -96,16 +85,18 @@ namespace GeekDesk.Util
             EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 75L);
             EncoderParameters myEncoderParameters = new EncoderParameters(1);
             myEncoderParameters.Param[0] = myEncoderParameter;
-            bmp.Save("d:\\test.png");
+
+            //bmp.Save("d:\\test.png");
+
             bmp.Save(strm, myImageCodecInfo, myEncoderParameters);
             BitmapImage bmpImage = new BitmapImage();
             bmpImage.BeginInit();
             strm.Seek(0, SeekOrigin.Begin);
             bmpImage.StreamSource = strm;
             bmpImage.EndInit();
-            if (ip != IntPtr.Zero)
+            if (iconIP != IntPtr.Zero)
             {
-                Shell32.DestroyIcon(ip);
+                Shell32.DestroyIcon(iconIP);
             }
             return bmpImage.Clone();
         }

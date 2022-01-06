@@ -27,7 +27,7 @@ namespace GeekDesk.Util
             double left = SystemParameters.VirtualScreenLeft;
             double top = SystemParameters.VirtualScreenTop;
             double width = SystemParameters.VirtualScreenWidth;
-            double height = SystemParameters.WorkArea.Height + 20;
+            double height = SystemParameters.WorkArea.Height + 20; // 不遮挡任务栏
             double right = width - Math.Abs(left);
             double bottom = height - Math.Abs(top);
 

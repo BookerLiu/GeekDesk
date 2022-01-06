@@ -25,9 +25,59 @@ namespace GeekDesk.ViewModel
         private string content; //显示信息
         private bool adminStartUp = false; //始终管理员方式启动  默认否
         private byte[] defaultImage; //默认图标
+        private string startArg; //启动参数
+        private string lnkPath;
 
         private IconType iconType = IconType.OTHER;
 
+
+        public string LnkPath_NoWrite
+        {
+            get
+            {
+                return lnkPath;
+            }
+            set
+            {
+                lnkPath = value;
+            }
+        }
+        public string LnkPath
+        {
+            get
+            {
+                return lnkPath;
+            }
+            set
+            {
+                lnkPath = value;
+                OnPropertyChanged("LnkPath");
+            }
+        }
+
+        public string StartArg
+        {
+            get
+            {
+                return startArg;
+            }
+            set
+            {
+                startArg = value;
+                OnPropertyChanged("StartArg");
+            }
+        }
+        public string StartArg_NoWrite
+        {
+            get
+            {
+                return startArg;
+            }
+            set
+            {
+                startArg = value;
+            }
+        }
 
         public IconType IconType
         {
@@ -56,6 +106,18 @@ namespace GeekDesk.ViewModel
             }
         }
 
+        public byte[] DefaultImage_NoWrite
+        {
+            get
+            {
+                return defaultImage;
+            }
+            set
+            {
+                defaultImage = value;
+            }
+        }
+
         public bool AdminStartUp
         {
             get
@@ -78,7 +140,13 @@ namespace GeekDesk.ViewModel
             set
             {
                 count = value;
-                Content = Path + "\n" + Name + "\n使用次数: " + Count;
+                if (StringUtil.IsEmpty(Path))
+                {
+                    Content = Name + "\n使用次数: " + Count;
+                } else
+                {
+                    Content = Path + "\n" + Name + "\n使用次数: " + Count;
+                }
                 OnPropertyChanged("Count");
             }
         }
@@ -92,8 +160,27 @@ namespace GeekDesk.ViewModel
             set
             {
                 name = value;
-                Content = Path + "\n" + Name + "\n使用次数: " + Count;
+                if (StringUtil.IsEmpty(Path))
+                {
+                    Content = Name + "\n使用次数: " + Count;
+                }
+                else
+                {
+                    Content = Path + "\n" + Name + "\n使用次数: " + Count;
+                }
                 OnPropertyChanged("Name");
+            }
+        }
+
+        public string Name_NoWrite
+        {
+            get
+            {
+                return name;
+            }
+            set
+            {
+                name = value;
             }
         }
 
@@ -106,10 +193,30 @@ namespace GeekDesk.ViewModel
             set
             {
                 path = value;
-                Content = Path + "\n" + Name + "\n使用次数: " + Count;
+                if (StringUtil.IsEmpty(Path))
+                {
+                    Content = Name + "\n使用次数: " + Count;
+                }
+                else
+                {
+                    Content = Path + "\n" + Name + "\n使用次数: " + Count;
+                }
                 OnPropertyChanged("Path");
             }
         }
+
+        public string Path_NoWrite
+        {
+            get
+            {
+                return path;
+            }
+            set
+            {
+                path = value;
+            }
+        }
+
 
         public BitmapImage BitmapImage
         {
@@ -126,6 +233,20 @@ namespace GeekDesk.ViewModel
             }
         }
 
+        public BitmapImage BitmapImage_NoWrite
+        {
+            get
+            {
+                return ImageUtil.ByteArrToImage(ImageByteArr_NoWrite);
+            }
+            set
+            {
+                bitmapImage = value;
+                ImageByteArr_NoWrite = ImageUtil.BitmapImageToByte(bitmapImage);
+            }
+        }
+
+
         public byte[] ImageByteArr
         {
             get
@@ -137,6 +258,19 @@ namespace GeekDesk.ViewModel
             {
                 imageByteArr = value;
                 OnPropertyChanged("ImageByteArr");
+            }
+        }
+
+        public byte[] ImageByteArr_NoWrite
+        {
+            get
+            {
+
+                return imageByteArr;
+            }
+            set
+            {
+                imageByteArr = value;
             }
         }
 
@@ -153,9 +287,17 @@ namespace GeekDesk.ViewModel
             }
         }
 
-        public override String ToString()
+
+        public string Content_NoWrite
         {
-            return JsonConvert.SerializeObject(this);
+            get
+            {
+                return content;
+            }
+            set
+            {
+                content = value;
+            }
         }
 
 

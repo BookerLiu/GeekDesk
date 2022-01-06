@@ -86,6 +86,11 @@ namespace GeekDesk.Util
         /// <returns></returns>
         public static BitmapImage GetBitmapIconByPath(string filePath)
         {
+            if (filePath.Contains("%windir%"))
+            {
+                filePath = filePath.Replace("%windir%", System.Environment.GetEnvironmentVariable("windir"));
+            }
+
             if (File.Exists(filePath) || IsSystemItem(filePath))
             {
                 if (IsImage(filePath)) {

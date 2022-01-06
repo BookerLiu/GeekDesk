@@ -1,16 +1,22 @@
-﻿using GeekDesk.Control.Other;
+﻿using GeekDesk.Constant;
+using GeekDesk.Control.Other;
 using GeekDesk.Interface;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-
+using System.Drawing;
+using System.IO;
+using System.Resources;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using static GeekDesk.Util.ShowWindowFollowMouse;
 
 namespace GeekDesk.Control.Windows
@@ -22,26 +28,18 @@ namespace GeekDesk.Control.Windows
     public partial class SystemItemWindow : Window, IWindowCommon
     {
         private static AppConfig appConfig = MainWindow.appData.AppConfig;
-        private static MenuInfo menuInfo;
-        private static List<IconfontInfo> systemIcons;
-        private static List<IconfontInfo> customIcons;
-        public static IconfontViewModel vm;
-        private SystemItemWindow(List<IconfontInfo> icons, MenuInfo menuInfo)
+        private static SystemItemViewModel vm;
+        private static List<IconInfo> systemIcons;
+        private static List<IconInfo> startMenuIcons;
+        private static List<IconInfo> storeIcons;
+
+        private SystemItemWindow()
         {
-            
-            InitializeComponent();
-
-            systemIcons = icons;
-            this.Topmost = true;
-            SystemItemWindow.menuInfo = menuInfo;
-            vm = new IconfontViewModel
-            {
-                Iconfonts = systemIcons
-            };
+            vm = new SystemItemViewModel();
             this.DataContext = vm;
+            InitializeComponent();
+            this.Topmost = true;
         }
-
-
 
         /// <summary>
         /// 移动窗口
@@ -61,157 +59,186 @@ namespace GeekDesk.Control.Windows
             this.Close();
         }
 
+        /// <summary>
+        /// 切换选项卡
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             TabItem ti = this.MyTabControl.SelectedItem as TabItem;
 
+            List<IconInfo> systemInfos = vm.IconInfos;
+            if (systemInfos == null)
+            {
+                systemInfos = new List<IconInfo>();
+            }
             switch (ti.Tag.ToString())
             {
-                case "Custom":
-                    CustomButton.IsEnabled = true;
-                    if (StringUtil.IsEmpty(appConfig.CustomIconUrl) || StringUtil.IsEmpty(appConfig.CustomIconJsonUrl))
+                case "StartMenu": //开始菜单
+                    if (startMenuIcons == null)
                     {
-                        LoadingEle.Visibility = Visibility.Visible;
-                        CustomIcon.Visibility = Visibility.Collapsed;
-                        HandyControl.Controls.Dialog.Show(new CustomIconUrlDialog(appConfig), "IconUrlDialog");
+                        vm.IconInfos = null;
+                        System.Threading.Thread t = new System.Threading.Thread(new ThreadStart(GetStartMenuInfos))
+                        {
+                            IsBackground = true
+                        };
+                        t.Start();
                     } else
                     {
-                        if (customIcons == null)
+                        StartMenuLoading.Visibility = Visibility.Collapsed;
+                        vm.IconInfos = startMenuIcons;
+                    }
+                    break;
+                case "Store": //应用商店
+                    if (storeIcons == null)
+                    {
+                        vm.IconInfos = null;
+                        storeIcons = new List<IconInfo>();
+                        vm.IconInfos = storeIcons;
+                    }
+                    else
+                    {
+                        vm.IconInfos = storeIcons;
+                    }
+                    break;
+                default: //默认系统项
+                    if (systemIcons == null)
+                    {
+                        vm.IconInfos = null;
+                        systemIcons = GetSysteIconInfos();
+                        vm.IconInfos = systemIcons;
+                    } else
+                    {
+                        vm.IconInfos = systemIcons;
+                    }
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 获取开始菜单路径下项目
+        /// </summary>
+        /// <returns></returns>
+        private void GetStartMenuInfos()
+        {
+            App.Current.Dispatcher.Invoke((Action)(() =>
+            {
+                StartMenuLoading.Visibility = Visibility.Visible;
+            }));
+
+            List<IconInfo> infos = new List<IconInfo>();
+            //获取开始菜单路径
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + "\\Programs";
+            //递归获取信息
+            GetInfos(path, infos);
+            App.Current.Dispatcher.Invoke((Action)(() =>
+            {
+                if (StartMenu.IsSelected)
+                {
+                    startMenuIcons = infos;
+                    vm.IconInfos = startMenuIcons;
+                }
+                StartMenuLoading.Visibility = Visibility.Collapsed;
+            }));
+            
+        }
+
+        /// <summary>
+        /// 递归获取文件信息
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="listInfos"></param>
+        private void GetInfos(string path, List<IconInfo> listInfos)
+        {
+            DirectoryInfo di = new DirectoryInfo(path);
+            FileSystemInfo[] fileInfoArr = di.GetFileSystemInfos();
+            foreach(FileSystemInfo fi in fileInfoArr)
+            {
+                path = fi.FullName;
+                if (File.Exists(path))
+                {
+                    string ext = Path.GetExtension(path).ToLower();
+                    if (".exe".Equals(ext) || ".lnk".Equals(ext))
+                    {
+                        try
                         {
-                            vm.Iconfonts = null;
-                            LoadingOnlineIcon();
-                        } else
-                        {
-                            vm.Iconfonts = customIcons;
-                            LoadingEle.Visibility = Visibility.Collapsed;
-                            CustomIcon.Visibility = Visibility.Visible;
+                            IconInfo iconInfo = CommonCode.GetIconInfoByPath_NoWrite(path);
+                            if (iconInfo.Path_NoWrite != null)
+                            {
+                                iconInfo.Content_NoWrite = iconInfo.Path_NoWrite + "\n" + iconInfo.Name_NoWrite;
+                                listInfos.Add(iconInfo);
+                            }
                         }
+                        catch (Exception) { }
                     }
-                    break;
-                default:
-                    if (CustomButton != null)
-                    {
-                        CustomButton.IsEnabled = false;
-                    }
-                    if (vm != null)
-                    {
-                        vm.Iconfonts = systemIcons;
-                    }
-                    break;
+                }
+                else if (Directory.Exists(path))
+                {
+                    GetInfos(path, listInfos);
+                }
             }
         }
 
-        private void Confirm_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 获取系统项目
+        /// </summary>
+        /// <returns></returns>
+        private List<IconInfo> GetSysteIconInfos()
         {
-            TabItem ti = this.MyTabControl.SelectedItem as TabItem;
-            int index;
-            switch (ti.Tag.ToString())
+            List<IconInfo> iconInfos = new List<IconInfo>();
+
+            Hashtable systemIcons = Constants.SYSTEM_ICONS;
+            IconInfo iconInfo;
+            foreach (object key in systemIcons.Keys)
             {
-                case "Custom":
-                    index = this.CustomIcon.IconListBox.SelectedIndex;
-                    if (index != -1)
-                    {
-                        menuInfo.MenuGeometry = customIcons[index].Text;
-                    }
-                    break;
-                default:
-                    index = this.CustomIcon.IconListBox.SelectedIndex;
-                    if (index != -1)
-                    {
-                        menuInfo.MenuGeometry = systemIcons[index].Text;
-                    }
-                    break;
+                string keyStr = key.ToString();
+                iconInfo = new IconInfo
+                {
+                    Name_NoWrite = systemIcons[key].ToString()
+                };
+                iconInfo.BitmapImage_NoWrite = new BitmapImage(
+                        new Uri("pack://application:,,,/GeekDesk;component/Resource/Image/SystemIcon/" + keyStr + ".png"
+                        , UriKind.RelativeOrAbsolute));
+                iconInfo.StartArg = keyStr;
+                iconInfo.Content_NoWrite = iconInfo.Name_NoWrite;
+                iconInfos.Add(iconInfo);
             }
-            this.Close();
+            return iconInfos;
         }
 
-
-        private static System.Windows.Window window = null;
-        public static void Show(List<IconfontInfo> listInfo, MenuInfo menuInfo)
+        public class SystemItemViewModel : INotifyPropertyChanged
         {
-            if (window == null || !window.Activate())
+            private List<IconInfo> iconInfos;
+            private AppConfig appConfig;
+
+            public SystemItemViewModel()
             {
-                window = new SystemItemWindow(listInfo, menuInfo);
+                this.AppConfig = MainWindow.appData.AppConfig;
             }
-            window.Show();
-            Keyboard.Focus(window);
-            ShowWindowFollowMouse.Show(window, MousePosition.LEFT_CENTER, 0, 0, false);
-        }
 
-        private void CustomButton_Click(object sender, RoutedEventArgs e)
-        {
-            HandyControl.Controls.Dialog.Show(new CustomIconUrlDialog(appConfig));
-        }
-
-
-        private void CheckSettingUrl_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (CheckSettingUrl.Text == "true")
-            {
-                LoadingOnlineIcon();
-            } else
-            {
-                LoadingEle.IsRunning = true;
-                CustomIcon.Visibility = Visibility.Collapsed;
-            }
-        }
-
-
-        private void LoadingOnlineIcon()
-        {
-            try
-            {
-                string svgJsStr = HttpUtil.Get(appConfig.CustomIconUrl);
-                string jsonStr = HttpUtil.Get(appConfig.CustomIconJsonUrl);
-                List<IconfontInfo> icons = SvgToGeometry.GetIconfonts(svgJsStr, jsonStr);
-                customIcons = icons;
-                vm.Iconfonts = customIcons;
-                LoadingEle.Visibility = Visibility.Collapsed;
-                CustomIcon.Visibility = Visibility.Visible;
-            }
-            catch (Exception e)
-            {
-                HandyControl.Controls.Growl.WarningGlobal("加载远程图标异常!");
-                LogUtil.WriteErrorLog(e, "加载远程图标异常!");
-            }
-        }
-
-        public void OnKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Escape)
-            {
-                this.Close();
-            }
-        }
-
-        public class IconfontViewModel : INotifyPropertyChanged
-        {
-            private List<IconfontInfo> iconfonts;
-            private string isSettingUrl;
-
-            public List<IconfontInfo> Iconfonts
+            public AppConfig AppConfig
             {
                 get
                 {
-                    return iconfonts;
+                    return appConfig;
                 }
                 set
                 {
-                    iconfonts = value;
-                    OnPropertyChanged("Iconfonts");
+                    appConfig = value;
+                    OnPropertyChanged("AppConfig");
                 }
             }
-
-            public string IsSettingUrl
+            public List<IconInfo> IconInfos
             {
                 get
                 {
-                    return isSettingUrl;
+                    return iconInfos;
                 }
                 set
                 {
-                    isSettingUrl = value;
-                    OnPropertyChanged("IsSettingUrl");
+                    iconInfos = value;
+                    OnPropertyChanged("IconInfos");
                 }
             }
 
@@ -222,6 +249,33 @@ namespace GeekDesk.Control.Windows
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+
+
+
+        private static System.Windows.Window window = null;
+        public static void Show()
+        {
+            if (window == null || !window.Activate())
+            {
+                window = new SystemItemWindow();
+            }
+            window.Show();
+            Keyboard.Focus(window);
+            ShowWindowFollowMouse.Show(window, MousePosition.LEFT_CENTER, 0, 0, false);
+        }
+
+
+        public void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                this.Close();
+            }
+        }
+
+
+
 
     }
 }

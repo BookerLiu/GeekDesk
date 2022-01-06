@@ -62,6 +62,7 @@ namespace GeekDesk
         /// </summary>
         private void LoadData()
         {
+            GC.KeepAlive(MainWindow.appData); // 持活
             this.DataContext = appData;
             if (appData.MenuList.Count == 0)
             {
@@ -130,7 +131,7 @@ namespace GeekDesk
                     {
                         if (MotionControl.hotkeyFinished)
                         {
-                            if (mainWindow.Visibility == Visibility.Collapsed || mainWindow.Opacity == 0)
+                            if (mainWindow.Visibility == Visibility.Collapsed || mainWindow.Opacity == 0 || MarginHide.isHide)
                             {
                                 ShowApp();
                             }
@@ -187,7 +188,7 @@ namespace GeekDesk
                         mainWindow.Opacity = 0;
                     }
                 };
-                Timeline.SetDesiredFrameRate(opacityAnimation, 30);
+                Timeline.SetDesiredFrameRate(opacityAnimation, 60);
                 mainWindow.BeginAnimation(OpacityProperty, opacityAnimation);
             } else
             {
@@ -335,6 +336,8 @@ namespace GeekDesk
             //{
             //    return;
             //}
+            //修改贴边隐藏状态为未隐藏
+            MarginHide.isHide = false;
             if (appData.AppConfig.FollowMouse)
             {
                 ShowWindowFollowMouse.Show(mainWindow, MousePosition.CENTER, 0, 0, false);

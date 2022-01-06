@@ -1,6 +1,7 @@
 ﻿using DraggAnimatedPanelExample;
 using GeekDesk.Constant;
 using GeekDesk.Control.Other;
+using GeekDesk.Control.Windows;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using HandyControl.Controls;
@@ -119,80 +120,96 @@ namespace GeekDesk.Control.UserControls.PannelCard
             try
             {
                 Process p = new Process();
-                p.StartInfo.FileName = icon.Path;
-                if (icon.IconType == IconType.OTHER)
-                {
-                    if (!File.Exists(icon.Path) && !Directory.Exists(icon.Path))
-                    {
-                        HandyControl.Controls.Growl.WarningGlobal("程序启动失败(文件路径不存在或已删除)!");
-                        return;
-                    }
-                    p.StartInfo.WorkingDirectory = icon.Path.Substring(0, icon.Path.LastIndexOf("\\"));
-                    switch (type)
-                    {
-                        case IconStartType.ADMIN_STARTUP:
-                            p.StartInfo.Arguments = "1";//启动参数
-                            p.StartInfo.Verb = "runas";
-                            p.StartInfo.CreateNoWindow = false; //设置显示窗口
-                            p.StartInfo.UseShellExecute = false;//不使用操作系统外壳程序启动进程
-                            p.StartInfo.ErrorDialog = false;
-                            if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
-                            {
-                                //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
-                                if (appData.AppConfig.MarginHide)
-                                {
-                                    if (!MainWindow.hide.IsMargin())
-                                    {
-                                        MainWindow.HideApp();
-                                    }
-                                }
-                                else
-                                {
-                                    MainWindow.HideApp();
-                                }
 
-                            }
-                            break;// c#好像不能case穿透
-                        case IconStartType.DEFAULT_STARTUP:
-                            if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
-                            {
-                                //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
-                                if (appData.AppConfig.MarginHide)
-                                {
-                                    if (!MainWindow.hide.IsMargin())
-                                    {
-                                        MainWindow.HideApp();
-                                    }
-                                } else
-                                {
-                                    MainWindow.HideApp();
-                                }
-                            }
-                            break;
-                        case IconStartType.SHOW_IN_EXPLORE:
-                            p.StartInfo.FileName = "Explorer.exe";
-                            p.StartInfo.Arguments = "/e,/select," + icon.Path;
-                            break;
-                    }
+                string startArg = icon.StartArg;
+                
+                if (Constants.SYSTEM_ICONS.ContainsKey(startArg))
+                {
+                    StartSystemApp(startArg, type);
                 } else
                 {
-                    if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
+                    p.StartInfo.FileName = icon.Path;
+                    if (!StringUtil.IsEmpty(icon.StartArg))
                     {
-                        //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
-                        if (appData.AppConfig.MarginHide)
+                        p.StartInfo.Arguments = icon.StartArg;
+                    }
+                    if (icon.IconType == IconType.OTHER)
+                    {
+                        if (!File.Exists(icon.Path) && !Directory.Exists(icon.Path))
                         {
-                            if (!MainWindow.hide.IsMargin())
+                            HandyControl.Controls.Growl.WarningGlobal("程序启动失败(文件路径不存在或已删除)!");
+                            return;
+                        }
+                        p.StartInfo.WorkingDirectory = icon.Path.Substring(0, icon.Path.LastIndexOf("\\"));
+                        switch (type)
+                        {
+                            case IconStartType.ADMIN_STARTUP:
+                                //p.StartInfo.Arguments = "1";//启动参数
+                                p.StartInfo.Verb = "runas";
+                                p.StartInfo.CreateNoWindow = false; //设置显示窗口
+                                p.StartInfo.UseShellExecute = false;//不使用操作系统外壳程序启动进程
+                                p.StartInfo.ErrorDialog = false;
+                                if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
+                                {
+                                    //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
+                                    if (appData.AppConfig.MarginHide)
+                                    {
+                                        if (!MainWindow.hide.IsMargin())
+                                        {
+                                            MainWindow.HideApp();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        MainWindow.HideApp();
+                                    }
+
+                                }
+                                break;// c#好像不能case穿透
+                            case IconStartType.DEFAULT_STARTUP:
+                                if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
+                                {
+                                    //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
+                                    if (appData.AppConfig.MarginHide)
+                                    {
+                                        if (!MainWindow.hide.IsMargin())
+                                        {
+                                            MainWindow.HideApp();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        MainWindow.HideApp();
+                                    }
+                                }
+                                break;
+                            case IconStartType.SHOW_IN_EXPLORE:
+                                p.StartInfo.FileName = "Explorer.exe";
+                                p.StartInfo.Arguments = "/e,/select," + icon.Path;
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
+                        {
+                            //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
+                            if (appData.AppConfig.MarginHide)
+                            {
+                                if (!MainWindow.hide.IsMargin())
+                                {
+                                    MainWindow.HideApp();
+                                }
+                            }
+                            else
                             {
                                 MainWindow.HideApp();
                             }
                         }
-                        else
-                        {
-                            MainWindow.HideApp();
-                        }
                     }
+                    p.Start();
                 }
-                p.Start();
+                
                 icon.Count++;
             }
             catch (Exception e)
@@ -204,7 +221,68 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
 
 
+        private void StartSystemApp(string startArg, IconStartType type)
+        {
+            if (type == IconStartType.SHOW_IN_EXPLORE)
+            {
+                Growl.WarningGlobal("系统项目不支持打开文件位置操作!");
+                return;
+            }
+            switch (startArg)
+            {
+                case "Calculator":
+                    Process.Start("calc.exe");
+                    break;
+                case "Computer":
+                    Process.Start("explorer.exe");
+                    break;
+                case "GroupPolicy":
+                    Process.Start("gpedit.msc");
+                    break;
+                case "Notepad":
+                    Process.Start("notepad");
+                    break;
+                case "Network":
+                    Process.Start("ncpa.cpl");
+                    break;
+                case "RecycleBin":
+                    Process.Start("shell:RecycleBinFolder");
+                    break;
+                case "Registry":
+                    Process.Start("regedit.exe");
+                    break;
+                case "Mstsc":
+                    if (type == IconStartType.ADMIN_STARTUP)
+                    {
+                        Process.Start("mstsc", "-admin");
+                    } else
+                    {
+                        Process.Start("mstsc");
+                    }
+                    break;
+                case "Control":
+                    Process.Start("Control");
+                    break;
+                case "CMD":
+                    if (type == IconStartType.ADMIN_STARTUP)
+                    {
+                        Process process = new Process();
+                        process.StartInfo.FileName = "cmd.exe";
+                        process.StartInfo.Verb = "runas";
+                        process.Start();
+                    } else
+                    {
+                        Process.Start("cmd");
+                    }
+                    break;
+            }
+        }
 
+        /// <summary>
+        /// 拖动添加项目
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Wrap_Drop(object sender, DragEventArgs e)
         {
             Array dropObject = (System.Array)e.Data.GetData(DataFormats.FileDrop);
@@ -212,36 +290,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
             foreach (object obj in dropObject)
             {
                 string path = (string)obj;
-                string tempPath = path;
-
-                //string base64 = ImageUtil.FileImageToBase64(path, System.Drawing.Imaging.ImageFormat.Png);
-                string ext = "";
-                if (!ImageUtil.IsSystemItem(path))
-                {
-                    ext = System.IO.Path.GetExtension(path).ToLower();
-                }
-
-                if (".lnk".Equals(ext))
-                {
-                    string targetPath = FileUtil.GetTargetPathByLnk(path);
-                    if (targetPath!=null)
-                    {
-                        path = targetPath;
-                    }
-                }
-
-                BitmapImage bi = ImageUtil.GetBitmapIconByPath(path);
-                IconInfo iconInfo = new IconInfo
-                {
-                    Path = path,
-                    BitmapImage = bi
-                };
-                iconInfo.DefaultImage = iconInfo.ImageByteArr;
-                iconInfo.Name = System.IO.Path.GetFileNameWithoutExtension(tempPath);
-                if (StringUtil.IsEmpty(iconInfo.Name))
-                {
-                    iconInfo.Name = path;
-                }
+                IconInfo iconInfo = CommonCode.GetIconInfoByPath(path);
                 MainWindow.appData.MenuList[appData.AppConfig.SelectedMenuIndex].IconList.Add(iconInfo);
                 CommonCode.SaveAppData(MainWindow.appData);
             }
@@ -430,10 +479,25 @@ namespace GeekDesk.Control.UserControls.PannelCard
             sb2.Remove();
         }
 
+        /// <summary>
+        /// 添加URL项目
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddUrlIcon(object sender, RoutedEventArgs e)
         {
             IconInfoUrlDialog urlDialog = new IconInfoUrlDialog();
             urlDialog.dialog = HandyControl.Controls.Dialog.Show(urlDialog, "IconInfoDialog");
+        }
+
+        /// <summary>
+        /// 添加系统项目
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AddSystemIcon(object sender, RoutedEventArgs e)
+        {
+            SystemItemWindow.Show();
         }
     }
 }
