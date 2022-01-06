@@ -123,15 +123,15 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
                 string startArg = icon.StartArg;
                 
-                if (Constants.SYSTEM_ICONS.ContainsKey(startArg))
+                if (startArg!=null && Constants.SYSTEM_ICONS.ContainsKey(startArg))
                 {
                     StartSystemApp(startArg, type);
                 } else
                 {
                     p.StartInfo.FileName = icon.Path;
-                    if (!StringUtil.IsEmpty(icon.StartArg))
+                    if (!StringUtil.IsEmpty(startArg))
                     {
-                        p.StartInfo.Arguments = icon.StartArg;
+                        p.StartInfo.Arguments = startArg;
                     }
                     if (icon.IconType == IconType.OTHER)
                     {
