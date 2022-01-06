@@ -34,9 +34,13 @@ namespace GeekDesk.Thread
 
         public static void Dispose()
         {
-            m_GlobalHook.MouseDownExt -= M_GlobalHook_MouseDownExt;
-            m_GlobalHook.Dispose();
-            dispatcher.InvokeShutdown();
+            try
+            {
+                m_GlobalHook.MouseDownExt -= M_GlobalHook_MouseDownExt;
+                m_GlobalHook.Dispose();
+                dispatcher.InvokeShutdown();
+            } catch { }
+            
         }
 
         /// <summary>
