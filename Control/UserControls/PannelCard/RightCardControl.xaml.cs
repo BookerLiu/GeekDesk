@@ -276,6 +276,18 @@ namespace GeekDesk.Control.UserControls.PannelCard
                     }
                     break;
             }
+            //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
+            if (appData.AppConfig.MarginHide)
+            {
+                if (!MainWindow.hide.IsMargin())
+                {
+                    MainWindow.HideApp();
+                }
+            }
+            else
+            {
+                MainWindow.HideApp();
+            }
         }
 
         /// <summary>
