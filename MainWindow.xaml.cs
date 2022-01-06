@@ -491,6 +491,7 @@ namespace GeekDesk
             {
                 MouseHookThread.Dispose();
             }
+            hide.TimerStop();
 
             Process p = new Process();
             p.StartInfo.FileName = Constants.APP_DIR + "GeekDesk.exe";
