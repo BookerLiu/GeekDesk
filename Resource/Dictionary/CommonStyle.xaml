@@ -20,14 +20,25 @@
     </Style>
 
     <LinearGradientBrush x:Key="BtnBG" Opacity="0.97">
-        <GradientStop Color="#84fab0" Offset="0"/>
-        <GradientStop Color="#8fd3f4" Offset="1"/>
+        <GradientStop Color="White" Offset="0"/>
+        <GradientStop Color="White" Offset="1"/>
     </LinearGradientBrush>
 
     <!--按钮样式-->
     <Style x:Key="Btn1" TargetType="Button" BasedOn="{StaticResource ButtonInfo}">
         <Setter Property="Background" Value="{StaticResource BtnBG}"/>
-        <Setter Property="Foreground" Value="Gray"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <SolidColorBrush Color="#E5E5E2"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Foreground" Value="Black"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#E5E5E2"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <!--菜单样式-->
