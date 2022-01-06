@@ -39,7 +39,9 @@ namespace GeekDesk.Thread
                 m_GlobalHook.MouseDownExt -= M_GlobalHook_MouseDownExt;
                 m_GlobalHook.Dispose();
                 dispatcher.InvokeShutdown();
-            } catch { }
+                dispatcher = null;
+            }
+            catch { }
             
         }
 

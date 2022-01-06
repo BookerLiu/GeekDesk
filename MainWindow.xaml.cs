@@ -406,6 +406,7 @@ namespace GeekDesk
             {
                 MouseHookThread.Dispose();
             }
+            hide.TimerStop();
             Application.Current.Shutdown();
         }
 

@@ -167,6 +167,7 @@ namespace GeekDesk.Util
 
         public void TimerStop()
         {
+            if (timer == null) return;
             timer.Stop();
             timer.Dispose();
             timer = null;
