@@ -139,7 +139,7 @@ namespace GeekDesk.Control.Windows
 
         private void CustomButton_Click(object sender, RoutedEventArgs e)
         {
-            HandyControl.Controls.Dialog.Show(new CustomIconUrlDialog(appConfig));
+            HandyControl.Controls.Dialog.Show(new CustomIconUrlDialog(appConfig), "IconUrlDialog");
         }
 
 
