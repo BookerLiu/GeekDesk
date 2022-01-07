@@ -253,13 +253,10 @@ namespace GeekDesk.Control.UserControls.Config
         {
             if (appConfig.MarginHide)
             {
-                MainWindow.hide.TimerSet();
+                MarginHide.StartHide();
             } else
             {
-                if (MainWindow.hide.timer != null)
-                {
-                    MainWindow.hide.TimerStop();
-                }
+                MarginHide.StopHide();
             }
         }
 

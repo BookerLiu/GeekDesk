@@ -24,6 +24,7 @@ namespace GeekDesk.Thread
         public static void MiddleHook()
         {
             //使用dispatcher来单独监听UI线程  防止程序卡顿
+            if (dispatcher != null) return;
             dispatcher = DispatcherBuild.Build();
             m_GlobalHook = Hook.GlobalEvents();
             dispatcher.Invoke((Action)(() =>
@@ -38,6 +39,7 @@ namespace GeekDesk.Thread
             {
                 m_GlobalHook.MouseDownExt -= M_GlobalHook_MouseDownExt;
                 m_GlobalHook.Dispose();
+                m_GlobalHook = null;
                 dispatcher.InvokeShutdown();
                 dispatcher = null;
             }
@@ -60,7 +62,7 @@ namespace GeekDesk.Thread
                     {
                         if (MainWindow.mainWindow.Visibility == Visibility.Collapsed 
                         || MainWindow.mainWindow.Opacity == 0 
-                        || MarginHide.isHide)
+                        || MarginHide.IS_HIDE)
                         {
                             MainWindow.ShowApp();
                         }
