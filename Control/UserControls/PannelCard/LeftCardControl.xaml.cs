@@ -204,6 +204,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
         private void menus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            appData.AppConfig.SelectedMenuIcons = null;
             //设置对应菜单的图标列表
             if (MenuListBox.SelectedIndex == -1)
             {

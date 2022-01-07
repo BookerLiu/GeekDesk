@@ -26,27 +26,28 @@ namespace GeekDesk.Util
 
     public class MarginHide
     {
-        readonly Window window;//定义使用该方法的窗体
+        private static Window window;//定义使用该方法的窗体
 
-        private readonly int hideTime = 200;
+        private static readonly int hideTime = 200;
+        private static readonly int fadeHideTime = 180;
+        private static readonly int fadeShowTime = 200;
+        private static readonly int taskTime = 250;
 
-        private readonly int fadeHideTime = 180;
+        private static double showMarginWidth = 1;
 
-        private readonly int fadeShowTime = 200;
+        public static bool IS_RUN = false;
+        public static bool IS_HIDE = false;
 
-        private readonly int taskTime = 250;
+        private static Timer timer = null;
 
-        private double showMarginWidth = 1;
-
-#pragma warning disable CS0414 // 字段“MarginHide.isHide”已被赋值，但从未使用过它的值
-        public static bool isHide = false;
-#pragma warning restore CS0414 // 字段“MarginHide.isHide”已被赋值，但从未使用过它的值
-
-        public Timer timer;
-        //构造函数，传入将要匹配的窗体      
-        public MarginHide(Window window)
+        public static void ReadyHide(Window window)
         {
-            this.window = window;
+            MarginHide.window = window;
+            if (timer != null) return;
+            timer = new Timer();//添加timer计时器，隐藏功能
+            timer.Interval = taskTime;
+            timer.Tick += HideWindow;
+            timer.Start();
         }
 
 
@@ -54,7 +55,7 @@ namespace GeekDesk.Util
         /// 窗体是否贴边
         /// </summary>
         /// <returns></returns>
-        public bool IsMargin()
+        public static bool IsMargin()
         {
             double screenLeft = SystemParameters.VirtualScreenLeft;
             double screenTop = SystemParameters.VirtualScreenTop;
@@ -74,9 +75,9 @@ namespace GeekDesk.Util
    
 
         #region 窗体贴边隐藏功能
-        private void TimerDealy(object o, EventArgs e)
+        private static void HideWindow(object o, EventArgs e)
         {
-            if (window.Visibility != Visibility.Visible) return;
+            if (window.Visibility != Visibility.Visible || !IS_RUN) return;
 
             double screenLeft = SystemParameters.VirtualScreenLeft;
             double screenTop = SystemParameters.VirtualScreenTop;
@@ -95,12 +96,12 @@ namespace GeekDesk.Util
 
             //鼠标不在窗口上
             if ((mouseX < windowLeft || mouseX > windowLeft + windowWidth
-                || mouseY < windowTop || mouseY > windowTop + windowHeight) && !isHide)
+                || mouseY < windowTop || mouseY > windowTop + windowHeight) && !IS_HIDE)
             {
                 //上方隐藏条件
                 if (windowTop <= screenTop)
                 {
-                    isHide = true;
+                    IS_HIDE = true;
                     FadeAnimation(1, 0);
                     HideAnimation(windowTop, screenTop - windowHeight + showMarginWidth, Window.TopProperty, HideType.TOP_HIDE);
                     return;
@@ -108,7 +109,7 @@ namespace GeekDesk.Util
                 //左侧隐藏条件
                 if (windowLeft <= screenLeft)
                 {
-                    isHide = true;
+                    IS_HIDE = true;
                     FadeAnimation(1, 0);
                     HideAnimation(windowLeft, screenLeft - windowWidth + showMarginWidth, Window.LeftProperty, HideType.LEFT_HIDE);
                     return;
@@ -116,18 +117,18 @@ namespace GeekDesk.Util
                 //右侧隐藏条件
                 if (windowLeft + windowWidth + Math.Abs(screenLeft) >= screenWidth)
                 {
-                    isHide = true;
+                    IS_HIDE = true;
                     FadeAnimation(1, 0);
                     HideAnimation(windowLeft, screenWidth - Math.Abs(screenLeft) - showMarginWidth, Window.LeftProperty, HideType.RIGHT_HIDE);
                     return;
                 }
             } else if (mouseX >= windowLeft && mouseX <= windowLeft + windowWidth 
-                && mouseY >= windowTop && mouseY <= windowTop + windowHeight && isHide)
+                && mouseY >= windowTop && mouseY <= windowTop + windowHeight && IS_HIDE)
             {
                 //上方显示
                 if (windowTop <= screenTop - showMarginWidth)
                 {
-                    isHide = false;
+                    IS_HIDE = false;
                     HideAnimation(windowTop, screenTop, Window.TopProperty, HideType.TOP_SHOW);
                     FadeAnimation(0, 1);
                     return;
@@ -135,7 +136,7 @@ namespace GeekDesk.Util
                 //左侧显示
                 if (windowLeft <= screenLeft - showMarginWidth)
                 {
-                    isHide = false;
+                    IS_HIDE = false;
                     HideAnimation(windowLeft, screenLeft, Window.LeftProperty, HideType.LEFT_SHOW);
                     FadeAnimation(0, 1);
                     return;
@@ -143,7 +144,7 @@ namespace GeekDesk.Util
                 //右侧显示
                 if (windowLeft + Math.Abs(screenLeft) == screenWidth - showMarginWidth)
                 {
-                    isHide = false;
+                    IS_HIDE = false;
                     HideAnimation(windowLeft, screenWidth - Math.Abs(screenLeft) - windowWidth, Window.LeftProperty, HideType.RIGHT_SHOW);
                     FadeAnimation(0, 1);
                     return;
@@ -154,64 +155,57 @@ namespace GeekDesk.Util
         #endregion 
 
 
-        public void TimerSet()
+        public static void StartHide()
         {
-            if (timer != null) return;
-            timer = new Timer();//添加timer计时器，隐藏功能
-            #region 计时器设置，隐藏功能
-            timer.Interval = taskTime;
-            timer.Tick += TimerDealy;
-            timer.Start();
-            #endregion
+            IS_RUN = true;
         }
 
-        public void TimerStop()
+        public static void StopHide()
         {
-            if (timer == null) return;
-            timer.Stop();
-            timer.Dispose();
-            timer = null;
+            IS_RUN = false;
             //功能关闭 如果界面是隐藏状态  那么要显示界面 ↓
-
-            double screenLeft = SystemParameters.VirtualScreenLeft;
-            double screenTop = SystemParameters.VirtualScreenTop;
-            double screenWidth = SystemParameters.VirtualScreenWidth;
-
-            double windowWidth = window.Width;
-
-            double windowTop = window.Top;
-            double windowLeft = window.Left;
-
-            //左侧显示
-            if (windowLeft <= screenLeft - showMarginWidth)
+            if (IS_HIDE)
             {
-                isHide = false;
-                FadeAnimation(0, 1);
-                HideAnimation(windowLeft, screenLeft, Window.LeftProperty, HideType.LEFT_SHOW);
-                return;
-            }
+                double screenLeft = SystemParameters.VirtualScreenLeft;
+                double screenTop = SystemParameters.VirtualScreenTop;
+                double screenWidth = SystemParameters.VirtualScreenWidth;
 
-            //上方显示
-            if (windowTop <= screenTop - showMarginWidth)
-            {
-                isHide = false;
-                FadeAnimation(0, 1);
-                HideAnimation(windowTop, screenTop, Window.TopProperty, HideType.TOP_SHOW);
-                return;
-            }
+                double windowWidth = window.Width;
 
-            //右侧显示
-            if (windowLeft + Math.Abs(screenLeft) == screenWidth - showMarginWidth)
-            {
-                isHide = false;
-                FadeAnimation(0, 1);
-                HideAnimation(windowLeft, screenWidth - Math.Abs(screenLeft) - windowWidth, Window.LeftProperty, HideType.RIGHT_SHOW);
-                return;
+                double windowTop = window.Top;
+                double windowLeft = window.Left;
+
+                //左侧显示
+                if (windowLeft <= screenLeft - showMarginWidth)
+                {
+                    IS_HIDE = false;
+                    FadeAnimation(0, 1);
+                    HideAnimation(windowLeft, screenLeft, Window.LeftProperty, HideType.LEFT_SHOW);
+                    return;
+                }
+
+                //上方显示
+                if (windowTop <= screenTop - showMarginWidth)
+                {
+                    IS_HIDE = false;
+                    FadeAnimation(0, 1);
+                    HideAnimation(windowTop, screenTop, Window.TopProperty, HideType.TOP_SHOW);
+                    return;
+                }
+
+                //右侧显示
+                if (windowLeft + Math.Abs(screenLeft) == screenWidth - showMarginWidth)
+                {
+                    IS_HIDE = false;
+                    FadeAnimation(0, 1);
+                    HideAnimation(windowLeft, screenWidth - Math.Abs(screenLeft) - windowWidth, Window.LeftProperty, HideType.RIGHT_SHOW);
+                    return;
+                }
             }
         }
 
 
-        private void HideAnimation(double from, double to, DependencyProperty property, HideType hideType)
+        private static void HideAnimation(double from, double to, DependencyProperty property, HideType hideType)
         {
 
             double toTemp = to;
@@ -261,7 +255,7 @@ namespace GeekDesk.Util
             window.BeginAnimation(property, da);
         }
 
-        private void FadeAnimation(double from, double to)
+        private static void FadeAnimation(double from, double to)
         {
             double time;
             if (to == 0D)

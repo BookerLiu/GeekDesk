@@ -38,7 +38,6 @@ namespace GeekDesk
         public static int hotKeyId = -1;
         public static int toDoHotKeyId = -1;
         public static MainWindow mainWindow;
-        public static MarginHide hide;
         public MainWindow()
         {
             LoadData();
@@ -50,10 +49,10 @@ namespace GeekDesk
             ToDoTask.BackLogCheck();
 
             ////实例化隐藏 Hide类，进行时间timer设置
-            hide = new MarginHide(this);
+            MarginHide.ReadyHide(this);
             if (appData.AppConfig.MarginHide)
             {
-                hide.TimerSet();
+                MarginHide.StartHide();
             }
         }
 
@@ -62,7 +61,6 @@ namespace GeekDesk
         /// </summary>
         private void LoadData()
         {
-            GC.KeepAlive(MainWindow.appData); // 持活
             this.DataContext = appData;
             if (appData.MenuList.Count == 0)
             {
@@ -131,7 +129,7 @@ namespace GeekDesk
                     {
                         if (MotionControl.hotkeyFinished)
                         {
-                            if (mainWindow.Visibility == Visibility.Collapsed || mainWindow.Opacity == 0 || MarginHide.isHide)
+                            if (mainWindow.Visibility == Visibility.Collapsed || mainWindow.Opacity == 0 || MarginHide.IS_HIDE)
                             {
                                 ShowApp();
                             }
@@ -337,7 +335,7 @@ namespace GeekDesk
             //    return;
             //}
             //修改贴边隐藏状态为未隐藏
-            MarginHide.isHide = false;
+            MarginHide.IS_HIDE = false;
             if (appData.AppConfig.FollowMouse)
             {
                 ShowWindowFollowMouse.Show(mainWindow, MousePosition.CENTER, 0, 0, false);
@@ -395,20 +393,6 @@ namespace GeekDesk
             p.Start();
         }
 
-        /// <summary>
-        /// 右键任务栏图标退出
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ExitApp(object sender, RoutedEventArgs e)
-        {
-            if (appData.AppConfig.MouseMiddleShow)
-            {
-                MouseHookThread.Dispose();
-            }
-            hide.TimerStop();
-            Application.Current.Shutdown();
-        }
 
 
 
@@ -455,7 +439,7 @@ namespace GeekDesk
             if (appData.AppConfig.AppHideType == AppHideType.LOST_FOCUS)
             {
                 //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
-                if (appData.AppConfig.MarginHide && !hide.IsMargin())
+                if (appData.AppConfig.MarginHide && !MarginHide.IS_HIDE)
                 {
                     this.Visibility = Visibility.Collapsed;
                 }
@@ -480,6 +464,21 @@ namespace GeekDesk
             }
         }
 
+
+
+        /// <summary>
+        /// 右键任务栏图标退出
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExitApp(object sender, RoutedEventArgs e)
+        {
+            if (appData.AppConfig.MouseMiddleShow)
+            {
+                MouseHookThread.Dispose();
+            }
+            Application.Current.Shutdown();
+        }
         /// <summary>
         /// 重启
         /// </summary>
@@ -491,7 +490,6 @@ namespace GeekDesk
             {
                 MouseHookThread.Dispose();
             }
-            hide.TimerStop();
 
             Process p = new Process();
             p.StartInfo.FileName = Constants.APP_DIR + "GeekDesk.exe";
