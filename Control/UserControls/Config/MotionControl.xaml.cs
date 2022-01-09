@@ -62,7 +62,7 @@ namespace GeekDesk.Control.UserControls.Config
                 main = true;
             }
 
-            if (prevKeyTemp == Key.None || prevKeyTemp!=downKey)
+            if (prevKeyTemp == Key.None || prevKeyTemp != downKey)
             {
                 if (hotkeyFinished)
                 {
@@ -71,7 +71,8 @@ namespace GeekDesk.Control.UserControls.Config
                         appConfig.Hotkey = 0;
                         appConfig.HotkeyStr = "";
                         appConfig.HotkeyModifiers = 0;
-                    } else
+                    }
+                    else
                     {
                         appConfig.ToDoHotkey = 0;
                         appConfig.ToDoHotkeyStr = "";
@@ -80,7 +81,7 @@ namespace GeekDesk.Control.UserControls.Config
                     hotkeyFinished = false;
                 }
                 //首次按下按键
-                if ((main && (appConfig.HotkeyStr == null || appConfig.HotkeyStr.Length == 0)) 
+                if ((main && (appConfig.HotkeyStr == null || appConfig.HotkeyStr.Length == 0))
                     || (!main && (appConfig.ToDoHotkeyStr == null || appConfig.ToDoHotkeyStr.Length == 0)))
                 {
                     if (CheckModifierKeys(downKey))
@@ -90,7 +91,8 @@ namespace GeekDesk.Control.UserControls.Config
                         {
                             appConfig.HotkeyStr = GetKeyName(downKey);
                             appConfig.HotkeyModifiers = GetModifierKeys(downKey);
-                        } else
+                        }
+                        else
                         {
                             appConfig.ToDoHotkeyStr = GetKeyName(downKey);
                             appConfig.ToDoHotkeyModifiers = GetModifierKeys(downKey);
@@ -111,7 +113,8 @@ namespace GeekDesk.Control.UserControls.Config
                         {
                             appConfig.Hotkey = downKey;
                             appConfig.HotkeyStr += downKey.ToString();
-                        } else
+                        }
+                        else
                         {
                             appConfig.ToDoHotkey = downKey;
                             appConfig.ToDoHotkeyStr += downKey.ToString();
@@ -125,12 +128,13 @@ namespace GeekDesk.Control.UserControls.Config
                         {
                             appConfig.HotkeyStr += GetKeyName(downKey);
                             appConfig.HotkeyModifiers |= GetModifierKeys(downKey);
-                        } else
+                        }
+                        else
                         {
                             appConfig.ToDoHotkeyStr += GetKeyName(downKey);
                             appConfig.ToDoHotkeyModifiers |= GetModifierKeys(downKey);
                         }
-                        
+
                         prevKeyTemp = downKey;
                         keysTemp.Add(e);
                     }
@@ -143,7 +147,8 @@ namespace GeekDesk.Control.UserControls.Config
             if (key == Key.LeftCtrl || key == Key.RightCtrl)
             {
                 return "Ctrl + ";
-            } else if (key == Key.LWin || key == Key.RWin)
+            }
+            else if (key == Key.LWin || key == Key.RWin)
             {
                 return "Win + ";
             }
@@ -187,7 +192,7 @@ namespace GeekDesk.Control.UserControls.Config
 
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        private  void HotKeyUp(object sender, KeyEventArgs e)
+        private void HotKeyUp(object sender, KeyEventArgs e)
         {
             string tag = (sender as TextBox).Tag.ToString();
             bool main = false;
@@ -195,7 +200,7 @@ namespace GeekDesk.Control.UserControls.Config
             {
                 main = true;
             }
-            lock(this)
+            lock (this)
             {
                 bool allKeyUp = true;
                 //判断所有键是否都松开
@@ -221,7 +226,8 @@ namespace GeekDesk.Control.UserControls.Config
                             GlobalHotKey.Dispose(MainWindow.hotKeyId);
                         }
                         MainWindow.RegisterHotKey(false);
-                    } else
+                    }
+                    else
                     {
                         if (MainWindow.toDoHotKeyId != -1)
                         {
@@ -231,7 +237,7 @@ namespace GeekDesk.Control.UserControls.Config
                         MainWindow.RegisterCreateToDoHotKey(false);
                     }
 
-                    
+
                 }
             }
         }
@@ -253,13 +259,11 @@ namespace GeekDesk.Control.UserControls.Config
         {
             if (appConfig.MarginHide)
             {
-                MainWindow.hide.TimerSet();
-            } else
+                MarginHide.StartHide();
+            }
+            else
             {
-                if (MainWindow.hide.timer != null)
-                {
-                    MainWindow.hide.TimerStop();
-                }
+                MarginHide.StopHide();
             }
         }
 
@@ -284,7 +288,8 @@ namespace GeekDesk.Control.UserControls.Config
             if (appConfig.MouseMiddleShow)
             {
                 MouseHookThread.MiddleHook();
-            } else
+            }
+            else
             {
                 MouseHookThread.Dispose();
             }

@@ -1,6 +1,7 @@
 ﻿
 using GeekDesk.Constant;
 using GeekDesk.Util;
+using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -70,7 +71,22 @@ namespace GeekDesk.ViewModel
 
         private bool showBarIcon = true; //显示托盘图标  默认显示
 
+        private bool doubleOpen = false; //双击打开项目  默认关闭
+
         #region GetSet
+        public bool DoubleOpen
+        {
+            get
+            {
+                return doubleOpen;
+            }
+            set
+            {
+                doubleOpen = value;
+                OnPropertyChanged("DoubleOpen");
+            }
+        }
+
         public bool ShowBarIcon
         {
             get
@@ -105,18 +121,19 @@ namespace GeekDesk.ViewModel
                 if (imageWidth == 0)
                 {
                     return (int)CommonEnum.IMAGE_WIDTH;
-                } else
+                }
+                else
                 {
                     return imageWidth;
                 }
-                
+
             }
             set
             {
                 imageWidth = value;
                 //同时设置高度
                 ImageHeight = value;
-                
+
 
                 //计算 容器宽度因子
                 double i = ((double)imageWidth - (double)CommonEnum.IMAGE_WIDTH) / 5d;
@@ -126,7 +143,7 @@ namespace GeekDesk.ViewModel
                 {
                     i /= 10d;
                 }
-                
+
                 if (i > 0d)
                 {
                     s -= i;
@@ -380,7 +397,8 @@ namespace GeekDesk.ViewModel
                 if (blurEffect)
                 {
                     BlurValue = 100;
-                } else
+                }
+                else
                 {
                     BlurValue = 0;
                 }
@@ -552,7 +570,8 @@ namespace GeekDesk.ViewModel
                     bacImgName = "系统默认";
                     //Image image = ImageUtil.ByteArrayToImage(Convert.FromBase64String(Constants.DEFAULT_BAC_IMAGE_BASE64));
                     return ImageUtil.ByteArrToImage(Convert.FromBase64String(Constants.DEFAULT_BAC_IMAGE_BASE64));
-                } else
+                }
+                else
                 {
                     return ImageUtil.ByteArrToImage(ImageByteArr);
                 }
@@ -707,5 +726,9 @@ namespace GeekDesk.ViewModel
 
         #endregion
 
+        public override String ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

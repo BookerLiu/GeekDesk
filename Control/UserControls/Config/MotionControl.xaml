@@ -41,7 +41,17 @@
             </hc:UniformSpacingPanel>
 
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
-                <CheckBox  Content="鼠标中间呼出" Checked="MouseMiddle_Changed" Unchecked="MouseMiddle_Changed" IsChecked="{Binding MouseMiddleShow}">
+                <CheckBox  Content="鼠标中间呼出" Click="MouseMiddle_Changed" IsChecked="{Binding MouseMiddleShow}">
+                    <CheckBox.Background>
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                            <GradientStop Color="#FF9EA3A6"/>
+                        </LinearGradientBrush>
+                    </CheckBox.Background>
+                </CheckBox>
+            </hc:UniformSpacingPanel>
+
+            <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0"  Grid.ColumnSpan="4">
+                <CheckBox  Content="双击启动" IsChecked="{Binding DoubleOpen}">
                     <CheckBox.Background>
                         <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
                             <GradientStop Color="#FF9EA3A6"/>
@@ -51,7 +61,7 @@
             </hc:UniformSpacingPanel>
 
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
-                <CheckBox  Content="贴边隐藏" IsChecked="{Binding MarginHide}" Checked="MarginHide_Changed" Unchecked="MarginHide_Changed">
+                <CheckBox  Content="贴边隐藏" IsChecked="{Binding MarginHide}" Click="MarginHide_Changed">
                     <CheckBox.Background>
                         <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
                             <GradientStop Color="#FF9EA3A6"/>
@@ -61,7 +71,7 @@
             </hc:UniformSpacingPanel>
 
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
-                <CheckBox  Content="主窗口动画效果" IsChecked="{Binding AppAnimation}" Checked="Animation_Checked">
+                <CheckBox  Content="主窗口动画效果" IsChecked="{Binding AppAnimation}" Click="Animation_Checked">
                     <CheckBox.Background>
                         <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
                             <GradientStop Color="#FF9EA3A6"/>
@@ -69,7 +79,7 @@
                     </CheckBox.Background>
                 </CheckBox>
             </hc:UniformSpacingPanel>
-            
+
             <hc:UniformSpacingPanel Spacing="10" Margin="0,10,0,0" Grid.ColumnSpan="4">
                 <TextBlock Text="面板关闭方式" VerticalAlignment="Center"/>
             </hc:UniformSpacingPanel>
@@ -102,8 +112,8 @@
                         />
             </hc:UniformSpacingPanel>
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
-            <TextBlock Text="新建待办:"  Width="55"/>
-            <hc:TextBox HorizontalAlignment="Left" 
+                <TextBlock Text="新建待办:"  Width="55"/>
+                <hc:TextBox HorizontalAlignment="Left" 
                         Tag="ToDo"
                         VerticalAlignment="Top" 
                         IsReadOnly="True" 
@@ -113,9 +123,9 @@
                         KeyDown="HotKeyDown"
                         KeyUp="HotKeyUp"
                         />
-        </hc:UniformSpacingPanel>
+            </hc:UniformSpacingPanel>
         </StackPanel>
     </Grid>
-   
-   
+
+
 </UserControl>
