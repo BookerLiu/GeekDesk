@@ -122,21 +122,15 @@ namespace GeekDesk.Control.UserControls.PannelCard
             {
                 using (Process p = new Process())
                 {
-                    p.StartInfo.UseShellExecute = true;
-
                     string startArg = icon.StartArg;
 
-                    if (startArg != null && Constants.SYSTEM_ICONS != null
-                        && Constants.SYSTEM_ICONS.ContainsKey(startArg))
+                    if (startArg != null && Constants.SYSTEM_ICONS.ContainsKey(startArg))
                     {
                         StartSystemApp(startArg, type);
                     }
                     else
                     {
                         p.StartInfo.FileName = icon.Path;
-                        //p.StartInfo.CreateNoWindow = false; //设置显示窗口
-                        //p.StartInfo.UseShellExecute = false;//不使用操作系统外壳程序启动进程
-                        //p.StartInfo.ErrorDialog = false;
                         if (!StringUtil.IsEmpty(startArg))
                         {
                             p.StartInfo.Arguments = startArg;
@@ -154,6 +148,9 @@ namespace GeekDesk.Control.UserControls.PannelCard
                                 case IconStartType.ADMIN_STARTUP:
                                     //p.StartInfo.Arguments = "1";//启动参数
                                     p.StartInfo.Verb = "runas";
+                                    p.StartInfo.CreateNoWindow = false; //设置显示窗口
+                                    p.StartInfo.UseShellExecute = false;//不使用操作系统外壳程序启动进程
+                                    p.StartInfo.ErrorDialog = false;
                                     if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
                                     {
                                         //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
@@ -212,10 +209,10 @@ namespace GeekDesk.Control.UserControls.PannelCard
                                 }
                             }
                         }
-                        icon.Count++;
                         p.Start();
                     }
                 }
+                icon.Count++;
             }
             catch (Exception e)
             {
