@@ -142,11 +142,17 @@
     <Compile Include="Control\UserControls\Config\OtherControl.xaml.cs">
       <DependentUpon>OtherControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\UserControls\SystemItem\SystemItem.xaml.cs">
+      <DependentUpon>SystemItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Control\UserControls\ToDo\TodoControl.xaml.cs">
       <DependentUpon>TodoControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\UserControls\IconFont\IconPannel.xaml.cs">
       <DependentUpon>IconPannel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Windows\SystemItemWindow.xaml.cs">
+      <DependentUpon>SystemItemWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\Windows\ToDoInfoWindow.xaml.cs">
       <DependentUpon>ToDoInfoWindow.xaml</DependentUpon>
@@ -182,6 +188,7 @@
       <DependentUpon>UpdateWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converts\DoubleToGridLength.cs" />
+    <Compile Include="Converts\MenuInfoConvert.cs" />
     <Compile Include="Converts\TodoTaskExecConvert.cs" />
     <Compile Include="Converts\IntToCornerRadius.cs" />
     <Compile Include="Converts\OpcityConvert.cs" />
@@ -201,6 +208,7 @@
     <Compile Include="Util\DragAdorner.cs" />
     <Compile Include="Util\FileIcon.cs" />
     <Compile Include="Util\FileUtil.cs" />
+    <Compile Include="Util\LogUtil.cs" />
     <Compile Include="Util\MarginHide.cs" />
     <Compile Include="Util\HttpUtil.cs" />
     <Compile Include="Util\ImageUtil.cs" />
@@ -235,6 +243,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Control\UserControls\SystemItem\SystemItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Control\UserControls\ToDo\TodoControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -242,6 +254,10 @@
     <Page Include="Control\UserControls\IconFont\IconPannel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\Windows\SystemItemWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Control\Windows\ToDoInfoWindow.xaml">
       <SubType>Designer</SubType>
@@ -367,6 +383,19 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resource\Image\SystemIcon\Calculator.png" />
+    <Resource Include="Resource\Image\SystemIcon\CMD.png" />
+    <Resource Include="Resource\Image\SystemIcon\Computer.png" />
+    <Resource Include="Resource\Image\SystemIcon\Control.png" />
+    <Resource Include="Resource\Image\SystemIcon\GroupPolicy.png" />
+    <Resource Include="Resource\Image\SystemIcon\Mstsc.png" />
+    <Resource Include="Resource\Image\SystemIcon\Network.png" />
+    <Resource Include="Resource\Image\SystemIcon\Notepad.png" />
+    <Resource Include="Resource\Image\SystemIcon\RecycleBin.png" />
+    <Resource Include="Resource\Image\SystemIcon\Registry.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
