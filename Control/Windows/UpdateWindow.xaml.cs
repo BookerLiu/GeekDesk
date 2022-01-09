@@ -111,6 +111,7 @@ namespace GeekDesk.Control.Windows
         {
             if (e.Key == Key.Escape)
             {
+                this.DataContext = null;
                 this.Close();
             }
         }
