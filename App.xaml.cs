@@ -1,7 +1,9 @@
 ﻿using GeekDesk.Constant;
+using GeekDesk.Util;
 using Microsoft.Win32;
 using System;
 using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
@@ -19,6 +21,8 @@ namespace GeekDesk
         public App()
         {
             this.Startup += new StartupEventHandler(App_Startup);
+            Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         }
 
         private void App_Startup(object sender, StartupEventArgs e)
@@ -35,47 +39,24 @@ namespace GeekDesk
                 }
             }
         }
+
+        void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;//使用这一行代码告诉运行时，该异常被处理了，不再作为UnhandledException抛出了。
+            LogUtil.WriteErrorLog(e, "未捕获异常!");
+            if (Constants.DEV)
+            {
+                MessageBox.Show("GeekDesk遇到一个问题, 不用担心, 这不影响其它操作!");
+            }
+        }
+
+        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            LogUtil.WriteErrorLog(e, "严重异常!");
+            MessageBox.Show("GeekDesk遇到未知问题崩溃!");
+        }
+
+
     }
 
-
-
-      
-    //    private void WriteLog(object exception)
-    //    {
-    //        Exception ex = exception as Exception;
-
-    //        using (FileStream fs = File.Open(".//ErrorLog.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite))
-    //        {
-    //            fs.Seek(0, SeekOrigin.End);
-    //            byte[] buffer = Encoding.Default.GetBytes("-------------------------------------------------------\r\n");
-    //            fs.Write(buffer, 0, buffer.Length);
-
-    //            buffer = Encoding.Default.GetBytes(DateTime.Now.ToString() + "\r\n");
-    //            fs.Write(buffer, 0, buffer.Length);
-
-    //            if (ex != null)
-    //            {
-    //                buffer = Encoding.Default.GetBytes("成员名: " + ex.TargetSite + "\r\n");
-    //                fs.Write(buffer, 0, buffer.Length);
-
-    //                buffer = Encoding.Default.GetBytes("引发异常的类: " + ex.TargetSite.DeclaringType + "\r\n");
-    //                fs.Write(buffer, 0, buffer.Length);
-
-    //                buffer = Encoding.Default.GetBytes("异常信息: " + ex.Message + "\r\n");
-    //                fs.Write(buffer, 0, buffer.Length);
-
-    //                buffer = Encoding.Default.GetBytes("引发异常的程序集或对象: " + ex.Source + "\r\n");
-    //                fs.Write(buffer, 0, buffer.Length);
-
-    //                buffer = Encoding.Default.GetBytes("栈：" + ex.StackTrace + "\r\n");
-    //                fs.Write(buffer, 0, buffer.Length);
-    //            }
-    //            else
-    //            {
-    //                buffer = Encoding.Default.GetBytes("应用程序错误: " + exception.ToString() + "\r\n");
-    //                fs.Write(buffer, 0, buffer.Length);
-    //            }
-    //        }
-
-    //}
 }

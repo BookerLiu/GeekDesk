@@ -48,10 +48,9 @@ namespace GeekDesk.Util
                         key.Close();
 
                     }
-#pragma warning disable CS0168 // 声明了变量“ex”，但从未使用过
                     catch (Exception ex)
-#pragma warning restore CS0168 // 声明了变量“ex”，但从未使用过
                     {
+                        LogUtil.WriteErrorLog(ex, "设置开机/取消失败!started=" + started);
                         return false;
                     }
                 }
@@ -62,19 +61,17 @@ namespace GeekDesk.Util
                         key.DeleteValue(exeName);//取消开机启动
                         key.Close();
                     }
-#pragma warning disable CS0168 // 声明了变量“ex”，但从未使用过
                     catch (Exception ex)
-#pragma warning restore CS0168 // 声明了变量“ex”，但从未使用过
                     {
+                        LogUtil.WriteErrorLog(ex, "取消开机启动失败!started=" + started);
                         return false;
                     }
                 }
                 return true;
             }
-#pragma warning disable CS0168 // 声明了变量“ex”，但从未使用过
             catch (Exception ex)
-#pragma warning restore CS0168 // 声明了变量“ex”，但从未使用过
             {
+                LogUtil.WriteErrorLog(ex, "取消/开机/失败!started=" + started);
                 if (key != null)
                 {
                     key.Close();
