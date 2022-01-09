@@ -1,87 +1,88 @@
-﻿using GeekDesk.Util;
+﻿using GeekDesk.Control.Windows;
+using GeekDesk.Util;
 using GeekDesk.ViewModel;
-using Microsoft.Win32;
+using HandyControl.Controls;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
-
-namespace GeekDesk.Control.Other
+namespace GeekDesk.Control.UserControls.Backlog
 {
-    /// <summary>
-    /// TextDialog.xaml 的交互逻辑
-    /// </summary>
-    public partial class IconInfoDialog
+
+    public enum ToDoType
     {
-        public HandyControl.Controls.Dialog dialog;
-
-        public IconInfoDialog()
+        HISTORY = 1,
+        NEW = 2
+    }
+    /// <summary>
+    /// BacklogControl.xaml 的交互逻辑
+    /// </summary>
+    public partial class TodoControl : UserControl
+    {
+        public ToDoType type;
+        public TodoControl()
         {
             InitializeComponent();
         }
 
-        public IconInfoDialog(IconInfo info)
+        private void DeleteMenu_Click(object sender, RoutedEventArgs e)
         {
-            this.DataContext = info;
-            InitializeComponent();
-        }
-
-        /// <summary>
-        /// 保存修改属性
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SaveProperty(object sender, RoutedEventArgs e)
-        {
-            IconInfo info = this.DataContext as IconInfo;
-            info.BitmapImage = IconImg.Source as BitmapImage;
-            info.Name = IconName.Text;
-            info.AdminStartUp = IconIsAdmin.IsChecked.Value;
-            info.StartArg = StartArg.Text;
-            CommonCode.SaveAppData(MainWindow.appData);
-            dialog.Close();
-        }
-
-        /// <summary>
-        /// 修改图标为默认
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ReStoreImage(object sender, RoutedEventArgs e)
-        {
-            IconInfo info = this.DataContext as IconInfo;
-            info.BitmapImage = ImageUtil.ByteArrToImage(info.DefaultImage);
-            CommonCode.SaveAppData(MainWindow.appData);
-        }
-
-        /// <summary>
-        /// 修改图标
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void EditImage(object sender, RoutedEventArgs e)
-        {
-            try
+            ToDoInfo info = BacklogList.SelectedItem as ToDoInfo;
+            Growl.Ask("确认删除吗?", isConfirmed =>
             {
-                OpenFileDialog ofd = new OpenFileDialog
+                if (isConfirmed)
                 {
-                    Multiselect = false, //只允许选中单个文件
-                    Filter = "所有文件(*.*)|*.*"
-                };
-                if (ofd.ShowDialog() == true)
-                {
-                    IconInfo info = this.DataContext as IconInfo;
-                    info.BitmapImage = ImageUtil.GetBitmapIconByPath(ofd.FileName);
+                    if (type == ToDoType.NEW)
+                    {
+                        MainWindow.appData.ToDoList.Remove(info);
+                    }
+                    else
+                    {
+                        MainWindow.appData.HiToDoList.Remove(info);
+                    }
                     CommonCode.SaveAppData(MainWindow.appData);
                 }
-            }
-            catch (Exception e1)
-            {
-                HandyControl.Controls.Growl.WarningGlobal("修改图标失败,已重置为默认图标!");
-                LogUtil.WriteErrorLog(e1, "修改图标失败!");
-            }
-
+                return true;
+            }, "DeleteConfirm");
         }
+
+        private void DetailMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ToDoInfo info = BacklogList.SelectedItem as ToDoInfo;
+            ToDoInfoWindow.ShowDetail(info);
+        }
+
+        /// <summary>
+        /// 禁用设置按钮右键菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DataGridMenu_Initialized(object sender, EventArgs e)
+        {
+            BacklogList.ContextMenu = null;
+        }
+
+        /// <summary>
+        /// 打开右键菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DataGridRow_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            BacklogList.SelectedIndex = ((DataGridRow)sender).GetIndex();
+            Menu.IsOpen = true;
+        }
+
     }
 }
