@@ -61,6 +61,7 @@ namespace GeekDesk
         /// </summary>
         private void LoadData()
         {
+            GC.KeepAlive(appData); // 持活
             this.DataContext = appData;
             if (appData.MenuList.Count == 0)
             {
