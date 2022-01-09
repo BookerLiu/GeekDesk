@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="GeekDesk.Control.UserControls.SystemItem.SystemItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:local="clr-namespace:GeekDesk.Control.UserControls.IconFont"
+             mc:Ignorable="d"
+             Background="#00FFFFFF"
+             >
+    <WrapPanel  HorizontalAlignment="Center" VerticalAlignment="Top" Background="Transparent">
+        <ListBox x:Name="ItemListBox" ItemsSource="{Binding IconInfos}" BorderThickness="0"
+                 VirtualizingPanel.IsVirtualizing="True"  
+                 VirtualizingPanel.IsContainerVirtualizable="True"
+                 >
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" Background="#00FFFFFF"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.Background>
+                <SolidColorBrush Opacity="0"/>
+            </ListBox.Background>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+            
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Width="80" Height="80" HorizontalAlignment="Center"
+                                Background="#00FFFFFF"
+                                hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
+                                hc:Poptip.Content="{Binding Content_NoWrite, Mode=OneWay}"
+                                Tag="{Binding}"
+                                MouseLeftButtonDown="Icon_MouseLeftButtonDown"
+                                hc:Poptip.Placement="BottomLeft"
+                                hc:Poptip.HitMode="None"
+                                >
+                        <Image Source="{Binding BitmapImage_NoWrite, Mode=OneWay}" Width="45" Height="45"  RenderOptions.BitmapScalingMode="HighQuality" />
+                        <TextBlock TextAlignment="Center" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center" 
+                                   TextWrapping="Wrap"
+                                   MaxHeight="40"
+                                   FontSize="13"
+                                   TextTrimming="WordEllipsis"
+                                   Width="65" Text="{Binding Name_NoWrite, Mode=OneWay}" 
+                                   />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </WrapPanel>
+</UserControl>
