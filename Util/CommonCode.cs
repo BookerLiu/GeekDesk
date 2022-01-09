@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 /// <summary>
 /// 提取一些代码
@@ -45,7 +46,6 @@ namespace GeekDesk.Util
         /// <param name="appData"></param>
         public static void SaveAppData(AppData appData)
         {
-
             using (FileStream fs = new FileStream(Constants.DATA_FILE_PATH, FileMode.Create))
             {
                 BinaryFormatter bf = new BinaryFormatter();
@@ -72,6 +72,100 @@ namespace GeekDesk.Util
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// 根据路径获取文件图标等信息
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static IconInfo GetIconInfoByPath(string path)
+        {
+            string tempPath = path;
+
+            //string base64 = ImageUtil.FileImageToBase64(path, System.Drawing.Imaging.ImageFormat.Png);
+            //string ext = "";
+            //if (!ImageUtil.IsSystemItem(path))
+            //{
+            //    ext = System.IO.Path.GetExtension(path).ToLower();
+            //}
+
+            string iconPath = null;
+            //if (".lnk".Equals(ext))
+            //{
+
+            string targetPath = FileUtil.GetTargetPathByLnk(path);
+            iconPath = FileUtil.GetIconPathByLnk(path);
+            if (targetPath != null)
+            {
+                path = targetPath;
+            }
+            //}
+            if (StringUtil.IsEmpty(iconPath))
+            {
+                iconPath = path;
+            }
+
+            BitmapImage bi = ImageUtil.GetBitmapIconByPath(iconPath);
+            IconInfo iconInfo = new IconInfo
+            {
+                Path = path,
+                LnkPath = tempPath,
+                BitmapImage = bi,
+                StartArg = FileUtil.GetArgByLnk(tempPath)
+            };
+            iconInfo.DefaultImage = iconInfo.ImageByteArr;
+            iconInfo.Name = System.IO.Path.GetFileNameWithoutExtension(tempPath);
+            if (StringUtil.IsEmpty(iconInfo.Name))
+            {
+                iconInfo.Name = path;
+            }
+            return iconInfo;
+        }
+
+
+        public static IconInfo GetIconInfoByPath_NoWrite(string path)
+        {
+            string tempPath = path;
+
+            //string base64 = ImageUtil.FileImageToBase64(path, System.Drawing.Imaging.ImageFormat.Png);
+            string ext = "";
+            if (!ImageUtil.IsSystemItem(path))
+            {
+                ext = System.IO.Path.GetExtension(path).ToLower();
+            }
+
+            string iconPath = null;
+            if (".lnk".Equals(ext))
+            {
+
+                string targetPath = FileUtil.GetTargetPathByLnk(path);
+                iconPath = FileUtil.GetIconPathByLnk(path);
+                if (targetPath != null)
+                {
+                    path = targetPath;
+                }
+            }
+            if (StringUtil.IsEmpty(iconPath))
+            {
+                iconPath = path;
+            }
+
+            BitmapImage bi = ImageUtil.GetBitmapIconByPath(iconPath);
+            IconInfo iconInfo = new IconInfo
+            {
+                Path_NoWrite = path,
+                LnkPath_NoWrite = tempPath,
+                BitmapImage_NoWrite = bi,
+                StartArg_NoWrite = FileUtil.GetArgByLnk(tempPath)
+            };
+            iconInfo.DefaultImage_NoWrite = iconInfo.ImageByteArr;
+            iconInfo.Name = System.IO.Path.GetFileNameWithoutExtension(tempPath);
+            if (StringUtil.IsEmpty(iconInfo.Name))
+            {
+                iconInfo.Name_NoWrite = path;
+            }
+            return iconInfo;
         }
 
 
