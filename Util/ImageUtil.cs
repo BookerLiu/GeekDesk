@@ -86,18 +86,37 @@ namespace GeekDesk.Util
         /// <returns></returns>
         public static BitmapImage GetBitmapIconByPath(string filePath)
         {
+            if (filePath.Contains("%windir%"))
+            {
+                filePath = filePath.Replace("%windir%", System.Environment.GetEnvironmentVariable("windir"));
+            }
+
             if (File.Exists(filePath) || IsSystemItem(filePath))
             {
-                if (IsImage(filePath)) {
+                if (IsImage(filePath))
+                {
                     //图片
                     return GetThumbnailByFile(filePath, 256, 256);
-                } else
+                }
+                else
                 { //其它文件
                     return FileIcon.GetBitmapImage(filePath);
                 }
-            } else if(Directory.Exists(filePath)) {
-                //文件夹
-                return ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64);
+            }
+            else if (Directory.Exists(filePath))
+            {
+
+                if ((filePath.IndexOf("\\") == filePath.LastIndexOf("\\")) && filePath.IndexOf("\\") == filePath.Length - 1)
+                {
+                    //磁盘
+                    return ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_DISK_IMAGE_BASE64);
+                }
+                else
+                {
+                    //文件夹
+                    return ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64);
+                }
+
             }
             return null;
         }
@@ -202,12 +221,12 @@ namespace GeekDesk.Util
                     return bm;
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                LogUtil.WriteErrorLog(ex, "获取缩略图失败!filePath=" + filePath);
+                LogUtil.WriteErrorLog(e, "获取文件缩略图失败!filePath=" + filePath);
                 return Base64ToBitmapImage(Constants.DEFAULT_IMG_IMAGE_BASE64);
             }
-            
+
         }
 
 
@@ -303,9 +322,9 @@ namespace GeekDesk.Util
                 ms.Close();
                 return Convert.ToBase64String(arr);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                LogUtil.WriteErrorLog(ex, "文件转base64失败!Imagefilename=" + Imagefilename);
+                LogUtil.WriteErrorLog(e, "图片文件转base64失败!Imagefilename=" + Imagefilename + ",ImageFormat=" + format);
                 return null;
             }
         }
