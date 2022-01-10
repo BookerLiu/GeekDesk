@@ -281,6 +281,9 @@ namespace GeekDesk.Control.UserControls.PannelCard
                         Process.Start("cmd");
                     }
                     break;
+                case "Services":
+                    Process.Start("services.msc");
+                    break;
             }
             //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
             if (appData.AppConfig.MarginHide)
