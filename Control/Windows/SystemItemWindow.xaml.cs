@@ -29,9 +29,9 @@ namespace GeekDesk.Control.Windows
     {
         private static AppConfig appConfig = MainWindow.appData.AppConfig;
         private static SystemItemViewModel vm;
-        private static List<IconInfo> systemIcons;
-        private static List<IconInfo> startMenuIcons;
-        private static List<IconInfo> storeIcons;
+        private List<IconInfo> systemIcons;
+        private List<IconInfo> startMenuIcons;
+        private List<IconInfo> storeIcons;
 
         private SystemItemWindow()
         {
@@ -150,13 +150,24 @@ namespace GeekDesk.Control.Windows
         /// </summary>
         /// <param name="path"></param>
         /// <param name="listInfos"></param>
-        private void GetInfos(string path, List<IconInfo> listInfos)
+        private void GetInfos(string filePath, List<IconInfo> listInfos)
         {
-            DirectoryInfo di = new DirectoryInfo(path);
-            FileSystemInfo[] fileInfoArr = di.GetFileSystemInfos();
-            foreach(FileSystemInfo fi in fileInfoArr)
+            DirectoryInfo di = new DirectoryInfo(filePath);
+            string[] filePaths = Directory.GetFiles(filePath);
+            string[] dirPaths = Directory.GetDirectories(filePath);
+
+            string[] paths = new string[filePaths.Length + dirPaths.Length];
+            filePaths.CopyTo(paths, 0);
+            if (filePaths == null || filePaths.Length == 0)
             {
-                path = fi.FullName;
+                dirPaths.CopyTo(paths, 0);
+            } else
+            {
+                dirPaths.CopyTo(paths, filePaths.Length - 1);
+            }
+
+            foreach (string path in paths)
+            {
                 if (File.Exists(path))
                 {
                     string ext = Path.GetExtension(path).ToLower();
@@ -179,6 +190,13 @@ namespace GeekDesk.Control.Windows
                     GetInfos(path, listInfos);
                 }
             }
+
+            //FileSystemInfo[] fileInfoArr = di.GetFileSystemInfos();
+            //foreach(FileSystemInfo fi in fileInfoArr)
+            //{
+            //    string path = fi.FullName;
+                
+            //}
         }
 
         /// <summary>
