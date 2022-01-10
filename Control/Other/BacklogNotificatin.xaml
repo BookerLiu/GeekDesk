@@ -15,7 +15,7 @@
 
         <Image Source="/Resource/Image/BacklogImg.png" Margin="22,35,22,361" />
 
-        
+
         <hc:Card MaxWidth="250" Height="200" BorderThickness="0" Effect="{DynamicResource EffectShadow2}" Margin="8">
             <!--Card 的内容部分-->
             <Border CornerRadius="4,4,0,0" Width="160" Height="160">

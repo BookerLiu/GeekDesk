@@ -3,6 +3,7 @@
                     xmlns:hc="https://handyorg.github.io/handycontrol">
 
 
+    <!--整体样式-->
     <Style x:Key="BorderBG" TargetType="Border">
         <Style.Setters>
             <Setter Property="Background">
@@ -18,18 +19,29 @@
         </Style.Setters>
     </Style>
 
+    <LinearGradientBrush x:Key="BtnBG" Opacity="0.97">
+        <GradientStop Color="White" Offset="0"/>
+        <GradientStop Color="White" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!--按钮样式-->
     <Style x:Key="Btn1" TargetType="Button" BasedOn="{StaticResource ButtonInfo}">
-        <Setter Property="Background">
+        <Setter Property="Background" Value="{StaticResource BtnBG}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush">
             <Setter.Value>
-                <LinearGradientBrush Opacity="0.97">
-                    <GradientStop Color="#5BC0DE" Offset="0"/>
-                    <GradientStop Color="#5BC0DE" Offset="1"/>
-                </LinearGradientBrush>
+                <SolidColorBrush Color="#E5E5E2"/>
             </Setter.Value>
         </Setter>
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#E5E5E2"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
+    <!--菜单样式-->
     <Style x:Key="MyMenuStyle" TargetType="hc:SideMenuItem" BasedOn="{StaticResource SideMenuItemBaseStyle}">
         <Style.Setters>
             <Setter Property="Background" Value="Transparent"/>
@@ -43,6 +55,6 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    
-    
+
+
 </ResourceDictionary>

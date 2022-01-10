@@ -30,6 +30,7 @@
             <Border.Resources>
                 <Style x:Key="LeftTB" TargetType="TextBlock" BasedOn="{StaticResource TextBlockBaseStyle}">
                     <Setter Property="Width" Value="67"/>
+                    <Setter Property="Margin" Value="0,5,0,0"/>
                     <Setter Property="HorizontalAlignment" Value="Left"/>
                     <Setter Property="VerticalAlignment" Value="Center"/>
                     <Setter Property="TextAlignment" Value="Center"/>
@@ -67,13 +68,15 @@
                          IsChecked="{Binding ExecType, Mode=OneWay, Converter={StaticResource TodoTaskExecConvert}, ConverterParameter=2}"/>
                     </hc:UniformSpacingPanel>
 
-                    <hc:UniformSpacingPanel x:Name="SetTimePanel" Visibility="Visible" Spacing="10" Grid.ColumnSpan="4" Margin="0,10,0,0">
-                        <TextBlock Text="指定时间:"  Style="{StaticResource LeftTB}"/>
-                        <TextBlock Text="*" Foreground="Red" Margin="-10,0,0,0"/>
-                        <hc:DateTimePicker x:Name="ExeTime" Text="{Binding ExeTime, Mode=OneWay}" ErrorStr="Error!"  Width="200" Margin="-5.2,0,0,0"/>
+                    <hc:UniformSpacingPanel x:Name="SetTimePanel" Height="30" Visibility="Visible" Spacing="10" Grid.ColumnSpan="4" Margin="0,10,0,0">
+                        <WrapPanel VerticalAlignment="Center">
+                            <TextBlock Text="指定时间:"  Style="{StaticResource LeftTB}"/>
+                            <TextBlock Text="*" Foreground="Red"/>
+                        </WrapPanel>
+                        <hc:DateTimePicker x:Name="ExeTime" Text="{Binding ExeTime, Mode=OneWay}" ErrorStr="Error!"  Width="200" Margin="1.6,0,0,0"/>
                     </hc:UniformSpacingPanel>
 
-                    <hc:UniformSpacingPanel x:Name="CronPanel" Visibility="Collapsed" Spacing="10" Grid.ColumnSpan="4" Margin="0,10,0,0">
+                    <hc:UniformSpacingPanel x:Name="CronPanel" Height="30" Visibility="Collapsed" Spacing="10" Grid.ColumnSpan="4" Margin="0,10,0,0">
                         <WrapPanel VerticalAlignment="Center">
                             <TextBlock Text="CRON:"  Style="{StaticResource LeftTB}"/>
                             <TextBlock Text="*" Foreground="Red" />
@@ -84,8 +87,10 @@
 
 
                     <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4" Margin="0,10,0,0">
-                        <TextBlock Text="完成时间:"  Style="{StaticResource LeftTB}"/>
-                        <TextBlock x:Name="DoneTime" Text="{Binding DoneTime, Mode=OneWay}" Width="200"/>
+                        <WrapPanel VerticalAlignment="Center">
+                            <TextBlock Text="完成时间:"  Style="{StaticResource LeftTB}"/>
+                        </WrapPanel>
+                        <TextBlock x:Name="DoneTime" VerticalAlignment="Center" Margin="5,6,0,0" Text="{Binding DoneTime, Mode=OneWay}" Width="200"/>
                     </hc:UniformSpacingPanel>
 
 

@@ -17,7 +17,7 @@
     </Border.Resources>
     <StackPanel Margin="10">
         <Grid Margin="8,20,8,20">
-            
+
             <hc:UniformSpacingPanel Spacing="10" Margin="0,10,0,-10">
                 <WrapPanel  HorizontalAlignment="Center" VerticalAlignment="Center">
                     <TextBlock Text="SVG 图标地址:"  Style="{StaticResource LeftTB}"/>
@@ -35,9 +35,11 @@
             </hc:UniformSpacingPanel>
             <TextBlock Text="注: 需配置正确的url方可加载远程图标!" Foreground="Red" Margin="10,95,-10,-92" />
 
-            <hc:UniformSpacingPanel Spacing="10" Margin="246.206,124.551,-246.206,-124.551">
-                <Button Content="取消" Command="hc:ControlCommands.Close" 
+            <hc:UniformSpacingPanel Spacing="10" Margin="203,125,-203,-125">
+                <Button Content="取消" Command="hc:ControlCommands.Close" HorizontalAlignment="Stretch" Margin="-1,1,1,1" VerticalAlignment="Stretch" 
                             />
+                <Button Content="教程" Click="Teach_Click" 
+                        Style="{StaticResource Btn1}"/>
                 <Button Content="保存" Click="Confirm_Click" 
                         Command="hc:ControlCommands.Close"
                         Style="{StaticResource Btn1}"/>

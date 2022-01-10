@@ -11,7 +11,8 @@
         x:Name="window"
         xmlns:hc="https://handyorg.github.io/handycontrol" xmlns:viewmodel="clr-namespace:GeekDesk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AppData}"
         Title="GeekDesk" 
-        d:DesignHeight="500" d:DesignWidth="700"
+        MinWidth="600"
+        MinHeight="400"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
@@ -26,7 +27,7 @@
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="15"/>
     </WindowChrome.WindowChrome>
     <Window.Resources>
-       
+
         <cvt:MenuWidthConvert x:Key="MenuWidthConvert"/>
         <cvt:OpcityConvert x:Key="OpcityConvert"/>
         <cvt:IntToCornerRadius x:Key="IntToCornerRadius"/>
@@ -37,7 +38,7 @@
         <DropShadowEffect BlurRadius="30" Direction="-90" Color="Gray"
                               RenderingBias="Quality" ShadowDepth="2"/>
     </Window.Effect>
-        <Border Margin="20" CornerRadius="{Binding AppConfig.PannelCornerRadius, Mode=TwoWay, Converter={StaticResource IntToCornerRadius}}"  BorderThickness="0"
+    <Border Margin="20" CornerRadius="{Binding AppConfig.PannelCornerRadius, Mode=TwoWay, Converter={StaticResource IntToCornerRadius}}"  BorderThickness="0"
             Background="AliceBlue" LostFocus="App_LostFocus"
             Opacity="{Binding AppConfig.PannelOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}"
             VirtualizingPanel.VirtualizationMode="Recycling"  VirtualizingPanel.IsVirtualizing="True"  VirtualizingPanel.IsContainerVirtualizable="True"
@@ -118,7 +119,7 @@
 
 
                     <uc:LeftCardControl Grid.Row="1" Grid.Column="0"/>
-                    
+
                     <!--分割线-->
                     <GridSplitter Opacity="0" Grid.Row="1" Grid.Column="0" Width="1"  VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
 
@@ -129,7 +130,7 @@
                         <hc:NotifyIcon.ContextMenu>
                             <ContextMenu Width="130">
                                 <MenuItem Header="打开面板" Click="ShowApp"/>
-                                <MenuItem Header="关闭图标" Click="CloseBarIcon"/>
+                                <MenuItem Header="隐藏图标" Click="CloseBarIcon"/>
                                 <MenuItem Header="待办"  Click="BacklogMenuClick"/>
                                 <MenuItem Header="程序目录"  Click="OpenThisDir"/>
                                 <MenuItem Header="设置"  Click="ConfigApp"/>

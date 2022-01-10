@@ -38,7 +38,6 @@ namespace GeekDesk
         public static int hotKeyId = -1;
         public static int toDoHotKeyId = -1;
         public static MainWindow mainWindow;
-        public static MarginHide hide;
         public MainWindow()
         {
             LoadData();
@@ -50,10 +49,10 @@ namespace GeekDesk
             ToDoTask.BackLogCheck();
 
             ////实例化隐藏 Hide类，进行时间timer设置
-            hide = new MarginHide(this);
+            MarginHide.ReadyHide(this);
             if (appData.AppConfig.MarginHide)
             {
-                hide.TimerSet();
+                MarginHide.StartHide();
             }
         }
 
@@ -62,14 +61,15 @@ namespace GeekDesk
         /// </summary>
         private void LoadData()
         {
+            GC.KeepAlive(appData); // 持活
             this.DataContext = appData;
             if (appData.MenuList.Count == 0)
             {
-                appData.MenuList.Add(new MenuInfo() { MenuName = "NewMenu", MenuId = System.Guid.NewGuid().ToString(), MenuEdit = Visibility.Collapsed});
+                appData.MenuList.Add(new MenuInfo() { MenuName = "NewMenu", MenuId = System.Guid.NewGuid().ToString(), MenuEdit = Visibility.Collapsed });
             }
 
             this.Width = appData.AppConfig.WindowWidth;
-            this.Height = appData.AppConfig.WindowHeight;            
+            this.Height = appData.AppConfig.WindowHeight;
         }
 
         /// <summary>
@@ -84,11 +84,13 @@ namespace GeekDesk
                 if (appData.AppConfig.AppAnimation)
                 {
                     this.Opacity = 0;
-                } else
+                }
+                else
                 {
                     this.Visibility = Visibility.Collapsed;
                 }
-            } else
+            }
+            else
             {
                 ShowApp();
             }
@@ -130,7 +132,7 @@ namespace GeekDesk
                     {
                         if (MotionControl.hotkeyFinished)
                         {
-                            if (mainWindow.Visibility == Visibility.Collapsed || mainWindow.Opacity == 0)
+                            if (mainWindow.Visibility == Visibility.Collapsed || mainWindow.Opacity == 0 || MarginHide.IS_HIDE)
                             {
                                 ShowApp();
                             }
@@ -160,44 +162,7 @@ namespace GeekDesk
             }
         }
 
-        /// <summary>
-        /// 淡入淡出效果
-        /// </summary>
-        /// <param name="opacity"></param>
-        /// <param name="milliseconds"></param>
-        /// <param name="visibility"></param>
-        public static void FadeStoryBoard(int opacity, int milliseconds, Visibility visibility)
-        {
-            if (appData.AppConfig.AppAnimation)
-            {
-                DoubleAnimation opacityAnimation = new DoubleAnimation
-                {
-                    From = mainWindow.Opacity,
-                    To = opacity,
-                    Duration = new Duration(TimeSpan.FromMilliseconds(milliseconds))
-                };
-                opacityAnimation.Completed += (s, e) =>
-                {
-                    mainWindow.BeginAnimation(OpacityProperty, null);
-                    if (visibility == Visibility.Visible)
-                    {
-                        mainWindow.Opacity = 1;
-                    } else
-                    {
-                        mainWindow.Opacity = 0;
-                    }
-                };
-                Timeline.SetDesiredFrameRate(opacityAnimation, 30);
-                mainWindow.BeginAnimation(OpacityProperty, opacityAnimation);
-            } else
-            {
-                //防止关闭动画后 窗体仍是0透明度
-                mainWindow.Opacity = 1;
-                mainWindow.Visibility = visibility;
-            }
-            
 
-        }
 
         /// <summary>
         /// 注册新建待办的热键
@@ -207,7 +172,7 @@ namespace GeekDesk
             try
             {
 
-                if (appData.AppConfig.ToDoHotkeyModifiers!=0)
+                if (appData.AppConfig.ToDoHotkeyModifiers != 0)
                 {
                     //加载完毕注册热键
                     toDoHotKeyId = GlobalHotKey.RegisterHotKey(appData.AppConfig.ToDoHotkeyModifiers, appData.AppConfig.ToDoHotkey, () =>
@@ -253,7 +218,7 @@ namespace GeekDesk
         }
 
 
-       
+
         /// <summary>
         /// 程序窗体拖动
         /// </summary>
@@ -299,13 +264,14 @@ namespace GeekDesk
             if (appData.AppConfig.AppAnimation)
             {
                 FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
-            } else
+            }
+            else
             {
                 this.Visibility = Visibility.Collapsed;
             }
         }
 
-       
+
 
         ///// <summary>
         ///// 左侧栏宽度改变 持久化
@@ -317,7 +283,7 @@ namespace GeekDesk
         //    appData.AppConfig.MenuCardWidth = LeftColumn.Width.Value;
         //}
 
-       
+
 
         /// <summary>
         /// 右键任务栏图标 显示主面板
@@ -335,6 +301,8 @@ namespace GeekDesk
             //{
             //    return;
             //}
+            //修改贴边隐藏状态为未隐藏
+            MarginHide.IS_HIDE = false;
             if (appData.AppConfig.FollowMouse)
             {
                 ShowWindowFollowMouse.Show(mainWindow, MousePosition.CENTER, 0, 0, false);
@@ -346,6 +314,45 @@ namespace GeekDesk
         public static void HideApp()
         {
             FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
+        }
+
+        /// <summary>
+        /// 淡入淡出效果
+        /// </summary>
+        /// <param name="opacity"></param>
+        /// <param name="milliseconds"></param>
+        /// <param name="visibility"></param>
+        public static void FadeStoryBoard(int opacity, int milliseconds, Visibility visibility)
+        {
+            if (appData.AppConfig.AppAnimation)
+            {
+                DoubleAnimation opacityAnimation = new DoubleAnimation
+                {
+                    From = mainWindow.Opacity,
+                    To = opacity,
+                    Duration = new Duration(TimeSpan.FromMilliseconds(milliseconds))
+                };
+                opacityAnimation.Completed += (s, e) =>
+                {
+                    mainWindow.BeginAnimation(OpacityProperty, null);
+                    if (visibility == Visibility.Visible)
+                    {
+                        mainWindow.Opacity = 1;
+                    }
+                    else
+                    {
+                        mainWindow.Opacity = 0;
+                    }
+                };
+                Timeline.SetDesiredFrameRate(opacityAnimation, 60);
+                mainWindow.BeginAnimation(OpacityProperty, opacityAnimation);
+            }
+            else
+            {
+                //防止关闭动画后 窗体仍是0透明度
+                mainWindow.Opacity = 1;
+                mainWindow.Visibility = visibility;
+            }
         }
 
 
@@ -392,19 +399,6 @@ namespace GeekDesk
             p.Start();
         }
 
-        /// <summary>
-        /// 右键任务栏图标退出
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ExitApp(object sender, RoutedEventArgs e)
-        {
-            if (appData.AppConfig.MouseMiddleShow)
-            {
-                MouseHookThread.Dispose();
-            }
-            Application.Current.Shutdown();
-        }
 
 
 
@@ -451,7 +445,7 @@ namespace GeekDesk
             if (appData.AppConfig.AppHideType == AppHideType.LOST_FOCUS)
             {
                 //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
-                if (appData.AppConfig.MarginHide && !hide.IsMargin())
+                if (appData.AppConfig.MarginHide && !MarginHide.IS_HIDE)
                 {
                     this.Visibility = Visibility.Collapsed;
                 }
@@ -476,6 +470,21 @@ namespace GeekDesk
             }
         }
 
+
+
+        /// <summary>
+        /// 右键任务栏图标退出
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExitApp(object sender, RoutedEventArgs e)
+        {
+            if (appData.AppConfig.MouseMiddleShow)
+            {
+                MouseHookThread.Dispose();
+            }
+            Application.Current.Shutdown();
+        }
         /// <summary>
         /// 重启
         /// </summary>
@@ -483,10 +492,13 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void ReStartApp(object sender, RoutedEventArgs e)
         {
-            MouseHookThread.Dispose();
+            if (appData.AppConfig.MouseMiddleShow)
+            {
+                MouseHookThread.Dispose();
+            }
 
             Process p = new Process();
-            p.StartInfo.FileName = Constants.APP_DIR + Constants.MY_NAME + ".exe";
+            p.StartInfo.FileName = Constants.APP_DIR + "GeekDesk.exe";
             p.StartInfo.WorkingDirectory = Constants.APP_DIR;
             p.Start();
 

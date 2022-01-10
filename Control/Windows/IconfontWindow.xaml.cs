@@ -27,7 +27,7 @@ namespace GeekDesk.Control.Windows
         public static IconfontViewModel vm;
         private IconfontWindow(List<IconfontInfo> icons, MenuInfo menuInfo)
         {
-            
+
             InitializeComponent();
 
             systemIcons = icons;
@@ -57,6 +57,7 @@ namespace GeekDesk.Control.Windows
 
         private void Close_Click(object sender, RoutedEventArgs e)
         {
+            this.DataContext = null;
             this.Close();
         }
 
@@ -73,13 +74,15 @@ namespace GeekDesk.Control.Windows
                         LoadingEle.Visibility = Visibility.Visible;
                         CustomIcon.Visibility = Visibility.Collapsed;
                         HandyControl.Controls.Dialog.Show(new CustomIconUrlDialog(appConfig), "IconUrlDialog");
-                    } else
+                    }
+                    else
                     {
                         if (customIcons == null)
                         {
                             vm.Iconfonts = null;
                             LoadingOnlineIcon();
-                        } else
+                        }
+                        else
                         {
                             vm.Iconfonts = customIcons;
                             LoadingEle.Visibility = Visibility.Collapsed;
@@ -121,6 +124,7 @@ namespace GeekDesk.Control.Windows
                     }
                     break;
             }
+            this.DataContext = null;
             this.Close();
         }
 
@@ -139,7 +143,7 @@ namespace GeekDesk.Control.Windows
 
         private void CustomButton_Click(object sender, RoutedEventArgs e)
         {
-            HandyControl.Controls.Dialog.Show(new CustomIconUrlDialog(appConfig));
+            HandyControl.Controls.Dialog.Show(new CustomIconUrlDialog(appConfig), "IconUrlDialog");
         }
 
 
@@ -148,7 +152,8 @@ namespace GeekDesk.Control.Windows
             if (CheckSettingUrl.Text == "true")
             {
                 LoadingOnlineIcon();
-            } else
+            }
+            else
             {
                 LoadingEle.IsRunning = true;
                 CustomIcon.Visibility = Visibility.Collapsed;
@@ -168,9 +173,10 @@ namespace GeekDesk.Control.Windows
                 LoadingEle.Visibility = Visibility.Collapsed;
                 CustomIcon.Visibility = Visibility.Visible;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 HandyControl.Controls.Growl.WarningGlobal("加载远程图标异常!");
+                LogUtil.WriteErrorLog(e, "加载远程图标异常!");
             }
         }
 
@@ -178,6 +184,7 @@ namespace GeekDesk.Control.Windows
         {
             if (e.Key == Key.Escape)
             {
+                this.DataContext = null;
                 this.Close();
             }
         }
