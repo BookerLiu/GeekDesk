@@ -384,7 +384,9 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resource\Image\SystemIcon\Services.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\Image\SystemIcon\Calculator.png" />
     <Resource Include="Resource\Image\SystemIcon\CMD.png" />
