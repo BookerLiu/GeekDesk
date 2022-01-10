@@ -151,8 +151,15 @@ namespace GeekDesk.Control.Windows
             };
             if (windowType != NEW_TODO)
             {
-                appData.HiToDoList.Remove(this.DataContext as ToDoInfo);
-            } 
+                ToDoInfo tdi = this.DataContext as ToDoInfo;
+                if (appData.HiToDoList.Contains(tdi))
+                {
+                    appData.HiToDoList.Remove(tdi);
+                } else if (appData.ToDoList.Contains(tdi))
+                {
+                    appData.ToDoList.Remove(tdi);
+                }
+            }
             appData.ToDoList.Add(info);
 
             DateTime dtNow = DateTime.Now;

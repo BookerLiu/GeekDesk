@@ -90,7 +90,7 @@
                         <WrapPanel VerticalAlignment="Center">
                             <TextBlock Text="完成时间:"  Style="{StaticResource LeftTB}"/>
                         </WrapPanel>
-                        <TextBlock x:Name="DoneTime" Text="{Binding DoneTime, Mode=OneWay}" Width="200"/>
+                        <TextBlock x:Name="DoneTime" VerticalAlignment="Center" Margin="5,6,0,0" Text="{Binding DoneTime, Mode=OneWay}" Width="200"/>
                     </hc:UniformSpacingPanel>
 
 
