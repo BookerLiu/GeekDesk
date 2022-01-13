@@ -60,6 +60,23 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
 
 
+
+        private void Icon_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (appData.AppConfig.DoubleOpen)
+            {
+                IconClick(sender, e);
+            }
+        }
+
+        private void Icon_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (!appData.AppConfig.DoubleOpen)
+            {
+                IconClick(sender, e);
+            }
+        }
+
         /// <summary>
         /// 图标点击事件
         /// </summary>
@@ -521,5 +538,6 @@ namespace GeekDesk.Control.UserControls.PannelCard
         {
             SystemItemWindow.Show();
         }
+
     }
 }
