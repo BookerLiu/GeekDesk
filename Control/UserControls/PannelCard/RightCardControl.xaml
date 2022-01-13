@@ -104,7 +104,8 @@
                                         hc:Poptip.Content="{Binding Content}"
                                         hc:Poptip.Placement="BottomLeft"
                                         Background="#00FFFFFF"
-                                        MouseLeftButtonDown="IconClick"
+                                        MouseLeftButtonDown="Icon_MouseLeftButtonDown"
+                                        MouseLeftButtonUp="Icon_MouseLeftButtonUp"
                                         MouseEnter="StackPanel_MouseEnter"
                                         MouseLeave="StackPanel_MouseLeave"
                                         >

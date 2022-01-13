@@ -1,9 +1,9 @@
 {
 	"title": "GeekDesk版本更新",
-	"subTitle": "V2.4.11",
+	"subTitle": "V2.4.12",
 	"msgTitle": "本次更新内容如下",
-	"msg": "['各位兄弟去给我点个免费Star呗','增加添加系统和开始菜单应用功能','增加项目启动参数','优化贴边隐藏动画效果(可能现在并不完美)','增加双击打开功能','修复cron表达式任务无限重启','其它已知问题修复(如果有人发现)']",
+	"msg": "['各位兄弟去给我点个免费Star呗','这是个修复版本,主要修复上个版本的bug','修复图标无法拖动','修复界面遮挡任务栏']",
 	"githubUrl": "https://github.com/Demo-Liu/GeekDesk/releases",
 	"giteeUrl": "https://gitee.com/demo_liu/GeekDesk/releases",
-	"version": "2.4.11"
+	"version": "2.4.12"
 }
