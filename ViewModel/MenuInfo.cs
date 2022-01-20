@@ -1,6 +1,8 @@
 ﻿using GeekDesk.Constant;
 using GeekDesk.Util;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
@@ -11,17 +13,33 @@ namespace GeekDesk.ViewModel
     [Serializable]
     public class MenuInfo : INotifyPropertyChanged
     {
-       
+
 
         private string menuName;
         private string menuId;
         private Visibility menuEdit = Visibility.Collapsed;
         private Visibility notMenuEdit = Visibility.Visible;
+        private bool isEdit = false;
         private string menuGeometry;  //菜单几何图标
         private string geometryColor; //几何图标颜色
         private ObservableCollection<IconInfo> iconList = new ObservableCollection<IconInfo>();
 
+        [field: NonSerializedAttribute()]
+        private string[] NO_WRITE_ARR = new string[] { "IsEdit" };
 
+
+        public bool IsEdit
+        {
+            get
+            {
+                return isEdit;
+            }
+            set
+            {
+                isEdit = value;
+                OnPropertyChanged("IsEdit");
+            }
+        }
         public string MenuGeometry
         {
             get
@@ -65,7 +83,7 @@ namespace GeekDesk.ViewModel
             set
             {
                 menuName = value;
-                OnPropertyChanged("MenuName");               
+                OnPropertyChanged("MenuName");
             }
         }
 
@@ -93,9 +111,12 @@ namespace GeekDesk.ViewModel
                 menuEdit = value;
                 if (menuEdit == Visibility.Visible)
                 {
+                    IsEdit = true;
                     NotMenuEdit = Visibility.Collapsed;
-                } else
+                }
+                else
                 {
+                    IsEdit = false;
                     NotMenuEdit = Visibility.Visible;
                 }
                 OnPropertyChanged("MenuEdit");
@@ -128,11 +149,23 @@ namespace GeekDesk.ViewModel
             }
         }
 
+        public override String ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+
         [field: NonSerializedAttribute()]
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            foreach (var field in NO_WRITE_ARR)
+            {
+                if (field.Equals(propertyName))
+                {
+                    return;
+                }
+            }
             CommonCode.SaveAppData(MainWindow.appData);
         }
     }
