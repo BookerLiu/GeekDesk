@@ -18,7 +18,7 @@
         Background="Transparent"
         ShowInTaskbar="False"
         Opacity="0"
-        Deactivated="Window_Deactivated"
+        Deactivated="App_LostFocus"
         SizeChanged="Window_SizeChanged"
         KeyDown="OnKeyDown"
         Focusable="True"
@@ -39,12 +39,13 @@
                               RenderingBias="Quality" ShadowDepth="2"/>
     </Window.Effect>
     <Border Margin="20" CornerRadius="{Binding AppConfig.PannelCornerRadius, Mode=TwoWay, Converter={StaticResource IntToCornerRadius}}"  BorderThickness="0"
-            Background="AliceBlue" LostFocus="App_LostFocus"
+            Background="AliceBlue"
             Opacity="{Binding AppConfig.PannelOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}"
             VirtualizingPanel.VirtualizationMode="Recycling"  VirtualizingPanel.IsVirtualizing="True"  VirtualizingPanel.IsContainerVirtualizable="True"
             hc:Dialog.Token="IconInfoDialog"
+            Focusable="True"
             >
-        <hc:DialogContainer>
+        <hc:DialogContainer Focusable="True">
 
             <Border CornerRadius="{Binding AppConfig.PannelCornerRadius, Mode=TwoWay, Converter={StaticResource IntToCornerRadius}}"  BorderThickness="0">
                 <!--背景图片-->

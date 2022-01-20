@@ -302,13 +302,15 @@ namespace GeekDesk
             //    return;
             //}
             //修改贴边隐藏状态为未隐藏
+            mainWindow.Activate();
+
             MarginHide.IS_HIDE = false;
             if (appData.AppConfig.FollowMouse)
             {
                 ShowWindowFollowMouse.Show(mainWindow, MousePosition.CENTER, 0, 0, false);
             }
             FadeStoryBoard(1, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Visible);
-            Keyboard.Focus(mainWindow);
+            mainWindow.Focus();           
         }
 
         public static void HideApp()
@@ -440,23 +442,16 @@ namespace GeekDesk
             SettingButton.ContextMenu = null;
         }
 
-        private void App_LostFocus(object sender, RoutedEventArgs e)
+        private void App_LostFocus(object sender, EventArgs e)
         {
-            if (appData.AppConfig.AppHideType == AppHideType.LOST_FOCUS)
+            if (appData.AppConfig.AppHideType == AppHideType.LOST_FOCUS
+                && this.Opacity == 1)
             {
                 //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
-                if (appData.AppConfig.MarginHide && !MarginHide.IS_HIDE)
+                if (!appData.AppConfig.MarginHide || (appData.AppConfig.MarginHide && !MarginHide.IS_HIDE))
                 {
-                    this.Visibility = Visibility.Collapsed;
+                    HideApp();
                 }
-            }
-        }
-
-        private void Window_Deactivated(object sender, EventArgs e)
-        {
-            if (appData.AppConfig.AppHideType == AppHideType.LOST_FOCUS)
-            {
-                this.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -523,9 +518,8 @@ namespace GeekDesk
                 HideApp();
             }
         }
+
+
+
     }
-
-
-
-
 }
