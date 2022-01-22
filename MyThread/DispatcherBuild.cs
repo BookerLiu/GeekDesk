@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 
-namespace GeekDesk.Thread
+namespace GeekDesk.MyThread
 {
     public class DispatcherBuild
     {
