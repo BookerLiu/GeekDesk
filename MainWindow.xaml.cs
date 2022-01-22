@@ -5,7 +5,7 @@ using GeekDesk.Control.UserControls.Config;
 using GeekDesk.Control.Windows;
 using GeekDesk.Interface;
 using GeekDesk.Task;
-using GeekDesk.Thread;
+using GeekDesk.MyThread;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using Gma.System.MouseKeyHook;
@@ -315,7 +315,7 @@ namespace GeekDesk
 
         public static void HideApp()
         {
-            FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
+            FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);            
         }
 
         /// <summary>
@@ -344,6 +344,7 @@ namespace GeekDesk
                     else
                     {
                         mainWindow.Opacity = 0;
+                        CommonCode.SortIconList();
                     }
                 };
                 Timeline.SetDesiredFrameRate(opacityAnimation, 60);
@@ -354,6 +355,10 @@ namespace GeekDesk
                 //防止关闭动画后 窗体仍是0透明度
                 mainWindow.Opacity = 1;
                 mainWindow.Visibility = visibility;
+                if (visibility == Visibility.Collapsed)
+                {
+                    CommonCode.SortIconList();
+                }
             }
         }
 

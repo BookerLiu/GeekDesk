@@ -188,6 +188,7 @@
       <DependentUpon>UpdateWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converts\DoubleToGridLength.cs" />
+    <Compile Include="Converts\SortTypeConvert.cs" />
     <Compile Include="Converts\MenuInfoConvert.cs" />
     <Compile Include="Converts\TodoTaskExecConvert.cs" />
     <Compile Include="Converts\IntToCornerRadius.cs" />
@@ -198,9 +199,9 @@
     <Compile Include="Converts\HideTypeConvert.cs" />
     <Compile Include="Interface\IWindowCommon.cs" />
     <Compile Include="Task\ToDoTask.cs" />
-    <Compile Include="Thread\MouseHookThread.cs" />
-    <Compile Include="Thread\DispatcherBuild.cs" />
-    <Compile Include="Thread\UpdateThread.cs" />
+    <Compile Include="MyThread\MouseHookThread.cs" />
+    <Compile Include="MyThread\DispatcherBuild.cs" />
+    <Compile Include="MyThread\UpdateThread.cs" />
     <Compile Include="Util\AeroGlassHelper.cs" />
     <Compile Include="Util\GlobalHotKey.cs" />
     <Compile Include="Util\CommonCode.cs" />

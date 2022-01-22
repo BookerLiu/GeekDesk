@@ -53,6 +53,7 @@ namespace GeekDesk.Control.UserControls.SystemItem
                 iconInfo = CommonCode.GetIconInfoByPath(thisInfo.LnkPath_NoWrite);
             }
             menuInfo.IconList.Add(iconInfo);
+            CommonCode.SortIconList();
             CommonCode.SaveAppData(MainWindow.appData);
         }
     }

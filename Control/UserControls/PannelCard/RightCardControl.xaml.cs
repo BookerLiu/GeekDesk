@@ -26,6 +26,9 @@ namespace GeekDesk.Control.UserControls.PannelCard
     {
         private AppData appData = MainWindow.appData;
 
+        private volatile static bool DROP_ICON = false;
+        private Thread dropCheckThread = null;
+
         public RightCardControl()
         {
             InitializeComponent();
@@ -42,6 +45,34 @@ namespace GeekDesk.Control.UserControls.PannelCard
                     _swap = new DelegateCommand<int[]>(
                         (indexes) =>
                         {
+                            DROP_ICON = true;
+                            if (appData.AppConfig.IconSortType != SortType.CUSTOM 
+                            && (dropCheckThread == null || !dropCheckThread.IsAlive))
+                            {
+                                dropCheckThread = new Thread(() =>
+                                {
+                                    do
+                                    {
+                                        DROP_ICON = false;
+                                        Thread.Sleep(1000);
+                                    } while (DROP_ICON);
+
+                                    MainWindow.appData.AppConfig.IconSortType = SortType.CUSTOM;
+                                    App.Current.Dispatcher.Invoke(() =>
+                                    {
+                                        if (MainWindow.mainWindow.Visibility == Visibility.Collapsed
+                                        || MainWindow.mainWindow.Opacity != 1)
+                                        {
+                                            Growl.WarningGlobal("已将图标排序规则重置为自定义!");
+                                        }
+                                        else
+                                        {
+                                            Growl.Warning("已将图标排序规则重置为自定义!", "MainWindowGrowl");
+                                        }
+                                    });
+                                });
+                                dropCheckThread.Start();
+                            }
                             int fromS = indexes[0];
                             int to = indexes[1];
                             ObservableCollection<IconInfo> iconList = appData.MenuList[appData.AppConfig.SelectedMenuIndex].IconList;
@@ -330,8 +361,9 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 string path = (string)obj;
                 IconInfo iconInfo = CommonCode.GetIconInfoByPath(path);
                 MainWindow.appData.MenuList[appData.AppConfig.SelectedMenuIndex].IconList.Add(iconInfo);
-                CommonCode.SaveAppData(MainWindow.appData);
             }
+            CommonCode.SortIconList();
+            CommonCode.SaveAppData(MainWindow.appData);
         }
 
         /// <summary>

@@ -25,7 +25,7 @@ namespace GeekDesk.ViewModel
         private ObservableCollection<IconInfo> iconList = new ObservableCollection<IconInfo>();
 
         [field: NonSerializedAttribute()]
-        private string[] NO_WRITE_ARR = new string[] { "IsEdit" };
+        private static string[] NO_WRITE_ARR = new string[] { "IsEdit" };
 
 
         public bool IsEdit
@@ -159,7 +159,7 @@ namespace GeekDesk.ViewModel
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            foreach (var field in NO_WRITE_ARR)
+            foreach (string field in NO_WRITE_ARR)
             {
                 if (field.Equals(propertyName))
                 {

@@ -60,6 +60,16 @@
                 </CheckBox>
             </hc:UniformSpacingPanel>
 
+            <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0"  Grid.ColumnSpan="4">
+                <CheckBox  Content="悬停切换菜单" IsChecked="{Binding HoverMenu}">
+                    <CheckBox.Background>
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                            <GradientStop Color="#FF9EA3A6"/>
+                        </LinearGradientBrush>
+                    </CheckBox.Background>
+                </CheckBox>
+            </hc:UniformSpacingPanel>
+
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
                 <CheckBox  Content="贴边隐藏" IsChecked="{Binding MarginHide}" Click="MarginHide_Changed">
                     <CheckBox.Background>
