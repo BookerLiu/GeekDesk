@@ -1,16 +1,17 @@
 ﻿using DraggAnimatedPanelExample;
 using GeekDesk.Control.Windows;
+using GeekDesk.MyThread;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using System;
 
 using System.Collections.ObjectModel;
-
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 
 using System.Windows.Input;
-
+using System.Windows.Threading;
 
 namespace GeekDesk.Control.UserControls.PannelCard
 {
@@ -60,13 +61,13 @@ namespace GeekDesk.Control.UserControls.PannelCard
             }
         }
 
-            ////菜单点击事件
-        private void MenuClick(object sender, MouseButtonEventArgs e)
-        {
-            //设置对应菜单的图标列表
-            MenuInfo mi = (MenuInfo)(((StackPanel)sender).Tag);
-            appData.AppConfig.SelectedMenuIcons = mi.IconList;
-        }
+        //////菜单点击事件
+        //private void MenuClick(object sender, MouseButtonEventArgs e)
+        //{
+        //    //设置对应菜单的图标列表
+        //    MenuInfo mi = (MenuInfo)(((StackPanel)sender).Tag);
+        //    appData.AppConfig.SelectedMenuIcons = mi.IconList;
+        //}
 
         /// <summary>
         /// 当修改菜单元素可见时 设置原菜单为不可见 并且不可选中
@@ -202,7 +203,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
             IconfontWindow.Show(SvgToGeometry.GetIconfonts(), menuInfo);
         }
 
-        private void menus_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //设置对应菜单的图标列表
             if (MenuListBox.SelectedIndex == -1)
@@ -214,5 +215,31 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 appData.AppConfig.SelectedMenuIcons = appData.MenuList[MenuListBox.SelectedIndex].IconList;
             }
         }
+
+        /// <summary>
+        /// 鼠标悬停切换菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Menu_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (appData.AppConfig.HoverMenu)
+            {
+                new Thread(() =>
+                {
+                    Thread.Sleep(200);
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        ListBoxItem lbi = sender as ListBoxItem;
+                        if (lbi.IsMouseOver)
+                        {
+                            int index = MenuListBox.ItemContainerGenerator.IndexFromContainer(lbi);
+                            MenuListBox.SelectedIndex = index;
+                        }
+                    });
+                }).Start();
+            }
+        }
+
     }
 }

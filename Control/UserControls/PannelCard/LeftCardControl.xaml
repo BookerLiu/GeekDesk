@@ -21,8 +21,7 @@
                 </Setter.Value>
             </Setter>
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-            <EventSetter Event="MouseLeftButtonDown" Handler="MenuClick"/>
-            <EventSetter Event="MouseRightButtonDown" Handler="MenuClick"/>
+            <EventSetter Event="MouseEnter" Handler="Menu_MouseEnter"/>
             <Style.Triggers>
                 <MultiTrigger>
                     <MultiTrigger.Conditions>
@@ -94,7 +93,7 @@
                          BorderThickness="0" Foreground="{x:Null}"
                          SelectedIndex="{Binding AppConfig.SelectedMenuIndex}"
                          VirtualizingPanel.VirtualizationMode="Recycling"
-                         SelectionChanged="menus_SelectionChanged"
+                         SelectionChanged="Menu_SelectionChanged"
                          >
                 <ListBox.Resources>
                     <ContextMenu x:Key="MenuDialog" Width="200">
@@ -122,7 +121,7 @@
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel MouseLeftButtonDown="MenuClick" MouseRightButtonDown="MenuClick" Tag="{Binding}">
+                        <StackPanel Tag="{Binding}">
                             <TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
                                         HorizontalAlignment="Left"
                                         Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}, ConverterParameter=35}"
