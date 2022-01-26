@@ -24,8 +24,10 @@ namespace GeekDesk.ViewModel
         private string geometryColor; //几何图标颜色
         private ObservableCollection<IconInfo> iconList = new ObservableCollection<IconInfo>();
 
+
+
         [field: NonSerializedAttribute()]
-        private static string[] NO_WRITE_ARR = new string[] { "IsEdit" };
+        private static string[] NO_WRITE_ARR = new string[] { "IsEdit"};
 
 
         public bool IsEdit

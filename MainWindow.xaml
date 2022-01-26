@@ -22,6 +22,7 @@
         SizeChanged="Window_SizeChanged"
         KeyDown="OnKeyDown"
         Focusable="True"
+        MouseDown="MainWindow_MouseDown"
         >
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="15"/>
@@ -73,6 +74,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
+                    <TextBox x:Name="EmptyTextBox" Width="0"/>
 
                     <DockPanel Grid.Row="0" Grid.Column="0" MouseMove="DragMove">
                         <DockPanel.Background>

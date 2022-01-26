@@ -524,7 +524,14 @@ namespace GeekDesk
             }
         }
 
-
-
+        /// <summary>
+        /// 为了让修改菜单的textBox失去焦点
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            EmptyTextBox.Focus();
+        }
     }
 }
