@@ -27,9 +27,16 @@
 
 
 **免费 / 美观 / 高度定制化** 是从GeekDesk诞生开始就有的需求和方向, 未来也会向着这些方向发展  
+
 目前GeekDesk只有一个人在开发所以想法有限, 大家如果有好的建议也可以提Issue  
-  
+
 另外如果你喜欢 GeekDesk的话, 或许可以为作者购买防脱洗发水  
+
+### GitHub
+[https://github.com/Demo-Liu/GeekDesk](https://github.com/Demo-Liu/GeekDesk)  
+### 码云
+[https://gitee.com/demo_liu/GeekDesk](https://gitee.com/demo_liu/GeekDesk)
+
  <img src="https://z3.ax1x.com/2021/07/20/WYdfmR.jpg" alt="WYdfmR.jpg" border="0" width="400px"/>
 
 ## 全局热键 一键呼出 鼠标跟随
@@ -62,7 +69,7 @@
 ## 开发框架
 - wpf
 - .net 4.7.2
-- [HandyControl](https://github.com/HandyOrg/HandyControl)
-## LICENSE
-- 这是个人开发的程序,任何人可任意修改和免费使用(未做较大功能性改动不允许修改赞赏码,重新修改发布需注明出处)
-- 商用需联系作者
+- [HandyControl](https://github.com/HandyOrg/HandyControl)  
+
+## Stargazers over time
+[![Stargazers over time](https://starchart.cc/Demo-Liu/GeekDesk.svg)](https://starchart.cc/Demo-Liu/GeekDesk)
