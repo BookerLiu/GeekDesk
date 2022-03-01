@@ -31,6 +31,8 @@
 目前GeekDesk只有一个人在开发所以想法有限, 大家如果有好的建议也可以提Issue  
 
 另外如果你喜欢 GeekDesk的话, 或许可以为作者购买防脱洗发水  
+当然, 点个**Star**也是对作者的激励哦~:smile::smile::smile:
+
 
 ### GitHub
 [https://github.com/Demo-Liu/GeekDesk](https://github.com/Demo-Liu/GeekDesk)  
