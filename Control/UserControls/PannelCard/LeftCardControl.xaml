@@ -21,8 +21,8 @@
                 </Setter.Value>
             </Setter>
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-            <EventSetter Event="MouseLeftButtonDown" Handler="MenuClick"/>
-            <EventSetter Event="MouseRightButtonDown" Handler="MenuClick"/>
+            <EventSetter Event="MouseEnter" Handler="Menu_MouseEnter"/>
+            <EventSetter Event="Unselected" Handler="ListBoxItem_Unselected"/>
             <Style.Triggers>
                 <MultiTrigger>
                     <MultiTrigger.Conditions>
@@ -43,11 +43,34 @@
                             </Storyboard>
                         </BeginStoryboard>
                     </MultiTrigger.ExitActions>
+                    <MultiTrigger.Setters>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Foreground" Value="Black"/>
+                    </MultiTrigger.Setters>
                 </MultiTrigger>
-                <Trigger Property="IsSelected" Value="true">
-                    <Setter Property="Background" Value="#FFECECEC"/>
+
+
+
+                <!--<Trigger Property="IsSelected" Value="False">
+                    <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="Foreground" Value="Black"/>
                 </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#ECECEC"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+                
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>-->
+
+                <!--<MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property=""></Condition>
+                    </MultiTrigger.Conditions>
+                </MultiTrigger>-->
+
 
             </Style.Triggers>
         </Style>
@@ -75,14 +98,14 @@
         </hc:Card.ContextMenu>
         <WrapPanel Orientation="Horizontal">
             <ListBox x:Name="MenuListBox"
-                         Padding="2,3,0,2"
-                         ItemsSource="{Binding MenuList}"
-                         Tag="{Binding AppConfig.MenuCardWidth}"
-                         BorderThickness="0" Foreground="{x:Null}"
-                         SelectedIndex="{Binding AppConfig.SelectedMenuIndex}"
-                         VirtualizingPanel.VirtualizationMode="Recycling"
-                         SelectionChanged="menus_SelectionChanged"
-                         >
+                     Padding="2,3,0,2"
+                     ItemsSource="{Binding MenuList}"
+                     Tag="{Binding AppConfig.MenuCardWidth}"
+                     BorderThickness="0" Foreground="{x:Null}"
+                     SelectedIndex="{Binding AppConfig.SelectedMenuIndex}"
+                     VirtualizingPanel.VirtualizationMode="Recycling"
+                     SelectionChanged="Menu_SelectionChanged"
+                     >
                 <ListBox.Resources>
                     <ContextMenu x:Key="MenuDialog" Width="200">
                         <MenuItem Header="新建菜单" Click="CreateMenu"/>
@@ -109,38 +132,38 @@
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel MouseLeftButtonDown="MenuClick" MouseRightButtonDown="MenuClick" Tag="{Binding}">
+                        <StackPanel Tag="{Binding}">
                             <TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
-                                        HorizontalAlignment="Left"
-                                        Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}, ConverterParameter=35}"
-                                        FontSize="16"
-                                        Height="28"
-                                        VerticalAlignment="Center"
-                                        TextAlignment="Left"
-                                        LostFocus="LostFocusOrEnterDown"
-                                        KeyDown="LostFocusOrEnterDown"
-                                        Tag="{Binding}"
-                                        Padding="2"
-                                        BorderThickness="0"
-                                        IsVisibleChanged="MenuEditWhenVisibilityChanged"
-                                        Visibility="{Binding MenuEdit}"/>
-                            <StackPanel Orientation="Horizontal">
+                                    HorizontalAlignment="Left"
+                                    Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}, ConverterParameter=35}"
+                                    FontSize="16"
+                                    Height="28"
+                                    VerticalAlignment="Center"
+                                    TextAlignment="Left"
+                                    LostFocus="LostFocusOrEnterDown"
+                                    KeyDown="LostFocusOrEnterDown"
+                                    Tag="{Binding}"
+                                    Padding="2"
+                                    BorderThickness="0"
+                                    IsVisibleChanged="MenuEditWhenVisibilityChanged"
+                                    Visibility="{Binding MenuEdit}"/>
+                            <StackPanel Orientation="Horizontal"
+                                    IsVisibleChanged="MenuWhenVisibilityChanged"
+                                    Visibility="{Binding NotMenuEdit}">
                                 <Button Background="Transparent" 
-                                            BorderThickness="0"
-                                            hc:IconElement.Geometry="{Binding MenuGeometry}"
-                                            hc:IconElement.Height="18"
-                                            hc:IconElement.Width="18"
-                                            IsEnabled="False"
-                                            Opacity="1"
-                                            Foreground="{Binding GeometryColor}"
-                                            />
+                                        BorderThickness="0"
+                                        hc:IconElement.Geometry="{Binding MenuGeometry}"
+                                        hc:IconElement.Height="18"
+                                        hc:IconElement.Width="18"
+                                        IsEnabled="False"
+                                        Opacity="1"
+                                        Foreground="{Binding GeometryColor}"
+                                        />
                                 <TextBlock Text="{Binding MenuName}"
-                                               HorizontalAlignment="Center"
-                                               TextAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               IsVisibleChanged="MenuWhenVisibilityChanged"
-                                               Visibility="{Binding NotMenuEdit}"
-                                               />
+                                           HorizontalAlignment="Center"
+                                           TextAlignment="Center"
+                                           VerticalAlignment="Center"
+                                            />
                             </StackPanel>
                         </StackPanel>
                     </DataTemplate>

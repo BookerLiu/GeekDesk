@@ -1,16 +1,18 @@
 ﻿using DraggAnimatedPanelExample;
 using GeekDesk.Control.Windows;
+using GeekDesk.MyThread;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using System;
 
 using System.Collections.ObjectModel;
-
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 
 using System.Windows.Input;
-
+using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace GeekDesk.Control.UserControls.PannelCard
 {
@@ -21,6 +23,9 @@ namespace GeekDesk.Control.UserControls.PannelCard
     {
         private int menuSelectIndexTemp = -1;
         private AppData appData = MainWindow.appData;
+
+        //是否正在修改菜单
+        private static bool IS_EDIT = false;
 
         public LeftCardControl()
         {
@@ -60,13 +65,13 @@ namespace GeekDesk.Control.UserControls.PannelCard
             }
         }
 
-            ////菜单点击事件
-        private void MenuClick(object sender, MouseButtonEventArgs e)
-        {
-            //设置对应菜单的图标列表
-            MenuInfo mi = (MenuInfo)(((StackPanel)sender).Tag);
-            appData.AppConfig.SelectedMenuIcons = mi.IconList;
-        }
+        //////菜单点击事件
+        //private void MenuClick(object sender, MouseButtonEventArgs e)
+        //{
+        //    //设置对应菜单的图标列表
+        //    MenuInfo mi = (MenuInfo)(((StackPanel)sender).Tag);
+        //    appData.AppConfig.SelectedMenuIcons = mi.IconList;
+        //}
 
         /// <summary>
         /// 当修改菜单元素可见时 设置原菜单为不可见 并且不可选中
@@ -76,9 +81,14 @@ namespace GeekDesk.Control.UserControls.PannelCard
         /// <param name="e"></param>
         private void MenuWhenVisibilityChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            TextBlock tb = sender as TextBlock;
-            if (tb.Visibility == Visibility.Collapsed)
+            StackPanel sp = sender as StackPanel;
+
+            ListBoxItem lbi = (sp.TemplatedParent as ContentPresenter).TemplatedParent as ListBoxItem;
+            if (sp.Visibility == Visibility.Collapsed)
             {
+                SolidColorBrush scb = new SolidColorBrush(Colors.Red);
+                lbi.MouseEnter += Lbi_MouseEnter;
+
                 if (MenuListBox.SelectedIndex != -1)
                 {
                     menuSelectIndexTemp = MenuListBox.SelectedIndex;
@@ -89,6 +99,31 @@ namespace GeekDesk.Control.UserControls.PannelCard
                     MenuListBox.SelectedIndex = menuSelectIndexTemp;
                 }
             }
+            else
+            {
+                SolidColorBrush bac = new SolidColorBrush(Color.FromRgb(236, 236, 236));
+                SolidColorBrush fontColor = new SolidColorBrush(Colors.Black);
+
+                lbi.MouseEnter += (s, me) =>
+                {
+                    lbi.Background = bac;
+                };
+
+                lbi.MouseLeave += Lbi_MouseLeave;
+
+                lbi.Selected += (s, me) =>
+                {
+                    lbi.MouseLeave -= Lbi_MouseLeave;
+                    lbi.Background = bac;
+                    lbi.Foreground = fontColor;
+                };
+            }
+        }
+
+        private void Lbi_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ListBoxItem lbi = sender as ListBoxItem;
+            lbi.Background = Brushes.Transparent;
         }
 
         /// <summary>
@@ -104,6 +139,27 @@ namespace GeekDesk.Control.UserControls.PannelCard
             MenuListBox.SelectedIndex = appData.MenuList.Count - 1;
             appData.AppConfig.SelectedMenuIndex = MenuListBox.SelectedIndex;
             appData.AppConfig.SelectedMenuIcons = info.IconList;
+
+            ItemCollection ic = MenuListBox.Items;
+            SolidColorBrush bac = new SolidColorBrush(Color.FromRgb(236, 236, 236));
+            SolidColorBrush fontColor = new SolidColorBrush(Colors.Black);
+            foreach (var icItem in ic)
+            {
+                ListBoxItem lbi = icItem as ListBoxItem;
+                lbi.MouseEnter += (s, me) =>
+                {
+                    lbi.Background = bac;
+                };
+
+                lbi.MouseLeave += Lbi_MouseLeave;
+
+                lbi.Selected += (s, me) =>
+                {
+                    lbi.MouseLeave -= Lbi_MouseLeave;
+                    lbi.Background = bac;
+                    lbi.Foreground = fontColor;
+                };
+            }
         }
 
         /// <summary>
@@ -115,6 +171,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
         {
             MenuInfo menuInfo = ((MenuItem)sender).Tag as MenuInfo;
             menuInfo.MenuEdit = (int)Visibility.Visible;
+            IS_EDIT = true;
         }
 
         /// <summary>
@@ -131,10 +188,11 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 CreateMenu(null, null);
             }
             int index = appData.MenuList.IndexOf(menuInfo);
-            if(index == 0)
+            if (index == 0)
             {
                 index = 0;
-            } else
+            }
+            else
             {
                 index = index - 1;
             }
@@ -153,6 +211,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
         /// <param name="e"></param>
         private void LostFocusOrEnterDown(object sender, EventArgs e)
         {
+            bool done = true;
             TextBox menuBox = null;
             if (e.GetType() == typeof(KeyEventArgs))
             {
@@ -161,18 +220,27 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 {
                     menuBox = ((TextBox)sender);
                 }
+                else
+                {
+                    done = false;
+                }
             }
             else if (e.GetType() == typeof(RoutedEventArgs))
             {
                 menuBox = ((TextBox)sender);
             }
 
-            if (menuBox != null)
+            if (done)
             {
-                MenuInfo menuInfo = menuBox.Tag as MenuInfo;
-                string text = menuBox.Text;
-                menuInfo.MenuName = text;
-                menuInfo.MenuEdit = Visibility.Collapsed;
+                if (menuBox != null)
+                {
+                    MenuInfo menuInfo = menuBox.Tag as MenuInfo;
+                    string text = menuBox.Text;
+                    menuInfo.MenuName = text;
+                    menuInfo.MenuEdit = Visibility.Collapsed;
+                }
+                IS_EDIT = false;
+                MenuListBox.SelectedIndex = menuSelectIndexTemp;
             }
         }
 
@@ -184,6 +252,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
         private void MenuEditWhenVisibilityChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             TextBox box = sender as TextBox;
+            MenuInfo mi = box.Tag as MenuInfo;
             if (box.Visibility == Visibility.Visible)
             {
                 Keyboard.Focus(box);
@@ -202,17 +271,58 @@ namespace GeekDesk.Control.UserControls.PannelCard
             IconfontWindow.Show(SvgToGeometry.GetIconfonts(), menuInfo);
         }
 
-        private void menus_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //设置对应菜单的图标列表
             if (MenuListBox.SelectedIndex == -1)
             {
-                appData.AppConfig.SelectedMenuIcons = appData.MenuList[appData.MenuList.Count - 1].IconList;
+                //appData.AppConfig.SelectedMenuIcons = appData.MenuList[appData.MenuList.Count - 1].IconList;
             }
             else
             {
                 appData.AppConfig.SelectedMenuIcons = appData.MenuList[MenuListBox.SelectedIndex].IconList;
             }
         }
+
+        private void ListBoxItem_Unselected(object sender, RoutedEventArgs e)
+        {
+            //添加Leave效果
+            ListBoxItem lbi = sender as ListBoxItem;
+            lbi.Background = Brushes.Transparent;
+            lbi.MouseLeave += Lbi_MouseLeave;
+        }
+
+        private void Lbi_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ListBoxItem lbi = sender as ListBoxItem;
+            lbi.Background = Brushes.Transparent;
+        }
+
+        /// <summary>
+        /// 鼠标悬停切换菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Menu_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (appData.AppConfig.HoverMenu && !IS_EDIT)
+            {
+                new Thread(() =>
+                {
+                    Thread.Sleep(200);
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        ListBoxItem lbi = sender as ListBoxItem;
+                        if (lbi.IsMouseOver)
+                        {
+                            int index = MenuListBox.ItemContainerGenerator.IndexFromContainer(lbi);
+                            MenuListBox.SelectedIndex = index;
+                        }
+                    });
+                }).Start();
+            }
+        }
+
+
     }
 }
