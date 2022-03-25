@@ -72,6 +72,9 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NPinyin.Core, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\NPinyin.Core.3.0.0\lib\net45\NPinyin.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Quartz, Version=3.3.3.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
       <HintPath>packages\Quartz.3.3.3\lib\net472\Quartz.dll</HintPath>
     </Reference>
@@ -189,6 +192,8 @@
     </Compile>
     <Compile Include="Converts\DoubleToGridLength.cs" />
     <Compile Include="Converts\MenuInfoConvert.cs" />
+    <Compile Include="Converts\SearchResWidth.cs" />
+    <Compile Include="Converts\SortTypeConvert.cs" />
     <Compile Include="Converts\TodoTaskExecConvert.cs" />
     <Compile Include="Converts\IntToCornerRadius.cs" />
     <Compile Include="Converts\OpcityConvert.cs" />
@@ -198,9 +203,9 @@
     <Compile Include="Converts\HideTypeConvert.cs" />
     <Compile Include="Interface\IWindowCommon.cs" />
     <Compile Include="Task\ToDoTask.cs" />
-    <Compile Include="Thread\MouseHookThread.cs" />
-    <Compile Include="Thread\DispatcherBuild.cs" />
-    <Compile Include="Thread\UpdateThread.cs" />
+    <Compile Include="MyThread\MouseHookThread.cs" />
+    <Compile Include="MyThread\DispatcherBuild.cs" />
+    <Compile Include="MyThread\UpdateThread.cs" />
     <Compile Include="Util\AeroGlassHelper.cs" />
     <Compile Include="Util\GlobalHotKey.cs" />
     <Compile Include="Util\CommonCode.cs" />
@@ -223,6 +228,7 @@
     <Compile Include="Util\SvgToGeometry.cs" />
     <Compile Include="ViewModel\AppConfig.cs" />
     <Compile Include="ViewModel\AppData.cs" />
+    <Compile Include="ViewModel\Temp\SearchIconList.cs" />
     <Compile Include="ViewModel\ToDoInfo.cs" />
     <Compile Include="ViewModel\IconfontInfo.cs" />
     <Compile Include="ViewModel\IconInfo.cs" />

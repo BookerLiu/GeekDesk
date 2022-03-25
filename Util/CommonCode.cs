@@ -1,6 +1,8 @@
 ﻿using GeekDesk.Constant;
 using GeekDesk.ViewModel;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -186,8 +188,39 @@ namespace GeekDesk.Util
 
 
 
-
-
+        /// <summary>
+        /// 排序图标
+        /// </summary>
+        public static void SortIconList()
+        {
+            if (MainWindow.appData.AppConfig.IconSortType != SortType.CUSTOM)
+            {
+                ObservableCollection<MenuInfo> menuList = MainWindow.appData.MenuList;
+                //List<IconInfo> list = new List<IconInfo>(menuList[MainWindow.appData.AppConfig.SelectedMenuIndex].IconList);
+                List<IconInfo> list;
+                foreach (MenuInfo menuInfo in menuList)
+                {
+                    list = new List<IconInfo>(menuInfo.IconList);
+                    switch (MainWindow.appData.AppConfig.IconSortType)
+                    {
+                        case SortType.COUNT_UP:
+                            list.Sort((x, y) => x.Count.CompareTo(y.Count));
+                            break;
+                        case SortType.COUNT_LOW:
+                            list.Sort((x, y) => y.Count.CompareTo(x.Count));
+                            break;
+                        case SortType.NAME_UP:
+                            list.Sort((x, y) => x.Name.CompareTo(y.Name));
+                            break;
+                        case SortType.NAME_LOW:
+                            list.Sort((x, y) => y.Name.CompareTo(x.Name));
+                            break;
+                    }
+                    menuInfo.IconList = new ObservableCollection<IconInfo>(list);
+                }
+                MainWindow.appData.AppConfig.SelectedMenuIcons = MainWindow.appData.MenuList[MainWindow.appData.AppConfig.SelectedMenuIndex].IconList;
+            }
+        }
 
     }
 }
