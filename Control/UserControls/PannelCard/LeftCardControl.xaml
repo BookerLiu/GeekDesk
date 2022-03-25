@@ -44,39 +44,38 @@
                         </BeginStoryboard>
                     </MultiTrigger.ExitActions>
                 </MultiTrigger>
-                <!--<Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FFE4DBDB"/>
-                </Trigger>-->
                 <Trigger Property="IsSelected" Value="true">
                     <Setter Property="Background" Value="#FFECECEC"/>
                     <Setter Property="Foreground" Value="Black"/>
                 </Trigger>
+
             </Style.Triggers>
         </Style>
         <cvt:MenuWidthConvert x:Key="MenuWidthConvert"/>
         <cvt:OpcityConvert x:Key="OpcityConvert"/>
     </UserControl.Resources>
-        <!--左侧栏-->
-        <hc:Card x:Name="MyCard"
-                 BorderThickness="1" 
+    <!--左侧栏-->
+    <hc:Card x:Name="MyCard"
+                 BorderThickness="1"
                  Effect="{DynamicResource EffectShadow2}" 
                  Margin="5,0,0,5"
                  >
-            <hc:Card.Background>
-                <SolidColorBrush Color="#FFFFFFFF" hc:GeometryEffect.GeometryEffect="20" Opacity="{Binding AppConfig.CardOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}">
-                
-                </SolidColorBrush>
-            </hc:Card.Background>
-            <hc:Card.BorderBrush>
-                <SolidColorBrush Color="#FFFFFFFF" Opacity="0"/>
-            </hc:Card.BorderBrush>
-            <hc:Card.ContextMenu>
-                <ContextMenu Width="200">
-                    <MenuItem Header="新建菜单" Click="CreateMenu"/>
-                </ContextMenu>
-            </hc:Card.ContextMenu>
-            <WrapPanel Orientation="Horizontal">
-                <ListBox x:Name="MenuListBox"
+        <hc:Card.Background>
+            <SolidColorBrush Color="#FFFFFFFF" hc:GeometryEffect.GeometryEffect="20" Opacity="{Binding AppConfig.CardOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}">
+
+            </SolidColorBrush>
+        </hc:Card.Background>
+        <hc:Card.BorderBrush>
+            <SolidColorBrush Color="#FFFFFFFF" Opacity="0"/>
+        </hc:Card.BorderBrush>
+        <hc:Card.ContextMenu>
+            <ContextMenu Width="200">
+                <MenuItem Header="新建菜单" Click="CreateMenu"/>
+            </ContextMenu>
+        </hc:Card.ContextMenu>
+        <WrapPanel Orientation="Horizontal">
+            <ListBox x:Name="MenuListBox"
+                         Padding="2,3,0,2"
                          ItemsSource="{Binding MenuList}"
                          Tag="{Binding AppConfig.MenuCardWidth}"
                          BorderThickness="0" Foreground="{x:Null}"
@@ -84,48 +83,49 @@
                          VirtualizingPanel.VirtualizationMode="Recycling"
                          SelectionChanged="menus_SelectionChanged"
                          >
-                    <ListBox.Resources>
-                        <ContextMenu x:Key="MenuDialog" Width="200">
-                            <MenuItem Header="新建菜单" Click="CreateMenu"/>
-                            <MenuItem Header="重命名"  Click="RenameMenu" Tag="{Binding}"/>
-                            <MenuItem Header="修改图标"  Click="EditMenuGeometry" Tag="{Binding}"/>
-                            <MenuItem Header="删除" Click="DeleteMenu" Tag="{Binding}"/>
+                <ListBox.Resources>
+                    <ContextMenu x:Key="MenuDialog" Width="200">
+                        <MenuItem Header="新建菜单" Click="CreateMenu"/>
+                        <MenuItem Header="重命名"  Click="RenameMenu" Tag="{Binding}"/>
+                        <MenuItem Header="修改图标"  Click="EditMenuGeometry" Tag="{Binding}"/>
+                        <MenuItem Header="删除" Click="DeleteMenu" Tag="{Binding}"/>
                     </ContextMenu>
-                    </ListBox.Resources>
+                </ListBox.Resources>
 
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem" BasedOn="{StaticResource MenuStyle}">
-                            <Setter Property="ContextMenu" Value="{StaticResource MenuDialog}"/>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                    <ListBox.Background>
-                        <SolidColorBrush Color="AliceBlue" Opacity="0"/>
-                    </ListBox.Background>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource MenuStyle}">
+                        <Setter Property="ContextMenu" Value="{StaticResource MenuDialog}"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.Background>
+                    <SolidColorBrush Color="AliceBlue" Opacity="0"/>
+                </ListBox.Background>
 
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
                         <DraggAnimatedPanel:DraggAnimatedPanel ItemsHeight="33" ItemsWidth="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}, ConverterParameter=10}"   HorizontalAlignment="Center" VerticalAlignment="Top" SwapCommand="{Binding SwapCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
 
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
                         <StackPanel MouseLeftButtonDown="MenuClick" MouseRightButtonDown="MenuClick" Tag="{Binding}">
-                            <hc:TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
+                            <TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
                                         HorizontalAlignment="Left"
                                         Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}, ConverterParameter=35}"
                                         FontSize="16"
-                                        Height="25"
+                                        Height="28"
                                         VerticalAlignment="Center"
                                         TextAlignment="Left"
                                         LostFocus="LostFocusOrEnterDown"
                                         KeyDown="LostFocusOrEnterDown"
                                         Tag="{Binding}"
-                                        Margin="2"
+                                        Padding="2"
+                                        BorderThickness="0"
                                         IsVisibleChanged="MenuEditWhenVisibilityChanged"
                                         Visibility="{Binding MenuEdit}"/>
                             <StackPanel Orientation="Horizontal">
-                                    <Button Background="Transparent" 
+                                <Button Background="Transparent" 
                                             BorderThickness="0"
                                             hc:IconElement.Geometry="{Binding MenuGeometry}"
                                             hc:IconElement.Height="18"
@@ -134,18 +134,18 @@
                                             Opacity="1"
                                             Foreground="{Binding GeometryColor}"
                                             />
-                                    <TextBlock Text="{Binding MenuName}"
+                                <TextBlock Text="{Binding MenuName}"
                                                HorizontalAlignment="Center"
                                                TextAlignment="Center"
                                                VerticalAlignment="Center"
                                                IsVisibleChanged="MenuWhenVisibilityChanged"
                                                Visibility="{Binding NotMenuEdit}"
                                                />
-                                </StackPanel>
                             </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </WrapPanel>
-        </hc:Card>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </WrapPanel>
+    </hc:Card>
 </UserControl>
