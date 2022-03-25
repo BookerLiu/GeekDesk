@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:GeekDesk.Control.UserControls.PannelCard"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:cvt="clr-namespace:GeekDesk.Converts"
              xmlns:DraggAnimatedPanel="clr-namespace:DraggAnimatedPanel"
@@ -22,7 +21,7 @@
             </Setter>
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
             <EventSetter Event="MouseEnter" Handler="Menu_MouseEnter"/>
-            <EventSetter Event="Unselected" Handler="ListBoxItem_Unselected"/>
+            <!--<EventSetter Event="Unselected" Handler="ListBoxItem_Unselected"/>-->
             <Style.Triggers>
                 <MultiTrigger>
                     <MultiTrigger.Conditions>
@@ -49,8 +48,12 @@
                     </MultiTrigger.Setters>
                 </MultiTrigger>
 
-               
-                
+
+
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#ECECEC"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
                 <!--<Trigger Property="IsSelected" Value="False">
                     <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="Foreground" Value="Black"/>

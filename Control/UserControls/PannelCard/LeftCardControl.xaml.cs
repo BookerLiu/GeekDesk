@@ -83,11 +83,11 @@ namespace GeekDesk.Control.UserControls.PannelCard
         {
             StackPanel sp = sender as StackPanel;
             
-            ListBoxItem lbi = (sp.TemplatedParent as ContentPresenter).TemplatedParent as ListBoxItem;
+            //ListBoxItem lbi = (sp.TemplatedParent as ContentPresenter).TemplatedParent as ListBoxItem;
             if (sp.Visibility == Visibility.Collapsed)
             {
-                SolidColorBrush scb = new SolidColorBrush(Colors.Red);
-                lbi.MouseEnter += Lbi_MouseEnter;
+                //SolidColorBrush scb = new SolidColorBrush(Colors.Red);
+                //lbi.MouseEnter += Lbi_MouseEnter;
 
                 if (MenuListBox.SelectedIndex != -1)
                 {
@@ -100,30 +100,30 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 }
             } else
             {
-                SolidColorBrush bac = new SolidColorBrush(Color.FromRgb(236, 236, 236));
-                SolidColorBrush fontColor = new SolidColorBrush(Colors.Black);
+                //SolidColorBrush bac = new SolidColorBrush(Color.FromRgb(236, 236, 236));
+                //SolidColorBrush fontColor = new SolidColorBrush(Colors.Black);
 
-                lbi.MouseEnter += (s, me) =>
-                {
-                    lbi.Background = bac;
-                };
+                //lbi.MouseEnter += (s, me) =>
+                //{
+                //    lbi.Background = bac;
+                //};
 
-                lbi.MouseLeave += Lbi_MouseLeave;
+                //lbi.MouseLeave += Lbi_MouseLeave;
 
-                lbi.Selected += (s, me) =>
-                {
-                    lbi.MouseLeave -= Lbi_MouseLeave;
-                    lbi.Background = bac;
-                    lbi.Foreground = fontColor;
-                };
+                //lbi.Selected += (s, me) =>
+                //{
+                //    lbi.MouseLeave -= Lbi_MouseLeave;
+                //    lbi.Background = bac;
+                //    lbi.Foreground = fontColor;
+                //};
             }
         }
 
-        private void Lbi_MouseEnter(object sender, MouseEventArgs e)
-        {
-            ListBoxItem lbi = sender as ListBoxItem;
-            lbi.Background = Brushes.Transparent;
-        }
+        //private void Lbi_MouseEnter(object sender, MouseEventArgs e)
+        //{
+        //    ListBoxItem lbi = sender as ListBoxItem;
+        //    lbi.Background = Brushes.Transparent;
+        //}
 
         /// <summary>
         /// 新建菜单
@@ -139,26 +139,26 @@ namespace GeekDesk.Control.UserControls.PannelCard
             appData.AppConfig.SelectedMenuIndex = MenuListBox.SelectedIndex;
             appData.AppConfig.SelectedMenuIcons = info.IconList;
 
-            ItemCollection ic = MenuListBox.Items;
-            SolidColorBrush bac = new SolidColorBrush(Color.FromRgb(236, 236, 236));
-            SolidColorBrush fontColor = new SolidColorBrush(Colors.Black);
-            foreach (var icItem in ic)
-            {
-                ListBoxItem lbi = icItem as ListBoxItem;
-                lbi.MouseEnter += (s, me) =>
-                {
-                    lbi.Background = bac;
-                };
+            //ItemCollection ic = MenuListBox.Items;
+            //SolidColorBrush bac = new SolidColorBrush(Color.FromRgb(236, 236, 236));
+            //SolidColorBrush fontColor = new SolidColorBrush(Colors.Black);
+            //foreach (var icItem in ic)
+            //{
+            //    ListBoxItem lbi = icItem as ListBoxItem;
+            //    lbi.MouseEnter += (s, me) =>
+            //    {
+            //        lbi.Background = bac;
+            //    };
 
-                lbi.MouseLeave += Lbi_MouseLeave;
+            //    lbi.MouseLeave += Lbi_MouseLeave;
 
-                lbi.Selected += (s, me) =>
-                {
-                    lbi.MouseLeave -= Lbi_MouseLeave;
-                    lbi.Background = bac;
-                    lbi.Foreground = fontColor;
-                };
-            }
+            //    lbi.Selected += (s, me) =>
+            //    {
+            //        lbi.MouseLeave -= Lbi_MouseLeave;
+            //        lbi.Background = bac;
+            //        lbi.Foreground = fontColor;
+            //    };
+            //}
         }
 
         /// <summary>
@@ -280,19 +280,19 @@ namespace GeekDesk.Control.UserControls.PannelCard
             }
         }
 
-        private void ListBoxItem_Unselected(object sender, RoutedEventArgs e)
-        {
-            //添加Leave效果
-            ListBoxItem lbi = sender as ListBoxItem;
-            lbi.Background = Brushes.Transparent;
-            lbi.MouseLeave += Lbi_MouseLeave;
-        }
+        //private void ListBoxItem_Unselected(object sender, RoutedEventArgs e)
+        //{
+        //    //添加Leave效果
+        //    ListBoxItem lbi = sender as ListBoxItem;
+        //    //lbi.Background = Brushes.Transparent;
+        //    //lbi.MouseLeave += Lbi_MouseLeave;
+        //}
 
-        private void Lbi_MouseLeave(object sender, MouseEventArgs e)
-        {
-            ListBoxItem lbi = sender as ListBoxItem;
-            lbi.Background = Brushes.Transparent;
-        }
+        //private void Lbi_MouseLeave(object sender, MouseEventArgs e)
+        //{
+        //    ListBoxItem lbi = sender as ListBoxItem;
+        //    lbi.Background = Brushes.Transparent;
+        //}
 
         /// <summary>
         /// 鼠标悬停切换菜单
