@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace GeekDesk.Thread
+namespace GeekDesk.MyThread
 {
     public class MouseHookThread
     {

@@ -12,7 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace GeekDesk.Thread
+namespace GeekDesk.MyThread
 {
     public class UpdateThread
     {
