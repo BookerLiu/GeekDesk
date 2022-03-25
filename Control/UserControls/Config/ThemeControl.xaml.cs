@@ -6,13 +6,17 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -27,6 +31,8 @@ namespace GeekDesk.Control.UserControls.Config
     {
 
         private static AppConfig appConfig = MainWindow.appData.AppConfig;
+
+        private System.Windows.Controls.Primitives.ToggleButton toggleButton = null;
         public ThemeControl()
         {
             InitializeComponent();
@@ -39,7 +45,7 @@ namespace GeekDesk.Control.UserControls.Config
         /// <param name="e"></param>
         private void BGButton_Click(object sender, RoutedEventArgs e)
         {
-           
+
             try
             {
                 OpenFileDialog ofd = new OpenFileDialog
@@ -84,16 +90,24 @@ namespace GeekDesk.Control.UserControls.Config
             ColorPanel.Visibility = Visibility.Visible;
         }
 
-        private void ColorPicker_Canceled(object sender, EventArgs e)
+        /// <summary>
+        /// 取消按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MyColorPicker_Canceled(object sender, EventArgs e)
         {
-            ColorPanel.Visibility = Visibility.Collapsed;
+            MyColorPickerClose(sender);
+        }
+        private void MyColorPicker_Confirmed(object sender, HandyControl.Data.FunctionEventArgs<Color> e)
+        {
+            MyColorPickerClose(sender);
         }
 
-        private void ColorPicker_SelectedColorChanged(object sender, HandyControl.Data.FunctionEventArgs<Color> e)
+        private void MyColorPicker_SelectedColorChanged(object sender, HandyControl.Data.FunctionEventArgs<Color> e)
         {
-            SolidColorBrush scb =  ColorPicker.SelectedBrush;
+            SolidColorBrush scb = MyColorPicker.SelectedBrush;
             appConfig.TextColor = scb.ToString();
-            ColorPanel.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -143,5 +157,27 @@ namespace GeekDesk.Control.UserControls.Config
                 }
             }
         }
+
+        private void MyColorPicker_Checked(object sender, RoutedEventArgs e)
+        {
+            toggleButton = e.OriginalSource as System.Windows.Controls.Primitives.ToggleButton;
+        }
+
+
+        private void MyColorPickerClose(object sender)
+        {
+            if (toggleButton != null && toggleButton.IsChecked == true)
+            {
+                HandyControl.Controls.ColorPicker cp = sender as HandyControl.Controls.ColorPicker;
+                const BindingFlags InstanceBindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+                Type type = cp.GetType();
+                toggleButton.IsChecked = false;
+                MethodInfo mi = type.GetMethod("ToggleButtonDropper_Click", InstanceBindFlags);
+                mi.Invoke(cp, new object[] { null, null });
+            }
+            ColorPanel.Visibility = Visibility.Collapsed;
+        }
+
+
     }
 }
