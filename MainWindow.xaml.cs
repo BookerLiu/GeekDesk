@@ -1,6 +1,4 @@
-﻿using DraggAnimatedPanelExample;
-using GeekDesk.Constant;
-using GeekDesk.Control;
+﻿using GeekDesk.Constant;
 using GeekDesk.Control.UserControls.Config;
 using GeekDesk.Control.Windows;
 using GeekDesk.Interface;
@@ -8,21 +6,17 @@ using GeekDesk.Task;
 using GeekDesk.MyThread;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
-using Gma.System.MouseKeyHook;
-using HandyControl.Data;
 
 using System;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Drawing;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
 using static GeekDesk.Util.ShowWindowFollowMouse;
+using System.Collections.ObjectModel;
+using NPinyin;
+using GeekDesk.ViewModel.Temp;
 
 namespace GeekDesk
 {
@@ -48,6 +42,7 @@ namespace GeekDesk
             this.SizeChanged += MainWindow_Resize;
             ToDoTask.BackLogCheck();
 
+
             ////实例化隐藏 Hide类，进行时间timer设置
             MarginHide.ReadyHide(this);
             if (appData.AppConfig.MarginHide)
@@ -55,6 +50,59 @@ namespace GeekDesk
                 MarginHide.StartHide();
             }
         }
+
+        /// <summary>
+        /// 显示搜索框
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SearchItem(object sender, CanExecuteRoutedEventArgs e)
+        {
+            RightCard.VisibilitySearchCard(Visibility.Visible);
+            SearchBox.Visibility = Visibility.Visible;
+            SearchBox.Focus();
+        }
+        /// <summary>
+        /// 搜索开始
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string inputText = SearchBox.Text.ToLower();
+            if (!string.IsNullOrEmpty(inputText))
+            {
+                SearchIconList.IconList.Clear();
+                ObservableCollection<MenuInfo> menuList = appData.MenuList;
+                foreach (MenuInfo menu in menuList)
+                {
+                    ObservableCollection<IconInfo> iconList = menu.IconList;
+                    foreach (IconInfo icon in iconList)
+                    {
+                        string pyName = Pinyin.GetInitials(icon.Name).ToLower();
+                        if (icon.Name.Contains(inputText) || pyName.Contains(inputText)) {
+                            SearchIconList.IconList.Add(icon);
+                        }
+                    }
+                }
+            } else
+            {
+                SearchIconList.IconList.Clear();
+            }
+        }
+        /// <summary>
+        /// 隐藏搜索框
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SearchBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            SearchIconList.IconList.Clear();
+            RightCard.VisibilitySearchCard(Visibility.Collapsed);
+            SearchBox.Visibility = Visibility.Collapsed;
+            SearchBox.Text = "";
+        }
+
 
         /// <summary>
         /// 加载缓存数据
@@ -533,5 +581,6 @@ namespace GeekDesk
         {
             EmptyTextBox.Focus();
         }
+
     }
 }

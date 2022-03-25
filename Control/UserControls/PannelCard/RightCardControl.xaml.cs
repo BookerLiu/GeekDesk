@@ -196,9 +196,9 @@ namespace GeekDesk.Control.UserControls.PannelCard
                                 case IconStartType.ADMIN_STARTUP:
                                     //p.StartInfo.Arguments = "1";//启动参数
                                     p.StartInfo.Verb = "runas";
-                                    p.StartInfo.CreateNoWindow = false; //设置显示窗口
-                                    p.StartInfo.UseShellExecute = false;//不使用操作系统外壳程序启动进程
-                                    p.StartInfo.ErrorDialog = false;
+                                    //p.StartInfo.CreateNoWindow = false; //设置显示窗口
+                                    p.StartInfo.UseShellExecute = true;//不使用操作系统外壳程序启动进程
+                                    //p.StartInfo.ErrorDialog = false;
                                     if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
                                     {
                                         //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
@@ -569,6 +569,18 @@ namespace GeekDesk.Control.UserControls.PannelCard
         private void AddSystemIcon(object sender, RoutedEventArgs e)
         {
             SystemItemWindow.Show();
+        }
+
+        public void VisibilitySearchCard(Visibility vb)
+        {
+            VerticalCard.Visibility = vb;
+            if (vb == Visibility.Visible)
+            {
+                WrapCard.Visibility = Visibility.Collapsed;
+            } else
+            {
+                WrapCard.Visibility = Visibility.Visible;
+            }
         }
 
     }
