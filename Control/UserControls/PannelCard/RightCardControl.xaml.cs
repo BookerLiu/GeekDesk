@@ -26,6 +26,9 @@ namespace GeekDesk.Control.UserControls.PannelCard
     {
         private AppData appData = MainWindow.appData;
 
+        private volatile static bool DROP_ICON = false;
+        private Thread dropCheckThread = null;
+
         public RightCardControl()
         {
             InitializeComponent();
@@ -42,6 +45,34 @@ namespace GeekDesk.Control.UserControls.PannelCard
                     _swap = new DelegateCommand<int[]>(
                         (indexes) =>
                         {
+                            DROP_ICON = true;
+                            if (appData.AppConfig.IconSortType != SortType.CUSTOM
+                            && (dropCheckThread == null || !dropCheckThread.IsAlive))
+                            {
+                                dropCheckThread = new Thread(() =>
+                                {
+                                    do
+                                    {
+                                        DROP_ICON = false;
+                                        Thread.Sleep(1000);
+                                    } while (DROP_ICON);
+
+                                    MainWindow.appData.AppConfig.IconSortType = SortType.CUSTOM;
+                                    App.Current.Dispatcher.Invoke(() =>
+                                    {
+                                        if (MainWindow.mainWindow.Visibility == Visibility.Collapsed
+                                        || MainWindow.mainWindow.Opacity != 1)
+                                        {
+                                            Growl.WarningGlobal("已将图标排序规则重置为自定义!");
+                                        }
+                                        else
+                                        {
+                                            Growl.Warning("已将图标排序规则重置为自定义!", "MainWindowGrowl");
+                                        }
+                                    });
+                                });
+                                dropCheckThread.Start();
+                            }
                             int fromS = indexes[0];
                             int to = indexes[1];
                             ObservableCollection<IconInfo> iconList = appData.MenuList[appData.AppConfig.SelectedMenuIndex].IconList;
@@ -165,9 +196,9 @@ namespace GeekDesk.Control.UserControls.PannelCard
                                 case IconStartType.ADMIN_STARTUP:
                                     //p.StartInfo.Arguments = "1";//启动参数
                                     p.StartInfo.Verb = "runas";
-                                    p.StartInfo.CreateNoWindow = false; //设置显示窗口
-                                    p.StartInfo.UseShellExecute = false;//不使用操作系统外壳程序启动进程
-                                    p.StartInfo.ErrorDialog = false;
+                                    //p.StartInfo.CreateNoWindow = false; //设置显示窗口
+                                    p.StartInfo.UseShellExecute = true;//不使用操作系统外壳程序启动进程
+                                    //p.StartInfo.ErrorDialog = false;
                                     if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
                                     {
                                         //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
@@ -330,8 +361,9 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 string path = (string)obj;
                 IconInfo iconInfo = CommonCode.GetIconInfoByPath(path);
                 MainWindow.appData.MenuList[appData.AppConfig.SelectedMenuIndex].IconList.Add(iconInfo);
-                CommonCode.SaveAppData(MainWindow.appData);
             }
+            CommonCode.SortIconList();
+            CommonCode.SaveAppData(MainWindow.appData);
         }
 
         /// <summary>
@@ -537,6 +569,19 @@ namespace GeekDesk.Control.UserControls.PannelCard
         private void AddSystemIcon(object sender, RoutedEventArgs e)
         {
             SystemItemWindow.Show();
+        }
+
+        public void VisibilitySearchCard(Visibility vb)
+        {
+            VerticalCard.Visibility = vb;
+            if (vb == Visibility.Visible)
+            {
+                WrapCard.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                WrapCard.Visibility = Visibility.Visible;
+            }
         }
 
     }

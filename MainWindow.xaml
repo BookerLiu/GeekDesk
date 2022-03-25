@@ -3,11 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GeekDesk"
         xmlns:uc="clr-namespace:GeekDesk.Control.UserControls.PannelCard"
         mc:Ignorable="d"
         xmlns:cvt="clr-namespace:GeekDesk.Converts"
-        xmlns:DraggAnimatedPanel="clr-namespace:DraggAnimatedPanel"
         x:Name="window"
         xmlns:hc="https://handyorg.github.io/handycontrol" xmlns:viewmodel="clr-namespace:GeekDesk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AppData}"
         Title="GeekDesk" 
@@ -18,33 +16,42 @@
         Background="Transparent"
         ShowInTaskbar="False"
         Opacity="0"
-        Deactivated="Window_Deactivated"
+        Deactivated="App_LostFocus"
         SizeChanged="Window_SizeChanged"
         KeyDown="OnKeyDown"
         Focusable="True"
+        MouseDown="MainWindow_MouseDown"
         >
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="15"/>
     </WindowChrome.WindowChrome>
     <Window.Resources>
+        <RoutedUICommand x:Key="SearchItem" Text="SearchItem"/>
 
         <cvt:MenuWidthConvert x:Key="MenuWidthConvert"/>
         <cvt:OpcityConvert x:Key="OpcityConvert"/>
         <cvt:IntToCornerRadius x:Key="IntToCornerRadius"/>
         <cvt:DoubleToGridLength x:Key="DoubleToGridLength"/>
     </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Gesture="Ctrl+F" Key="F"  Command="{StaticResource SearchItem}"/>
+    </Window.InputBindings>
+    <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource SearchItem}" CanExecute="SearchItem"/>
+    </Window.CommandBindings>
 
     <Window.Effect>
         <DropShadowEffect BlurRadius="30" Direction="-90" Color="Gray"
                               RenderingBias="Quality" ShadowDepth="2"/>
     </Window.Effect>
     <Border Margin="20" CornerRadius="{Binding AppConfig.PannelCornerRadius, Mode=TwoWay, Converter={StaticResource IntToCornerRadius}}"  BorderThickness="0"
-            Background="AliceBlue" LostFocus="App_LostFocus"
+            Background="AliceBlue"
             Opacity="{Binding AppConfig.PannelOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}"
             VirtualizingPanel.VirtualizationMode="Recycling"  VirtualizingPanel.IsVirtualizing="True"  VirtualizingPanel.IsContainerVirtualizable="True"
             hc:Dialog.Token="IconInfoDialog"
+            Focusable="True"
             >
-        <hc:DialogContainer>
+        <hc:DialogContainer Focusable="True">
 
             <Border CornerRadius="{Binding AppConfig.PannelCornerRadius, Mode=TwoWay, Converter={StaticResource IntToCornerRadius}}"  BorderThickness="0">
                 <!--背景图片-->
@@ -62,6 +69,7 @@
                     </VisualBrush>
                 </Border.Background>
 
+
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" MouseMove="DragMove"></RowDefinition>
@@ -69,9 +77,11 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition x:Name="LeftColumn" MinWidth="80" Width="{Binding AppConfig.MenuCardWidth, Mode=TwoWay, Converter={StaticResource DoubleToGridLength}}" MaxWidth="200"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition x:Name="RightColumn" Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
+                    <!--获取焦点用-->
+                    <TextBox x:Name="EmptyTextBox" Width="0"/>
 
 
                     <DockPanel Grid.Row="0" Grid.Column="0" MouseMove="DragMove">
@@ -123,7 +133,21 @@
                     <!--分割线-->
                     <GridSplitter Opacity="0" Grid.Row="1" Grid.Column="0" Width="1"  VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
 
-                    <uc:RightCardControl Grid.Row="1" Grid.Column="1"/>
+                    <!--搜索输入框-->
+                    <TextBox Panel.ZIndex="2" Grid.Row="0" Grid.Column="1" 
+                             x:Name="SearchBox"
+                             Visibility="Collapsed"
+                             LostFocus="SearchBox_LostFocus"
+                             Margin="-100,5,0,0"
+                             Height="32"
+                             FontSize="16"
+                             Width="400"
+                             BorderThickness="0"
+                             TextChanged="SearchBox_TextChanged"
+                             />
+
+
+                    <uc:RightCardControl x:Name="RightCard" Grid.Row="1" Grid.Column="1"/>
 
                     <hc:NotifyIcon Icon="/Taskbar.ico"  Click="NotifyIcon_Click" x:Name="BarIcon"
                                    Visibility="{Binding AppConfig.ShowBarIcon, Mode=TwoWay, Converter={StaticResource Boolean2VisibilityConverter}}">
