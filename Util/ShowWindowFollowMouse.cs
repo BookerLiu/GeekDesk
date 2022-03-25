@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeekDesk.Constant;
+using System;
 using System.Windows;
 
 namespace GeekDesk.Util
@@ -27,7 +28,7 @@ namespace GeekDesk.Util
             double left = SystemParameters.VirtualScreenLeft;
             double top = SystemParameters.VirtualScreenTop;
             double width = SystemParameters.VirtualScreenWidth;
-            double height = SystemParameters.WorkArea.Height + 20;
+            double height = SystemParameters.WorkArea.Height;
             double right = width - Math.Abs(left);
             double bottom = height - Math.Abs(top);
 
@@ -73,12 +74,12 @@ namespace GeekDesk.Util
             if (p.X - afterWidth < left)
             {
                 //判断是否在最左边缘
-                window.Left = left;
+                window.Left = left - Constants.SHADOW_WIDTH;
             }
             else if (p.X + afterWidth > right)
             {
                 //判断是否在最右边缘
-                window.Left = right - window.Width;
+                window.Left = right - window.Width + Constants.SHADOW_WIDTH;
             }
             else
             {
@@ -89,12 +90,12 @@ namespace GeekDesk.Util
             if (p.Y - afterHeight < top)
             {
                 //判断是否在最上边缘
-                window.Top = top;
+                window.Top = top - Constants.SHADOW_WIDTH;
             }
             else if (p.Y + afterHeight > bottom)
             {
                 //判断是否在最下边缘
-                window.Top = bottom - window.Height;
+                window.Top = bottom - window.Height + Constants.SHADOW_WIDTH;
             }
             else
             {
