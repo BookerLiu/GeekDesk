@@ -22,7 +22,7 @@
             </Setter>
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
             <EventSetter Event="MouseEnter" Handler="Menu_MouseEnter"/>
-            <EventSetter Event="Unselected" Handler="ListBoxItem_Unselected"/>
+            <!--<EventSetter Event="Unselected" Handler="Lbi_Unselected"/>-->
             <Style.Triggers>
                 <MultiTrigger>
                     <MultiTrigger.Conditions>
@@ -50,7 +50,7 @@
                 </MultiTrigger>
 
 
-
+                <!--移到代码设置-->
                 <!--<Trigger Property="IsSelected" Value="False">
                     <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="Foreground" Value="Black"/>
@@ -64,12 +64,10 @@
                     <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="Foreground" Value="Black"/>
                 </Trigger>-->
-
-                <!--<MultiTrigger>
-                    <MultiTrigger.Conditions>
-                        <Condition Property=""></Condition>
-                    </MultiTrigger.Conditions>
-                </MultiTrigger>-->
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
 
 
             </Style.Triggers>
