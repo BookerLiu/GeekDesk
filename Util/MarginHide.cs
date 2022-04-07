@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-using System.Drawing;
 using System.Windows.Forms;
-using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using System.Windows;
 using System.Windows.Media.Animation;
-using System.Windows.Media;
+using GeekDesk.Constant;
 
 namespace GeekDesk.Util
 {
@@ -24,6 +18,7 @@ namespace GeekDesk.Util
         RIGHT_HIDE = 6
     }
 
+
     public class MarginHide
     {
         private static Window window;//定义使用该方法的窗体
@@ -33,9 +28,11 @@ namespace GeekDesk.Util
         private static readonly int fadeShowTime = 200;
         private static readonly int taskTime = 250;
 
+        public static readonly int shadowWidth = 20;
+
+
         private static double showMarginWidth = 1;
 
-        public static bool IS_RUN = false;
         public static bool IS_HIDE = false;
 
         private static Timer timer = null;
@@ -43,11 +40,6 @@ namespace GeekDesk.Util
         public static void ReadyHide(Window window)
         {
             MarginHide.window = window;
-            if (timer != null) return;
-            timer = new Timer();//添加timer计时器，隐藏功能
-            timer.Interval = taskTime;
-            timer.Tick += HideWindow;
-            timer.Start();
         }
 
 
@@ -77,7 +69,7 @@ namespace GeekDesk.Util
         #region 窗体贴边隐藏功能
         private static void HideWindow(object o, EventArgs e)
         {
-            if (window.Visibility != Visibility.Visible || !IS_RUN) return;
+            if (window.Visibility != Visibility.Visible) return;
 
             double screenLeft = SystemParameters.VirtualScreenLeft;
             double screenTop = SystemParameters.VirtualScreenTop;
@@ -158,12 +150,21 @@ namespace GeekDesk.Util
 
         public static void StartHide()
         {
-            IS_RUN = true;
+            if (timer != null) return;
+            timer = new Timer
+            {
+                Interval = taskTime
+            };//添加timer计时器，隐藏功能
+            timer.Tick += HideWindow;
+            timer.Start();
         }
 
         public static void StopHide()
         {
-            IS_RUN = false;
+            if (timer == null) return;
+            timer.Stop();
+            timer.Dispose();
+            timer = null;
             //功能关闭 如果界面是隐藏状态  那么要显示界面 ↓
             if (IS_HIDE)
             {
@@ -239,15 +240,26 @@ namespace GeekDesk.Util
                 To = to,
                 Duration = new Duration(TimeSpan.FromMilliseconds(hideTime))
             };
+            // 如果是显示 则贴屏幕侧不显示阴影
+            bool isShow = false;
+            int shadowWidthTemp = Constants.SHADOW_WIDTH;
+            if (hideType <= HideType.RIGHT_SHOW)
+            {
+                isShow = true;
+                if (hideType == HideType.RIGHT_SHOW)
+                {
+                    shadowWidthTemp = -shadowWidthTemp;
+                }
+            }
             da.Completed += (s, e) =>
             {
                 if ("Top".Equals(property.Name))
                 {
-                    window.Top = toTemp;
+                    window.Top = isShow ? toTemp - shadowWidthTemp : toTemp;
                 }
                 else
                 {
-                    window.Left = toTemp;
+                    window.Left = isShow ? toTemp - shadowWidthTemp : toTemp;
                 }
                 window.BeginAnimation(property, null);
             };
