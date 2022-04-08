@@ -1,4 +1,5 @@
 ﻿using DraggAnimatedPanelExample;
+using GeekDesk.Constant;
 using GeekDesk.Control.Windows;
 using GeekDesk.MyThread;
 using GeekDesk.Util;
@@ -111,13 +112,6 @@ namespace GeekDesk.Control.UserControls.PannelCard
             }
         }
 
-        //////菜单点击事件
-        //private void MenuClick(object sender, MouseButtonEventArgs e)
-        //{
-        //    //设置对应菜单的图标列表
-        //    MenuInfo mi = (MenuInfo)(((StackPanel)sender).Tag);
-        //    appData.AppConfig.SelectedMenuIcons = mi.IconList;
-        //}
 
         /// <summary>
         /// 当修改菜单元素可见时 设置原菜单为不可见 并且不可选中

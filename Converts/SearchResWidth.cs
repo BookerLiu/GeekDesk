@@ -13,8 +13,16 @@ namespace GeekDesk.Converts
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            double menuLeftWidth = double.Parse(value.ToString());
-            return MainWindow.mainWindow.Width - menuLeftWidth;
+            string param = parameter as string;
+            if ("1".Equals(param))
+            {
+                double menuLeftWidth = double.Parse(value.ToString());
+                return MainWindow.mainWindow.Width - menuLeftWidth;
+            } else
+            {
+                double menuLeftWidth = double.Parse(value.ToString());
+                return (MainWindow.mainWindow.Width - menuLeftWidth) / 2;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

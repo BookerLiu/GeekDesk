@@ -58,6 +58,7 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void SearchItem(object sender, CanExecuteRoutedEventArgs e)
         {
+            RunTimeStatus.SEARCH_BOX_SHOW = true;
             RightCard.VisibilitySearchCard(Visibility.Visible);
             SearchBox.Visibility = Visibility.Visible;
             SearchBox.Focus();
@@ -92,13 +93,10 @@ namespace GeekDesk
                 SearchIconList.IconList.Clear();
             }
         }
-        /// <summary>
-        /// 隐藏搜索框
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SearchBox_LostFocus(object sender, RoutedEventArgs e)
+
+        public void HidedSearchBox()
         {
+            RunTimeStatus.SEARCH_BOX_SHOW = false;
             SearchIconList.IconList.Clear();
             RightCard.VisibilitySearchCard(Visibility.Collapsed);
             SearchBox.Visibility = Visibility.Collapsed;

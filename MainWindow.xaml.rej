@@ -1,0 +1,9 @@
+diff a/MainWindow.xaml b/MainWindow.xaml	(rejected hunks)
+@@ -20,6 +20,7 @@
+         SizeChanged="Window_SizeChanged"
+         KeyDown="OnKeyDown"
+         Focusable="True"
++        GotFocus="MainWindow_GotFocus"
+         MouseDown="MainWindow_MouseDown"
+         >
+     <WindowChrome.WindowChrome>

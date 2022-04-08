@@ -129,7 +129,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
             }
             else if (!appData.AppConfig.DoubleOpen && e.ClickCount == 1)
             {
-                IconInfo icon = (IconInfo)((SimpleStackPanel)sender).Tag;
+                IconInfo icon = (IconInfo)((Panel)sender).Tag;
                 if (icon.AdminStartUp)
                 {
                     StartIconApp(icon, IconStartType.ADMIN_STARTUP);
@@ -261,6 +261,12 @@ namespace GeekDesk.Control.UserControls.PannelCard
                     }
                 }
                 icon.Count++;
+
+                //隐藏搜索框
+                if (RunTimeStatus.SEARCH_BOX_SHOW)
+                {
+                    MainWindow.mainWindow.HidedSearchBox();
+                }
             }
             catch (Exception e)
             {
@@ -584,5 +590,18 @@ namespace GeekDesk.Control.UserControls.PannelCard
             }
         }
 
+        /// <summary>
+        /// 搜索Card点击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void VerticalCard_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            //隐藏搜索框
+            if (RunTimeStatus.SEARCH_BOX_SHOW)
+            {
+                MainWindow.mainWindow.HidedSearchBox();
+            }
+        }
     }
 }

@@ -130,6 +130,7 @@
     <Compile Include="Constant\IconType.cs" />
     <Compile Include="Constant\CommonEnum.cs" />
     <Compile Include="Constant\IconStartType.cs" />
+    <Compile Include="Constant\RunTimeStatus.cs" />
     <Compile Include="Constant\SortType.cs" />
     <Compile Include="Constant\TodoTaskExecType.cs" />
     <Compile Include="Constant\UpdateType.cs" />

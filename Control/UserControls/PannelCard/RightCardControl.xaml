@@ -137,14 +137,17 @@
             </Grid>
         </hc:Card>
 
-        <hc:Card 
-                 x:Name="VerticalCard"
+        <hc:Card x:Name="VerticalCard"
                  Visibility="Hidden"
                  BorderThickness="1" 
                  Effect="{DynamicResource EffectShadow2}" 
-                 Margin="5,0,5,5" Grid.ColumnSpan="2">
+                 Margin="5,0,5,5" Grid.ColumnSpan="2"
+                 MouseLeftButtonDown="VerticalCard_MouseLeftButtonDown"
+                >
             <hc:Card.Background>
-                <SolidColorBrush Color="AliceBlue"  hc:GeometryEffect.GeometryEffect="20" Opacity="{Binding AppConfig.CardOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}"/>
+                <SolidColorBrush Color="AliceBlue" 
+                                 hc:GeometryEffect.GeometryEffect="20"
+                                 Opacity="{Binding AppConfig.CardOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}"/>
             </hc:Card.Background>
             <hc:Card.BorderBrush>
                 <SolidColorBrush Color="#FFFFFFFF" Opacity="0"/>
@@ -180,11 +183,19 @@
                             </Style>
                         </ListBox.ItemContainerStyle>
 
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Background="#00FFFFFF"
+                                            Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.MenuCardWidth, Mode=OneWay, Converter={StaticResource SearchResWidth}, ConverterParameter=1}"
+                                            />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <WrapPanel Tag="{Binding}"
                                            Height="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImageHeight, Mode=OneWay}" 
-                                           Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.MenuCardWidth, Mode=OneWay, Converter={StaticResource SearchResWidth}}" 
+                                           Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.MenuCardWidth, Mode=OneWay, Converter={StaticResource SearchResWidth}, ConverterParameter=2}" 
                                            HorizontalAlignment="Left"
                                            hc:Poptip.HitMode="None"
                                            hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
