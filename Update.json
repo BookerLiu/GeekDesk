@@ -1,9 +1,9 @@
 {
 	"title": "GeekDesk版本更新",
-	"subTitle": "V2.4.12",
+	"subTitle": "V2.4.14",
 	"msgTitle": "本次更新内容如下",
-	"msg": "['各位兄弟去给我点个免费Star呗','这是个修复版本,主要修复上个版本的bug','修复图标无法拖动','修复界面遮挡任务栏']",
+	"msg": "['增加图标排序功能','增加鼠标悬停切换菜单','增加搜索功能','其它已知问题修复','老规矩兄弟萌, 我用爱发电, 你们点免费Star']",
 	"githubUrl": "https://github.com/Demo-Liu/GeekDesk/releases",
 	"giteeUrl": "https://gitee.com/demo_liu/GeekDesk/releases",
-	"version": "2.4.12"
+	"version": "2.4.14"
 }
