@@ -123,6 +123,8 @@
                                                      Background="#00FFFFFF"
                                                      MouseEnter="StackPanel_MouseEnter"
                                                      MouseLeave="StackPanel_MouseLeave"
+                                                     MouseLeftButtonDown="Icon_MouseLeftButtonDown"
+                                                     MouseLeftButtonUp="Icon_MouseLeftButtonUp"
                                                      >
                                     <!--<StackPanel Background="#00FFFFFF"
                                                 MouseEnter="CursorPanel_MouseEnter"

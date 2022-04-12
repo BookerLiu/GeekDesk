@@ -117,7 +117,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
         {
             if (appData.AppConfig.DoubleOpen && e.ClickCount >= 2)
             {
-                IconInfo icon = (IconInfo)((SimpleStackPanel)sender).Tag;
+                IconInfo icon = (IconInfo)((Panel)sender).Tag;
                 if (icon.AdminStartUp)
                 {
                     StartIconApp(icon, IconStartType.ADMIN_STARTUP);
