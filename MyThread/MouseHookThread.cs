@@ -26,13 +26,13 @@ namespace GeekDesk.MyThread
             dispatcher = DispatcherBuild.Build();
             dispatcher.Invoke((Action)(() =>
             {
-                m_GlobalHook.MouseDownExt += M_GlobalHook_MouseDownExt;
+                m_GlobalHook.MouseUpExt += M_GlobalHook_MouseUpExt;
             }));
         }
 
         public static void Dispose()
         {
-            m_GlobalHook.MouseDownExt -= M_GlobalHook_MouseDownExt;
+            m_GlobalHook.MouseUpExt -= M_GlobalHook_MouseUpExt;
             m_GlobalHook.Dispose();
             dispatcher.InvokeShutdown();
         }
@@ -42,14 +42,14 @@ namespace GeekDesk.MyThread
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private static void M_GlobalHook_MouseDownExt(object sender, System.Windows.Forms.MouseEventArgs e)
+        private static void M_GlobalHook_MouseUpExt(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (appConfig.MouseMiddleShow && e.Button == System.Windows.Forms.MouseButtons.Middle)
             {
                 if (MotionControl.hotkeyFinished)
                 {
-                    MainWindow.mainWindow.Dispatcher.Invoke((Action)(() =>
-                    {
+                    App.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render, new Action(() =>
+                    { 
                         if (MainWindow.mainWindow.Visibility == Visibility.Collapsed || MainWindow.mainWindow.Opacity == 0)
                         {
                             MainWindow.ShowApp();

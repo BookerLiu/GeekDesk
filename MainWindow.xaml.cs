@@ -17,6 +17,7 @@ using static GeekDesk.Util.ShowWindowFollowMouse;
 using System.Collections.ObjectModel;
 using NPinyin;
 using GeekDesk.ViewModel.Temp;
+using System.Threading;
 
 namespace GeekDesk
 {
@@ -97,9 +98,9 @@ namespace GeekDesk
         public void HidedSearchBox()
         {
             RunTimeStatus.SEARCH_BOX_SHOW = false;
+            SearchBox.Visibility = Visibility.Collapsed;
             SearchIconList.IconList.Clear();
             RightCard.VisibilitySearchCard(Visibility.Collapsed);
-            SearchBox.Visibility = Visibility.Collapsed;
             SearchBox.Text = "";
         }
 
@@ -119,6 +120,7 @@ namespace GeekDesk
             this.Width = appData.AppConfig.WindowWidth;
             this.Height = appData.AppConfig.WindowHeight;
         }
+
 
         /// <summary>
         /// 窗口加载完毕 执行方法
@@ -338,7 +340,7 @@ namespace GeekDesk
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ShowApp(object sender, RoutedEventArgs e)
+        public void ShowApp(object sender, RoutedEventArgs e)
         {
             ShowApp();
         }
@@ -350,20 +352,27 @@ namespace GeekDesk
             //    return;
             //}
             //修改贴边隐藏状态为未隐藏
-            mainWindow.Activate();
-
             MarginHide.IS_HIDE = false;
             if (appData.AppConfig.FollowMouse)
             {
                 ShowWindowFollowMouse.Show(mainWindow, MousePosition.CENTER, 0, 0, false);
             }
             FadeStoryBoard(1, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Visible);
-            mainWindow.Focus();
+            Keyboard.Focus(mainWindow.EmptyTextBox);
         }
 
         public static void HideApp()
         {
-            FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
+            if (RunTimeStatus.SEARCH_BOX_SHOW) mainWindow.HidedSearchBox();
+            new Thread(() =>
+            {
+                Thread.Sleep(100);
+                App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
+                }));
+            }).Start();
+            
         }
 
         /// <summary>
