@@ -363,16 +363,21 @@ namespace GeekDesk
 
         public static void HideApp()
         {
-            if (RunTimeStatus.SEARCH_BOX_SHOW) mainWindow.HidedSearchBox();
-            new Thread(() =>
+            if (RunTimeStatus.SEARCH_BOX_SHOW)
             {
-                Thread.Sleep(100);
-                App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                mainWindow.HidedSearchBox();
+                new Thread(() =>
                 {
-                    FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
-                }));
-            }).Start();
-            
+                    Thread.Sleep(100);
+                    App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
+                    }));
+                }).Start();
+            } else
+            {
+                FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
+            }
         }
 
         /// <summary>
