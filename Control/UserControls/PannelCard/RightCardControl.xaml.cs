@@ -603,5 +603,25 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 MainWindow.mainWindow.HidedSearchBox();
             }
         }
+
+        /// <summary>
+        /// 设置光标
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CursorPanel_MouseEnter(object sender, MouseEventArgs e)
+        {
+            this.Cursor = Cursors.Hand;
+        }
+
+        /// <summary>
+        /// 设置光标
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CursorPanel_MouseLeave(object sender, MouseEventArgs e)
+        {
+            this.Cursor = Cursors.Arrow;
+        }
     }
 }

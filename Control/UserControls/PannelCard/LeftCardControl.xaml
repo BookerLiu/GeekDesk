@@ -77,10 +77,11 @@
     </UserControl.Resources>
     <!--左侧栏-->
     <hc:Card x:Name="MyCard"
-                 BorderThickness="1"
-                 Effect="{DynamicResource EffectShadow2}" 
-                 Margin="5,0,0,5"
-                 >
+             BorderThickness="1"
+             Effect="{DynamicResource EffectShadow2}" 
+             Margin="5,0,0,5"
+             MouseDown="MyCard_MouseDown"
+             >
         <hc:Card.Background>
             <SolidColorBrush Color="#FFFFFFFF" hc:GeometryEffect.GeometryEffect="20" Opacity="{Binding AppConfig.CardOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}">
 
@@ -130,7 +131,7 @@
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Tag="{Binding}">
+                        <StackPanel Tag="{Binding}" MouseDown="ListBoxItem_MouseDown">
                             <TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
                                     HorizontalAlignment="Left"
                                     Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}, ConverterParameter=35}"

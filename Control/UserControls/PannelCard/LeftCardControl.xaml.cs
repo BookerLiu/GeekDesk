@@ -349,6 +349,29 @@ namespace GeekDesk.Control.UserControls.PannelCard
             }
         }
 
+        /// <summary>
+        /// 点击菜单后  隐藏搜索框
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListBoxItem_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (RunTimeStatus.SEARCH_BOX_SHOW) {
+                MainWindow.mainWindow.HidedSearchBox();
+            }
+        }
 
+        /// <summary>
+        /// 隐藏搜索框
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MyCard_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (RunTimeStatus.SEARCH_BOX_SHOW)
+            {
+                MainWindow.mainWindow.HidedSearchBox();
+            }
+        }
     }
 }

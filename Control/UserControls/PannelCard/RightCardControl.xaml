@@ -20,6 +20,14 @@
             </Style.Triggers>
         </Style>-->
 
+        <Storyboard x:Key="Custom1Transition" x:Shared="False">
+            <DoubleAnimation From="50" To="0" Duration="0:0:0.4" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <DoubleAnimation.EasingFunction>
+                    <ElasticEase Oscillations="1"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
         <Style x:Key="ImageStyle" TargetType="Image">
             <Setter Property="Width"   Value="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImageWidth, Mode=OneWay}"/>
             <Setter Property="Height"  Value="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImageHeight, Mode=OneWay}"/>
@@ -107,26 +115,33 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <hc:SimpleStackPanel Tag="{Binding}"
-                                                 Height="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelHeight, Mode=OneWay}" 
-                                                 Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelWidth, Mode=OneWay}"
-                                                 HorizontalAlignment="Center"
-                                                 hc:Poptip.Content="{Binding Content}"
-                                                 hc:Poptip.Placement="BottomLeft"
-                                                 Background="#00FFFFFF"
-                                                 MouseEnter="StackPanel_MouseEnter"
-                                                 MouseLeave="StackPanel_MouseLeave"
-                                                 >
-                                    <Image Style="{StaticResource ImageStyle}"  RenderOptions.BitmapScalingMode="HighQuality"/>
-                                    <TextBlock MaxWidth="80"
-                                           Margin="0,5,0,0"
-                                           MaxHeight="40"
-                                           FontSize="13"
-                                           TextWrapping="Wrap" 
-                                           TextTrimming="WordEllipsis"
-                                           TextAlignment="Center" 
-                                           VerticalAlignment="Center" 
-                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.TextColor}"
-                                           Text="{Binding Name}"/>
+                                                     Height="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelHeight, Mode=OneWay}" 
+                                                     Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelWidth, Mode=OneWay}"
+                                                     HorizontalAlignment="Center"
+                                                     hc:Poptip.Content="{Binding Content}"
+                                                     hc:Poptip.Placement="BottomLeft"
+                                                     Background="#00FFFFFF"
+                                                     MouseEnter="StackPanel_MouseEnter"
+                                                     MouseLeave="StackPanel_MouseLeave"
+                                                     >
+                                    <!--<StackPanel Background="#00FFFFFF"
+                                                MouseEnter="CursorPanel_MouseEnter"
+                                                MouseLeave="CursorPanel_MouseLeave"
+                                                Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImageWidth, Mode=OneWay}">-->
+                                            <Image Style="{StaticResource ImageStyle}"  
+                                                   RenderOptions.BitmapScalingMode="HighQuality"/>
+                                            <TextBlock MaxWidth="80"
+                                                       Margin="0,5,0,0"
+                                                       MaxHeight="40"
+                                                       FontSize="13"
+                                                       TextWrapping="Wrap" 
+                                                       TextTrimming="WordEllipsis"
+                                                       TextAlignment="Center" 
+                                                       VerticalAlignment="Center" 
+                                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.TextColor}"
+                                                       Text="{Binding Name}"/>
+                                    <!--</StackPanel>-->
+                                    
                                 </hc:SimpleStackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -158,42 +173,43 @@
                    VirtualizingPanel.IsVirtualizing="True"  
                    VirtualizingPanel.IsContainerVirtualizable="True"
                    >
-                    <ListBox ItemsSource="{Binding Source={StaticResource SearchIconList},Path=IconList}" 
+                    <hc:TransitioningContentControl TransitionStoryboard="{StaticResource Custom1Transition}">
+                        <ListBox ItemsSource="{Binding Source={StaticResource SearchIconList},Path=IconList}" 
                              BorderThickness="0"
                              Padding="0,10,0,0"
                              >
-                        <ListBox.Background>
-                            <SolidColorBrush Opacity="0"/>
-                        </ListBox.Background>
+                            <ListBox.Background>
+                                <SolidColorBrush Opacity="0"/>
+                            </ListBox.Background>
 
-                        <ListBox.Resources>
-                            <ContextMenu x:Key="IconDialog" Width="200">
-                                <MenuItem Header="管理员方式运行" Click="IconAdminStart" Tag="{Binding}"/>
-                                <MenuItem Header="打开文件所在位置" Click="ShowInExplore" Tag="{Binding}"/>
-                                <MenuItem Header="添加URL项目" Click="AddUrlIcon"/>
-                                <MenuItem Header="添加系统项目" Click="AddSystemIcon"/>
-                                <MenuItem Header="资源管理器菜单" Click="SystemContextMenu" Tag="{Binding}"/>
-                                <MenuItem Header="属性" Click="PropertyConfig" Tag="{Binding}"/>
-                            </ContextMenu>
-                        </ListBox.Resources>
+                            <ListBox.Resources>
+                                <ContextMenu x:Key="IconDialog" Width="200">
+                                    <MenuItem Header="管理员方式运行" Click="IconAdminStart" Tag="{Binding}"/>
+                                    <MenuItem Header="打开文件所在位置" Click="ShowInExplore" Tag="{Binding}"/>
+                                    <MenuItem Header="添加URL项目" Click="AddUrlIcon"/>
+                                    <MenuItem Header="添加系统项目" Click="AddSystemIcon"/>
+                                    <MenuItem Header="资源管理器菜单" Click="SystemContextMenu" Tag="{Binding}"/>
+                                    <MenuItem Header="属性" Click="PropertyConfig" Tag="{Binding}"/>
+                                </ContextMenu>
+                            </ListBox.Resources>
 
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem" BasedOn="{StaticResource MyListBoxItemStyle}">
-                                <Setter Property="ContextMenu" Value="{StaticResource IconDialog}"/>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem" BasedOn="{StaticResource MyListBoxItemStyle}">
+                                    <Setter Property="ContextMenu" Value="{StaticResource IconDialog}"/>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
 
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Background="#00FFFFFF"
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Background="#00FFFFFF"
                                             Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.MenuCardWidth, Mode=OneWay, Converter={StaticResource SearchResWidth}, ConverterParameter=1}"
                                             />
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
 
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <WrapPanel Tag="{Binding}"
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <WrapPanel Tag="{Binding}"
                                            Height="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImageHeight, Mode=OneWay}" 
                                            Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.MenuCardWidth, Mode=OneWay, Converter={StaticResource SearchResWidth}, ConverterParameter=2}" 
                                            HorizontalAlignment="Left"
@@ -206,8 +222,8 @@
                                            MouseLeftButtonUp="Icon_MouseLeftButtonUp"
                                            Margin="25,20,0,0"
                                            >
-                                    <Image Style="{StaticResource ImageStyle}"  RenderOptions.BitmapScalingMode="HighQuality"/>
-                                    <TextBlock
+                                        <Image Style="{StaticResource ImageStyle}"  RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        <TextBlock
                                            Margin="10,5,0,0"
                                            MaxHeight="40"
                                            FontSize="13"
@@ -217,10 +233,12 @@
                                            VerticalAlignment="Center" 
                                            Foreground="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.TextColor}"
                                            Text="{Binding Name}"/>
-                                </WrapPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                                    </WrapPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </hc:TransitioningContentControl>
+                    
 
                 </WrapPanel>
 
