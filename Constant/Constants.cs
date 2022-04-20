@@ -26,6 +26,8 @@ namespace GeekDesk.Constant
 
         public static string ERROR_FILE_PATH = APP_DIR + "Error.log";
 
+        public static int SHADOW_WIDTH = 20;
+
         //系统图标
         public static Hashtable SYSTEM_ICONS = (Hashtable)ConfigurationManager.GetSection("SystemIcons");
 

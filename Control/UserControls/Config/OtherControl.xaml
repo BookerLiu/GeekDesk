@@ -13,6 +13,7 @@
 
     <UserControl.Resources>
         <cvt:UpdateTypeConvert x:Key="UpdateTypeConvert"/>
+        <cvt:SortTypeConvert x:Key="SortTypeConvert"/>
     </UserControl.Resources>
     <Grid MouseDown="DragMove" Background="Transparent">
         <hc:SimplePanel Margin="20" >
@@ -40,6 +41,45 @@
                         </CheckBox.Background>
                     </CheckBox>
                 </hc:UniformSpacingPanel>
+                <TextBlock Text="排序方式"  Margin="0,25,0,0"/>
+
+                <hc:UniformSpacingPanel Spacing="10" Margin="20,8,0,0">
+                    <RadioButton x:Name="CustomSort" Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}" 
+                                 Style="{StaticResource RadioButtonIcon}" Content="自定义"
+                                 Tag="1"
+                                 hc:IconElement.Geometry="{StaticResource CustomSort}"
+                                 PreviewMouseLeftButtonDown="SortType_PreviewMouseLeftButtonDown"
+                                 IsChecked="{Binding IconSortType, Mode=OneWay, Converter={StaticResource SortTypeConvert}, ConverterParameter=1}"/>
+
+                    <RadioButton x:Name="CountUpSort" Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}"
+                                 hc:IconElement.Geometry="{StaticResource UpSort}"
+                                 Style="{StaticResource RadioButtonIcon}" Content="使用次数" 
+                                 Tag="2"
+                                 PreviewMouseLeftButtonDown="SortType_PreviewMouseLeftButtonDown"
+                                 IsChecked="{Binding IconSortType, Mode=OneWay, Converter={StaticResource SortTypeConvert}, ConverterParameter=2}"/>
+
+                    <RadioButton x:Name="CountLowSort" Margin="10,0,0,0" Visibility="Collapsed" Background="{DynamicResource SecondaryRegionBrush}"
+                                 hc:IconElement.Geometry="{StaticResource LowSort}"
+                                 Style="{StaticResource RadioButtonIcon}" Content="使用次数" 
+                                 Tag="3"
+                                 PreviewMouseLeftButtonDown="SortType_PreviewMouseLeftButtonDown"
+                                 IsChecked="{Binding IconSortType, Mode=OneWay, Converter={StaticResource SortTypeConvert}, ConverterParameter=3}"/>
+
+                    <RadioButton x:Name="NameUpSort" Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}"
+                                 hc:IconElement.Geometry="{StaticResource UpSort}"
+                                 Style="{StaticResource RadioButtonIcon}" Content="名称" 
+                                 Tag="4"
+                                 PreviewMouseLeftButtonDown="SortType_PreviewMouseLeftButtonDown"
+                                 IsChecked="{Binding IconSortType, Mode=OneWay, Converter={StaticResource SortTypeConvert}, ConverterParameter=4}"/>
+
+                    <RadioButton x:Name="NameLowSort" Margin="10,0,0,0" Visibility="Collapsed" Background="{DynamicResource SecondaryRegionBrush}"
+                                 hc:IconElement.Geometry="{StaticResource LowSort}"
+                                 Style="{StaticResource RadioButtonIcon}" Content="名称" 
+                                 Tag="5"
+                                 PreviewMouseLeftButtonDown="SortType_PreviewMouseLeftButtonDown"
+                                 IsChecked="{Binding IconSortType, Mode=OneWay, Converter={StaticResource SortTypeConvert}, ConverterParameter=5}"/>
+
+                </hc:UniformSpacingPanel>
                 <TextBlock Text="更新源"  Margin="0,25,0,0"/>
                 <hc:UniformSpacingPanel Spacing="10" Margin="20,8,0,0">
                     <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}" 
@@ -56,6 +96,6 @@
             </StackPanel>
         </hc:SimplePanel>
     </Grid>
-   
+
 
 </UserControl>

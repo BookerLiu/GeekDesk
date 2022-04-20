@@ -1,28 +1,23 @@
-﻿using DraggAnimatedPanelExample;
-using GeekDesk.Constant;
-using GeekDesk.Control;
+﻿using GeekDesk.Constant;
 using GeekDesk.Control.UserControls.Config;
 using GeekDesk.Control.Windows;
 using GeekDesk.Interface;
 using GeekDesk.Task;
-using GeekDesk.Thread;
+using GeekDesk.MyThread;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
-using Gma.System.MouseKeyHook;
-using HandyControl.Data;
 
 using System;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Drawing;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
 using static GeekDesk.Util.ShowWindowFollowMouse;
+using System.Collections.ObjectModel;
+using NPinyin;
+using GeekDesk.ViewModel.Temp;
+using System.Threading;
 
 namespace GeekDesk
 {
@@ -48,6 +43,7 @@ namespace GeekDesk
             this.SizeChanged += MainWindow_Resize;
             ToDoTask.BackLogCheck();
 
+
             ////实例化隐藏 Hide类，进行时间timer设置
             MarginHide.ReadyHide(this);
             if (appData.AppConfig.MarginHide)
@@ -55,6 +51,59 @@ namespace GeekDesk
                 MarginHide.StartHide();
             }
         }
+
+        /// <summary>
+        /// 显示搜索框
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SearchItem(object sender, CanExecuteRoutedEventArgs e)
+        {
+            RunTimeStatus.SEARCH_BOX_SHOW = true;
+            RightCard.VisibilitySearchCard(Visibility.Visible);
+            SearchBox.Visibility = Visibility.Visible;
+            SearchBox.Focus();
+        }
+        /// <summary>
+        /// 搜索开始
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string inputText = SearchBox.Text.ToLower();
+            if (!string.IsNullOrEmpty(inputText))
+            {
+                SearchIconList.IconList.Clear();
+                ObservableCollection<MenuInfo> menuList = appData.MenuList;
+                foreach (MenuInfo menu in menuList)
+                {
+                    ObservableCollection<IconInfo> iconList = menu.IconList;
+                    foreach (IconInfo icon in iconList)
+                    {
+                        string pyName = Pinyin.GetInitials(icon.Name).ToLower();
+                        if (icon.Name.Contains(inputText) || pyName.Contains(inputText))
+                        {
+                            SearchIconList.IconList.Add(icon);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                SearchIconList.IconList.Clear();
+            }
+        }
+
+        public void HidedSearchBox()
+        {
+            RunTimeStatus.SEARCH_BOX_SHOW = false;
+            SearchBox.Visibility = Visibility.Collapsed;
+            SearchIconList.IconList.Clear();
+            RightCard.VisibilitySearchCard(Visibility.Collapsed);
+            SearchBox.Text = "";
+        }
+
 
         /// <summary>
         /// 加载缓存数据
@@ -71,6 +120,7 @@ namespace GeekDesk
             this.Width = appData.AppConfig.WindowWidth;
             this.Height = appData.AppConfig.WindowHeight;
         }
+
 
         /// <summary>
         /// 窗口加载完毕 执行方法
@@ -290,7 +340,7 @@ namespace GeekDesk
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ShowApp(object sender, RoutedEventArgs e)
+        public void ShowApp(object sender, RoutedEventArgs e)
         {
             ShowApp();
         }
@@ -301,19 +351,53 @@ namespace GeekDesk
             //{
             //    return;
             //}
+
             //修改贴边隐藏状态为未隐藏
-            MarginHide.IS_HIDE = false;
+            if (MarginHide.ON_HIDE)
+            {
+                MarginHide.IS_HIDE = false;
+                if (!CommonCode.MouseInWindow(mainWindow))
+                {
+                    RunTimeStatus.MARGIN_HIDE_AND_OTHER_SHOW = true;
+                    MarginHide.WaitHide(3000);
+                }
+            }
+
             if (appData.AppConfig.FollowMouse)
             {
                 ShowWindowFollowMouse.Show(mainWindow, MousePosition.CENTER, 0, 0, false);
             }
+
             FadeStoryBoard(1, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Visible);
-            Keyboard.Focus(mainWindow);
+
+            Keyboard.Focus(mainWindow.EmptyTextBox);
         }
 
         public static void HideApp()
         {
-            FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
+            if (!MarginHide.IS_HIDE)
+            {
+                if (RunTimeStatus.SEARCH_BOX_SHOW)
+                {
+                    mainWindow.HidedSearchBox();
+                    new Thread(() =>
+                    {
+                        Thread.Sleep(100);
+                        App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
+                        }));
+                    }).Start();
+                }
+                else
+                {
+                    FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
+                }
+            } else
+            {
+                ShowApp();
+            }
+            
         }
 
         /// <summary>
@@ -342,6 +426,7 @@ namespace GeekDesk
                     else
                     {
                         mainWindow.Opacity = 0;
+                        CommonCode.SortIconList();
                     }
                 };
                 Timeline.SetDesiredFrameRate(opacityAnimation, 60);
@@ -352,6 +437,10 @@ namespace GeekDesk
                 //防止关闭动画后 窗体仍是0透明度
                 mainWindow.Opacity = 1;
                 mainWindow.Visibility = visibility;
+                if (visibility == Visibility.Collapsed)
+                {
+                    CommonCode.SortIconList();
+                }
             }
         }
 
@@ -440,23 +529,16 @@ namespace GeekDesk
             SettingButton.ContextMenu = null;
         }
 
-        private void App_LostFocus(object sender, RoutedEventArgs e)
+        private void App_LostFocus(object sender, EventArgs e)
         {
-            if (appData.AppConfig.AppHideType == AppHideType.LOST_FOCUS)
+            if (appData.AppConfig.AppHideType == AppHideType.LOST_FOCUS
+                && this.Opacity == 1)
             {
                 //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
-                if (appData.AppConfig.MarginHide && !MarginHide.IS_HIDE)
+                if (!appData.AppConfig.MarginHide || (appData.AppConfig.MarginHide && !MarginHide.IS_HIDE))
                 {
-                    this.Visibility = Visibility.Collapsed;
+                    HideApp();
                 }
-            }
-        }
-
-        private void Window_Deactivated(object sender, EventArgs e)
-        {
-            if (appData.AppConfig.AppHideType == AppHideType.LOST_FOCUS)
-            {
-                this.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -523,9 +605,26 @@ namespace GeekDesk
                 HideApp();
             }
         }
+
+        /// <summary>
+        /// 为了让修改菜单的textBox失去焦点
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            EmptyTextBox.Focus();
+        }
+
+        /// <summary>
+        /// 鼠标进入后 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainWindow_MouseEnter(object sender, MouseEventArgs e)
+        {
+            //防止延迟贴边隐藏
+            RunTimeStatus.MARGIN_HIDE_AND_OTHER_SHOW = false;
+        }
     }
-
-
-
-
 }

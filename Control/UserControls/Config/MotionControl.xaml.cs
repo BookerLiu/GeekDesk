@@ -1,6 +1,6 @@
 ﻿using GeekDesk.Constant;
 using GeekDesk.Control.Windows;
-using GeekDesk.Thread;
+using GeekDesk.MyThread;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using HandyControl.Data;

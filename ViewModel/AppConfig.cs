@@ -73,7 +73,23 @@ namespace GeekDesk.ViewModel
 
         private bool doubleOpen = false; //双击打开项目  默认关闭
 
+        private bool hoverMenu = false; //悬停切换菜单  默认关闭
+
         #region GetSet
+
+        public bool HoverMenu
+        {
+            get
+            {
+                return hoverMenu;
+            }
+            set
+            {
+                hoverMenu = value;
+                OnPropertyChanged("HoverMenu");
+            }
+        }
+
         public bool DoubleOpen
         {
             get
