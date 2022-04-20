@@ -30,6 +30,8 @@ namespace GeekDesk.Util
 
         public static readonly int shadowWidth = 20;
 
+        public static bool ON_HIDE = false;
+
 
         private static double showMarginWidth = 1;
 
@@ -69,7 +71,8 @@ namespace GeekDesk.Util
         #region 窗体贴边隐藏功能
         private static void HideWindow(object o, EventArgs e)
         {
-            if (window.Visibility != Visibility.Visible) return;
+            if (window.Visibility != Visibility.Visible 
+                || RunTimeStatus.MARGIN_HIDE_AND_OTHER_SHOW) return;
 
             double screenLeft = SystemParameters.VirtualScreenLeft;
             double screenTop = SystemParameters.VirtualScreenTop;
@@ -150,6 +153,7 @@ namespace GeekDesk.Util
 
         public static void StartHide()
         {
+            ON_HIDE = true;
             if (timer != null) return;
             timer = new Timer
             {
@@ -161,6 +165,7 @@ namespace GeekDesk.Util
 
         public static void StopHide()
         {
+            ON_HIDE = false;
             if (timer == null) return;
             timer.Stop();
             timer.Dispose();
@@ -293,6 +298,20 @@ namespace GeekDesk.Util
             Timeline.SetDesiredFrameRate(opacityAnimation, 60);
             window.BeginAnimation(Window.OpacityProperty, opacityAnimation);
         }
+
+
+        public static void WaitHide(int waitTime)
+        {
+            new System.Threading.Thread(()=>
+            {
+                System.Threading.Thread.Sleep(waitTime);
+                //修改状态为false 继续执行贴边隐藏
+                RunTimeStatus.MARGIN_HIDE_AND_OTHER_SHOW = false;
+            }).Start();
+        }
+
+
+
 
 
     }

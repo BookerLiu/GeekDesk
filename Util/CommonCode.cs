@@ -222,5 +222,34 @@ namespace GeekDesk.Util
             }
         }
 
+
+
+        /// <summary>
+        /// 判断鼠标是否在窗口内
+        /// </summary>
+        /// <param name="window"></param>
+        /// <returns></returns>
+        public static bool MouseInWindow(Window window)
+        {
+            double windowHeight = window.Height;
+            double windowWidth = window.Width;
+
+            double windowTop = window.Top;
+            double windowLeft = window.Left;
+
+            //获取鼠标位置
+            System.Windows.Point p = MouseUtil.GetMousePosition();
+            double mouseX = p.X;
+            double mouseY = p.Y;
+
+            //鼠标不在窗口上
+            if (mouseX < windowLeft || mouseX > windowLeft + windowWidth
+                || mouseY < windowTop || mouseY > windowTop + windowHeight)
+            {
+                return false;
+            }
+            return true;
+        }
+
     }
 }

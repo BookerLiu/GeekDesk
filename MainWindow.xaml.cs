@@ -351,33 +351,53 @@ namespace GeekDesk
             //{
             //    return;
             //}
+
             //修改贴边隐藏状态为未隐藏
-            MarginHide.IS_HIDE = false;
+            if (MarginHide.ON_HIDE)
+            {
+                MarginHide.IS_HIDE = false;
+                if (!CommonCode.MouseInWindow(mainWindow))
+                {
+                    RunTimeStatus.MARGIN_HIDE_AND_OTHER_SHOW = true;
+                    MarginHide.WaitHide(3000);
+                }
+            }
+
             if (appData.AppConfig.FollowMouse)
             {
                 ShowWindowFollowMouse.Show(mainWindow, MousePosition.CENTER, 0, 0, false);
             }
+
             FadeStoryBoard(1, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Visible);
+
             Keyboard.Focus(mainWindow.EmptyTextBox);
         }
 
         public static void HideApp()
         {
-            if (RunTimeStatus.SEARCH_BOX_SHOW)
+            if (!MarginHide.IS_HIDE)
             {
-                mainWindow.HidedSearchBox();
-                new Thread(() =>
+                if (RunTimeStatus.SEARCH_BOX_SHOW)
                 {
-                    Thread.Sleep(100);
-                    App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    mainWindow.HidedSearchBox();
+                    new Thread(() =>
                     {
-                        FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
-                    }));
-                }).Start();
+                        Thread.Sleep(100);
+                        App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
+                        }));
+                    }).Start();
+                }
+                else
+                {
+                    FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
+                }
             } else
             {
-                FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
+                ShowApp();
             }
+            
         }
 
         /// <summary>
@@ -596,5 +616,15 @@ namespace GeekDesk
             EmptyTextBox.Focus();
         }
 
+        /// <summary>
+        /// 鼠标进入后 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainWindow_MouseEnter(object sender, MouseEventArgs e)
+        {
+            //防止延迟贴边隐藏
+            RunTimeStatus.MARGIN_HIDE_AND_OTHER_SHOW = false;
+        }
     }
 }

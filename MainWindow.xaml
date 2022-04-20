@@ -21,6 +21,7 @@
         KeyDown="OnKeyDown"
         Focusable="True"
         MouseDown="MainWindow_MouseDown"
+        MouseEnter="MainWindow_MouseEnter"
         >
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="15"/>
