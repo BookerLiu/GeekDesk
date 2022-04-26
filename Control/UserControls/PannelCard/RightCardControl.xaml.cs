@@ -204,7 +204,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
                                         //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
                                         if (appData.AppConfig.MarginHide)
                                         {
-                                            if (!MarginHide.IS_HIDE)
+                                            if (!MarginHide.IsMargin())
                                             {
                                                 MainWindow.HideApp();
                                             }
@@ -222,7 +222,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
                                         //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
                                         if (appData.AppConfig.MarginHide)
                                         {
-                                            if (!MarginHide.IS_HIDE)
+                                            if (!MarginHide.IsMargin())
                                             {
                                                 MainWindow.HideApp();
                                             }
