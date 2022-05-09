@@ -18,6 +18,7 @@ using System.Collections.ObjectModel;
 using NPinyin;
 using GeekDesk.ViewModel.Temp;
 using System.Threading;
+using DraggAnimatedPanelExample;
 
 namespace GeekDesk
 {
@@ -51,6 +52,7 @@ namespace GeekDesk
                 MarginHide.StartHide();
             }
         }
+
 
         /// <summary>
         /// 显示搜索框
@@ -110,7 +112,6 @@ namespace GeekDesk
         /// </summary>
         private void LoadData()
         {
-            GC.KeepAlive(appData); // 持活
             this.DataContext = appData;
             if (appData.MenuList.Count == 0)
             {
@@ -129,6 +130,7 @@ namespace GeekDesk
         /// <param name="e"></param>
         void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            BGSettingUtil.BGSetting();
             if (!appData.AppConfig.StartedShowPanel)
             {
                 if (appData.AppConfig.AppAnimation)

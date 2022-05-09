@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uc="clr-namespace:GeekDesk.Control.UserControls.PannelCard"
+        xmlns:cn="clr-namespace:GeekDesk.Constant"
         mc:Ignorable="d"
         xmlns:cvt="clr-namespace:GeekDesk.Converts"
         x:Name="window"
@@ -33,12 +34,22 @@
         <cvt:OpcityConvert x:Key="OpcityConvert"/>
         <cvt:IntToCornerRadius x:Key="IntToCornerRadius"/>
         <cvt:DoubleToGridLength x:Key="DoubleToGridLength"/>
+        <cvt:ArrToBitmapImageConvert x:Key="ArrToBitmapImageConvert"/>
+        <cvt:VisualBrushConvert x:Key="VisualBrushConvert"/>
+
+
+        <Style x:Key="BorderBacStyle" TargetType="Border">
+            
+        </Style>
+
     </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Gesture="Ctrl+F" Key="F"  Command="{StaticResource SearchItem}"/>
     </Window.InputBindings>
     <Window.CommandBindings>
         <CommandBinding Command="{StaticResource SearchItem}" CanExecute="SearchItem"/>
+        <!--<CommandBinding Command="ChangeImgBG" Executed="ChangeImgBG_Executed" CanExecute="ChangeImgBG_CanExecute" />-->
+
     </Window.CommandBindings>
 
     <Window.Effect>
@@ -48,29 +59,15 @@
     <Border Margin="20" CornerRadius="{Binding AppConfig.PannelCornerRadius, Mode=TwoWay, Converter={StaticResource IntToCornerRadius}}"  BorderThickness="0"
             Background="AliceBlue"
             Opacity="{Binding AppConfig.PannelOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}"
-            VirtualizingPanel.VirtualizationMode="Recycling"  VirtualizingPanel.IsVirtualizing="True"  VirtualizingPanel.IsContainerVirtualizable="True"
             hc:Dialog.Token="IconInfoDialog"
             Focusable="True"
             >
         <hc:DialogContainer Focusable="True">
 
-            <Border CornerRadius="{Binding AppConfig.PannelCornerRadius, Mode=TwoWay, Converter={StaticResource IntToCornerRadius}}"  BorderThickness="0">
-                <!--背景图片-->
-                <Border.Background>
-                    <VisualBrush>
-                        <VisualBrush.Visual>
-                            <Grid ClipToBounds="True">
-                                <Image Source="{Binding AppConfig.BitmapImage}" Margin="-30" Opacity="{Binding AppConfig.BgOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}">
-                                    <Image.Effect>
-                                        <BlurEffect Radius="{Binding AppConfig.BlurValue}"/>
-                                    </Image.Effect>
-                                </Image>
-                            </Grid>
-                        </VisualBrush.Visual>
-                    </VisualBrush>
-                </Border.Background>
-
-
+            <Border x:Name="BGBorder" 
+                    CornerRadius="{Binding AppConfig.PannelCornerRadius, Mode=TwoWay, Converter={StaticResource IntToCornerRadius}}"  
+                    BorderThickness="0"
+                    >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" MouseMove="DragMove"></RowDefinition>

@@ -4,42 +4,109 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:cvt="clr-namespace:GeekDesk.Converts"
              mc:Ignorable="d" 
              Background="Transparent"
              d:DesignHeight="500" d:DesignWidth="450">
 
 
+    <UserControl.Resources>
+        <cvt:BGStyleConvert x:Key="BGStyleConvert"/>
+        <cvt:StringAppendConvert x:Key="StringAppendConvert"/>
+    </UserControl.Resources>
     <Grid>
         <Grid  MouseDown="DragMove" Background="Transparent">
             <StackPanel Margin="20" >
-                <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4">
-                    <TextBlock Text="背景图片" VerticalAlignment="Center"/>
+                <hc:UniformSpacingPanel Spacing="10" Margin="0,10,0,0" Grid.ColumnSpan="4">
+                    <TextBlock Text="背景风格" VerticalAlignment="Center"/>
                 </hc:UniformSpacingPanel>
-                <hc:UniformSpacingPanel Spacing="10" Margin="20,0,0,0" Grid.ColumnSpan="4">
-                    <TextBlock Text="图片路径:" VerticalAlignment="Center" Margin="0,5,0,0"/>
-                    <TextBlock Text="{Binding BacImgName}" Width="200" 
-                               Margin="0,5,0,0"
-                           VerticalAlignment="Center"
-                           hc:Poptip.HitMode="None" 
-                           hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
-                           hc:Poptip.Content="{Binding BacImgName}" 
-                           hc:Poptip.Placement="TopLeft"
-                           />
-                    <Button Content="修改" Click="BGButton_Click"/>
-                    <Button Content="默认" Click="DefaultButton_Click"/>
+                <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
+                    <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}" 
+                         Style="{StaticResource RadioButtonIcon}" Click="BGStyle_Changed" Content="图 片"
+                         IsChecked="{Binding BGStyle, Mode=TwoWay, Converter={StaticResource BGStyleConvert}, ConverterParameter=1}"/>
+                    <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}"
+                         Style="{StaticResource RadioButtonIcon}" Click="BGStyle_Changed" Content="纯 色" 
+                         IsChecked="{Binding BGStyle, Mode=TwoWay, Converter={StaticResource BGStyleConvert}, ConverterParameter=2}"/>
                 </hc:UniformSpacingPanel>
 
-                <hc:UniformSpacingPanel Spacing="10" Margin="20,0,0,0"  Grid.ColumnSpan="4">
-                    <CheckBox x:Name="IconIsAdmin" Content="毛玻璃效果" IsChecked="{Binding BlurEffect}">
-                        <CheckBox.Background>
-                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                                <GradientStop Color="#FF9EA3A6"/>
-                            </LinearGradientBrush>
-                        </CheckBox.Background>
-                    </CheckBox>
-                </hc:UniformSpacingPanel>
+                <UniformGrid x:Name="ImgBGConf">
+                    <hc:TransitioningContentControl TransitionMode="Bottom2TopWithFade" 
+                                                    Height="130">
+                        <StackPanel>
+                            <hc:UniformSpacingPanel Spacing="10" Margin="0,10,0,0" Grid.ColumnSpan="4">
+                                <TextBlock Text="图片背景" VerticalAlignment="Center"/>
+                            </hc:UniformSpacingPanel>
+                            <hc:UniformSpacingPanel Spacing="10" Margin="20,15,0,0" Grid.ColumnSpan="4">
+                                <TextBlock Text="图片路径:" VerticalAlignment="Center" Margin="0,5,0,0"/>
+                                <TextBlock Text="{Binding BacImgName}" Width="200" 
+                                           Margin="0,5,0,0"
+                                           VerticalAlignment="Center"
+                                           hc:Poptip.HitMode="None" 
+                                           hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
+                                           hc:Poptip.Content="{Binding BacImgName}" 
+                                           hc:Poptip.Placement="TopLeft"
+                                           />
+                                <Button Content="修改" Click="BGButton_Click"/>
+                                <Button Content="默认" Click="DefaultButton_Click"/>
+                            </hc:UniformSpacingPanel>
 
-                <hc:UniformSpacingPanel Spacing="10" Margin="20,5,0,0"  Grid.ColumnSpan="4">
+                            <hc:UniformSpacingPanel Spacing="10" Margin="20,10,0,0"  Grid.ColumnSpan="4">
+                                <CheckBox x:Name="IconIsAdmin" Content="毛玻璃效果" Click="BGStyle_Changed" IsChecked="{Binding BlurEffect}">
+                                    <CheckBox.Background>
+                                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                                            <GradientStop Color="#FF9EA3A6"/>
+                                        </LinearGradientBrush>
+                                    </CheckBox.Background>
+                                </CheckBox>
+                            </hc:UniformSpacingPanel>
+                        </StackPanel>
+                    </hc:TransitioningContentControl>
+
+                </UniformGrid>
+
+                <UniformGrid x:Name="GradientBGConf">
+                    <hc:TransitioningContentControl TransitionMode="Bottom2TopWithFade" 
+                                                    Height="130">
+                        <StackPanel>
+                            <hc:UniformSpacingPanel Spacing="10" Margin="0,10,0,0" Grid.ColumnSpan="4">
+                                <TextBlock Text="纯色背景" VerticalAlignment="Center"/>
+                            </hc:UniformSpacingPanel>
+                            <hc:UniformSpacingPanel Spacing="10" Margin="20,0,0,0" Grid.ColumnSpan="4">
+                                <TextBlock Text="色彩1:" VerticalAlignment="Center" Margin="0,5,0,0"/>
+                                <TextBlock Text="{Binding GradientBGParam.Color1, NotifyOnTargetUpdated=True}"
+                                           TargetUpdated="Color_TargetUpdated"
+                                           Width="65" 
+                                           Margin="0,5,0,0"
+                                           VerticalAlignment="Center"
+                                           />
+                                <Button Content="设置" Tag="Color1" Click="ColorButton_Click"/>
+                            </hc:UniformSpacingPanel>
+                            <hc:UniformSpacingPanel Spacing="10" Margin="20,5,0,0" Grid.ColumnSpan="4">
+                                <TextBlock Text="色彩2:" VerticalAlignment="Center" Margin="0,5,0,0"/>
+                                <TextBlock Text="{Binding GradientBGParam.Color2, NotifyOnTargetUpdated=True}" 
+                                           TargetUpdated="Color_TargetUpdated"
+                                           Width="65" 
+                                           Margin="0,5,0,0"
+                                           VerticalAlignment="Center"
+                                           />
+                                <Button Content="设置" Tag="Color2" Click="ColorButton_Click"/>
+                            </hc:UniformSpacingPanel>
+
+                            <Button Content="系统预设"
+                                    Margin="0,5,0,0"
+                                    hc:Poptip.HitMode="None" 
+                                    hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
+                                    hc:Poptip.Content="{Binding GradientBGParam.Name, Converter={StaticResource StringAppendConvert}, ConverterParameter=当前设置: \{\}}" 
+                                    hc:Poptip.Placement="Top"
+                                    />
+                        </StackPanel>
+                    </hc:TransitioningContentControl>
+                </UniformGrid>
+
+
+                <hc:Divider LineStrokeDashArray="3,3" Margin="0,0,0,0" Height="20" LineStroke="Black" Grid.ColumnSpan="1"/>
+
+                <hc:UniformSpacingPanel Spacing="10" Margin="5,-10,0,0"  Grid.ColumnSpan="4">
                     <CheckBox x:Name="BarIcon" Content="显示托盘图标" IsChecked="{Binding ShowBarIcon}">
                         <CheckBox.Background>
                             <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
@@ -49,11 +116,10 @@
                     </CheckBox>
                 </hc:UniformSpacingPanel>
 
-                <hc:Divider LineStrokeDashArray="3,3" LineStroke="Black" Grid.ColumnSpan="4"/>
 
-                <StackPanel>
+                <StackPanel Margin="0,15,0,0">
                     <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4">
-                        <TextBlock Text="托盘不透明度" VerticalAlignment="Center"/>
+                        <TextBlock Text="卡片不透明度" VerticalAlignment="Center"/>
                     </hc:UniformSpacingPanel>
                     <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
                         <hc:PreviewSlider Value="{Binding CardOpacity}"
@@ -66,15 +132,17 @@
                         </hc:PreviewSlider>
                     </hc:UniformSpacingPanel>
 
+                   
 
                     <hc:UniformSpacingPanel Spacing="10" Margin="0,10,0,0" Grid.ColumnSpan="4">
                         <TextBlock Text="背景图片不透明度" VerticalAlignment="Center"/>
                     </hc:UniformSpacingPanel>
                     <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
                         <hc:PreviewSlider Value="{Binding BgOpacity}"
-                                  Maximum="100"
-                                  Width="350"
-                                  >
+                                          ValueChanged="BGOpacity_ValueChanged"
+                                          Maximum="100"
+                                          Width="350"
+                                          > 
                             <hc:PreviewSlider.PreviewContent>
                                 <Label Style="{StaticResource LabelPrimary}" Content="{Binding Path=(hc:PreviewSlider.PreviewPosition),RelativeSource={RelativeSource Self}}" ContentStringFormat="#0"/>
                             </hc:PreviewSlider.PreviewContent>
@@ -131,8 +199,8 @@
                 <hc:Divider LineStrokeDashArray="3,3" LineStroke="Black" Grid.ColumnSpan="4"/>
                 <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4">
                     <TextBlock VerticalAlignment="Center" Text="图标字体颜色:" />
-                    <TextBlock VerticalAlignment="Center" Text="{Binding TextColor}" Width="100"/>
-                    <Button Content="选择" Margin="0,-10,0,0"  Click="ColorButton_Click"/>
+                    <TextBlock VerticalAlignment="Center" Text="{Binding TextColor}" Foreground="{Binding TextColor}" Width="100"/>
+                    <Button Content="选择" Margin="0,-10,0,0" Tag="Text"  Click="ColorButton_Click"/>
                 </hc:UniformSpacingPanel>
             </StackPanel>
         </Grid>

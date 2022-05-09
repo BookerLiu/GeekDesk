@@ -18,24 +18,45 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace GeekDesk.Control.UserControls.Config
 {
+
+    enum ColorType
+    {
+        COLOR_1 = 1,
+        COLOR_2 = 2,
+        TEXT_COLOR = 3
+    }
+
     /// <summary>
     /// MotionControl.xaml 的交互逻辑
     /// </summary>
     public partial class ThemeControl : System.Windows.Controls.UserControl
     {
-
+        private static ColorType colorType;
         private static AppConfig appConfig = MainWindow.appData.AppConfig;
 
         private System.Windows.Controls.Primitives.ToggleButton toggleButton = null;
         public ThemeControl()
         {
+            
             InitializeComponent();
+            if (appConfig.BGStyle != BGStyle.GradientBac)
+            {
+                GradientBGConf.Visibility = Visibility.Collapsed;
+                ImgBGConf.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ImgBGConf.Visibility = Visibility.Collapsed;
+                GradientBGConf.Visibility = Visibility.Visible;
+            }
         }
 
         /// <summary>
@@ -64,7 +85,7 @@ namespace GeekDesk.Control.UserControls.Config
                 LogUtil.WriteErrorLog(ex, "修改背景失败,已重置为默认背景!");
                 HandyControl.Controls.Growl.WarningGlobal("修改背景失败,已重置为默认背景!");
             }
-
+            BGSettingUtil.BGSetting();
         }
 
 
@@ -81,12 +102,22 @@ namespace GeekDesk.Control.UserControls.Config
                 LogUtil.WriteErrorLog(ex, "修改背景失败2,已重置为默认背景!");
                 HandyControl.Controls.Growl.WarningGlobal("修改背景失败,已重置为默认背景!");
             }
-
+            BGSettingUtil.BGSetting();
         }
 
 
         private void ColorButton_Click(object sender, RoutedEventArgs e)
         {
+            string tag = (sender as Button).Tag.ToString();
+            switch (tag)
+            {
+                case "Color1":
+                    colorType = ColorType.COLOR_1;break;
+                case "Color2":
+                    colorType = ColorType.COLOR_2;break;
+                default:
+                    colorType = ColorType.TEXT_COLOR;break;
+            }
             ColorPanel.Visibility = Visibility.Visible;
         }
 
@@ -107,7 +138,16 @@ namespace GeekDesk.Control.UserControls.Config
         private void MyColorPicker_SelectedColorChanged(object sender, HandyControl.Data.FunctionEventArgs<Color> e)
         {
             SolidColorBrush scb = MyColorPicker.SelectedBrush;
-            appConfig.TextColor = scb.ToString();
+
+            switch (colorType)
+            {
+                case ColorType.COLOR_1:
+                    appConfig.GradientBGParam.Color1 = scb.ToString();break;
+                case ColorType.COLOR_2:
+                    appConfig.GradientBGParam.Color2 = scb.ToString(); break;
+                default:
+                    appConfig.TextColor = scb.ToString();break;
+            }
         }
 
         /// <summary>
@@ -178,6 +218,28 @@ namespace GeekDesk.Control.UserControls.Config
             ColorPanel.Visibility = Visibility.Collapsed;
         }
 
+        public void BGStyle_Changed(object sender, RoutedEventArgs e)
+        {
+            BGSettingUtil.BGSetting();
+            if (appConfig.BGStyle != BGStyle.GradientBac)
+            {
+                GradientBGConf.Visibility = Visibility.Collapsed;
+                ImgBGConf.Visibility = Visibility.Visible;
+            } else
+            {
+                ImgBGConf.Visibility = Visibility.Collapsed;
+                GradientBGConf.Visibility = Visibility.Visible;
+            }
+        }
 
+        private void BGOpacity_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            BGSettingUtil.BGSetting();
+        }
+
+        private void Color_TargetUpdated(object sender, DataTransferEventArgs e)
+        {
+            BGSettingUtil.BGSetting();
+        }
     }
 }
