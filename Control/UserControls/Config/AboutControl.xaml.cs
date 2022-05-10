@@ -45,5 +45,14 @@ namespace GeekDesk.Control.UserControls.Config
                 Window.GetWindow(this).DragMove();
             }
         }
+
+        private void SC_MouseEnter(object sender, MouseEventArgs e)
+        {
+            this.Cursor = Cursors.Hand;
+        }
+        private void SC_MouseLeave(object sender, MouseEventArgs e)
+        {
+            this.Cursor = Cursors.Arrow;
+        }
     }
 }
