@@ -8,7 +8,9 @@ using GeekDesk.ViewModel;
 using HandyControl.Controls;
 using HandyControl.Data;
 using System;
+using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace GeekDesk.Control.Windows
@@ -22,6 +24,14 @@ namespace GeekDesk.Control.Windows
         private static readonly ThemeControl theme = new ThemeControl();
         private static readonly MotionControl motion = new MotionControl();
         private static readonly OtherControl other = new OtherControl();
+        private static List<UserControl> ucList = new List<UserControl>();
+        static ConfigWindow()
+        {
+            ucList.Add(about);
+            ucList.Add(theme);
+            ucList.Add(motion);
+            ucList.Add(other);
+        }
         public MainWindow mainWindow;
 
         private ConfigWindow(AppConfig appConfig, MainWindow mainWindow)
@@ -53,16 +63,24 @@ namespace GeekDesk.Control.Windows
             switch (smi.Tag.ToString())
             {
                 case "Motion":
+                    UFG.Visibility = Visibility.Collapsed;
                     RightCard.Content = motion;
+                    UFG.Visibility = Visibility.Visible;
                     break;
                 case "Theme":
+                    UFG.Visibility = Visibility.Collapsed;
                     RightCard.Content = theme;
+                    UFG.Visibility = Visibility.Visible;
                     break;
                 case "Other":
+                    UFG.Visibility = Visibility.Collapsed;
                     RightCard.Content = other;
+                    UFG.Visibility = Visibility.Visible;
                     break;
                 default:
+                    UFG.Visibility = Visibility.Collapsed;
                     RightCard.Content = about;
+                    UFG.Visibility = Visibility.Visible;
                     break;
             }
         }

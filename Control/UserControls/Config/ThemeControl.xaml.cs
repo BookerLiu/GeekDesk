@@ -1,4 +1,5 @@
 ﻿using GeekDesk.Constant;
+using GeekDesk.Control.Other;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using Microsoft.Win32;
@@ -240,6 +241,12 @@ namespace GeekDesk.Control.UserControls.Config
         private void Color_TargetUpdated(object sender, DataTransferEventArgs e)
         {
             BGSettingUtil.BGSetting();
+        }
+
+        private void SysBG_Click(object sender, RoutedEventArgs e)
+        {
+            GradientBGDialog gbg = new GradientBGDialog();
+            gbg.dialog = HandyControl.Controls.Dialog.Show(gbg, "SysBGDialog");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿
 using GeekDesk.Constant;
 using GeekDesk.Util;
+using GeekDesk.ViewModel.Temp;
 using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
@@ -75,7 +76,41 @@ namespace GeekDesk.ViewModel
 
         private bool hoverMenu = false; //悬停切换菜单  默认关闭
 
+        private BGStyle bgStyle = BGStyle.ImgBac; //背景风格
+
+        private GradientBGParam gradientBGParam = null; //渐变背景参数
+
         #region GetSet
+
+        public GradientBGParam GradientBGParam
+        {
+            get
+            {
+                if (gradientBGParam == null)
+                {
+                    gradientBGParam = GradientBGParamList.GradientBGParams[0];
+                }
+                return gradientBGParam;
+            }
+            set
+            {
+                gradientBGParam = value;
+                OnPropertyChanged("GradientBGParam");
+            }
+        }
+
+        public BGStyle BGStyle
+        {
+            get
+            {
+                return bgStyle;
+            }
+            set
+            {
+                bgStyle = value;
+                OnPropertyChanged("BGStyle");
+            }
+        }
 
         public bool HoverMenu
         {

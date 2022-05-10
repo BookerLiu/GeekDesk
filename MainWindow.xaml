@@ -34,10 +34,6 @@
         <cvt:OpcityConvert x:Key="OpcityConvert"/>
         <cvt:IntToCornerRadius x:Key="IntToCornerRadius"/>
         <cvt:DoubleToGridLength x:Key="DoubleToGridLength"/>
-        <cvt:ArrToBitmapImageConvert x:Key="ArrToBitmapImageConvert"/>
-        <cvt:VisualBrushConvert x:Key="VisualBrushConvert"/>
-
-
         <Style x:Key="BorderBacStyle" TargetType="Border">
             
         </Style>

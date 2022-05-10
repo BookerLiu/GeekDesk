@@ -30,7 +30,7 @@
                 </hc:UniformSpacingPanel>
 
                 <UniformGrid x:Name="ImgBGConf">
-                    <hc:TransitioningContentControl TransitionMode="Bottom2TopWithFade" 
+                    <hc:TransitioningContentControl TransitionMode="Fade" 
                                                     Height="130">
                         <StackPanel>
                             <hc:UniformSpacingPanel Spacing="10" Margin="0,10,0,0" Grid.ColumnSpan="4">
@@ -65,7 +65,7 @@
                 </UniformGrid>
 
                 <UniformGrid x:Name="GradientBGConf">
-                    <hc:TransitioningContentControl TransitionMode="Bottom2TopWithFade" 
+                    <hc:TransitioningContentControl TransitionMode="Fade" 
                                                     Height="130">
                         <StackPanel>
                             <hc:UniformSpacingPanel Spacing="10" Margin="0,10,0,0" Grid.ColumnSpan="4">
@@ -98,6 +98,7 @@
                                     hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
                                     hc:Poptip.Content="{Binding GradientBGParam.Name, Converter={StaticResource StringAppendConvert}, ConverterParameter=当前设置: \{\}}" 
                                     hc:Poptip.Placement="Top"
+                                    Click="SysBG_Click"
                                     />
                         </StackPanel>
                     </hc:TransitioningContentControl>
