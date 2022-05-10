@@ -24,7 +24,8 @@ namespace GeekDesk.MyThread
         {
             //使用dispatcher来单独监听UI线程  防止程序卡顿
             dispatcher = DispatcherBuild.Build();
-            dispatcher.Invoke((Action)(() =>
+            m_GlobalHook = Hook.GlobalEvents();
+            dispatcher.BeginInvoke((Action)(() =>
             {
                 m_GlobalHook.MouseUpExt += M_GlobalHook_MouseUpExt;
             }));
