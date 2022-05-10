@@ -74,6 +74,7 @@ namespace GeekDesk
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             string inputText = SearchBox.Text.ToLower();
+            RightCard.VerticalUFG.Visibility = Visibility.Collapsed;
             if (!string.IsNullOrEmpty(inputText))
             {
                 SearchIconList.IconList.Clear();
@@ -95,6 +96,7 @@ namespace GeekDesk
             {
                 SearchIconList.IconList.Clear();
             }
+            RightCard.VerticalUFG.Visibility = Visibility.Visible;
         }
 
         public void HidedSearchBox()
