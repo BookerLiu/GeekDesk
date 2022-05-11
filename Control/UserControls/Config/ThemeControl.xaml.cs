@@ -1,5 +1,6 @@
 ﻿using GeekDesk.Constant;
 using GeekDesk.Control.Other;
+using GeekDesk.Control.Windows;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using Microsoft.Win32;
@@ -119,7 +120,8 @@ namespace GeekDesk.Control.UserControls.Config
                 default:
                     colorType = ColorType.TEXT_COLOR;break;
             }
-            ColorPanel.Visibility = Visibility.Visible;
+            MyColorPicker.Visibility = Visibility.Visible;
+            new ColorPickerWindow().Show();
         }
 
         /// <summary>
@@ -216,7 +218,7 @@ namespace GeekDesk.Control.UserControls.Config
                 MethodInfo mi = type.GetMethod("ToggleButtonDropper_Click", InstanceBindFlags);
                 mi.Invoke(cp, new object[] { null, null });
             }
-            ColorPanel.Visibility = Visibility.Collapsed;
+            MyColorPicker.Visibility = Visibility.Collapsed;
         }
 
         public void BGStyle_Changed(object sender, RoutedEventArgs e)

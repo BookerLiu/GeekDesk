@@ -8,7 +8,8 @@
         mc:Ignorable="d"
         xmlns:cvt="clr-namespace:GeekDesk.Converts"
         x:Name="window"
-        xmlns:hc="https://handyorg.github.io/handycontrol" xmlns:viewmodel="clr-namespace:GeekDesk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AppData}"
+        xmlns:hc="https://handyorg.github.io/handycontrol" xmlns:viewmodel="clr-namespace:GeekDesk.ViewModel" 
+        d:DataContext="{d:DesignInstance Type=viewmodel:AppData}"
         Title="GeekDesk" 
         MinWidth="600"
         MinHeight="400"
@@ -63,6 +64,7 @@
             <Border x:Name="BGBorder" 
                     CornerRadius="{Binding AppConfig.PannelCornerRadius, Mode=TwoWay, Converter={StaticResource IntToCornerRadius}}"  
                     BorderThickness="0"
+                    Margin="-1"
                     >
                 <Grid>
                     <Grid.RowDefinitions>
@@ -82,7 +84,7 @@
                         <DockPanel.Background>
                             <SolidColorBrush Opacity="0.01"/>
                         </DockPanel.Background>
-                        <Image Source="/Resource/Image/TitleLogo.png" Margin="10,0,0,0" Width="94" Height="30" HorizontalAlignment="Left"/>
+                        <Image Visibility="{Binding AppConfig.TitleLogoVisible}" Source="/Resource/Image/TitleLogo.png" Margin="10,0,0,0" Width="94" Height="30" HorizontalAlignment="Left"/>
                     </DockPanel>
 
                     <DockPanel Grid.Row="0" Grid.Column="2" MouseMove="DragMove">

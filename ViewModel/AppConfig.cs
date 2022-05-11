@@ -28,6 +28,7 @@ namespace GeekDesk.ViewModel
         private int selectedMenuIndex = 0;  //上次选中菜单索引
         private bool followMouse = true;  //面板跟随鼠标 默认是
         private Visibility configIconVisible = Visibility.Visible; // 设置按钮是否显示
+        private Visibility titleLogoVisible = Visibility.Visible; // 标题logo是否显示
         private AppHideType appHideType = AppHideType.START_EXE;  //面板关闭方式 (默认启动程序后)
         private bool startedShowPanel = true;  //启动时是否显示主面板  默认显示
         [field: NonSerialized]
@@ -82,6 +83,20 @@ namespace GeekDesk.ViewModel
 
         #region GetSet
 
+        
+        public Visibility TitleLogoVisible
+        {
+            get
+            {
+                return titleLogoVisible;
+            }
+            set
+            {
+                titleLogoVisible = value;
+                OnPropertyChanged("TitleLogoVisible");
+            }
+        }
+
         public GradientBGParam GradientBGParam
         {
             get
@@ -103,6 +118,10 @@ namespace GeekDesk.ViewModel
         {
             get
             {
+                if (bgStyle == 0)
+                {
+                    bgStyle = (BGStyle)1;
+                }
                 return bgStyle;
             }
             set
