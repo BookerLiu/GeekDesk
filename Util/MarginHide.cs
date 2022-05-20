@@ -1,8 +1,11 @@
 ﻿using GeekDesk.Constant;
+using GeekDesk.MyThread;
 using System;
+using System.Threading;
 using System.Windows;
-using System.Windows.Forms;
+
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 
 namespace GeekDesk.Util
 {
@@ -22,10 +25,14 @@ namespace GeekDesk.Util
     {
         private static Window window;//定义使用该方法的窗体
 
-        private static readonly int hideTime = 200;
-        private static readonly int fadeHideTime = 180;
-        private static readonly int fadeShowTime = 200;
-        private static readonly int taskTime = 250;
+        private static readonly int hideTime = 50;
+        private static readonly int showTime = 30;
+
+        private static int animalTime;
+
+        private static readonly int fadeHideTime = 50;
+        private static readonly int fadeShowTime = 50;
+        private static readonly int taskTime = 200;
 
         public static readonly int shadowWidth = 20;
 
@@ -36,7 +43,7 @@ namespace GeekDesk.Util
 
         public static bool IS_HIDE = false;
 
-        private static Timer timer = null;
+        private static System.Windows.Forms.Timer timer = null;
 
         public static void ReadyHide(Window window)
         {
@@ -96,7 +103,7 @@ namespace GeekDesk.Util
                 if (windowTop <= screenTop)
                 {
                     IS_HIDE = true;
-                    FadeAnimation(1, 0);
+                    //FadeAnimation(1, 0);
                     HideAnimation(windowTop, screenTop - windowHeight + showMarginWidth, Window.TopProperty, HideType.TOP_HIDE);
                     return;
                 }
@@ -104,7 +111,7 @@ namespace GeekDesk.Util
                 if (windowLeft <= screenLeft)
                 {
                     IS_HIDE = true;
-                    FadeAnimation(1, 0);
+                    //FadeAnimation(1, 0);
                     HideAnimation(windowLeft, screenLeft - windowWidth + showMarginWidth, Window.LeftProperty, HideType.LEFT_HIDE);
                     return;
                 }
@@ -112,7 +119,7 @@ namespace GeekDesk.Util
                 if (windowLeft + windowWidth + Math.Abs(screenLeft) >= screenWidth)
                 {
                     IS_HIDE = true;
-                    FadeAnimation(1, 0);
+                    //FadeAnimation(1, 0);
                     HideAnimation(windowLeft, screenWidth - Math.Abs(screenLeft) - showMarginWidth, Window.LeftProperty, HideType.RIGHT_HIDE);
                     return;
                 }
@@ -125,7 +132,7 @@ namespace GeekDesk.Util
                 {
                     IS_HIDE = false;
                     HideAnimation(windowTop, screenTop, Window.TopProperty, HideType.TOP_SHOW);
-                    FadeAnimation(0, 1);
+                    //FadeAnimation(0, 1);
                     return;
                 }
                 //左侧显示
@@ -133,7 +140,7 @@ namespace GeekDesk.Util
                 {
                     IS_HIDE = false;
                     HideAnimation(windowLeft, screenLeft, Window.LeftProperty, HideType.LEFT_SHOW);
-                    FadeAnimation(0, 1);
+                    //FadeAnimation(0, 1);
                     return;
                 }
                 //右侧显示
@@ -141,7 +148,7 @@ namespace GeekDesk.Util
                 {
                     IS_HIDE = false;
                     HideAnimation(windowLeft, screenWidth - Math.Abs(screenLeft) - windowWidth, Window.LeftProperty, HideType.RIGHT_SHOW);
-                    FadeAnimation(0, 1);
+                    //FadeAnimation(0, 1);
                     return;
                 }
             }
@@ -154,7 +161,7 @@ namespace GeekDesk.Util
         {
             ON_HIDE = true;
             if (timer != null) return;
-            timer = new Timer
+            timer = new System.Windows.Forms.Timer
             {
                 Interval = taskTime
             };//添加timer计时器，隐藏功能
@@ -185,7 +192,7 @@ namespace GeekDesk.Util
                 if (windowLeft <= screenLeft - showMarginWidth)
                 {
                     IS_HIDE = false;
-                    FadeAnimation(0, 1);
+                    //FadeAnimation(0, 1);
                     HideAnimation(windowLeft, screenLeft, Window.LeftProperty, HideType.LEFT_SHOW);
                     return;
                 }
@@ -194,7 +201,7 @@ namespace GeekDesk.Util
                 if (windowTop <= screenTop - showMarginWidth)
                 {
                     IS_HIDE = false;
-                    FadeAnimation(0, 1);
+                    //FadeAnimation(0, 1);
                     HideAnimation(windowTop, screenTop, Window.TopProperty, HideType.TOP_SHOW);
                     return;
                 }
@@ -203,7 +210,7 @@ namespace GeekDesk.Util
                 if (windowLeft + Math.Abs(screenLeft) == screenWidth - showMarginWidth)
                 {
                     IS_HIDE = false;
-                    FadeAnimation(0, 1);
+                    //FadeAnimation(0, 1);
                     HideAnimation(windowLeft, screenWidth - Math.Abs(screenLeft) - windowWidth, Window.LeftProperty, HideType.RIGHT_SHOW);
                     return;
                 }
@@ -213,89 +220,163 @@ namespace GeekDesk.Util
 
         private static void HideAnimation(double from, double to, DependencyProperty property, HideType hideType)
         {
+            new Thread(() =>
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    double abs = Math.Abs(Math.Abs(to) - Math.Abs(from));
+                    double subLen = abs / hideTime;
 
-            double toTemp = to;
-            double leftT = window.Width / 4 * 3;
-            double topT = window.Height / 4 * 3;
-            switch (hideType)
-            {
-                case HideType.LEFT_HIDE:
-                    to += leftT;
-                    break;
-                case HideType.LEFT_SHOW:
-                    to -= leftT;
-                    break;
-                case HideType.RIGHT_HIDE:
-                    to -= leftT;
-                    break;
-                case HideType.RIGHT_SHOW:
-                    to += leftT;
-                    break;
-                case HideType.TOP_HIDE:
-                    to += topT;
-                    break;
-                case HideType.TOP_SHOW:
-                    to -= topT;
-                    break;
-            }
-            DoubleAnimation da = new DoubleAnimation
-            {
-                From = from,
-                To = to,
-                Duration = new Duration(TimeSpan.FromMilliseconds(hideTime))
-            };
-            // 如果是显示 则贴屏幕侧不显示阴影
-            bool isShow = false;
-            int shadowWidthTemp = Constants.SHADOW_WIDTH;
-            if (hideType <= HideType.RIGHT_SHOW)
-            {
-                isShow = true;
-                if (hideType == HideType.RIGHT_SHOW)
-                {
-                    shadowWidthTemp = -shadowWidthTemp;
-                }
-            }
-            da.Completed += (s, e) =>
-            {
-                if ("Top".Equals(property.Name))
-                {
-                    window.Top = isShow ? toTemp - shadowWidthTemp : toTemp;
-                }
-                else
-                {
-                    window.Left = isShow ? toTemp - shadowWidthTemp : toTemp;
-                }
-                window.BeginAnimation(property, null);
-            };
+                    if ((int)hideType <= 3)
+                    {
+                        animalTime = showTime;
+                    } else
+                    {
+                        animalTime = hideTime;
+                    }
 
-            Timeline.SetDesiredFrameRate(da, 60);
-            window.BeginAnimation(property, da);
+                    int count = 0;
+                    while (count < animalTime)
+                    {
+                        switch (hideType)
+                        {
+                            case HideType.LEFT_HIDE:
+                                window.Left -= subLen;
+                                break;
+                            case HideType.LEFT_SHOW:
+                                window.Left += subLen;
+                                break;
+                            case HideType.RIGHT_HIDE:
+                                window.Left += subLen;
+                                break;
+                            case HideType.RIGHT_SHOW:
+                                window.Left -= subLen;
+                                break;
+                            case HideType.TOP_HIDE:
+                                window.Top -= subLen;
+                                break;
+                            case HideType.TOP_SHOW:
+                                window.Top += subLen;
+                                break;
+                        }
+                        count++;
+                        Thread.Sleep(1);
+                    }
+
+                    switch (hideType)
+                    {
+                        case HideType.LEFT_HIDE:
+                            window.Left = to;
+                            break;
+                        case HideType.LEFT_SHOW:
+                            window.Left = to - 20;
+                            break;
+                        case HideType.RIGHT_HIDE:
+                            window.Left = to;
+                            break;
+                        case HideType.RIGHT_SHOW:
+                            window.Left = to + 20;
+                            break;
+                        case HideType.TOP_HIDE:
+                            window.Top = to;
+                            break;
+                        case HideType.TOP_SHOW:
+                            window.Top = to - 20;
+                            break;
+                    }
+
+                    //double toTemp = to;
+                    //double leftT = 0;
+                    //double topT = 0;
+                    //switch (hideType)
+                    //{
+                    //    case HideType.LEFT_HIDE:
+                    //        to += leftT;
+                    //        break;
+                    //    case HideType.LEFT_SHOW:
+                    //        to -= leftT;
+                    //        break;
+                    //    case HideType.RIGHT_HIDE:
+                    //        to -= leftT;
+                    //        break;
+                    //    case HideType.RIGHT_SHOW:
+                    //        to += leftT;
+                    //        break;
+                    //    case HideType.TOP_HIDE:
+                    //        to += topT;
+                    //        break;
+                    //    case HideType.TOP_SHOW:
+                    //        to -= topT;
+                    //        break;
+                    //}
+                    //DoubleAnimation da = new DoubleAnimation
+                    //{
+                    //    From = from,
+                    //    To = to,
+                    //    Duration = new Duration(TimeSpan.FromMilliseconds(hideTime))
+                    //};
+                    //// 如果是显示 则贴屏幕侧不显示阴影
+                    //bool isShow = false;
+                    //int shadowWidthTemp = Constants.SHADOW_WIDTH;
+                    //if (hideType <= HideType.RIGHT_SHOW)
+                    //{
+                    //    isShow = true;
+                    //    if (hideType == HideType.RIGHT_SHOW)
+                    //    {
+                    //        shadowWidthTemp = -shadowWidthTemp;
+                    //    }
+                    //}
+                    //da.Completed += (s, e) =>
+                    //{
+                    //    if ("Top".Equals(property.Name))
+                    //    {
+                    //        window.Top = isShow ? toTemp - shadowWidthTemp : toTemp;
+                    //    }
+                    //    else
+                    //    {
+                    //        window.Left = isShow ? toTemp - shadowWidthTemp : toTemp;
+                    //    }
+                    //    window.BeginAnimation(property, null);
+                    //};
+
+                    //Timeline.SetDesiredFrameRate(da, 60);
+                    //window.BeginAnimation(property, da);
+                });
+            }).Start();
+            
+            
         }
 
         private static void FadeAnimation(double from, double to)
         {
-            double time;
-            if (to == 0D)
+            new Thread(() =>
             {
-                time = fadeHideTime;
-            }
-            else
-            {
-                time = fadeShowTime;
-            }
-            DoubleAnimation opacityAnimation = new DoubleAnimation
-            {
-                From = from,
-                To = to,
-                Duration = new Duration(TimeSpan.FromMilliseconds(time))
-            };
-            opacityAnimation.Completed += (s, e) =>
-            {
-                //window.Opacity = to;
-                window.BeginAnimation(Window.OpacityProperty, null);
-            };
-            Timeline.SetDesiredFrameRate(opacityAnimation, 60);
-            window.BeginAnimation(Window.OpacityProperty, opacityAnimation);
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    double time;
+                    if (to == 0D)
+                    {
+                        time = fadeHideTime;
+                    }
+                    else
+                    {
+                        time = fadeShowTime;
+                    }
+                    DoubleAnimation opacityAnimation = new DoubleAnimation
+                    {
+                        From = from,
+                        To = to,
+                        Duration = new Duration(TimeSpan.FromMilliseconds(time))
+                    };
+                    opacityAnimation.Completed += (s, e) =>
+                    {
+                        //window.Opacity = to;
+                        window.BeginAnimation(Window.OpacityProperty, null);
+                    };
+                    Timeline.SetDesiredFrameRate(opacityAnimation, 60);
+                    window.BeginAnimation(Window.OpacityProperty, opacityAnimation);
+                });
+            }).Start();
         }
 
 
