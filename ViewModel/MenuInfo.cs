@@ -11,7 +11,7 @@ namespace GeekDesk.ViewModel
     [Serializable]
     public class MenuInfo : INotifyPropertyChanged
     {
-       
+
 
         private string menuName;
         private string menuId;
@@ -65,7 +65,7 @@ namespace GeekDesk.ViewModel
             set
             {
                 menuName = value;
-                OnPropertyChanged("MenuName");               
+                OnPropertyChanged("MenuName");
             }
         }
 
@@ -94,7 +94,8 @@ namespace GeekDesk.ViewModel
                 if (menuEdit == Visibility.Visible)
                 {
                     NotMenuEdit = Visibility.Collapsed;
-                } else
+                }
+                else
                 {
                     NotMenuEdit = Visibility.Visible;
                 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
 namespace GeekDesk.ViewModel.Temp
 {
@@ -37,6 +31,6 @@ namespace GeekDesk.ViewModel.Temp
                 gradientBGParams = value;
             }
         }
-   
+
     }
 }

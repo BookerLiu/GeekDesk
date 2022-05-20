@@ -1,11 +1,7 @@
 ﻿using GeekDesk.Constant;
 using GeekDesk.Util;
-using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
-using System.IO;
-using System.Reflection;
-using System.Text;
 using System.Windows.Media.Imaging;
 
 /// <summary>

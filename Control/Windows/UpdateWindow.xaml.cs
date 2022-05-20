@@ -4,20 +4,10 @@ using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace GeekDesk.Control.Windows
 {
@@ -42,7 +32,7 @@ namespace GeekDesk.Control.Windows
             {
 
             }
-           
+
         }
 
         /// <summary>
@@ -68,7 +58,7 @@ namespace GeekDesk.Control.Windows
             githubUrl = StringUtil.IsEmpty(jo["githubUrl"]) ? ConfigurationManager.AppSettings["GitHubUrl"] : jo["githubUrl"].ToString();
             giteeUrl = StringUtil.IsEmpty(jo["giteeUrl"]) ? ConfigurationManager.AppSettings["GiteeUrl"] : jo["giteeUrl"].ToString();
             string msg = "";
-            for (int i=0; i<ja.Count; i++)
+            for (int i = 0; i < ja.Count; i++)
             {
                 msg += "• " + ja[i].ToString() + "\n";
             }

@@ -1,13 +1,8 @@
 ﻿using GeekDesk.Constant;
 using GeekDesk.ViewModel;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 
@@ -29,9 +24,9 @@ namespace GeekDesk.Util
                     Margin = new Thickness(-30),
                     Source = appConfig.BitmapImage,
                     Opacity = (double)(Math.Round((decimal)(appConfig.BgOpacity / 100.00), 2))
-            };
+                };
 
-                
+
                 //binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
                 //image.SetBinding(Image.OpacityProperty, binding);
 
@@ -67,7 +62,7 @@ namespace GeekDesk.Util
                 lgb.GradientStops.Add(gs2);
                 MainWindow.mainWindow.BGBorder.Background = lgb;
             }
-            
+
         }
 
     }

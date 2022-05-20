@@ -53,7 +53,8 @@ namespace GeekDesk.Util
                 UnregisterHotKey(handleTemp[id].Handle, id);
                 GlobalHotKey.handleTemp[id].Dispose();
                 GlobalHotKey.handleTemp.Remove(id);
-            } catch
+            }
+            catch
             {
                 //nothing
             }
@@ -75,7 +76,7 @@ namespace GeekDesk.Util
             {
                 CreateHandle(new CreateParams());
                 this.callback += callback;
-            } 
+            }
 
             private static readonly int WM_HOTKEY = 0x0312;
             protected override void WndProc(ref Message m)
@@ -94,4 +95,4 @@ namespace GeekDesk.Util
 
 
     }
-    }
+}

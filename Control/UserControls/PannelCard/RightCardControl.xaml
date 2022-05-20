@@ -176,7 +176,7 @@
                    VirtualizingPanel.IsContainerVirtualizable="True"
                    >
                     <UniformGrid x:Name="VerticalUFG">
-                        <hc:TransitioningContentControl TransitionMode="Fade">
+                        <hc:TransitioningContentControl TransitionMode="Left2RightWithFade">
                             <ListBox ItemsSource="{Binding Source={StaticResource SearchIconList},Path=IconList}" 
                              BorderThickness="0"
                              Padding="0,10,0,0"

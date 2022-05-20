@@ -4,7 +4,6 @@ using GeekDesk.ViewModel;
 using Microsoft.Win32;
 using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 
@@ -89,12 +88,13 @@ namespace GeekDesk.Control.Other
                     info.BitmapImage = ImageUtil.GetBitmapIconByPath(ofd.FileName);
                     CommonCode.SaveAppData(MainWindow.appData);
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 HandyControl.Controls.Growl.WarningGlobal("修改图标失败,已重置为默认图标!");
                 LogUtil.WriteErrorLog(ex, "修改图标失败!");
             }
-            
+
         }
     }
 }

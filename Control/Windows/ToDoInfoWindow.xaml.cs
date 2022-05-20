@@ -5,18 +5,9 @@ using GeekDesk.ViewModel;
 using HandyControl.Controls;
 using Quartz;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace GeekDesk.Control.Windows
 {
@@ -42,7 +33,8 @@ namespace GeekDesk.Control.Windows
             DateTime time = DateTime.Now.AddMinutes(10);
             ExeTime.SelectedDateTime = time;
             SetTimePanel.Visibility = Visibility.Visible;
-            this.DataContext = new ToDoInfo {
+            this.DataContext = new ToDoInfo
+            {
                 ExeTime = time.ToString("yyyy-MM-dd HH:mm:ss")
             };
         }
@@ -97,7 +89,8 @@ namespace GeekDesk.Control.Windows
             {
                 Growl.Warning("任务标题不能为空!");
                 return;
-            } else
+            }
+            else
             {
                 if (SetTimePanel.Visibility == Visibility.Visible)
                 {
@@ -117,7 +110,9 @@ namespace GeekDesk.Control.Windows
                         return;
                     }
                     execTime = ExeTime.Text;
-                } else {
+                }
+                else
+                {
                     execType = TodoTaskExecType.CRON;
                     if (Cron.Text.Trim() == "")
                     {
@@ -128,7 +123,8 @@ namespace GeekDesk.Control.Windows
                     {
                         bool isValid = CronExpression.IsValidExpression(Cron.Text);
                         if (!isValid) throw new Exception();
-                    } catch (Exception)
+                    }
+                    catch (Exception)
                     {
                         Growl.Warning("请输入正确的Cron表达式!");
                         return;
@@ -155,7 +151,8 @@ namespace GeekDesk.Control.Windows
                 if (appData.HiToDoList.Contains(tdi))
                 {
                     appData.HiToDoList.Remove(tdi);
-                } else if (appData.ToDoList.Contains(tdi))
+                }
+                else if (appData.ToDoList.Contains(tdi))
                 {
                     appData.ToDoList.Remove(tdi);
                 }
@@ -175,7 +172,8 @@ namespace GeekDesk.Control.Windows
                 int h = minutes / 60;
                 Growl.SuccessGlobal("设置待办任务成功, 系统将在 " + h + " 小时零 " + m + " 分钟后提醒您!");
 
-            } else
+            }
+            else
             {
                 Growl.SuccessGlobal("设置待办任务成功, 系统将在 " + minutes + " 分钟后提醒您!");
             }
@@ -202,7 +200,8 @@ namespace GeekDesk.Control.Windows
             {
                 window = new ToDoInfoWindow();
                 window.Show();
-            } else
+            }
+            else
             {
                 window.Close();
             }

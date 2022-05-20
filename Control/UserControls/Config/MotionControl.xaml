@@ -4,10 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cvt="clr-namespace:GeekDesk.Converts"
-             xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" 
+             xmlns:hc="https://handyorg.github.io/handycontrol" 
+             xmlns:viewmodel="clr-namespace:GeekDesk.ViewModel" 
+             d:DataContext="{d:DesignInstance Type=viewmodel:AppConfig}"
+             xmlns:cst="clr-namespace:GeekDesk.Constant"
              Background="Transparent"
-             d:DesignHeight="300" d:DesignWidth="450">
+             d:DesignHeight="400" d:DesignWidth="450">
 
     <UserControl.Resources>
         <cvt:HideTypeConvert x:Key="HideTypeConvert"/>
@@ -109,30 +112,74 @@
                 <TextBlock Text="热键设置" VerticalAlignment="Center"/>
             </hc:UniformSpacingPanel>
             <hc:UniformSpacingPanel Spacing="10"  Margin="10,5,0,0" Grid.ColumnSpan="4">
-                <TextBlock Text="主面板:" VerticalAlignment="Center" Width="55"/>
+                <TextBlock Text="主面板:" VerticalAlignment="Center" Margin="0,5,0,0" Width="55"/>
                 <hc:TextBox HorizontalAlignment="Left" 
-                        Tag="Main"
+                        Tag="{x:Static cst:HotKeyType.Main}"
                         VerticalAlignment="Top" 
                         IsReadOnly="True" 
                         IsReadOnlyCaretVisible="True" 
-                        Width="200"
+                        Width="170"
                         Text="{Binding HotkeyStr}" 
                         KeyDown="HotKeyDown"
                         KeyUp="HotKeyUp"
                         />
+                <CheckBox Content="启用" 
+                          Click="EnableHotKey_Click" 
+                          Tag="{x:Static cst:HotKeyType.Main}" 
+                          IsChecked="{Binding EnableAppHotKey}">
+                    <CheckBox.Background>
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                            <GradientStop Color="#FF9EA3A6"/>
+                        </LinearGradientBrush>
+                    </CheckBox.Background>
+                </CheckBox>
             </hc:UniformSpacingPanel>
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
-                <TextBlock Text="新建待办:"  Width="55"/>
+                <TextBlock Text="新建待办:" Margin="0,5,0,0"  Width="55"/>
                 <hc:TextBox HorizontalAlignment="Left" 
-                        Tag="ToDo"
+                        Tag="{x:Static cst:HotKeyType.ToDo}"
                         VerticalAlignment="Top" 
                         IsReadOnly="True" 
                         IsReadOnlyCaretVisible="True" 
-                        Width="200"
+                        Width="170"
                         Text="{Binding ToDoHotkeyStr}" 
                         KeyDown="HotKeyDown"
                         KeyUp="HotKeyUp"
                         />
+                <CheckBox Content="启用" 
+                          Click="EnableHotKey_Click" 
+                          Tag="{x:Static cst:HotKeyType.ToDo}" 
+                          IsChecked="{Binding EnableTodoHotKey}">
+                    <CheckBox.Background>
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                            <GradientStop Color="#FF9EA3A6"/>
+                        </LinearGradientBrush>
+                    </CheckBox.Background>
+                </CheckBox>
+            </hc:UniformSpacingPanel>
+
+            <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
+                <TextBlock Text="拾色器:" Margin="0,5,0,0"  Width="55"/>
+                <hc:TextBox HorizontalAlignment="Left" 
+                        Tag="{x:Static cst:HotKeyType.ColorPicker}"
+                        VerticalAlignment="Top" 
+                        IsReadOnly="True" 
+                        IsReadOnlyCaretVisible="True" 
+                        Width="170"
+                        Text="{Binding ColorPickerHotkeyStr}" 
+                        KeyDown="HotKeyDown"
+                        KeyUp="HotKeyUp"
+                        />
+                <CheckBox Content="启用" 
+                          Tag="{x:Static cst:HotKeyType.ColorPicker}"
+                          Click="EnableHotKey_Click"
+                          IsChecked="{Binding EnableColorPickerHotKey}">
+                    <CheckBox.Background>
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                            <GradientStop Color="#FF9EA3A6"/>
+                        </LinearGradientBrush>
+                    </CheckBox.Background>
+                </CheckBox>
             </hc:UniformSpacingPanel>
         </StackPanel>
     </Grid>

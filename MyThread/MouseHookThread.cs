@@ -2,11 +2,6 @@
 using GeekDesk.ViewModel;
 using Gma.System.MouseKeyHook;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -50,7 +45,7 @@ namespace GeekDesk.MyThread
                 if (MotionControl.hotkeyFinished)
                 {
                     App.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render, new Action(() =>
-                    { 
+                    {
                         if (MainWindow.mainWindow.Visibility == Visibility.Collapsed || MainWindow.mainWindow.Opacity == 0)
                         {
                             MainWindow.ShowApp();

@@ -60,7 +60,7 @@
             Focusable="True"
             >
         <hc:DialogContainer Focusable="True">
-
+            <!-- -1是为了解决圆角白线的问题-->
             <Border x:Name="BGBorder" 
                     CornerRadius="{Binding AppConfig.PannelCornerRadius, Mode=TwoWay, Converter={StaticResource IntToCornerRadius}}"  
                     BorderThickness="0"
@@ -149,6 +149,7 @@
                         <hc:NotifyIcon.ContextMenu>
                             <ContextMenu Width="130">
                                 <MenuItem Header="打开面板" Click="ShowApp"/>
+                                <MenuItem Header="拾色器" Click="ColorPicker"/>
                                 <MenuItem Header="隐藏图标" Click="CloseBarIcon"/>
                                 <MenuItem Header="待办"  Click="BacklogMenuClick"/>
                                 <MenuItem Header="程序目录"  Click="OpenThisDir"/>

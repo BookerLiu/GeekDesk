@@ -4,13 +4,8 @@ using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace GeekDesk.MyThread
 {
@@ -59,7 +54,8 @@ namespace GeekDesk.MyThread
                         }));
                     }
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 LogUtil.WriteErrorLog(ex, "获取更新失败!");
             }

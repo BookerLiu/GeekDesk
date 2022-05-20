@@ -1,16 +1,11 @@
-﻿using GeekDesk.Control;
-using GeekDesk.Control.Other;
+﻿using GeekDesk.Control.Other;
 using GeekDesk.ViewModel;
 using HandyControl.Controls;
 using HandyControl.Data;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace GeekDesk.Task

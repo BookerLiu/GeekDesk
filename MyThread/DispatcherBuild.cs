@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading;
 using System.Windows.Threading;
 
 namespace GeekDesk.MyThread
@@ -25,6 +20,7 @@ namespace GeekDesk.MyThread
                 manualResetEvent.Set();
                 Dispatcher.Run();
             });
+            thread.IsBackground = true;
             thread.Start();
             manualResetEvent.WaitOne();
             manualResetEvent.Dispose();

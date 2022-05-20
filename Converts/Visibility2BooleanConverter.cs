@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
@@ -16,7 +12,8 @@ namespace GeekDesk.Converts
             if ((Visibility)value == Visibility.Visible)
             {
                 return true;
-            } else
+            }
+            else
             {
                 return false;
             }
@@ -27,7 +24,8 @@ namespace GeekDesk.Converts
             if ((bool)value)
             {
                 return Visibility.Visible;
-            } else
+            }
+            else
             {
                 return Visibility.Collapsed;
             }

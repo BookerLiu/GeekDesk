@@ -1,11 +1,8 @@
 ﻿using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using GeekDesk.ViewModel.Temp;
-using Microsoft.Win32;
-using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 
 
 namespace GeekDesk.Control.Other

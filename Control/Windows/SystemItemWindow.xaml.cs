@@ -1,5 +1,4 @@
 ﻿using GeekDesk.Constant;
-using GeekDesk.Control.Other;
 using GeekDesk.Interface;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
@@ -8,13 +7,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.IO;
-using System.Resources;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using static GeekDesk.Util.ShowWindowFollowMouse;
@@ -85,7 +81,8 @@ namespace GeekDesk.Control.Windows
                             IsBackground = true
                         };
                         t.Start();
-                    } else
+                    }
+                    else
                     {
                         StartMenuLoading.Visibility = Visibility.Collapsed;
                         vm.IconInfos = startMenuIcons;
@@ -109,7 +106,8 @@ namespace GeekDesk.Control.Windows
                         vm.IconInfos = null;
                         systemIcons = GetSysteIconInfos();
                         vm.IconInfos = systemIcons;
-                    } else
+                    }
+                    else
                     {
                         vm.IconInfos = systemIcons;
                     }
@@ -142,7 +140,7 @@ namespace GeekDesk.Control.Windows
                 }
                 StartMenuLoading.Visibility = Visibility.Collapsed;
             }));
-            
+
         }
 
         /// <summary>
@@ -161,7 +159,8 @@ namespace GeekDesk.Control.Windows
             if (filePaths == null || filePaths.Length == 0)
             {
                 dirPaths.CopyTo(paths, 0);
-            } else
+            }
+            else
             {
                 dirPaths.CopyTo(paths, filePaths.Length - 1);
             }
@@ -195,7 +194,7 @@ namespace GeekDesk.Control.Windows
             //foreach(FileSystemInfo fi in fileInfoArr)
             //{
             //    string path = fi.FullName;
-                
+
             //}
         }
 

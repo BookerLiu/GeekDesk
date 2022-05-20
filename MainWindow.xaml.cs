@@ -2,23 +2,21 @@
 using GeekDesk.Control.UserControls.Config;
 using GeekDesk.Control.Windows;
 using GeekDesk.Interface;
-using GeekDesk.Task;
 using GeekDesk.MyThread;
+using GeekDesk.Task;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
-
+using GeekDesk.ViewModel.Temp;
+using NPinyin;
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using static GeekDesk.Util.ShowWindowFollowMouse;
-using System.Collections.ObjectModel;
-using NPinyin;
-using GeekDesk.ViewModel.Temp;
-using System.Threading;
-using DraggAnimatedPanelExample;
 
 namespace GeekDesk
 {
@@ -33,6 +31,7 @@ namespace GeekDesk
         public static ToDoInfoWindow toDoInfoWindow;
         public static int hotKeyId = -1;
         public static int toDoHotKeyId = -1;
+        public static int colorPickerHotKeyId = -1;
         public static MainWindow mainWindow;
         public MainWindow()
         {
@@ -153,8 +152,19 @@ namespace GeekDesk
             BarIcon.Text = Constants.MY_NAME;
 
             //注册热键
-            RegisterHotKey(true);
-            RegisterCreateToDoHotKey(true);
+            if (true == appData.AppConfig.EnableAppHotKey)
+            {
+                RegisterHotKey(true);
+            }
+            if (true == appData.AppConfig.EnableTodoHotKey)
+            {
+                RegisterCreateToDoHotKey(true);
+            }
+
+            if (true == appData.AppConfig.EnableColorPickerHotKey)
+            {
+                RegisterColorPickerHotKey(true);
+            }
 
             //注册自启动
             if (!appData.AppConfig.SelfStartUped && !Constants.DEV)
@@ -196,10 +206,10 @@ namespace GeekDesk
                             }
                         }
                     });
-                }
-                if (!first)
-                {
-                    HandyControl.Controls.Growl.Success("GeekDesk快捷键注册成功(" + appData.AppConfig.HotkeyStr + ")!", "HotKeyGrowl");
+                    if (!first)
+                    {
+                        HandyControl.Controls.Growl.Success("GeekDesk快捷键注册成功(" + appData.AppConfig.HotkeyStr + ")!", "HotKeyGrowl");
+                    }
                 }
             }
             catch (Exception)
@@ -236,11 +246,12 @@ namespace GeekDesk
                             ToDoInfoWindow.ShowOrHide();
                         }
                     });
+                    if (!first)
+                    {
+                        HandyControl.Controls.Growl.Success("新建待办任务快捷键注册成功(" + appData.AppConfig.ToDoHotkeyStr + ")!", "HotKeyGrowl");
+                    }
                 }
-                if (!first)
-                {
-                    HandyControl.Controls.Growl.Success("新建待办任务快捷键注册成功(" + appData.AppConfig.ToDoHotkeyStr + ")!", "HotKeyGrowl");
-                }
+                
             }
             catch (Exception)
             {
@@ -251,6 +262,43 @@ namespace GeekDesk
                 else
                 {
                     HandyControl.Controls.Growl.Warning("新建待办任务快捷键已被其它程序占用(" + appData.AppConfig.ToDoHotkeyStr + ")!", "HotKeyGrowl");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 注册新建待办的热键
+        /// </summary>
+        public static void RegisterColorPickerHotKey(bool first)
+        {
+            try
+            {
+
+                if (appData.AppConfig.ColorPickerHotkeyModifiers != 0)
+                {
+                    //加载完毕注册热键
+                    colorPickerHotKeyId = GlobalHotKey.RegisterHotKey(appData.AppConfig.ColorPickerHotkeyModifiers, appData.AppConfig.ColorPickerHotkey, () =>
+                    {
+                        if (MotionControl.hotkeyFinished)
+                        {
+                            GlobalColorPickerWindow.Show();
+                        }
+                    });
+                    if (!first)
+                    {
+                        HandyControl.Controls.Growl.Success("拾色器快捷键注册成功(" + appData.AppConfig.ColorPickerHotkeyStr + ")!", "HotKeyGrowl");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                if (first)
+                {
+                    HandyControl.Controls.Growl.WarningGlobal("拾色器快捷键已被其它程序占用(" + appData.AppConfig.ColorPickerHotkeyStr + ")!");
+                }
+                else
+                {
+                    HandyControl.Controls.Growl.Warning("拾色器快捷键已被其它程序占用(" + appData.AppConfig.ColorPickerHotkeyStr + ")!", "HotKeyGrowl");
                 }
             }
         }
@@ -384,24 +432,27 @@ namespace GeekDesk
                 if (RunTimeStatus.SEARCH_BOX_SHOW)
                 {
                     mainWindow.HidedSearchBox();
-                    new Thread(() =>
+                    Thread t = new Thread(() =>
                     {
                         Thread.Sleep(100);
                         App.Current.Dispatcher.BeginInvoke(new Action(() =>
                         {
                             FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
                         }));
-                    }).Start();
+                    });
+                    t.IsBackground = true;
+                    t.Start();
                 }
                 else
                 {
                     FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
                 }
-            } else
+            }
+            else
             {
                 ShowApp();
             }
-            
+
         }
 
         /// <summary>
@@ -629,6 +680,11 @@ namespace GeekDesk
         {
             //防止延迟贴边隐藏
             RunTimeStatus.MARGIN_HIDE_AND_OTHER_SHOW = false;
+        }
+
+        private void ColorPicker(object sender, RoutedEventArgs e)
+        {
+            GlobalColorPickerWindow.Show();
         }
     }
 }

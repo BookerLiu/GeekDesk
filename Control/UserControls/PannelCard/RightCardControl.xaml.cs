@@ -9,13 +9,11 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
 
 namespace GeekDesk.Control.UserControls.PannelCard
 {
@@ -422,12 +420,31 @@ namespace GeekDesk.Control.UserControls.PannelCard
             double height = appData.AppConfig.ImageHeight;
             width += width * 0.15;
             height += height * 0.15;
-            ImgStoryBoard(sender, (int)width, (int)height, 1, true);
+            Thread t = new Thread(() =>
+            {
+                this.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    ImgStoryBoard(sender, (int)width, (int)height, 1, true);
+                }));
+            });
+            t.IsBackground = true;
+            t.Start();
+
         }
 
         private void StackPanel_MouseLeave(object sender, MouseEventArgs e)
         {
-            ImgStoryBoard(sender, appData.AppConfig.ImageWidth, appData.AppConfig.ImageHeight, 220);
+
+            Thread t = new Thread(() =>
+            {
+                this.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    ImgStoryBoard(sender, appData.AppConfig.ImageWidth, appData.AppConfig.ImageHeight, 260);
+                }));
+            });
+            t.IsBackground = true;
+            t.Start();
+
         }
 
 
@@ -491,6 +508,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 {
                     ThreadStart ts = new ThreadStart(crs.Remove);
                     System.Threading.Thread t = new System.Threading.Thread(ts);
+                    t.IsBackground = true;
                     t.Start();
                 }
                 else

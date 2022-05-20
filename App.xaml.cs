@@ -1,12 +1,7 @@
 ﻿using GeekDesk.Constant;
 using GeekDesk.Util;
-using Microsoft.Win32;
 using System;
-using System.IO;
-using System.Text;
 using System.Windows;
-using System.Windows.Media.Animation;
-using System.Windows.Threading;
 
 namespace GeekDesk
 {

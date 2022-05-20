@@ -1,10 +1,6 @@
 ﻿using GeekDesk.Util;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GeekDesk.ViewModel
 {
@@ -19,7 +15,8 @@ namespace GeekDesk.ViewModel
 
         public GradientBGParam() { }
 
-        public GradientBGParam(string name, string color1, string color2) {
+        public GradientBGParam(string name, string color1, string color2)
+        {
             this.name = name;
             this.color1 = color1;
             this.color2 = color2;

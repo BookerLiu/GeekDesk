@@ -1,10 +1,7 @@
 ﻿using GeekDesk.Constant;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace GeekDesk.Util
 {
@@ -48,27 +45,30 @@ namespace GeekDesk.Util
                         fs.Write(buffer, 0, buffer.Length);
                     }
                 }
-            } catch
+            }
+            catch
             {
 
             }
-           
+
         }
 
 
         public static void WriteLog(string msg)
         {
-            try {
-                using (FileStream fs = File.Open(Constants.LOG_FILE_PATH, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            try
             {
-                fs.Seek(0, SeekOrigin.End);
-                byte[] buffer = Encoding.Default.GetBytes("-------------------------------------------------------\r\n");
-                fs.Write(buffer, 0, buffer.Length);
+                using (FileStream fs = File.Open(Constants.LOG_FILE_PATH, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                {
+                    fs.Seek(0, SeekOrigin.End);
+                    byte[] buffer = Encoding.Default.GetBytes("-------------------------------------------------------\r\n");
+                    fs.Write(buffer, 0, buffer.Length);
 
-                buffer = Encoding.Default.GetBytes(DateTime.Now.ToString() + msg + "\r\n" );
-                fs.Write(buffer, 0, buffer.Length);
+                    buffer = Encoding.Default.GetBytes(DateTime.Now.ToString() + msg + "\r\n");
+                    fs.Write(buffer, 0, buffer.Length);
+                }
             }
-            } catch { }
+            catch { }
         }
 
 

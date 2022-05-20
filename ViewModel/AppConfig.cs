@@ -48,7 +48,12 @@ namespace GeekDesk.ViewModel
 
         private string toDoHotkeyStr = "Ctrl + Shift + Q";  //待办任务快捷键
         private HotkeyModifiers toDoHotkeyModifiers; //待办任务快捷键
-        private Key toDoHotkey = Key.E; //待办任务快捷键
+        private Key toDoHotkey = Key.Q; //待办任务快捷键
+
+
+        private string colorPickerHotkeyStr = ""; //拾色器快捷键
+        private HotkeyModifiers colorPickerHotkeyModifiers; //拾色器快捷键
+        private Key colorPickerHotkey; //拾色器快捷键
 
         private string customIconUrl; //自定义图标url
         private string customIconJsonUrl;  //自定义图标json信息url
@@ -81,9 +86,55 @@ namespace GeekDesk.ViewModel
 
         private GradientBGParam gradientBGParam = null; //渐变背景参数
 
+        private bool? enableAppHotKey = true;  //可能为null
+        private bool? enableTodoHotKey = true; //可能为null
+
+        private bool enableColorPickerHotKey;  //新增 默认为false 不需要考虑null值
+
+
         #region GetSet
 
-        
+        public bool EnableColorPickerHotKey
+        {
+            get
+            {
+                return enableColorPickerHotKey;
+            }
+            set
+            {
+                enableColorPickerHotKey = value;
+                OnPropertyChanged("EnableColorPickerHotKey");
+            }
+        }
+
+        public bool? EnableAppHotKey
+        {
+            get
+            {
+                if (enableAppHotKey == null) enableAppHotKey = true;
+                return enableAppHotKey;
+            }
+            set
+            {
+                enableAppHotKey = value;
+                OnPropertyChanged("EnableAppHotKey");
+            }
+        }
+
+        public bool? EnableTodoHotKey
+        {
+            get
+            {
+                if (enableTodoHotKey == null) enableTodoHotKey = true;
+                return enableTodoHotKey;
+            }
+            set
+            {
+                enableTodoHotKey = value;
+                OnPropertyChanged("EnableTodoHotKey");
+            }
+        }
+
         public Visibility TitleLogoVisible
         {
             get
@@ -375,6 +426,47 @@ namespace GeekDesk.ViewModel
             }
         }
 
+        public Key ColorPickerHotkey
+        {
+            get
+            {
+                return colorPickerHotkey;
+            }
+            set
+            {
+                colorPickerHotkey = value;
+                OnPropertyChanged("ColorPickerHotkey");
+            }
+        }
+
+
+        public HotkeyModifiers ColorPickerHotkeyModifiers
+        {
+            get
+            {
+                return colorPickerHotkeyModifiers;
+            }
+            set
+            {
+                colorPickerHotkeyModifiers = value;
+                OnPropertyChanged("ColorPickerHotkeyModifiers");
+            }
+        }
+
+        public string ColorPickerHotkeyStr
+        {
+            get
+            {
+                return colorPickerHotkeyStr;
+            }
+            set
+            {
+                colorPickerHotkeyStr = value;
+                OnPropertyChanged("ColorPickerHotkeyStr");
+            }
+        }
+
+
         public Key ToDoHotkey
         {
             get
@@ -382,7 +474,7 @@ namespace GeekDesk.ViewModel
                 //兼容老版本
                 if (toDoHotkey == Key.None)
                 {
-                    toDoHotkey = Key.Q;
+                    toDoHotkey = Key.E;
                 }
                 return toDoHotkey;
             }

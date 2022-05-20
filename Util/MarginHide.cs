@@ -1,9 +1,8 @@
-﻿using System;
-
-using System.Windows.Forms;
+﻿using GeekDesk.Constant;
+using System;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Media.Animation;
-using GeekDesk.Constant;
 
 namespace GeekDesk.Util
 {
@@ -71,7 +70,7 @@ namespace GeekDesk.Util
         #region 窗体贴边隐藏功能
         private static void HideWindow(object o, EventArgs e)
         {
-            if (window.Visibility != Visibility.Visible 
+            if (window.Visibility != Visibility.Visible
                 || RunTimeStatus.MARGIN_HIDE_AND_OTHER_SHOW) return;
 
             double screenLeft = SystemParameters.VirtualScreenLeft;
@@ -302,12 +301,14 @@ namespace GeekDesk.Util
 
         public static void WaitHide(int waitTime)
         {
-            new System.Threading.Thread(()=>
+            System.Threading.Thread t = new System.Threading.Thread(() =>
             {
                 System.Threading.Thread.Sleep(waitTime);
                 //修改状态为false 继续执行贴边隐藏
                 RunTimeStatus.MARGIN_HIDE_AND_OTHER_SHOW = false;
-            }).Start();
+            });
+            t.IsBackground = true;
+            t.Start();
         }
 
 

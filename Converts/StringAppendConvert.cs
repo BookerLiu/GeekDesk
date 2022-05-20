@@ -1,10 +1,5 @@
-﻿using GeekDesk.Constant;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace GeekDesk.Converts
@@ -17,7 +12,8 @@ namespace GeekDesk.Converts
             if (parameter == null)
             {
                 return value.ToString();
-            } else
+            }
+            else
             {
                 string val = value.ToString();
                 string param = parameter.ToString();

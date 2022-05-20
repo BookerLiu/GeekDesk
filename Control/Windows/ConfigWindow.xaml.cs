@@ -1,13 +1,7 @@
-﻿
-using GeekDesk.Constant;
-using GeekDesk.Control.UserControls;
-using GeekDesk.Control.UserControls.Config;
+﻿using GeekDesk.Control.UserControls.Config;
 using GeekDesk.Interface;
-using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using HandyControl.Controls;
-using HandyControl.Data;
-using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,8 +38,8 @@ namespace GeekDesk.Control.Windows
             this.mainWindow = mainWindow;
         }
 
-         
-        
+
+
 
         /// <summary>
         /// 点击关闭按钮

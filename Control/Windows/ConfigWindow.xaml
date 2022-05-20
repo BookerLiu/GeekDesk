@@ -24,7 +24,7 @@
             <DropShadowEffect BlurRadius="20" Direction="-90" Color="Gray"
                               RenderingBias="Quality" ShadowDepth="2"/>
         </Grid.Effect>
-        <Grid  hc:Dialog.Token="SysBGDialog">
+        <Grid  hc:Dialog.Token="ConfigWindowDialog">
             <hc:DialogContainer  Margin="10">
                 <Border Style="{StaticResource BorderBG}">
                     <Grid Background="Transparent">
@@ -110,7 +110,7 @@
                         </hc:Card>
                         <hc:ScrollViewer  Grid.Row="0" Grid.Column="1" BorderThickness="0" Margin="0,5,1,5">
                             <UniformGrid x:Name="UFG">
-                                <hc:TransitioningContentControl TransitionMode="Fade">
+                                <hc:TransitioningContentControl TransitionMode="Left2RightWithFade">
                                     <hc:Card x:Name="RightCard" BorderThickness="0"  MouseDown="DragMove">
                                         <hc:Card.Background>
                                             <SolidColorBrush  Opacity="0"/>

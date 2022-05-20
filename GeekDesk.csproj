@@ -15,6 +15,21 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -127,18 +142,26 @@
     <Compile Include="Command\DelegateCommandBase.cs" />
     <Compile Include="Constant\AppHideType.cs" />
     <Compile Include="Constant\Constants.cs" />
+    <Compile Include="Constant\HotKeyType.cs" />
     <Compile Include="Constant\IconType.cs" />
     <Compile Include="Constant\CommonEnum.cs" />
     <Compile Include="Constant\IconStartType.cs" />
     <Compile Include="Constant\RunTimeStatus.cs" />
     <Compile Include="Constant\SortType.cs" />
     <Compile Include="Constant\TodoTaskExecType.cs" />
+    <Compile Include="Constant\BGStyle.cs" />
     <Compile Include="Constant\UpdateType.cs" />
     <Compile Include="Control\Other\BacklogNotificatin.xaml.cs">
       <DependentUpon>BacklogNotificatin.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\Other\CustomIconUrlDialog.xaml.cs">
       <DependentUpon>CustomIconUrlDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Other\GradientBGDialog.xaml.cs">
+      <DependentUpon>GradientBGDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Other\MyColorPickerDialog.xaml.cs">
+      <DependentUpon>MyColorPickerDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\Other\IconInfoUrlDialog.xaml.cs">
       <DependentUpon>IconInfoUrlDialog.xaml</DependentUpon>
@@ -154,6 +177,12 @@
     </Compile>
     <Compile Include="Control\UserControls\IconFont\IconPannel.xaml.cs">
       <DependentUpon>IconPannel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Windows\GlobalColorPickerWindow.xaml.cs">
+      <DependentUpon>GlobalColorPickerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Windows\PixelColorPickerWindow.xaml.cs">
+      <DependentUpon>PixelColorPickerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\Windows\SystemItemWindow.xaml.cs">
       <DependentUpon>SystemItemWindow.xaml</DependentUpon>
@@ -191,6 +220,7 @@
     <Compile Include="Control\Windows\UpdateWindow.xaml.cs">
       <DependentUpon>UpdateWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converts\StringAppendConvert.cs" />
     <Compile Include="Converts\DoubleToGridLength.cs" />
     <Compile Include="Converts\MenuInfoConvert.cs" />
     <Compile Include="Converts\SearchResWidth.cs" />
@@ -198,7 +228,9 @@
     <Compile Include="Converts\TodoTaskExecConvert.cs" />
     <Compile Include="Converts\IntToCornerRadius.cs" />
     <Compile Include="Converts\OpcityConvert.cs" />
+    <Compile Include="Converts\BGStyleConvert.cs" />
     <Compile Include="Converts\UpdateTypeConvert.cs" />
+    <Compile Include="Converts\Visibility2BooleanConverter.cs" />
     <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.cs" />
     <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.Drag.cs" />
     <Compile Include="Converts\HideTypeConvert.cs" />
@@ -208,6 +240,8 @@
     <Compile Include="MyThread\DispatcherBuild.cs" />
     <Compile Include="MyThread\UpdateThread.cs" />
     <Compile Include="Util\AeroGlassHelper.cs" />
+    <Compile Include="Util\BGSettingUtil.cs" />
+    <Compile Include="Util\ColorUtil.cs" />
     <Compile Include="Util\GlobalHotKey.cs" />
     <Compile Include="Util\CommonCode.cs" />
     <Compile Include="Util\FileIcon.cs" />
@@ -225,6 +259,9 @@
     <Compile Include="Util\SvgToGeometry.cs" />
     <Compile Include="ViewModel\AppConfig.cs" />
     <Compile Include="ViewModel\AppData.cs" />
+    <Compile Include="ViewModel\GradientBGParam.cs" />
+    <Compile Include="ViewModel\CPDataContext.cs" />
+    <Compile Include="ViewModel\Temp\GradientBGParamList.cs" />
     <Compile Include="ViewModel\Temp\SearchIconList.cs" />
     <Compile Include="ViewModel\ToDoInfo.cs" />
     <Compile Include="ViewModel\IconfontInfo.cs" />
@@ -235,6 +272,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Control\Other\CustomIconUrlDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\Other\GradientBGDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\Other\MyColorPickerDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -255,6 +300,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Control\UserControls\IconFont\IconPannel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\Windows\GlobalColorPickerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\Windows\PixelColorPickerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -401,6 +454,18 @@
     <Resource Include="Resource\Image\SystemIcon\Notepad.png" />
     <Resource Include="Resource\Image\SystemIcon\RecycleBin.png" />
     <Resource Include="Resource\Image\SystemIcon\Registry.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 和 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

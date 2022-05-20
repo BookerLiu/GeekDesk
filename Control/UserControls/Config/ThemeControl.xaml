@@ -18,7 +18,7 @@
         <cvt:Visibility2BooleanConverter x:Key="Visibility2BooleanConverter"/>
     </UserControl.Resources>
     <Grid>
-        <Grid  MouseDown="DragMove" Background="Transparent">
+        <Grid Background="Transparent">
             <StackPanel Margin="20" >
                 <hc:UniformSpacingPanel Spacing="10" Margin="0,10,0,0" Grid.ColumnSpan="4">
                     <TextBlock Text="背景风格" VerticalAlignment="Center"/>
@@ -228,10 +228,10 @@
                 <SolidColorBrush Color="AliceBlue" Opacity="0.01"/>
             </StackPanel.Background>-->
 
-            <hc:ColorPicker Name="MyColorPicker" 
+            <!--<hc:ColorPicker Name="MyColorPicker" 
                             Canceled="MyColorPicker_Canceled"
                             Confirmed="MyColorPicker_Confirmed"
-                            SelectedColorChanged="MyColorPicker_SelectedColorChanged"/>
+                            SelectedColorChanged="MyColorPicker_SelectedColorChanged"/>-->
 
         <!--</StackPanel>-->
     </Grid>
