@@ -373,5 +373,33 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 MainWindow.mainWindow.HidedSearchBox();
             }
         }
+
+        private void Menu_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta < 0)
+            {
+                int index = MenuListBox.SelectedIndex;
+                if (index < MenuListBox.Items.Count - 1)
+                {
+                    index ++;
+                } else
+                {
+                    index = 0;
+                }
+                MenuListBox.SelectedIndex = index;
+            } else if (e.Delta > 0)
+            {
+                int index = MenuListBox.SelectedIndex;
+                if (index > 0)
+                {
+                    index --;
+                }
+                else
+                {
+                    index = MenuListBox.Items.Count - 1;
+                }
+                MenuListBox.SelectedIndex = index;
+            }
+        }
     }
 }
