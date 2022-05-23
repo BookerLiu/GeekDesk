@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 
 namespace GeekDesk.Control.UserControls.PannelCard
 {
@@ -437,10 +438,10 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
             Thread t = new Thread(() =>
             {
-                this.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    ImgStoryBoard(sender, appData.AppConfig.ImageWidth, appData.AppConfig.ImageHeight, 260);
-                }));
+            this.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                ImgStoryBoard(sender, appData.AppConfig.ImageWidth, appData.AppConfig.ImageHeight, 260);
+            }));
             });
             t.IsBackground = true;
             t.Start();
@@ -452,6 +453,59 @@ namespace GeekDesk.Control.UserControls.PannelCard
         {
 
             if (appData.AppConfig.PMModel) return;
+
+            //int count = 0;
+            //Panel sp = sender as Panel;
+            //Image img = sp.Children[0] as Image;
+
+
+            //int nowH = (int)img.Height;
+
+            //bool isSmall = nowH > height;
+
+            //if (!isSmall)
+            //{
+            //    img.Height = height;
+            //    img.Width = width;
+            //    return;
+            //}
+            //double subLen = (double)Math.Abs(nowH - height) / (double)milliseconds;
+
+            //new Thread(() =>
+            //{
+            //    this.Dispatcher.Invoke(() =>
+            //    {
+            //        while (count < milliseconds)
+            //        {
+            //            if (!isSmall)
+            //            {
+            //                img.Height += subLen;
+            //                img.Width += subLen;
+            //            } else
+            //            {
+            //                //if (img.Height > 1)
+            //                //{
+            //                //    img.Height -= 1;
+            //                //    img.Width -= 1;
+            //                //}
+            //                Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
+            //                             new Action(delegate {
+            //                                 img.Height -= subLen;
+            //                                 img.Width -= subLen;
+            //                             }));
+            //                //img.Height -= subLen;
+            //                //img.Width -= subLen;
+            //            }
+            //            count++;
+            //            Thread.Sleep(1);
+            //        }
+            //        img.Height = height;
+            //        img.Width = width;
+            //    });
+            //}).Start();
+
+
+
 
             Panel sp = sender as Panel;
 
@@ -519,10 +573,10 @@ namespace GeekDesk.Control.UserControls.PannelCard
             };
             img.BeginAnimation(WidthProperty, widthAnimation);
             img.BeginAnimation(HeightProperty, heightAnimation);
-
+            //###################################################################
             //myStoryboard.Completed += (s, e) =>
             //{
-            //    if (checkRmStoryboard || true)
+            //    if (checkRmStoryboard)
             //    {
             //        ThreadStart ts = new ThreadStart(crs.Remove);
             //        System.Threading.Thread t = new System.Threading.Thread(ts);
