@@ -6,25 +6,58 @@
              xmlns:local="clr-namespace:GeekDesk.Control.UserControls.PannelCard"
              xmlns:hc="https://handyorg.github.io/handycontrol" xmlns:viewmodel="clr-namespace:GeekDesk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:ToDoInfo}"
              mc:Ignorable="d" 
+             xmlns:cst="clr-namespace:GeekDesk.Converts"
              Background="Transparent"
              >
 
+    <UserControl.Resources>
+        <!--<cst:Count2VisibleConvert x:Key="Count2VisibleConvert"/>
+        <cst:CountGreZero2BoolConvert x:Key="CountGreZero2BoolConvert"/>
+        <Style x:Key="NoDataStyle" TargetType="TextBlock">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=BacklogList, Path=Items.Count, Converter={StaticResource CountGreZero2BoolConvert}}" Value="False">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ElementName=BacklogList, Path=Items.Count, Converter={StaticResource CountGreZero2BoolConvert}}" Value="True">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ToDoStyle" TargetType="DataGrid">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=BacklogList, Path=Items.Count, Converter={StaticResource CountGreZero2BoolConvert}}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ElementName=BacklogList, Path=Items.Count, Converter={StaticResource CountGreZero2BoolConvert}}" Value="False">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>-->
+    </UserControl.Resources>
     <hc:SimplePanel Margin="20" Background="Transparent">
         <Grid Background="Transparent">
+            <TextBlock x:Name="IsNewToDo" Visibility="Collapsed" />
+            <TextBlock x:Name="NoData" 
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center"
+                       Text="暂无数据!"
+                       />
+
             <DataGrid x:Name="BacklogList" 
-                  HeadersVisibility="All"  
-                  AutoGenerateColumns="False" 
-                  ItemsSource="{Binding}"
-                  IsReadOnly="True"
-                  Initialized="DataGridMenu_Initialized"
-                  >
+                      HeadersVisibility="All"  
+                      AutoGenerateColumns="False" 
+                      ItemsSource="{Binding}"
+                      IsReadOnly="True"
+                      Initialized="DataGridMenu_Initialized"
+                      >
                 <DataGrid.ContextMenu>
                     <ContextMenu x:Name="Menu" Width="120">
                         <MenuItem Header="详情" Click="DetailMenu_Click"/>
                         <MenuItem Header="删除" Click="DeleteMenu_Click"/>
                     </ContextMenu>
                 </DataGrid.ContextMenu>
-                <DataGrid.RowStyle>
+                <!--<DataGrid.RowStyle>
                     <Style TargetType="DataGridRow" BasedOn="{StaticResource DataGridRowStyle}">
                         <EventSetter Event="MouseRightButtonDown" Handler="DataGridRow_MouseRightButtonDown" />
                         <Setter Property="Background" Value="White"/>
@@ -37,7 +70,58 @@
                             </Trigger>
                         </Style.Triggers>
                     </Style>
+                </DataGrid.RowStyle>-->
+
+
+
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}">
+                        <Style.Setters>
+                            <Setter Property="SnapsToDevicePixels" Value="true"/>
+                            <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type DataGridRow}">
+                                        <Border CornerRadius="8" MouseRightButtonDown="DataGridRow_MouseRightButtonDown" Margin="0,0,0,5" BorderBrush="Black" BorderThickness="0" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                                </Style>
+                                            </Border.Style>
+                                            <SelectiveScrollingGrid>
+                                                <SelectiveScrollingGrid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </SelectiveScrollingGrid.ColumnDefinitions>
+                                                <SelectiveScrollingGrid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </SelectiveScrollingGrid.RowDefinitions>
+                                                <DataGridCellsPresenter Grid.Column="1" ItemsPanel="{TemplateBinding ItemsPanel}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                                <Path Name="Cross" Grid.ColumnSpan="2" Visibility="Collapsed" Margin="10,0,10,0" Data="M0,0.5 L1,0.5" Stretch="Fill" Stroke="Gray" StrokeThickness="1" Opacity="0.5" />
+                                            </SelectiveScrollingGrid>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=IsNewToDo, Path=Text}" Value="N">
+                                                <Setter TargetName="Cross" Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=IsNewToDo, Path=Text}" Value="Y">
+                                                <Setter TargetName="Cross" Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style.Setters>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E5E5E2" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
                 </DataGrid.RowStyle>
+
 
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell" BasedOn="{StaticResource DataGridCellStyle}">

@@ -220,6 +220,8 @@
     <Compile Include="Control\Windows\UpdateWindow.xaml.cs">
       <DependentUpon>UpdateWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converts\CountGreZero2BoolConvert.cs" />
+    <Compile Include="Converts\Count2VisibleConvert.cs" />
     <Compile Include="Converts\StringAppendConvert.cs" />
     <Compile Include="Converts\DoubleToGridLength.cs" />
     <Compile Include="Converts\MenuInfoConvert.cs" />

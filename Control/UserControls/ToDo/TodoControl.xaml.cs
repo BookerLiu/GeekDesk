@@ -71,7 +71,17 @@ namespace GeekDesk.Control.UserControls.Backlog
         /// <param name="e"></param>
         private void DataGridRow_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            BacklogList.SelectedIndex = ((DataGridRow)sender).GetIndex();
+            int index;
+            ToDoInfo info = ((Border)sender).DataContext as ToDoInfo;
+            if (type == ToDoType.NEW)
+            {
+                index = MainWindow.appData.ToDoList.IndexOf(info);
+            }
+            else
+            {
+                index = MainWindow.appData.HiToDoList.IndexOf(info);
+            }
+            BacklogList.SelectedIndex = index;
             Menu.IsOpen = true;
         }
 
