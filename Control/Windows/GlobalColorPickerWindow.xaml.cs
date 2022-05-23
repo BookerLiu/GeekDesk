@@ -13,7 +13,7 @@ namespace GeekDesk.Control.Windows
     /// </summary>
     public partial class GlobalColorPickerWindow : IWindowCommon
     {
-        PixelColorPickerWindow colorPickerWindow;
+        PixelColorPickerWindow colorPickerWindow = null;
         public GlobalColorPickerWindow()
         {
             this.Topmost = true;
@@ -60,10 +60,12 @@ namespace GeekDesk.Control.Windows
 
 
         private void MyColorPicker_Checked(object sender, RoutedEventArgs e)
-        {
-            
+        {           
             this.Hide();
-            colorPickerWindow = new PixelColorPickerWindow(MyColorPicker);
+            if (colorPickerWindow == null || !colorPickerWindow.Activate())
+            {
+                colorPickerWindow = new PixelColorPickerWindow(MyColorPicker);
+            }
             colorPickerWindow.Show();
         }
 
@@ -73,6 +75,22 @@ namespace GeekDesk.Control.Windows
         }
 
         private static System.Windows.Window window = null;
+
+        public static void CreateNoShow()
+        {
+            if (window == null || !window.Activate())
+            {
+                window = new GlobalColorPickerWindow();
+            }
+            window.Hide();
+            GlobalColorPickerWindow thisWindow = (GlobalColorPickerWindow)window;
+            if (thisWindow.colorPickerWindow == null || !thisWindow.colorPickerWindow.Activate())
+            {
+                thisWindow.colorPickerWindow = new PixelColorPickerWindow(thisWindow.MyColorPicker);
+            }
+            thisWindow.colorPickerWindow.Show();
+        }
+
         public static void Show()
         {
             if (window == null || !window.Activate())
@@ -81,6 +99,20 @@ namespace GeekDesk.Control.Windows
             }
             window.Show();
             Keyboard.Focus(window);
+        }
+
+        public static void ShowOrHide()
+        {
+            if (window == null || !window.Activate())
+            {
+                window = new GlobalColorPickerWindow();
+                window.Show();
+                Keyboard.Focus(window);
+            }
+            else
+            {
+                window.Close();
+            }
         }
 
         private void MyColorPicker_SelectedColorChanged(object sender, HandyControl.Data.FunctionEventArgs<Color> e)

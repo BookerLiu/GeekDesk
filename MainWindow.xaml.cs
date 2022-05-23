@@ -16,6 +16,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using static GeekDesk.Util.ShowWindowFollowMouse;
 
 namespace GeekDesk
@@ -243,7 +244,7 @@ namespace GeekDesk
                     {
                         if (MotionControl.hotkeyFinished)
                         {
-                            ToDoInfoWindow.ShowOrHide();
+                            ToDoWindow.ShowOrHide();
                         }
                     });
                     if (!first)
@@ -273,7 +274,6 @@ namespace GeekDesk
         {
             try
             {
-
                 if (appData.AppConfig.ColorPickerHotkeyModifiers != 0)
                 {
                     //加载完毕注册热键
@@ -281,7 +281,7 @@ namespace GeekDesk
                     {
                         if (MotionControl.hotkeyFinished)
                         {
-                            GlobalColorPickerWindow.Show();
+                            GlobalColorPickerWindow.CreateNoShow();
                         }
                     });
                     if (!first)
@@ -432,6 +432,7 @@ namespace GeekDesk
                 if (RunTimeStatus.SEARCH_BOX_SHOW)
                 {
                     mainWindow.HidedSearchBox();
+
                     Thread t = new Thread(() =>
                     {
                         Thread.Sleep(100);
@@ -682,9 +683,26 @@ namespace GeekDesk
             RunTimeStatus.MARGIN_HIDE_AND_OTHER_SHOW = false;
         }
 
+        /// <summary>
+        /// 打开屏幕拾色器
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ColorPicker(object sender, RoutedEventArgs e)
         {
-            GlobalColorPickerWindow.Show();
+            TaskbarContextMenu.Visibility = Visibility.Collapsed;
+            App.DoEvents();
+            GlobalColorPickerWindow.CreateNoShow();
+        }
+
+        /// <summary>
+        /// 防止点击拾色器后无法显示菜单的问题
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BarIcon_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            TaskbarContextMenu.Visibility = Visibility.Visible;
         }
     }
 }

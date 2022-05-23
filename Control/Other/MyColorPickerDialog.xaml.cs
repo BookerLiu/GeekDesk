@@ -99,22 +99,8 @@ namespace GeekDesk.Control.Other
 
         private void MyColorPickerClose(object sender)
         {
-            ClickColorPickerToggleButton(sender as HandyControl.Controls.ColorPicker);
             dialog.Close();
         }
-
-        public void ClickColorPickerToggleButton(HandyControl.Controls.ColorPicker colorPicker)
-        {
-            if (toggleButton != null && toggleButton.IsChecked == true)
-            {
-                const BindingFlags InstanceBindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-                Type type = colorPicker.GetType();
-                toggleButton.IsChecked = false;
-                MethodInfo mi = type.GetMethod("ToggleButtonDropper_Click", InstanceBindFlags);
-                mi.Invoke(colorPicker, new object[] { null, null });
-            }
-        }
-
 
     }
 }

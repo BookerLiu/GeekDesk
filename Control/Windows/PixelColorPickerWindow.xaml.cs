@@ -66,25 +66,18 @@ namespace GeekDesk.Control.Windows
                     bgBitmap.Size
                     );
             }
-
             BitmapSource bs = Imaging.CreateBitmapSourceFromHBitmap(
                                          bgBitmap.GetHbitmap(),
                                         IntPtr.Zero,
                                         Int32Rect.Empty,
                                         BitmapSizeOptions.FromEmptyOptions()
                                     );
-            ImageBrush ib = (ImageBrush)DesktopBG.Background;
-            ib.ImageSource = bs;
-
+            DesktopBG.Source = bs;
             VisualBrush b = (VisualBrush)PixelBG.Fill;
             b.Visual = DesktopBG;
             Mouse.OverrideCursor = Cursors.Cross;
             SetPixelAbout(null);
         }
-
-
-        [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
-        public static extern int BitBlt(IntPtr hDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, int dwRop);
 
 
         public void OnKeyDown(object sender, KeyEventArgs e)
@@ -98,13 +91,13 @@ namespace GeekDesk.Control.Windows
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            Mouse.OverrideCursor = null;
             Point pos = e.MouseDevice.GetPosition(DesktopBG);
             System.Drawing.Color colorD = bgBitmap.GetPixel((int)pos.X, (int)pos.Y);
             colorPicker.SelectedBrush = new SolidColorBrush(Color.FromArgb(colorD.A, colorD.R, colorD.G, colorD.B));
             DeleteObject(bgBitmap.GetHbitmap());
             this.Close();
             ClickColorPickerToggleButton(colorPicker);
-
         }
 
         public void ClickColorPickerToggleButton(ColorPicker colorPicker)
@@ -121,13 +114,7 @@ namespace GeekDesk.Control.Windows
                 mi.Invoke(colorPicker, new object[] { null, null });
             }
         }
-
-
-        private void Window_MouseEnter(object sender, MouseEventArgs e)
-        {
-            Mouse.OverrideCursor = Cursors.Cross;
-        }
-
+   
         private void Window_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             SetPixelAbout(e);

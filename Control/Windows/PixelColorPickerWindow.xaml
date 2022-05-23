@@ -5,6 +5,7 @@
     xml:lang="zh-CN"
     WindowStyle="None" 
     AllowsTransparency="True"
+    Background="Black"
     PreviewMouseMove="Window_PreviewMouseMove"
     MouseLeftButtonDown="Window_MouseLeftButtonDown"
     MouseWheel="Window_MouseWheel"
@@ -19,11 +20,8 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <Grid x:Name="DesktopBG">
-            <Grid.Background>
-                <ImageBrush  Stretch="Fill"/>
-            </Grid.Background>
-        </Grid>
+        <Image x:Name="DesktopBG" RenderOptions.BitmapScalingMode="HighQuality"/>
+        
         <Canvas HorizontalAlignment="Left" VerticalAlignment="Top" Background="Transparent">
             <Canvas x:Name="ColorCanvas" 
                         Width="185"
@@ -47,6 +45,7 @@
                                     VerticalAlignment="Center"
                                     Width="70" 
                                     Height="70" 
+                                    Background="Black"
                                     BorderBrush="Black"
                                     BorderThickness="1" 
                                     Margin="20,0,0,0"

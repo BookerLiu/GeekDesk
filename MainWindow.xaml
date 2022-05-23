@@ -145,9 +145,10 @@
                     <uc:RightCardControl x:Name="RightCard" Grid.Row="1" Grid.Column="1"/>
 
                     <hc:NotifyIcon Icon="/Taskbar.ico"  Click="NotifyIcon_Click" x:Name="BarIcon"
+                                   MouseRightButtonDown="BarIcon_MouseRightButtonDown"
                                    Visibility="{Binding AppConfig.ShowBarIcon, Mode=TwoWay, Converter={StaticResource Boolean2VisibilityConverter}}">
                         <hc:NotifyIcon.ContextMenu>
-                            <ContextMenu Width="130">
+                            <ContextMenu Width="130" x:Name="TaskbarContextMenu">
                                 <MenuItem Header="打开面板" Click="ShowApp"/>
                                 <MenuItem Header="拾色器" Click="ColorPicker"/>
                                 <MenuItem Header="隐藏图标" Click="CloseBarIcon"/>
