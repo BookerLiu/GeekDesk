@@ -147,6 +147,7 @@
     <Compile Include="Constant\CommonEnum.cs" />
     <Compile Include="Constant\IconStartType.cs" />
     <Compile Include="Constant\RunTimeStatus.cs" />
+    <Compile Include="Constant\SearchType.cs" />
     <Compile Include="Constant\SortType.cs" />
     <Compile Include="Constant\TodoTaskExecType.cs" />
     <Compile Include="Constant\BGStyle.cs" />
@@ -222,6 +223,7 @@
     </Compile>
     <Compile Include="Converts\CountGreZero2BoolConvert.cs" />
     <Compile Include="Converts\Count2VisibleConvert.cs" />
+    <Compile Include="Converts\SearchTypeConvert.cs" />
     <Compile Include="Converts\StringAppendConvert.cs" />
     <Compile Include="Converts\DoubleToGridLength.cs" />
     <Compile Include="Converts\MenuInfoConvert.cs" />
@@ -248,6 +250,7 @@
     <Compile Include="Util\CommonCode.cs" />
     <Compile Include="Util\FileIcon.cs" />
     <Compile Include="Util\FileUtil.cs" />
+    <Compile Include="Util\KeyUtil.cs" />
     <Compile Include="Util\LogUtil.cs" />
     <Compile Include="Util\MarginHide.cs" />
     <Compile Include="Util\HttpUtil.cs" />

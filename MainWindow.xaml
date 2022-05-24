@@ -29,7 +29,7 @@
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="15"/>
     </WindowChrome.WindowChrome>
     <Window.Resources>
-        <RoutedUICommand x:Key="SearchItem" Text="SearchItem"/>
+        <RoutedUICommand x:Key="SearchHotKeyDown" Text="SearchHotKeyDown"/>
 
         <cvt:MenuWidthConvert x:Key="MenuWidthConvert"/>
         <cvt:OpcityConvert x:Key="OpcityConvert"/>
@@ -41,10 +41,10 @@
 
     </Window.Resources>
     <Window.InputBindings>
-        <KeyBinding Gesture="Ctrl+F" Key="F"  Command="{StaticResource SearchItem}"/>
+        <KeyBinding Gesture="Ctrl+F" Key="F"  Command="{StaticResource SearchHotKeyDown}"/>
     </Window.InputBindings>
     <Window.CommandBindings>
-        <CommandBinding Command="{StaticResource SearchItem}" CanExecute="SearchItem"/>
+        <CommandBinding Command="{StaticResource SearchHotKeyDown}" CanExecute="SearchHotKeyDown"/>
         <!--<CommandBinding Command="ChangeImgBG" Executed="ChangeImgBG_Executed" CanExecute="ChangeImgBG_CanExecute" />-->
 
     </Window.CommandBindings>
@@ -132,11 +132,10 @@
                     <!--搜索输入框-->
                     <TextBox Panel.ZIndex="2" Grid.Row="0" Grid.Column="1" 
                              x:Name="SearchBox"
-                             Visibility="Collapsed"
+                             Width="0"
                              Margin="-100,5,0,0"
                              Height="32"
                              FontSize="16"
-                             Width="400"
                              BorderThickness="0"
                              TextChanged="SearchBox_TextChanged"
                              />

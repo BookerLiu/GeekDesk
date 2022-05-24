@@ -59,11 +59,19 @@ namespace GeekDesk
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SearchItem(object sender, CanExecuteRoutedEventArgs e)
+        private void SearchHotKeyDown(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (appData.AppConfig.SearchType == SearchType.HOT_KEY)
+            {
+                ShowSearchBox();
+            }
+        }
+
+        private void ShowSearchBox()
         {
             RunTimeStatus.SEARCH_BOX_SHOW = true;
             RightCard.VisibilitySearchCard(Visibility.Visible);
-            SearchBox.Visibility = Visibility.Visible;
+            SearchBox.Width = 400;
             SearchBox.Focus();
         }
         /// <summary>
@@ -73,6 +81,14 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (!RunTimeStatus.SEARCH_BOX_SHOW && appData.AppConfig.SearchType != SearchType.KEY_DOWN)
+            {
+                SearchBox.Text = "";
+                return;
+            }
+
+            if (!RunTimeStatus.SEARCH_BOX_SHOW) ShowSearchBox();
+
             string inputText = SearchBox.Text.ToLower();
             RightCard.VerticalUFG.Visibility = Visibility.Collapsed;
             if (!string.IsNullOrEmpty(inputText))
@@ -102,7 +118,8 @@ namespace GeekDesk
         public void HidedSearchBox()
         {
             RunTimeStatus.SEARCH_BOX_SHOW = false;
-            SearchBox.Visibility = Visibility.Collapsed;
+            SearchBox.Width = 0;
+            App.DoEvents();
             SearchIconList.IconList.Clear();
             RightCard.VisibilitySearchCard(Visibility.Collapsed);
             SearchBox.Text = "";
@@ -190,9 +207,8 @@ namespace GeekDesk
         {
             try
             {
-                if (appData.AppConfig.HotkeyModifiers != 0)
+                if (appData.AppConfig.HotkeyModifiers != GlobalHotKey.HotkeyModifiers.None)
                 {
-
                     hotKeyId = GlobalHotKey.RegisterHotKey(appData.AppConfig.HotkeyModifiers, appData.AppConfig.Hotkey, () =>
                     {
                         if (MotionControl.hotkeyFinished)
@@ -211,6 +227,8 @@ namespace GeekDesk
                     {
                         HandyControl.Controls.Growl.Success("GeekDesk快捷键注册成功(" + appData.AppConfig.HotkeyStr + ")!", "HotKeyGrowl");
                     }
+                } else
+                {
                 }
             }
             catch (Exception)
@@ -237,7 +255,7 @@ namespace GeekDesk
             try
             {
 
-                if (appData.AppConfig.ToDoHotkeyModifiers != 0)
+                if (appData.AppConfig.HotkeyModifiers != GlobalHotKey.HotkeyModifiers.None)
                 {
                     //加载完毕注册热键
                     toDoHotKeyId = GlobalHotKey.RegisterHotKey(appData.AppConfig.ToDoHotkeyModifiers, appData.AppConfig.ToDoHotkey, () =>
@@ -274,7 +292,7 @@ namespace GeekDesk
         {
             try
             {
-                if (appData.AppConfig.ColorPickerHotkeyModifiers != 0)
+                if (appData.AppConfig.HotkeyModifiers != GlobalHotKey.HotkeyModifiers.None)
                 {
                     //加载完毕注册热键
                     colorPickerHotKeyId = GlobalHotKey.RegisterHotKey(appData.AppConfig.ColorPickerHotkeyModifiers, appData.AppConfig.ColorPickerHotkey, () =>
@@ -363,14 +381,7 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void CloseButtonClick(object sender, RoutedEventArgs e)
         {
-            if (appData.AppConfig.AppAnimation)
-            {
-                FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
-            }
-            else
-            {
-                this.Visibility = Visibility.Collapsed;
-            }
+            HideApp();
         }
 
 
@@ -422,7 +433,7 @@ namespace GeekDesk
 
             FadeStoryBoard(1, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Visible);
 
-            Keyboard.Focus(mainWindow.EmptyTextBox);
+            Keyboard.Focus(mainWindow.SearchBox);
         }
 
         public static void HideApp()
@@ -432,17 +443,7 @@ namespace GeekDesk
                 if (RunTimeStatus.SEARCH_BOX_SHOW)
                 {
                     mainWindow.HidedSearchBox();
-
-                    Thread t = new Thread(() =>
-                    {
-                        Thread.Sleep(100);
-                        App.Current.Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
-                        }));
-                    });
-                    t.IsBackground = true;
-                    t.Start();
+                    FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
                 }
                 else
                 {
@@ -656,11 +657,25 @@ namespace GeekDesk
 
         public void OnKeyDown(object sender, KeyEventArgs e)
         {
+            char c = (char)e.Key;
+
             if (e.Key == Key.Escape)
             {
                 HideApp();
             }
+            //else if (
+            //    appData.AppConfig.SearchType == SearchType.KEY_DOWN &&
+            //    (
+            //        (e.Key >= Key.D0 && e.Key <= Key.Z) 
+            //        || (e.Key >= Key.NumPad0 && e.Key < Key.NumPad9)
+            //        )
+            //    )
+            //{
+            //    ShowSearchBox();
+            //}
         }
+
+
 
         /// <summary>
         /// 为了让修改菜单的textBox失去焦点
@@ -669,7 +684,7 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            EmptyTextBox.Focus();
+            SearchBox.Focus();
         }
 
         /// <summary>
