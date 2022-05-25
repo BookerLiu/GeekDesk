@@ -81,9 +81,13 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!RunTimeStatus.SEARCH_BOX_SHOW && appData.AppConfig.SearchType != SearchType.KEY_DOWN)
+             if (!RunTimeStatus.SEARCH_BOX_SHOW 
+                && appData.AppConfig.SearchType != SearchType.KEY_DOWN
+                )
             {
-                SearchBox.Text = "";
+                SearchBox.TextChanged -= SearchBox_TextChanged;
+                SearchBox.Clear();
+                SearchBox.TextChanged += SearchBox_TextChanged;
                 return;
             }
 
@@ -118,11 +122,14 @@ namespace GeekDesk
         public void HidedSearchBox()
         {
             RunTimeStatus.SEARCH_BOX_SHOW = false;
+            SearchBox.TextChanged -= SearchBox_TextChanged;
+            SearchBox.Clear();
+            SearchBox.TextChanged += SearchBox_TextChanged;
             SearchBox.Width = 0;
-            App.DoEvents();
             SearchIconList.IconList.Clear();
             RightCard.VisibilitySearchCard(Visibility.Collapsed);
-            SearchBox.Text = "";
+            Keyboard.Focus(SearchBox);
+            App.DoEvents();
         }
 
 
@@ -415,9 +422,11 @@ namespace GeekDesk
             //    return;
             //}
 
-            //修改贴边隐藏状态为未隐藏
+            MainWindow.mainWindow.Activate();
+
             if (MarginHide.ON_HIDE)
             {
+                //修改贴边隐藏状态为未隐藏
                 MarginHide.IS_HIDE = false;
                 if (!CommonCode.MouseInWindow(mainWindow))
                 {
@@ -432,7 +441,7 @@ namespace GeekDesk
             }
 
             FadeStoryBoard(1, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Visible);
-
+            Keyboard.Focus(mainWindow);
             Keyboard.Focus(mainWindow.SearchBox);
         }
 
@@ -440,6 +449,8 @@ namespace GeekDesk
         {
             if (!MarginHide.IS_HIDE)
             {
+                //关闭锁定
+                RunTimeStatus.LOCK_APP_PANEL = false;
                 if (RunTimeStatus.SEARCH_BOX_SHOW)
                 {
                     mainWindow.HidedSearchBox();
@@ -586,10 +597,11 @@ namespace GeekDesk
             SettingButton.ContextMenu = null;
         }
 
-        private void App_LostFocus(object sender, EventArgs e)
+
+        private void AppWindowLostFocus()
         {
             if (appData.AppConfig.AppHideType == AppHideType.LOST_FOCUS
-                && this.Opacity == 1)
+                && this.Opacity == 1 && !RunTimeStatus.LOCK_APP_PANEL)
             {
                 //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
                 if (!appData.AppConfig.MarginHide || (appData.AppConfig.MarginHide && !MarginHide.IS_HIDE))
@@ -598,6 +610,7 @@ namespace GeekDesk
                 }
             }
         }
+
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -657,7 +670,7 @@ namespace GeekDesk
 
         public void OnKeyDown(object sender, KeyEventArgs e)
         {
-            char c = (char)e.Key;
+            //char c = (char)e.Key;
 
             if (e.Key == Key.Escape)
             {
@@ -718,6 +731,16 @@ namespace GeekDesk
         private void BarIcon_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             TaskbarContextMenu.Visibility = Visibility.Visible;
+        }
+
+        private void Window_GotFocus(object sender, RoutedEventArgs e)
+        {
+            Keyboard.Focus(SearchBox);
+        }
+
+        private void AppWindow_Deactivated(object sender, EventArgs e)
+        {
+            AppWindowLostFocus();
         }
     }
 }

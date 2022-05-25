@@ -7,7 +7,7 @@
         xmlns:cn="clr-namespace:GeekDesk.Constant"
         mc:Ignorable="d"
         xmlns:cvt="clr-namespace:GeekDesk.Converts"
-        x:Name="window"
+        x:Name="AppWindow"
         xmlns:hc="https://handyorg.github.io/handycontrol" xmlns:viewmodel="clr-namespace:GeekDesk.ViewModel" 
         d:DataContext="{d:DesignInstance Type=viewmodel:AppData}"
         Title="GeekDesk" 
@@ -18,12 +18,13 @@
         Background="Transparent"
         ShowInTaskbar="False"
         Opacity="0"
-        Deactivated="App_LostFocus"
+        Deactivated="AppWindow_Deactivated"
         SizeChanged="Window_SizeChanged"
         KeyDown="OnKeyDown"
         Focusable="True"
         MouseDown="MainWindow_MouseDown"
         MouseEnter="MainWindow_MouseEnter"
+        GotFocus="Window_GotFocus"
         >
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="15"/>
@@ -139,7 +140,6 @@
                              BorderThickness="0"
                              TextChanged="SearchBox_TextChanged"
                              />
-
 
                     <uc:RightCardControl x:Name="RightCard" Grid.Row="1" Grid.Column="1"/>
 

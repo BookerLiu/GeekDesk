@@ -3,7 +3,7 @@ using GeekDesk.MyThread;
 using System;
 using System.Threading;
 using System.Windows;
-
+using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
@@ -77,8 +77,9 @@ namespace GeekDesk.Util
         #region 窗体贴边隐藏功能
         private static void HideWindow(object o, EventArgs e)
         {
-            if (window.Visibility != Visibility.Visible
-                || RunTimeStatus.MARGIN_HIDE_AND_OTHER_SHOW) return;
+            if (window.Visibility != Visibility.Visible 
+                || RunTimeStatus.MARGIN_HIDE_AND_OTHER_SHOW 
+                || RunTimeStatus.LOCK_APP_PANEL) return;
 
             double screenLeft = SystemParameters.VirtualScreenLeft;
             double screenTop = SystemParameters.VirtualScreenTop;
@@ -220,6 +221,7 @@ namespace GeekDesk.Util
 
         private static void HideAnimation(double from, double to, DependencyProperty property, HideType hideType)
         {
+
             new Thread(() =>
             {
                 App.Current.Dispatcher.Invoke(() =>
@@ -229,7 +231,7 @@ namespace GeekDesk.Util
 
                     if ((int)hideType <= 3)
                     {
-                        animalTime = showTime;
+                        animalTime = showTime;                        
                     } else
                     {
                         animalTime = hideTime;
@@ -284,7 +286,6 @@ namespace GeekDesk.Util
                             window.Top = to - 20;
                             break;
                     }
-
                     //double toTemp = to;
                     //double leftT = 0;
                     //double topT = 0;
