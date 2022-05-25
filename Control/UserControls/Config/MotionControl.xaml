@@ -149,7 +149,7 @@
                 </CheckBox>
             </hc:UniformSpacingPanel>
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
-                <TextBlock Text="新建待办:" Margin="0,5,0,0"  Width="55"/>
+                <TextBlock Text="待办任务:" Margin="0,5,0,0"  Width="55"/>
                 <hc:TextBox HorizontalAlignment="Left" 
                             Tag="{x:Static cst:HotKeyType.ToDo}"
                             VerticalAlignment="Top" 

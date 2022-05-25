@@ -27,7 +27,13 @@ namespace GeekDesk.MyThread
             {
 
                 //等待1分钟后再检查更新  有的网络连接过慢
-                System.Threading.Thread.Sleep(60 * 1000);
+                int sleepTime = 60 * 1000;
+                if (Constants.DEV)
+                {
+                    sleepTime = 1;
+                }
+
+                System.Threading.Thread.Sleep(sleepTime);
 
                 string updateUrl;
                 string nowVersion = ConfigurationManager.AppSettings["Version"];
