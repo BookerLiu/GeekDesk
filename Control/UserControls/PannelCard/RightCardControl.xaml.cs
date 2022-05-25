@@ -198,7 +198,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
                                     //p.StartInfo.CreateNoWindow = false; //设置显示窗口
                                     p.StartInfo.UseShellExecute = true;//不使用操作系统外壳程序启动进程
                                     //p.StartInfo.ErrorDialog = false;
-                                    if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
+                                    if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
                                     {
                                         //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
                                         if (appData.AppConfig.MarginHide)
@@ -216,7 +216,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
                                     }
                                     break;// c#好像不能case穿透
                                 case IconStartType.DEFAULT_STARTUP:
-                                    if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
+                                    if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
                                     {
                                         //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
                                         if (appData.AppConfig.MarginHide)
@@ -240,7 +240,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
                         }
                         else
                         {
-                            if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
+                            if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
                             {
                                 //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
                                 if (appData.AppConfig.MarginHide)
@@ -694,6 +694,27 @@ namespace GeekDesk.Control.UserControls.PannelCard
         private void CursorPanel_MouseLeave(object sender, MouseEventArgs e)
         {
             this.Cursor = Cursors.Arrow;
+        }
+
+        /// <summary>
+        /// 锁定/解锁主面板
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LockAppPanel(object sender, RoutedEventArgs e)
+        {
+            RunTimeStatus.LOCK_APP_PANEL = !RunTimeStatus.LOCK_APP_PANEL;
+        }
+
+        private void WrapCard_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (RunTimeStatus.LOCK_APP_PANEL)
+            {
+                CardLockCM.Header = "解锁主面板";
+            } else
+            {
+                CardLockCM.Header = "锁定主面板";
+            }
         }
     }
 }

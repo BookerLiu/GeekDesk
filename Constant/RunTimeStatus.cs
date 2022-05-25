@@ -14,6 +14,12 @@
         public static bool MARGIN_HIDE_AND_OTHER_SHOW = false;
 
 
+        /// <summary>
+        /// 是否锁定主面板 锁定后 不执行隐藏动作
+        /// </summary>
+        public static bool LOCK_APP_PANEL = false;
+
+
 
 
     }
