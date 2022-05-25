@@ -81,6 +81,7 @@ namespace GeekDesk.Control.Windows
             if (window == null || !window.Activate())
             {
                 window = new GlobalColorPickerWindow();
+                window.Show();
             }
             window.Hide();
             GlobalColorPickerWindow thisWindow = (GlobalColorPickerWindow)window;

@@ -10,6 +10,7 @@ namespace GeekDesk.Util
     {
         public enum HotkeyModifiers
         {
+            None = 0,
             MOD_ALT = 0x1,
             MOD_CONTROL = 0x2,
             MOD_SHIFT = 0x4,

@@ -2,6 +2,7 @@
 using GeekDesk.MyThread;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -34,118 +35,130 @@ namespace GeekDesk.Control.UserControls.Config
         /// <param name="e"></param>
         private void HotKeyDown(object sender, KeyEventArgs e)
         {
-            HotKeyType hkType = (HotKeyType)(sender as TextBox).Tag;
+            Console.WriteLine("downKey:" + e.Key.ToString());
 
-            Key downKey = e.Key;
-            if (downKey == Key.System)
+            lock (this)
             {
-                downKey = e.SystemKey;
-            }
+                HotKeyType hkType = (HotKeyType)(sender as TextBox).Tag;
 
-            if (!CheckIsEnable(hkType)) return;
-
-
-            if (prevKeyTemp == Key.None || prevKeyTemp != downKey)
-            {
-                if (hotkeyFinished)
+                Key downKey = e.Key;
+                if (downKey == Key.System)
                 {
-
-                    switch (hkType)
-                    {
-                        case HotKeyType.Main:
-                            appConfig.Hotkey = 0;
-                            appConfig.HotkeyStr = "";
-                            appConfig.HotkeyModifiers = 0;
-                            break;
-                        case HotKeyType.ToDo:
-                            appConfig.ToDoHotkey = 0;
-                            appConfig.ToDoHotkeyStr = "";
-                            appConfig.ToDoHotkeyModifiers = 0;
-                            break;
-                        case HotKeyType.ColorPicker:
-                            appConfig.ColorPickerHotkey = 0;
-                            appConfig.ColorPickerHotkeyStr = "";
-                            appConfig.ColorPickerHotkeyModifiers = 0;
-                            break;
-                    }
-                    hotkeyFinished = false;
+                    downKey = e.SystemKey;
                 }
-                //首次按下按键
-                if ((HotKeyType.Main == hkType && (appConfig.HotkeyStr == null || appConfig.HotkeyStr.Length == 0))
-                    || (HotKeyType.ToDo == hkType && (appConfig.ToDoHotkeyStr == null || appConfig.ToDoHotkeyStr.Length == 0))
-                    || (HotKeyType.ColorPicker == hkType && (appConfig.ColorPickerHotkeyStr == null || appConfig.ColorPickerHotkeyStr.Length == 0))
-                    )
+
+                if (!CheckIsEnable(hkType)) return;
+
+
+                Console.WriteLine("prevKeyTemp:" + prevKeyTemp.ToString());
+                
+                if (prevKeyTemp == Key.None || prevKeyTemp != downKey)
                 {
-                    if (CheckModifierKeys(downKey))
+                    if (hotkeyFinished)
                     {
-                        //辅助键
                         switch (hkType)
                         {
                             case HotKeyType.Main:
-                                appConfig.HotkeyStr = GetKeyName(downKey);
-                                appConfig.HotkeyModifiers = GetModifierKeys(downKey);
+                                appConfig.Hotkey = Key.None;
+                                appConfig.HotkeyStr = "";
+                                appConfig.HotkeyModifiers = GlobalHotKey.HotkeyModifiers.None;
                                 break;
                             case HotKeyType.ToDo:
-                                appConfig.ToDoHotkeyStr = GetKeyName(downKey);
-                                appConfig.ToDoHotkeyModifiers = GetModifierKeys(downKey);
+                                appConfig.ToDoHotkey = Key.None;
+                                appConfig.ToDoHotkeyStr = "";
+                                appConfig.ToDoHotkeyModifiers = GlobalHotKey.HotkeyModifiers.None;
                                 break;
                             case HotKeyType.ColorPicker:
-                                appConfig.ColorPickerHotkeyStr = GetKeyName(downKey);
-                                appConfig.ColorPickerHotkeyModifiers = GetModifierKeys(downKey);
+                                appConfig.ColorPickerHotkey = Key.None;
+                                appConfig.ColorPickerHotkeyStr = "";
+                                appConfig.ColorPickerHotkeyModifiers = GlobalHotKey.HotkeyModifiers.None;
                                 break;
                         }
-
-                        prevKeyTemp = downKey;
-                        keysTemp.Add(e);
+                        hotkeyFinished = false;
                     }
-                }
-                else
-                {
-                    //非首次按下  需要判断前一个键值是否为辅助键
-                    if (CheckModifierKeys(prevKeyTemp)
-                        && ((downKey >= Key.A && downKey <= Key.Z)
-                        || (downKey >= Key.F1 && downKey <= Key.F12)
-                        || (downKey >= Key.D0 && downKey <= Key.D9)))
-                    {
-                        switch (hkType)
-                        {
-                            case HotKeyType.Main:
-                                appConfig.Hotkey = downKey;
-                                appConfig.HotkeyStr += downKey.ToString();
-                                break;
-                            case HotKeyType.ToDo:
-                                appConfig.ToDoHotkey = downKey;
-                                appConfig.ToDoHotkeyStr += downKey.ToString();
-                                break;
-                            case HotKeyType.ColorPicker:
-                                appConfig.ColorPickerHotkey = downKey;
-                                appConfig.ColorPickerHotkeyStr += downKey.ToString();
-                                break;
-                        }
 
-                        prevKeyTemp = downKey;
-                        keysTemp.Add(e);
+                    //首次按下按键
+                    if ((HotKeyType.Main == hkType && (appConfig.HotkeyStr == null || appConfig.HotkeyStr.Length == 0))
+                        || (HotKeyType.ToDo == hkType && (appConfig.ToDoHotkeyStr == null || appConfig.ToDoHotkeyStr.Length == 0))
+                        || (HotKeyType.ColorPicker == hkType && (appConfig.ColorPickerHotkeyStr == null || appConfig.ColorPickerHotkeyStr.Length == 0))
+                        )
+                    {
+                        if (CheckModifierKeys(downKey))
+                        {
+                            //辅助键
+                            switch (hkType)
+                            {
+                                case HotKeyType.Main:
+                                    appConfig.HotkeyStr = GetKeyName(downKey);
+                                    appConfig.HotkeyModifiers = GetModifierKeys(downKey);
+                                    break;
+                                case HotKeyType.ToDo:
+                                    appConfig.ToDoHotkeyStr = GetKeyName(downKey);
+                                    appConfig.ToDoHotkeyModifiers = GetModifierKeys(downKey);
+                                    break;
+                                case HotKeyType.ColorPicker:
+                                    appConfig.ColorPickerHotkeyStr = GetKeyName(downKey);
+                                    appConfig.ColorPickerHotkeyModifiers = GetModifierKeys(downKey);
+                                    break;
+                            }
+                            Console.WriteLine("进入设置" + downKey.ToString());
+                            prevKeyTemp = downKey;
+                            keysTemp.Add(e);
+                        }
                     }
-                    else if (CheckModifierKeys(downKey))
+                    else
                     {
-                        switch (hkType)
+                        //非首次按下  需要判断前一个键值是否为辅助键
+                        if (CheckModifierKeys(prevKeyTemp)
+                            && ((downKey >= Key.A && downKey <= Key.Z)
+                            || (downKey >= Key.F1 && downKey <= Key.F12)
+                            || (downKey >= Key.D0 && downKey <= Key.D9)
+                            || downKey == Key.Oem3
+                            ))
                         {
-                            case HotKeyType.Main:
-                                appConfig.HotkeyStr += GetKeyName(downKey);
-                                appConfig.HotkeyModifiers |= GetModifierKeys(downKey);
-                                break;
-                            case HotKeyType.ToDo:
-                                appConfig.ToDoHotkeyStr += GetKeyName(downKey);
-                                appConfig.ToDoHotkeyModifiers |= GetModifierKeys(downKey);
-                                break;
-                            case HotKeyType.ColorPicker:
-                                appConfig.ColorPickerHotkeyStr += GetKeyName(downKey);
-                                appConfig.ColorPickerHotkeyModifiers |= GetModifierKeys(downKey);
-                                break;
+                            KeyUtil.KeyProp keyProp = new KeyUtil.KeyProp();
+                            KeyUtil.KeyToChar(downKey, ref keyProp, true);
+                            string downKeyStr = keyProp.character.ToString();
+                            //string downKeyStr = "";
+                            switch (hkType)
+                            {
+                                case HotKeyType.Main:
+                                    appConfig.Hotkey = downKey;
+                                    appConfig.HotkeyStr += downKeyStr;
+                                    break;
+                                case HotKeyType.ToDo:
+                                    appConfig.ToDoHotkey = downKey;
+                                    appConfig.ToDoHotkeyStr += downKeyStr;
+                                    break;
+                                case HotKeyType.ColorPicker:
+                                    appConfig.ColorPickerHotkey = downKey;
+                                    appConfig.ColorPickerHotkeyStr += downKeyStr;
+                                    break;
+                            }
+                            prevKeyTemp = downKey;
+                            keysTemp.Add(e);
                         }
+                        else if (CheckModifierKeys(downKey))
+                        {
+                            switch (hkType)
+                            {
+                                case HotKeyType.Main:
+                                    appConfig.HotkeyStr += GetKeyName(downKey);
+                                    appConfig.HotkeyModifiers |= GetModifierKeys(downKey);
+                                    break;
+                                case HotKeyType.ToDo:
+                                    appConfig.ToDoHotkeyStr += GetKeyName(downKey);
+                                    appConfig.ToDoHotkeyModifiers |= GetModifierKeys(downKey);
+                                    break;
+                                case HotKeyType.ColorPicker:
+                                    appConfig.ColorPickerHotkeyStr += GetKeyName(downKey);
+                                    appConfig.ColorPickerHotkeyModifiers |= GetModifierKeys(downKey);
+                                    break;
+                            }
 
-                        prevKeyTemp = downKey;
-                        keysTemp.Add(e);
+                            prevKeyTemp = downKey;
+                            keysTemp.Add(e);
+                        }
                     }
                 }
             }
@@ -200,13 +213,9 @@ namespace GeekDesk.Control.UserControls.Config
         }
 
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
+        //[MethodImpl(MethodImplOptions.Synchronized)]
         private void HotKeyUp(object sender, KeyEventArgs e)
         {
-            HotKeyType hkType = (HotKeyType)(sender as TextBox).Tag;
-
-            if (!CheckIsEnable(hkType)) return;
-
             lock (this)
             {
                 bool allKeyUp = true;
@@ -224,6 +233,9 @@ namespace GeekDesk.Control.UserControls.Config
                     keysTemp.Clear();
                     prevKeyTemp = Key.None;
                     hotkeyFinished = true;
+
+                    HotKeyType hkType = (HotKeyType)(sender as TextBox).Tag;
+                    if (!CheckIsEnable(hkType)) return;
 
                     switch (hkType)
                     {
@@ -336,15 +348,41 @@ namespace GeekDesk.Control.UserControls.Config
             {
                 case HotKeyType.Main:
                     if (true == appConfig.EnableAppHotKey)
-                    MainWindow.RegisterHotKey(false);
+                    {
+                        MainWindow.RegisterHotKey(false);
+                    } else
+                    {
+                        if (MainWindow.hotKeyId != -1)
+                        {
+                            GlobalHotKey.Dispose(MainWindow.hotKeyId);
+                        }
+                    }
                     break;
                 case HotKeyType.ToDo:
                     if (true == appConfig.EnableTodoHotKey)
+                    {
                         MainWindow.RegisterCreateToDoHotKey(false);
+                    }
+                    else
+                    {
+                        if (MainWindow.hotKeyId != -1)
+                        {
+                            GlobalHotKey.Dispose(MainWindow.toDoHotKeyId);
+                        }
+                    }
                     break;
                 case HotKeyType.ColorPicker:
                     if (true == appConfig.EnableColorPickerHotKey)
+                    {
                         MainWindow.RegisterColorPickerHotKey(false);
+                    }
+                    else
+                    {
+                        if (MainWindow.hotKeyId != -1)
+                        {
+                            GlobalHotKey.Dispose(MainWindow.colorPickerHotKeyId);
+                        }
+                    }
                     break;
             }
         }

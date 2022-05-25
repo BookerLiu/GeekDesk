@@ -86,13 +86,28 @@ namespace GeekDesk.ViewModel
 
         private GradientBGParam gradientBGParam = null; //渐变背景参数
 
-        private bool? enableAppHotKey = true;  //可能为null
-        private bool? enableTodoHotKey = true; //可能为null
+        private bool? enableAppHotKey = true;  //可能为null 开启热键
+        private bool? enableTodoHotKey = true; //可能为null 开启待办热键
 
         private bool enableColorPickerHotKey;  //新增 默认为false 不需要考虑null值
 
+        private SearchType searchType;
+
 
         #region GetSet
+
+        public SearchType SearchType
+        {
+            get
+            {
+                return searchType;
+            }
+            set
+            {
+                searchType = value;
+                OnPropertyChanged("SearchType");
+            }
+        }
 
         public bool EnableColorPickerHotKey
         {
