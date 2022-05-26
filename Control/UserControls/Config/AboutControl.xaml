@@ -26,13 +26,13 @@
                                MouseEnter="SC_MouseEnter"
                                MouseLeave="SC_MouseLeave"
                                Command="hc:ControlCommands.OpenLink" 
-                               CommandParameter="https://github.com/Demo-Liu/GeekDesk"
+                               CommandParameter="https://github.com/BookerLiu/GeekDesk"
                                Margin="0,0,10,0" Color="#24292F"/>
                     <hc:Shield Subject="Gitee" Visibility="Visible" Status="Star"
                                MouseEnter="SC_MouseEnter"
                                MouseLeave="SC_MouseLeave"
                                Command="hc:ControlCommands.OpenLink" 
-                               CommandParameter="https://gitee.com/demo_liu/GeekDesk" 
+                               CommandParameter="https://gitee.com/BookerLiu/GeekDesk" 
                                Margin="0,0,10,0" Color="#C71D23"/>
 
 

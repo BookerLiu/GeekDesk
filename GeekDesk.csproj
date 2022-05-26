@@ -473,4 +473,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties update_1json__JsonSchema="https://typedoc.org/schema.json" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

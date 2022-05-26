@@ -8,7 +8,7 @@ using System.Windows;
 [assembly: AssemblyTitle("GeekDesk")]
 [assembly: AssemblyDescription("小巧、美观的桌面快速启动工具")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Demo-Liu")]
+[assembly: AssemblyCompany("BookerLiu")]
 [assembly: AssemblyProduct("GeekDesk")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]

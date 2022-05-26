@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Configuration;
 using System.Diagnostics;
+using System.Net;
 using System.Windows;
 using System.Windows.Input;
 
@@ -82,7 +83,11 @@ namespace GeekDesk.Control.Windows
                     packageUrl = giteeUrl;
                     break;
             }
-            Process.Start(packageUrl);
+            Process.Start(new ProcessStartInfo("cmd", $"/c start {packageUrl}")
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true
+            });
             this.Close();
         }
 
@@ -94,6 +99,7 @@ namespace GeekDesk.Control.Windows
                 window = new UpdateWindow(jo);
             }
             window.Show();
+            window.Activate();
             Keyboard.Focus(window);
         }
 
@@ -105,5 +111,59 @@ namespace GeekDesk.Control.Windows
                 this.Close();
             }
         }
+
+        private void StarBtnClick(object sender, RoutedEventArgs e)
+        {
+
+            string githubUrl = ConfigurationManager.AppSettings["GitHubUrl"];
+            string giteeUrl = ConfigurationManager.AppSettings["GiteeUrl"];
+
+            if(!ReqGitUrl(githubUrl))
+            {
+                if (!ReqGitUrl(giteeUrl))
+                {
+                    OpenLinkUrl(githubUrl);
+                } else
+                {
+                    OpenLinkUrl(giteeUrl);
+                }
+            } else
+            {
+                OpenLinkUrl(githubUrl);
+            }
+        }
+
+
+        private bool ReqGitUrl(String url)
+        {
+            HttpWebResponse myResponse = null;
+            try
+            {
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                //创建Web访问对  象
+                WebRequest myRequest = WebRequest.Create(url);
+
+                myRequest.ContentType = "text/plain; charset=utf-8";
+                //通过Web访问对象获取响应内容
+                myResponse = (HttpWebResponse)myRequest.GetResponse();
+            }
+            catch 
+            {
+                return false;
+            }
+
+            return myResponse != null && myResponse.StatusCode == HttpStatusCode.OK;
+        }
+
+        private void OpenLinkUrl(String url)
+        {
+            Process.Start(new ProcessStartInfo("cmd", $"/c start {url}")
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true
+            });
+        }
+
     }
 }
