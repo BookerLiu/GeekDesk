@@ -3,7 +3,7 @@ using GeekDesk.ViewModel;
 using GeekDesk.ViewModel.Temp;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Windows.Input;
 
 namespace GeekDesk.Control.Other
 {
@@ -31,5 +31,22 @@ namespace GeekDesk.Control.Other
             MainWindow.appData.AppConfig.GradientBGParam = bgParam;
             BGSettingUtil.BGSetting();
         }
+
+        /// <summary>
+        /// 移动窗口
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DragMove(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                Window.GetWindow(this).DragMove();
+            }
+        }
+
+
+
+
     }
 }
