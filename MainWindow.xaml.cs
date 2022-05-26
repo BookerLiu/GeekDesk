@@ -2,22 +2,22 @@
 using GeekDesk.Control.UserControls.Config;
 using GeekDesk.Control.Windows;
 using GeekDesk.Interface;
-using GeekDesk.Task;
 using GeekDesk.MyThread;
+using GeekDesk.Task;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
-
+using GeekDesk.ViewModel.Temp;
+using NPinyin;
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using static GeekDesk.Util.ShowWindowFollowMouse;
-using System.Collections.ObjectModel;
-using NPinyin;
-using GeekDesk.ViewModel.Temp;
-using System.Threading;
 
 namespace GeekDesk
 {
@@ -32,6 +32,7 @@ namespace GeekDesk
         public static ToDoInfoWindow toDoInfoWindow;
         public static int hotKeyId = -1;
         public static int toDoHotKeyId = -1;
+        public static int colorPickerHotKeyId = -1;
         public static MainWindow mainWindow;
         public MainWindow()
         {
@@ -52,16 +53,25 @@ namespace GeekDesk
             }
         }
 
+
         /// <summary>
         /// 显示搜索框
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SearchItem(object sender, CanExecuteRoutedEventArgs e)
+        private void SearchHotKeyDown(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (appData.AppConfig.SearchType == SearchType.HOT_KEY)
+            {
+                ShowSearchBox();
+            }
+        }
+
+        private void ShowSearchBox()
         {
             RunTimeStatus.SEARCH_BOX_SHOW = true;
             RightCard.VisibilitySearchCard(Visibility.Visible);
-            SearchBox.Visibility = Visibility.Visible;
+            SearchBox.Width = 400;
             SearchBox.Focus();
         }
         /// <summary>
@@ -71,7 +81,20 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+             if (!RunTimeStatus.SEARCH_BOX_SHOW 
+                && appData.AppConfig.SearchType != SearchType.KEY_DOWN
+                )
+            {
+                SearchBox.TextChanged -= SearchBox_TextChanged;
+                SearchBox.Clear();
+                SearchBox.TextChanged += SearchBox_TextChanged;
+                return;
+            }
+
+            if (!RunTimeStatus.SEARCH_BOX_SHOW) ShowSearchBox();
+
             string inputText = SearchBox.Text.ToLower();
+            RightCard.VerticalUFG.Visibility = Visibility.Collapsed;
             if (!string.IsNullOrEmpty(inputText))
             {
                 SearchIconList.IconList.Clear();
@@ -93,15 +116,20 @@ namespace GeekDesk
             {
                 SearchIconList.IconList.Clear();
             }
+            RightCard.VerticalUFG.Visibility = Visibility.Visible;
         }
 
         public void HidedSearchBox()
         {
             RunTimeStatus.SEARCH_BOX_SHOW = false;
-            SearchBox.Visibility = Visibility.Collapsed;
+            SearchBox.TextChanged -= SearchBox_TextChanged;
+            SearchBox.Clear();
+            SearchBox.TextChanged += SearchBox_TextChanged;
+            SearchBox.Width = 0;
             SearchIconList.IconList.Clear();
             RightCard.VisibilitySearchCard(Visibility.Collapsed);
-            SearchBox.Text = "";
+            Keyboard.Focus(SearchBox);
+            App.DoEvents();
         }
 
 
@@ -110,7 +138,6 @@ namespace GeekDesk
         /// </summary>
         private void LoadData()
         {
-            GC.KeepAlive(appData); // 持活
             this.DataContext = appData;
             if (appData.MenuList.Count == 0)
             {
@@ -129,6 +156,7 @@ namespace GeekDesk
         /// <param name="e"></param>
         void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            BGSettingUtil.BGSetting();
             if (!appData.AppConfig.StartedShowPanel)
             {
                 if (appData.AppConfig.AppAnimation)
@@ -149,8 +177,19 @@ namespace GeekDesk
             BarIcon.Text = Constants.MY_NAME;
 
             //注册热键
-            RegisterHotKey(true);
-            RegisterCreateToDoHotKey(true);
+            if (true == appData.AppConfig.EnableAppHotKey)
+            {
+                RegisterHotKey(true);
+            }
+            if (true == appData.AppConfig.EnableTodoHotKey)
+            {
+                RegisterCreateToDoHotKey(true);
+            }
+
+            if (true == appData.AppConfig.EnableColorPickerHotKey)
+            {
+                RegisterColorPickerHotKey(true);
+            }
 
             //注册自启动
             if (!appData.AppConfig.SelfStartUped && !Constants.DEV)
@@ -175,9 +214,8 @@ namespace GeekDesk
         {
             try
             {
-                if (appData.AppConfig.HotkeyModifiers != 0)
+                if (appData.AppConfig.HotkeyModifiers != GlobalHotKey.HotkeyModifiers.None)
                 {
-
                     hotKeyId = GlobalHotKey.RegisterHotKey(appData.AppConfig.HotkeyModifiers, appData.AppConfig.Hotkey, () =>
                     {
                         if (MotionControl.hotkeyFinished)
@@ -192,10 +230,12 @@ namespace GeekDesk
                             }
                         }
                     });
-                }
-                if (!first)
+                    if (!first)
+                    {
+                        HandyControl.Controls.Growl.Success("GeekDesk快捷键注册成功(" + appData.AppConfig.HotkeyStr + ")!", "HotKeyGrowl");
+                    }
+                } else
                 {
-                    HandyControl.Controls.Growl.Success("GeekDesk快捷键注册成功(" + appData.AppConfig.HotkeyStr + ")!", "HotKeyGrowl");
                 }
             }
             catch (Exception)
@@ -222,21 +262,22 @@ namespace GeekDesk
             try
             {
 
-                if (appData.AppConfig.ToDoHotkeyModifiers != 0)
+                if (appData.AppConfig.HotkeyModifiers != GlobalHotKey.HotkeyModifiers.None)
                 {
                     //加载完毕注册热键
                     toDoHotKeyId = GlobalHotKey.RegisterHotKey(appData.AppConfig.ToDoHotkeyModifiers, appData.AppConfig.ToDoHotkey, () =>
                     {
                         if (MotionControl.hotkeyFinished)
                         {
-                            ToDoInfoWindow.ShowOrHide();
+                            ToDoWindow.ShowOrHide();
                         }
                     });
+                    if (!first)
+                    {
+                        HandyControl.Controls.Growl.Success("新建待办任务快捷键注册成功(" + appData.AppConfig.ToDoHotkeyStr + ")!", "HotKeyGrowl");
+                    }
                 }
-                if (!first)
-                {
-                    HandyControl.Controls.Growl.Success("新建待办任务快捷键注册成功(" + appData.AppConfig.ToDoHotkeyStr + ")!", "HotKeyGrowl");
-                }
+                
             }
             catch (Exception)
             {
@@ -247,6 +288,42 @@ namespace GeekDesk
                 else
                 {
                     HandyControl.Controls.Growl.Warning("新建待办任务快捷键已被其它程序占用(" + appData.AppConfig.ToDoHotkeyStr + ")!", "HotKeyGrowl");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 注册新建待办的热键
+        /// </summary>
+        public static void RegisterColorPickerHotKey(bool first)
+        {
+            try
+            {
+                if (appData.AppConfig.HotkeyModifiers != GlobalHotKey.HotkeyModifiers.None)
+                {
+                    //加载完毕注册热键
+                    colorPickerHotKeyId = GlobalHotKey.RegisterHotKey(appData.AppConfig.ColorPickerHotkeyModifiers, appData.AppConfig.ColorPickerHotkey, () =>
+                    {
+                        if (MotionControl.hotkeyFinished)
+                        {
+                            GlobalColorPickerWindow.CreateNoShow();
+                        }
+                    });
+                    if (!first)
+                    {
+                        HandyControl.Controls.Growl.Success("拾色器快捷键注册成功(" + appData.AppConfig.ColorPickerHotkeyStr + ")!", "HotKeyGrowl");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                if (first)
+                {
+                    HandyControl.Controls.Growl.WarningGlobal("拾色器快捷键已被其它程序占用(" + appData.AppConfig.ColorPickerHotkeyStr + ")!");
+                }
+                else
+                {
+                    HandyControl.Controls.Growl.Warning("拾色器快捷键已被其它程序占用(" + appData.AppConfig.ColorPickerHotkeyStr + ")!", "HotKeyGrowl");
                 }
             }
         }
@@ -311,14 +388,7 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void CloseButtonClick(object sender, RoutedEventArgs e)
         {
-            if (appData.AppConfig.AppAnimation)
-            {
-                FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
-            }
-            else
-            {
-                this.Visibility = Visibility.Collapsed;
-            }
+            HideApp();
         }
 
 
@@ -352,9 +422,11 @@ namespace GeekDesk
             //    return;
             //}
 
-            //修改贴边隐藏状态为未隐藏
+            MainWindow.mainWindow.Activate();
+
             if (MarginHide.ON_HIDE)
             {
+                //修改贴边隐藏状态为未隐藏
                 MarginHide.IS_HIDE = false;
                 if (!CommonCode.MouseInWindow(mainWindow))
                 {
@@ -369,35 +441,31 @@ namespace GeekDesk
             }
 
             FadeStoryBoard(1, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Visible);
-
-            Keyboard.Focus(mainWindow.EmptyTextBox);
+            Keyboard.Focus(mainWindow);
+            Keyboard.Focus(mainWindow.SearchBox);
         }
 
         public static void HideApp()
         {
             if (!MarginHide.IS_HIDE)
             {
+                //关闭锁定
+                RunTimeStatus.LOCK_APP_PANEL = false;
                 if (RunTimeStatus.SEARCH_BOX_SHOW)
                 {
                     mainWindow.HidedSearchBox();
-                    new Thread(() =>
-                    {
-                        Thread.Sleep(100);
-                        App.Current.Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
-                        }));
-                    }).Start();
+                    FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
                 }
                 else
                 {
                     FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
                 }
-            } else
+            }
+            else
             {
                 ShowApp();
             }
-            
+
         }
 
         /// <summary>
@@ -529,10 +597,11 @@ namespace GeekDesk
             SettingButton.ContextMenu = null;
         }
 
-        private void App_LostFocus(object sender, EventArgs e)
+
+        private void AppWindowLostFocus()
         {
             if (appData.AppConfig.AppHideType == AppHideType.LOST_FOCUS
-                && this.Opacity == 1)
+                && this.Opacity == 1 && !RunTimeStatus.LOCK_APP_PANEL)
             {
                 //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
                 if (!appData.AppConfig.MarginHide || (appData.AppConfig.MarginHide && !MarginHide.IS_HIDE))
@@ -541,6 +610,7 @@ namespace GeekDesk
                 }
             }
         }
+
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -600,11 +670,25 @@ namespace GeekDesk
 
         public void OnKeyDown(object sender, KeyEventArgs e)
         {
+            //char c = (char)e.Key;
+
             if (e.Key == Key.Escape)
             {
                 HideApp();
             }
+            //else if (
+            //    appData.AppConfig.SearchType == SearchType.KEY_DOWN &&
+            //    (
+            //        (e.Key >= Key.D0 && e.Key <= Key.Z) 
+            //        || (e.Key >= Key.NumPad0 && e.Key < Key.NumPad9)
+            //        )
+            //    )
+            //{
+            //    ShowSearchBox();
+            //}
         }
+
+
 
         /// <summary>
         /// 为了让修改菜单的textBox失去焦点
@@ -613,7 +697,7 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            EmptyTextBox.Focus();
+            SearchBox.Focus();
         }
 
         /// <summary>
@@ -625,6 +709,38 @@ namespace GeekDesk
         {
             //防止延迟贴边隐藏
             RunTimeStatus.MARGIN_HIDE_AND_OTHER_SHOW = false;
+        }
+
+        /// <summary>
+        /// 打开屏幕拾色器
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ColorPicker(object sender, RoutedEventArgs e)
+        {
+            TaskbarContextMenu.Visibility = Visibility.Collapsed;
+            App.DoEvents();
+            GlobalColorPickerWindow.CreateNoShow();
+        }
+
+        /// <summary>
+        /// 防止点击拾色器后无法显示菜单的问题
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BarIcon_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            TaskbarContextMenu.Visibility = Visibility.Visible;
+        }
+
+        private void Window_GotFocus(object sender, RoutedEventArgs e)
+        {
+            Keyboard.Focus(SearchBox);
+        }
+
+        private void AppWindow_Deactivated(object sender, EventArgs e)
+        {
+            AppWindowLostFocus();
         }
     }
 }

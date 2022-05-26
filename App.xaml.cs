@@ -1,11 +1,8 @@
 ﻿using GeekDesk.Constant;
 using GeekDesk.Util;
-using Microsoft.Win32;
 using System;
-using System.IO;
-using System.Text;
 using System.Windows;
-using System.Windows.Media.Animation;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace GeekDesk
@@ -43,6 +40,7 @@ namespace GeekDesk
         void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             e.Handled = true;//使用这一行代码告诉运行时，该异常被处理了，不再作为UnhandledException抛出了。
+            Mouse.OverrideCursor = null;
             LogUtil.WriteErrorLog(e, "未捕获异常!");
             if (Constants.DEV)
             {
@@ -54,6 +52,18 @@ namespace GeekDesk
         {
             LogUtil.WriteErrorLog(e, "严重异常!");
             MessageBox.Show("GeekDesk遇到未知问题崩溃!");
+        }
+        public static void DoEvents()
+        {
+            var frame = new DispatcherFrame();
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background,
+                new DispatcherOperationCallback(
+                    delegate (object f)
+                    {
+                        ((DispatcherFrame)f).Continue = false;
+                        return null;
+                    }), frame);
+            Dispatcher.PushFrame(frame);
         }
 
 

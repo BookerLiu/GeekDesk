@@ -1,15 +1,10 @@
-﻿using GeekDesk.Constant;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace GeekDesk.Converts
 {
-   public class MenuInfoConvert : IValueConverter
+    public class MenuInfoConvert : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -17,7 +12,8 @@ namespace GeekDesk.Converts
             if (menuIndex == -1)
             {
                 return "";
-            } else
+            }
+            else
             {
                 string type = parameter.ToString();
                 if ("1".Equals(type))

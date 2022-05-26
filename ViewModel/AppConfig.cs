@@ -1,6 +1,7 @@
 ﻿
 using GeekDesk.Constant;
 using GeekDesk.Util;
+using GeekDesk.ViewModel.Temp;
 using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
@@ -27,6 +28,7 @@ namespace GeekDesk.ViewModel
         private int selectedMenuIndex = 0;  //上次选中菜单索引
         private bool followMouse = true;  //面板跟随鼠标 默认是
         private Visibility configIconVisible = Visibility.Visible; // 设置按钮是否显示
+        private Visibility titleLogoVisible = Visibility.Visible; // 标题logo是否显示
         private AppHideType appHideType = AppHideType.START_EXE;  //面板关闭方式 (默认启动程序后)
         private bool startedShowPanel = true;  //启动时是否显示主面板  默认显示
         [field: NonSerialized]
@@ -46,7 +48,12 @@ namespace GeekDesk.ViewModel
 
         private string toDoHotkeyStr = "Ctrl + Shift + Q";  //待办任务快捷键
         private HotkeyModifiers toDoHotkeyModifiers; //待办任务快捷键
-        private Key toDoHotkey = Key.E; //待办任务快捷键
+        private Key toDoHotkey = Key.Q; //待办任务快捷键
+
+
+        private string colorPickerHotkeyStr = ""; //拾色器快捷键
+        private HotkeyModifiers colorPickerHotkeyModifiers; //拾色器快捷键
+        private Key colorPickerHotkey; //拾色器快捷键
 
         private string customIconUrl; //自定义图标url
         private string customIconJsonUrl;  //自定义图标json信息url
@@ -75,7 +82,120 @@ namespace GeekDesk.ViewModel
 
         private bool hoverMenu = false; //悬停切换菜单  默认关闭
 
+        private BGStyle bgStyle = BGStyle.ImgBac; //背景风格
+
+        private GradientBGParam gradientBGParam = null; //渐变背景参数
+
+        private bool? enableAppHotKey = true;  //可能为null 开启热键
+        private bool? enableTodoHotKey = true; //可能为null 开启待办热键
+
+        private bool enableColorPickerHotKey;  //新增 默认为false 不需要考虑null值
+
+        private SearchType searchType;
+
+
         #region GetSet
+
+        public SearchType SearchType
+        {
+            get
+            {
+                return searchType;
+            }
+            set
+            {
+                searchType = value;
+                OnPropertyChanged("SearchType");
+            }
+        }
+
+        public bool EnableColorPickerHotKey
+        {
+            get
+            {
+                return enableColorPickerHotKey;
+            }
+            set
+            {
+                enableColorPickerHotKey = value;
+                OnPropertyChanged("EnableColorPickerHotKey");
+            }
+        }
+
+        public bool? EnableAppHotKey
+        {
+            get
+            {
+                if (enableAppHotKey == null) enableAppHotKey = true;
+                return enableAppHotKey;
+            }
+            set
+            {
+                enableAppHotKey = value;
+                OnPropertyChanged("EnableAppHotKey");
+            }
+        }
+
+        public bool? EnableTodoHotKey
+        {
+            get
+            {
+                if (enableTodoHotKey == null) enableTodoHotKey = true;
+                return enableTodoHotKey;
+            }
+            set
+            {
+                enableTodoHotKey = value;
+                OnPropertyChanged("EnableTodoHotKey");
+            }
+        }
+
+        public Visibility TitleLogoVisible
+        {
+            get
+            {
+                return titleLogoVisible;
+            }
+            set
+            {
+                titleLogoVisible = value;
+                OnPropertyChanged("TitleLogoVisible");
+            }
+        }
+
+        public GradientBGParam GradientBGParam
+        {
+            get
+            {
+                if (gradientBGParam == null)
+                {
+                    gradientBGParam = GradientBGParamList.GradientBGParams[0];
+                }
+                return gradientBGParam;
+            }
+            set
+            {
+                gradientBGParam = value;
+                OnPropertyChanged("GradientBGParam");
+            }
+        }
+
+        public BGStyle BGStyle
+        {
+            get
+            {
+                if (bgStyle == 0)
+                {
+                    bgStyle = (BGStyle)1;
+                }
+                return bgStyle;
+            }
+            set
+            {
+                bgStyle = value;
+                OnPropertyChanged("BGStyle");
+            }
+        }
 
         public bool HoverMenu
         {
@@ -321,6 +441,47 @@ namespace GeekDesk.ViewModel
             }
         }
 
+        public Key ColorPickerHotkey
+        {
+            get
+            {
+                return colorPickerHotkey;
+            }
+            set
+            {
+                colorPickerHotkey = value;
+                OnPropertyChanged("ColorPickerHotkey");
+            }
+        }
+
+
+        public HotkeyModifiers ColorPickerHotkeyModifiers
+        {
+            get
+            {
+                return colorPickerHotkeyModifiers;
+            }
+            set
+            {
+                colorPickerHotkeyModifiers = value;
+                OnPropertyChanged("ColorPickerHotkeyModifiers");
+            }
+        }
+
+        public string ColorPickerHotkeyStr
+        {
+            get
+            {
+                return colorPickerHotkeyStr;
+            }
+            set
+            {
+                colorPickerHotkeyStr = value;
+                OnPropertyChanged("ColorPickerHotkeyStr");
+            }
+        }
+
+
         public Key ToDoHotkey
         {
             get
@@ -328,7 +489,7 @@ namespace GeekDesk.ViewModel
                 //兼容老版本
                 if (toDoHotkey == Key.None)
                 {
-                    toDoHotkey = Key.Q;
+                    toDoHotkey = Key.E;
                 }
                 return toDoHotkey;
             }

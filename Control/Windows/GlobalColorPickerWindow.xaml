@@ -1,0 +1,49 @@
+﻿<Window x:Class="GeekDesk.Control.Windows.GlobalColorPickerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GeekDesk.Control.Windows"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        KeyDown="OnKeyDown"
+        >
+    <Border CornerRadius="8" 
+            Background="White"
+            Height="385"
+            Width="228">
+        <StackPanel>
+
+            <Border MouseDown="DragMove" 
+                    VerticalAlignment="Top" 
+                    CornerRadius="8,8,0,0"
+                    Height="20" 
+                    Background="White"
+                    >
+                <Button Width="18"  Height="18" 
+                        hc:IconElement.Geometry="{StaticResource ErrorGeometry}" 
+                        Padding="0" 
+                        Background="Transparent"
+                        Opacity="0.6"
+                        Margin="0,0,5,0"
+                        Click="Button_Click"
+                        HorizontalAlignment="Right" 
+                        MouseEnter="Button_MouseEnter"
+                        MouseLeave="Button_MouseLeave"
+                        VerticalAlignment="Center">
+                    
+                </Button>
+            </Border>
+
+            <hc:ColorPicker HorizontalAlignment="Center" 
+                            VerticalAlignment="Bottom" 
+                            SelectedColorChanged="MyColorPicker_SelectedColorChanged"
+                            x:Name="MyColorPicker" 
+                            Confirmed="MyColorPicker_Confirmed"
+                            Canceled="MyColorPicker_Canceled"
+                            ToggleButton.Checked="MyColorPicker_Checked"/>
+        </StackPanel>
+    </Border>
+</Window>

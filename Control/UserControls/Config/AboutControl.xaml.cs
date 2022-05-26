@@ -1,20 +1,9 @@
-﻿using System;
+﻿using GeekDesk.Constant;
+using GeekDesk.Util;
 using System.Configuration;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using GeekDesk.Util;
-using GeekDesk.Constant;
 
 namespace GeekDesk.Control.UserControls.Config
 {
@@ -44,6 +33,15 @@ namespace GeekDesk.Control.UserControls.Config
             {
                 Window.GetWindow(this).DragMove();
             }
+        }
+
+        private void SC_MouseEnter(object sender, MouseEventArgs e)
+        {
+            this.Cursor = Cursors.Hand;
+        }
+        private void SC_MouseLeave(object sender, MouseEventArgs e)
+        {
+            this.Cursor = Cursors.Arrow;
         }
     }
 }

@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.InteropServices;
 using System.Drawing;
-using System.Windows.Forms;
 using System.IO;
-using System.Security.Permissions;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Windows.Forms;
 
 namespace GeekDesk.Util
 {
@@ -1166,7 +1164,7 @@ namespace GeekDesk.Util
             Int32 ParseDisplayName(
                 IntPtr hwnd,
                 IntPtr pbc,
-                [MarshalAs(UnmanagedType.LPWStr)] 
+                [MarshalAs(UnmanagedType.LPWStr)]
             string pszDisplayName,
                 ref uint pchEaten,
                 out IntPtr ppidl,
@@ -1261,7 +1259,7 @@ namespace GeekDesk.Util
             Int32 SetNameOf(
                 IntPtr hwnd,
                 IntPtr pidl,
-                [MarshalAs(UnmanagedType.LPWStr)] 
+                [MarshalAs(UnmanagedType.LPWStr)]
             string pszName,
                 SHGNO uFlags,
                 out IntPtr ppidlOut);

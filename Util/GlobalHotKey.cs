@@ -10,6 +10,7 @@ namespace GeekDesk.Util
     {
         public enum HotkeyModifiers
         {
+            None = 0,
             MOD_ALT = 0x1,
             MOD_CONTROL = 0x2,
             MOD_SHIFT = 0x4,
@@ -53,7 +54,8 @@ namespace GeekDesk.Util
                 UnregisterHotKey(handleTemp[id].Handle, id);
                 GlobalHotKey.handleTemp[id].Dispose();
                 GlobalHotKey.handleTemp.Remove(id);
-            } catch
+            }
+            catch
             {
                 //nothing
             }
@@ -75,7 +77,7 @@ namespace GeekDesk.Util
             {
                 CreateHandle(new CreateParams());
                 this.callback += callback;
-            } 
+            }
 
             private static readonly int WM_HOTKEY = 0x0312;
             protected override void WndProc(ref Message m)
@@ -94,4 +96,4 @@ namespace GeekDesk.Util
 
 
     }
-    }
+}

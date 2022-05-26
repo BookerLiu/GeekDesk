@@ -1,20 +1,8 @@
 ﻿using GeekDesk.Constant;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace GeekDesk.Control.UserControls.SystemItem
 {
@@ -47,7 +35,8 @@ namespace GeekDesk.Control.UserControls.SystemItem
                 };
                 iconInfo.Content_NoWrite = iconInfo.Name_NoWrite
                     + "\n使用次数:" + iconInfo.Count;
-            } else
+            }
+            else
             {
                 //startupMenu or Store
                 iconInfo = CommonCode.GetIconInfoByPath(thisInfo.LnkPath_NoWrite);

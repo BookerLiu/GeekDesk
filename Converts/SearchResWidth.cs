@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Data;
 
 namespace GeekDesk.Converts
@@ -18,7 +13,8 @@ namespace GeekDesk.Converts
             {
                 double menuLeftWidth = double.Parse(value.ToString());
                 return MainWindow.mainWindow.Width - menuLeftWidth;
-            } else
+            }
+            else
             {
                 double menuLeftWidth = double.Parse(value.ToString());
                 return (MainWindow.mainWindow.Width - menuLeftWidth) / 2;

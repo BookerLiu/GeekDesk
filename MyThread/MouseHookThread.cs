@@ -2,11 +2,6 @@
 using GeekDesk.ViewModel;
 using Gma.System.MouseKeyHook;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -24,7 +19,8 @@ namespace GeekDesk.MyThread
         {
             //使用dispatcher来单独监听UI线程  防止程序卡顿
             dispatcher = DispatcherBuild.Build();
-            dispatcher.Invoke((Action)(() =>
+            m_GlobalHook = Hook.GlobalEvents();
+            dispatcher.BeginInvoke((Action)(() =>
             {
                 m_GlobalHook.MouseUpExt += M_GlobalHook_MouseUpExt;
             }));
@@ -49,7 +45,7 @@ namespace GeekDesk.MyThread
                 if (MotionControl.hotkeyFinished)
                 {
                     App.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render, new Action(() =>
-                    { 
+                    {
                         if (MainWindow.mainWindow.Visibility == Visibility.Collapsed || MainWindow.mainWindow.Opacity == 0)
                         {
                             MainWindow.ShowApp();

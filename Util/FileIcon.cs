@@ -1,5 +1,4 @@
-﻿using IWshRuntimeLibrary;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -21,17 +20,17 @@ namespace GeekDesk.Util
             return list;
         }
 
-          [DllImport("User32.dll")]
-         public static extern int PrivateExtractIcons(
-             string lpszFile, //文件名可以是exe,dll,ico,cur,ani,bmp
-             int nIconIndex,  //从第几个图标开始获取
-             int cxIcon,      //获取图标的尺寸x
-             int cyIcon,      //获取图标的尺寸y
-             IntPtr[] phicon, //获取到的图标指针数组
-             int[] piconid,   //图标对应的资源编号
-             int nIcons,      //指定获取的图标数量，仅当文件类型为.exe 和 .dll时候可用
-             int flags        //标志，默认0就可以，具体可以看LoadImage函数
-         );
+        [DllImport("User32.dll")]
+        public static extern int PrivateExtractIcons(
+           string lpszFile, //文件名可以是exe,dll,ico,cur,ani,bmp
+           int nIconIndex,  //从第几个图标开始获取
+           int cxIcon,      //获取图标的尺寸x
+           int cyIcon,      //获取图标的尺寸y
+           IntPtr[] phicon, //获取到的图标指针数组
+           int[] piconid,   //图标对应的资源编号
+           int nIcons,      //指定获取的图标数量，仅当文件类型为.exe 和 .dll时候可用
+           int flags        //标志，默认0就可以，具体可以看LoadImage函数
+       );
 
 
         public static BitmapImage GetBitmapImage(string filePath)

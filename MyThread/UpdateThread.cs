@@ -4,13 +4,8 @@ using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace GeekDesk.MyThread
 {
@@ -32,7 +27,13 @@ namespace GeekDesk.MyThread
             {
 
                 //等待1分钟后再检查更新  有的网络连接过慢
-                System.Threading.Thread.Sleep(60 * 1000);
+                int sleepTime = 60 * 1000;
+                if (Constants.DEV)
+                {
+                    sleepTime = 1;
+                }
+
+                System.Threading.Thread.Sleep(sleepTime);
 
                 string updateUrl;
                 string nowVersion = ConfigurationManager.AppSettings["Version"];
@@ -59,7 +60,8 @@ namespace GeekDesk.MyThread
                         }));
                     }
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 LogUtil.WriteErrorLog(ex, "获取更新失败!");
             }

@@ -22,14 +22,18 @@
                     <hc:Shield Subject=".net" Status=">=4.72" Margin="0,0,10,0" Color="#1182c3"/>
                     <hc:Shield Subject="IDE" Status="VS2019" Margin="0,0,10,0" Color="#1182c3"/>
 
-                    <hc:Shield Subject="GitHub" Visibility="Visible" Status="Demo-liu"
-                           Command="hc:ControlCommands.OpenLink" 
-                           CommandParameter="https://github.com/Demo-Liu/GeekDesk"
-                           Margin="0,0,10,0" Color="#24292F"/>
-                    <hc:Shield Subject="Gitee" Visibility="Visible" Status="Demo-liu" 
-                           Command="hc:ControlCommands.OpenLink" 
-                           CommandParameter="https://gitee.com/demo_liu/GeekDesk" 
-                           Margin="0,0,10,0" Color="#C71D23"/>
+                    <hc:Shield Subject="GitHub" Visibility="Visible" Status="Star"
+                               MouseEnter="SC_MouseEnter"
+                               MouseLeave="SC_MouseLeave"
+                               Command="hc:ControlCommands.OpenLink" 
+                               CommandParameter="https://github.com/BookerLiu/GeekDesk"
+                               Margin="0,0,10,0" Color="#24292F"/>
+                    <hc:Shield Subject="Gitee" Visibility="Visible" Status="Star"
+                               MouseEnter="SC_MouseEnter"
+                               MouseLeave="SC_MouseLeave"
+                               Command="hc:ControlCommands.OpenLink" 
+                               CommandParameter="https://gitee.com/BookerLiu/GeekDesk" 
+                               Margin="0,0,10,0" Color="#C71D23"/>
 
 
                 </hc:UniformSpacingPanel>

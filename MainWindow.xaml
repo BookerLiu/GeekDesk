@@ -4,10 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uc="clr-namespace:GeekDesk.Control.UserControls.PannelCard"
+        xmlns:cn="clr-namespace:GeekDesk.Constant"
         mc:Ignorable="d"
         xmlns:cvt="clr-namespace:GeekDesk.Converts"
-        x:Name="window"
-        xmlns:hc="https://handyorg.github.io/handycontrol" xmlns:viewmodel="clr-namespace:GeekDesk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AppData}"
+        x:Name="AppWindow"
+        xmlns:hc="https://handyorg.github.io/handycontrol" xmlns:viewmodel="clr-namespace:GeekDesk.ViewModel" 
+        d:DataContext="{d:DesignInstance Type=viewmodel:AppData}"
         Title="GeekDesk" 
         MinWidth="600"
         MinHeight="400"
@@ -16,29 +18,36 @@
         Background="Transparent"
         ShowInTaskbar="False"
         Opacity="0"
-        Deactivated="App_LostFocus"
+        Deactivated="AppWindow_Deactivated"
         SizeChanged="Window_SizeChanged"
         KeyDown="OnKeyDown"
         Focusable="True"
         MouseDown="MainWindow_MouseDown"
         MouseEnter="MainWindow_MouseEnter"
+        GotFocus="Window_GotFocus"
         >
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="15"/>
     </WindowChrome.WindowChrome>
     <Window.Resources>
-        <RoutedUICommand x:Key="SearchItem" Text="SearchItem"/>
+        <RoutedUICommand x:Key="SearchHotKeyDown" Text="SearchHotKeyDown"/>
 
         <cvt:MenuWidthConvert x:Key="MenuWidthConvert"/>
         <cvt:OpcityConvert x:Key="OpcityConvert"/>
         <cvt:IntToCornerRadius x:Key="IntToCornerRadius"/>
         <cvt:DoubleToGridLength x:Key="DoubleToGridLength"/>
+        <Style x:Key="BorderBacStyle" TargetType="Border">
+            
+        </Style>
+
     </Window.Resources>
     <Window.InputBindings>
-        <KeyBinding Gesture="Ctrl+F" Key="F"  Command="{StaticResource SearchItem}"/>
+        <KeyBinding Gesture="Ctrl+F" Key="F"  Command="{StaticResource SearchHotKeyDown}"/>
     </Window.InputBindings>
     <Window.CommandBindings>
-        <CommandBinding Command="{StaticResource SearchItem}" CanExecute="SearchItem"/>
+        <CommandBinding Command="{StaticResource SearchHotKeyDown}" CanExecute="SearchHotKeyDown"/>
+        <!--<CommandBinding Command="ChangeImgBG" Executed="ChangeImgBG_Executed" CanExecute="ChangeImgBG_CanExecute" />-->
+
     </Window.CommandBindings>
 
     <Window.Effect>
@@ -48,29 +57,16 @@
     <Border Margin="20" CornerRadius="{Binding AppConfig.PannelCornerRadius, Mode=TwoWay, Converter={StaticResource IntToCornerRadius}}"  BorderThickness="0"
             Background="AliceBlue"
             Opacity="{Binding AppConfig.PannelOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}"
-            VirtualizingPanel.VirtualizationMode="Recycling"  VirtualizingPanel.IsVirtualizing="True"  VirtualizingPanel.IsContainerVirtualizable="True"
             hc:Dialog.Token="IconInfoDialog"
             Focusable="True"
             >
         <hc:DialogContainer Focusable="True">
-
-            <Border CornerRadius="{Binding AppConfig.PannelCornerRadius, Mode=TwoWay, Converter={StaticResource IntToCornerRadius}}"  BorderThickness="0">
-                <!--背景图片-->
-                <Border.Background>
-                    <VisualBrush>
-                        <VisualBrush.Visual>
-                            <Grid ClipToBounds="True">
-                                <Image Source="{Binding AppConfig.BitmapImage}" Margin="-30" Opacity="{Binding AppConfig.BgOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}">
-                                    <Image.Effect>
-                                        <BlurEffect Radius="{Binding AppConfig.BlurValue}"/>
-                                    </Image.Effect>
-                                </Image>
-                            </Grid>
-                        </VisualBrush.Visual>
-                    </VisualBrush>
-                </Border.Background>
-
-
+            <!-- -1是为了解决圆角白线的问题-->
+            <Border x:Name="BGBorder" 
+                    CornerRadius="{Binding AppConfig.PannelCornerRadius, Mode=TwoWay, Converter={StaticResource IntToCornerRadius}}"  
+                    BorderThickness="0"
+                    Margin="-1"
+                    >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" MouseMove="DragMove"></RowDefinition>
@@ -89,7 +85,7 @@
                         <DockPanel.Background>
                             <SolidColorBrush Opacity="0.01"/>
                         </DockPanel.Background>
-                        <Image Source="/Resource/Image/TitleLogo.png" Margin="10,0,0,0" Width="94" Height="30" HorizontalAlignment="Left"/>
+                        <Image Visibility="{Binding AppConfig.TitleLogoVisible}" Source="/Resource/Image/TitleLogo.png" Margin="10,0,0,0" Width="94" Height="30" HorizontalAlignment="Left"/>
                     </DockPanel>
 
                     <DockPanel Grid.Row="0" Grid.Column="2" MouseMove="DragMove">
@@ -137,23 +133,23 @@
                     <!--搜索输入框-->
                     <TextBox Panel.ZIndex="2" Grid.Row="0" Grid.Column="1" 
                              x:Name="SearchBox"
-                             Visibility="Collapsed"
+                             Width="0"
                              Margin="-100,5,0,0"
                              Height="32"
                              FontSize="16"
-                             Width="400"
                              BorderThickness="0"
                              TextChanged="SearchBox_TextChanged"
                              />
 
-
                     <uc:RightCardControl x:Name="RightCard" Grid.Row="1" Grid.Column="1"/>
 
                     <hc:NotifyIcon Icon="/Taskbar.ico"  Click="NotifyIcon_Click" x:Name="BarIcon"
+                                   MouseRightButtonDown="BarIcon_MouseRightButtonDown"
                                    Visibility="{Binding AppConfig.ShowBarIcon, Mode=TwoWay, Converter={StaticResource Boolean2VisibilityConverter}}">
                         <hc:NotifyIcon.ContextMenu>
-                            <ContextMenu Width="130">
+                            <ContextMenu Width="130" x:Name="TaskbarContextMenu">
                                 <MenuItem Header="打开面板" Click="ShowApp"/>
+                                <MenuItem Header="拾色器" Click="ColorPicker"/>
                                 <MenuItem Header="隐藏图标" Click="CloseBarIcon"/>
                                 <MenuItem Header="待办"  Click="BacklogMenuClick"/>
                                 <MenuItem Header="程序目录"  Click="OpenThisDir"/>

@@ -1,7 +1,6 @@
 ﻿using DraggAnimatedPanelExample;
 using GeekDesk.Constant;
 using GeekDesk.Control.Windows;
-using GeekDesk.MyThread;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using System;
@@ -10,10 +9,8 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
 
 namespace GeekDesk.Control.UserControls.PannelCard
 {
@@ -33,7 +30,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
         public LeftCardControl()
         {
             InitializeComponent();
-           
+
 
             this.Loaded += (s, e) =>
             {
@@ -44,7 +41,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
 
         private void SetMenuListBoxItemEvent()
-        {            
+        {
             int size = MenuListBox.Items.Count;
             for (int i = 0; i < size; i++)
             {
@@ -87,7 +84,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
             }
         }
 
-    DelegateCommand<int[]> _swap;
+        DelegateCommand<int[]> _swap;
 
         public DelegateCommand<int[]> SwapCommand
         {
@@ -333,7 +330,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
         {
             if (appData.AppConfig.HoverMenu && !IS_EDIT)
             {
-                new Thread(() =>
+                Thread t = new Thread(() =>
                 {
                     Thread.Sleep(200);
                     this.Dispatcher.Invoke(() =>
@@ -345,7 +342,9 @@ namespace GeekDesk.Control.UserControls.PannelCard
                             MenuListBox.SelectedIndex = index;
                         }
                     });
-                }).Start();
+                });
+                t.IsBackground = true;
+                t.Start();
             }
         }
 
@@ -356,7 +355,8 @@ namespace GeekDesk.Control.UserControls.PannelCard
         /// <param name="e"></param>
         private void ListBoxItem_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (RunTimeStatus.SEARCH_BOX_SHOW) {
+            if (RunTimeStatus.SEARCH_BOX_SHOW)
+            {
                 MainWindow.mainWindow.HidedSearchBox();
             }
         }
@@ -371,6 +371,34 @@ namespace GeekDesk.Control.UserControls.PannelCard
             if (RunTimeStatus.SEARCH_BOX_SHOW)
             {
                 MainWindow.mainWindow.HidedSearchBox();
+            }
+        }
+
+        private void Menu_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta < 0)
+            {
+                int index = MenuListBox.SelectedIndex;
+                if (index < MenuListBox.Items.Count - 1)
+                {
+                    index ++;
+                } else
+                {
+                    index = 0;
+                }
+                MenuListBox.SelectedIndex = index;
+            } else if (e.Delta > 0)
+            {
+                int index = MenuListBox.SelectedIndex;
+                if (index > 0)
+                {
+                    index --;
+                }
+                else
+                {
+                    index = MenuListBox.Items.Count - 1;
+                }
+                MenuListBox.SelectedIndex = index;
             }
         }
     }

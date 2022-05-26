@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GeekDesk.Constant
+﻿namespace GeekDesk.Constant
 {
     internal class RunTimeStatus
     {
@@ -18,6 +12,12 @@ namespace GeekDesk.Constant
         /// 贴边隐藏后  以非鼠标经过方式触发显示
         /// </summary>
         public static bool MARGIN_HIDE_AND_OTHER_SHOW = false;
+
+
+        /// <summary>
+        /// 是否锁定主面板 锁定后 不执行隐藏动作
+        /// </summary>
+        public static bool LOCK_APP_PANEL = false;
 
 
 

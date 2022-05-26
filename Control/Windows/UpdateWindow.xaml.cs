@@ -4,20 +4,11 @@ using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace GeekDesk.Control.Windows
 {
@@ -42,7 +33,7 @@ namespace GeekDesk.Control.Windows
             {
 
             }
-           
+
         }
 
         /// <summary>
@@ -68,7 +59,7 @@ namespace GeekDesk.Control.Windows
             githubUrl = StringUtil.IsEmpty(jo["githubUrl"]) ? ConfigurationManager.AppSettings["GitHubUrl"] : jo["githubUrl"].ToString();
             giteeUrl = StringUtil.IsEmpty(jo["giteeUrl"]) ? ConfigurationManager.AppSettings["GiteeUrl"] : jo["giteeUrl"].ToString();
             string msg = "";
-            for (int i=0; i<ja.Count; i++)
+            for (int i = 0; i < ja.Count; i++)
             {
                 msg += "• " + ja[i].ToString() + "\n";
             }
@@ -92,7 +83,11 @@ namespace GeekDesk.Control.Windows
                     packageUrl = giteeUrl;
                     break;
             }
-            Process.Start(packageUrl);
+            Process.Start(new ProcessStartInfo("cmd", $"/c start {packageUrl}")
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true
+            });
             this.Close();
         }
 
@@ -104,6 +99,7 @@ namespace GeekDesk.Control.Windows
                 window = new UpdateWindow(jo);
             }
             window.Show();
+            window.Activate();
             Keyboard.Focus(window);
         }
 
@@ -115,5 +111,59 @@ namespace GeekDesk.Control.Windows
                 this.Close();
             }
         }
+
+        private void StarBtnClick(object sender, RoutedEventArgs e)
+        {
+
+            string githubUrl = ConfigurationManager.AppSettings["GitHubUrl"];
+            string giteeUrl = ConfigurationManager.AppSettings["GiteeUrl"];
+
+            if(!ReqGitUrl(githubUrl))
+            {
+                if (!ReqGitUrl(giteeUrl))
+                {
+                    OpenLinkUrl(githubUrl);
+                } else
+                {
+                    OpenLinkUrl(giteeUrl);
+                }
+            } else
+            {
+                OpenLinkUrl(githubUrl);
+            }
+        }
+
+
+        private bool ReqGitUrl(String url)
+        {
+            HttpWebResponse myResponse = null;
+            try
+            {
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                //创建Web访问对  象
+                WebRequest myRequest = WebRequest.Create(url);
+
+                myRequest.ContentType = "text/plain; charset=utf-8";
+                //通过Web访问对象获取响应内容
+                myResponse = (HttpWebResponse)myRequest.GetResponse();
+            }
+            catch 
+            {
+                return false;
+            }
+
+            return myResponse != null && myResponse.StatusCode == HttpStatusCode.OK;
+        }
+
+        private void OpenLinkUrl(String url)
+        {
+            Process.Start(new ProcessStartInfo("cmd", $"/c start {url}")
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true
+            });
+        }
+
     }
 }

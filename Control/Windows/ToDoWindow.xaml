@@ -78,8 +78,12 @@
                         </hc:SideMenuItem>
                     </hc:SideMenu>
                 </hc:Card>
-                <hc:Card Grid.Row="0" MouseDown="DragMove" Background="Transparent" BorderThickness="0" Grid.Column="1" x:Name="RightCard" Height="450">
-                </hc:Card>
+                <UniformGrid x:Name="UFG" Grid.Column="1" Grid.Row="0">
+                    <hc:TransitioningContentControl TransitionMode="Left2RightWithFade">
+                        <hc:Card x:Name="RightCard" VerticalAlignment="Top" MouseDown="DragMove" Background="Transparent" BorderThickness="0"   Height="410"/>
+                    </hc:TransitioningContentControl>
+                </UniformGrid>
+                
 
 
                 <Button Width="22" Height="22" Click="Close_Button_Click" Style="{StaticResource ButtonIcon}" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" Grid.Column="1"/>
@@ -87,8 +91,8 @@
                     Panel.ZIndex="1"
                     Style="{StaticResource Btn1}"
                     Grid.Column="1"
-                    Margin="590.01,29,10,384"
-                    Click="CreateBacklog_BtnClick"/>
+                    Margin="669,400,0,0"
+                    Click="CreateBacklog_BtnClick" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             </Grid>
         </Border>
     </Grid>

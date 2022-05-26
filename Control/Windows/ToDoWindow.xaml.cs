@@ -2,20 +2,8 @@
 using GeekDesk.Interface;
 using GeekDesk.ViewModel;
 using HandyControl.Controls;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace GeekDesk.Control.Windows
 {
@@ -32,6 +20,16 @@ namespace GeekDesk.Control.Windows
             RightCard.Content = backlog;
             backlog.BacklogList.ItemsSource = appData.ToDoList;
             this.Topmost = true;
+            if (backlog.BacklogList.Items.Count > 0)
+            {
+                backlog.NoData.Visibility = Visibility.Collapsed;
+                backlog.BacklogList.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                backlog.NoData.Visibility = Visibility.Visible;
+                backlog.BacklogList.Visibility = Visibility.Collapsed;
+            }
         }
 
 
@@ -64,12 +62,37 @@ namespace GeekDesk.Control.Windows
             switch (smi.Tag.ToString())
             {
                 case "History":
+                    UFG.Visibility = Visibility.Collapsed;
                     backlog.BacklogList.ItemsSource = appData.HiToDoList;
+                    if (backlog.BacklogList.Items.Count > 0)
+                    {
+                        backlog.NoData.Visibility = Visibility.Collapsed;
+                        backlog.BacklogList.Visibility = Visibility.Visible;
+                    } else
+                    {
+                        backlog.NoData.Visibility = Visibility.Visible;
+                        backlog.BacklogList.Visibility = Visibility.Collapsed;
+                    }
                     backlog.type = ToDoType.HISTORY;
+                    backlog.IsNewToDo.Text = "N";
+                    UFG.Visibility = Visibility.Visible;
                     break;
                 default:
+                    UFG.Visibility = Visibility.Collapsed;
                     backlog.BacklogList.ItemsSource = appData.ToDoList;
+                    if (backlog.BacklogList.Items.Count > 0)
+                    {
+                        backlog.NoData.Visibility = Visibility.Collapsed;
+                        backlog.BacklogList.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        backlog.NoData.Visibility = Visibility.Visible;
+                        backlog.BacklogList.Visibility = Visibility.Collapsed;
+                    }
                     backlog.type = ToDoType.NEW;
+                    backlog.IsNewToDo.Text = "Y";
+                    UFG.Visibility = Visibility.Visible;
                     break;
             }
         }
@@ -97,6 +120,21 @@ namespace GeekDesk.Control.Windows
             window.Show();
             Keyboard.Focus(window);
         }
+
+        public static void ShowOrHide()
+        {
+            if (window == null || !window.Activate())
+            {
+                window = new ToDoWindow();
+                window.Show();
+                Keyboard.Focus(window);
+            }
+            else
+            {
+                window.Close();
+            }
+        }
+
 
         public void OnKeyDown(object sender, KeyEventArgs e)
         {

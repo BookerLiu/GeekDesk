@@ -3,19 +3,10 @@ using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using HandyControl.Controls;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace GeekDesk.Control.UserControls.Backlog
 {
@@ -80,7 +71,17 @@ namespace GeekDesk.Control.UserControls.Backlog
         /// <param name="e"></param>
         private void DataGridRow_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            BacklogList.SelectedIndex = ((DataGridRow)sender).GetIndex();
+            int index;
+            ToDoInfo info = ((Border)sender).DataContext as ToDoInfo;
+            if (type == ToDoType.NEW)
+            {
+                index = MainWindow.appData.ToDoList.IndexOf(info);
+            }
+            else
+            {
+                index = MainWindow.appData.HiToDoList.IndexOf(info);
+            }
+            BacklogList.SelectedIndex = index;
             Menu.IsOpen = true;
         }
 

@@ -9,13 +9,12 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace GeekDesk.Control.UserControls.PannelCard
 {
@@ -199,12 +198,12 @@ namespace GeekDesk.Control.UserControls.PannelCard
                                     //p.StartInfo.CreateNoWindow = false; //设置显示窗口
                                     p.StartInfo.UseShellExecute = true;//不使用操作系统外壳程序启动进程
                                     //p.StartInfo.ErrorDialog = false;
-                                    if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
+                                    if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
                                     {
                                         //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
                                         if (appData.AppConfig.MarginHide)
                                         {
-                                            if (!MarginHide.IS_HIDE)
+                                            if (!MarginHide.IsMargin())
                                             {
                                                 MainWindow.HideApp();
                                             }
@@ -217,12 +216,12 @@ namespace GeekDesk.Control.UserControls.PannelCard
                                     }
                                     break;// c#好像不能case穿透
                                 case IconStartType.DEFAULT_STARTUP:
-                                    if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
+                                    if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
                                     {
                                         //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
                                         if (appData.AppConfig.MarginHide)
                                         {
-                                            if (!MarginHide.IS_HIDE)
+                                            if (!MarginHide.IsMargin())
                                             {
                                                 MainWindow.HideApp();
                                             }
@@ -241,7 +240,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
                         }
                         else
                         {
-                            if (appData.AppConfig.AppHideType == AppHideType.START_EXE)
+                            if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
                             {
                                 //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
                                 if (appData.AppConfig.MarginHide)
@@ -422,12 +421,31 @@ namespace GeekDesk.Control.UserControls.PannelCard
             double height = appData.AppConfig.ImageHeight;
             width += width * 0.15;
             height += height * 0.15;
-            ImgStoryBoard(sender, (int)width, (int)height, 1, true);
+            Thread t = new Thread(() =>
+            {
+                this.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    ImgStoryBoard(sender, (int)width, (int)height, 1, true);
+                }));
+            });
+            t.IsBackground = true;
+            t.Start();
+
         }
 
         private void StackPanel_MouseLeave(object sender, MouseEventArgs e)
         {
-            ImgStoryBoard(sender, appData.AppConfig.ImageWidth, appData.AppConfig.ImageHeight, 220);
+
+            Thread t = new Thread(() =>
+            {
+            this.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                ImgStoryBoard(sender, appData.AppConfig.ImageWidth, appData.AppConfig.ImageHeight, 260);
+            }));
+            });
+            t.IsBackground = true;
+            t.Start();
+
         }
 
 
@@ -435,6 +453,59 @@ namespace GeekDesk.Control.UserControls.PannelCard
         {
 
             if (appData.AppConfig.PMModel) return;
+
+            //int count = 0;
+            //Panel sp = sender as Panel;
+            //Image img = sp.Children[0] as Image;
+
+
+            //int nowH = (int)img.Height;
+
+            //bool isSmall = nowH > height;
+
+            //if (!isSmall)
+            //{
+            //    img.Height = height;
+            //    img.Width = width;
+            //    return;
+            //}
+            //double subLen = (double)Math.Abs(nowH - height) / (double)milliseconds;
+
+            //new Thread(() =>
+            //{
+            //    this.Dispatcher.Invoke(() =>
+            //    {
+            //        while (count < milliseconds)
+            //        {
+            //            if (!isSmall)
+            //            {
+            //                img.Height += subLen;
+            //                img.Width += subLen;
+            //            } else
+            //            {
+            //                //if (img.Height > 1)
+            //                //{
+            //                //    img.Height -= 1;
+            //                //    img.Width -= 1;
+            //                //}
+            //                Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
+            //                             new Action(delegate {
+            //                                 img.Height -= subLen;
+            //                                 img.Width -= subLen;
+            //                             }));
+            //                //img.Height -= subLen;
+            //                //img.Width -= subLen;
+            //            }
+            //            count++;
+            //            Thread.Sleep(1);
+            //        }
+            //        img.Height = height;
+            //        img.Width = width;
+            //    });
+            //}).Start();
+
+
+
 
             Panel sp = sender as Panel;
 
@@ -491,6 +562,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 {
                     ThreadStart ts = new ThreadStart(crs.Remove);
                     System.Threading.Thread t = new System.Threading.Thread(ts);
+                    t.IsBackground = true;
                     t.Start();
                 }
                 else
@@ -501,10 +573,10 @@ namespace GeekDesk.Control.UserControls.PannelCard
             };
             img.BeginAnimation(WidthProperty, widthAnimation);
             img.BeginAnimation(HeightProperty, heightAnimation);
-
+            //###################################################################
             //myStoryboard.Completed += (s, e) =>
             //{
-            //    if (checkRmStoryboard || true)
+            //    if (checkRmStoryboard)
             //    {
             //        ThreadStart ts = new ThreadStart(crs.Remove);
             //        System.Threading.Thread t = new System.Threading.Thread(ts);
@@ -622,6 +694,27 @@ namespace GeekDesk.Control.UserControls.PannelCard
         private void CursorPanel_MouseLeave(object sender, MouseEventArgs e)
         {
             this.Cursor = Cursors.Arrow;
+        }
+
+        /// <summary>
+        /// 锁定/解锁主面板
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LockAppPanel(object sender, RoutedEventArgs e)
+        {
+            RunTimeStatus.LOCK_APP_PANEL = !RunTimeStatus.LOCK_APP_PANEL;
+        }
+
+        private void WrapCard_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (RunTimeStatus.LOCK_APP_PANEL)
+            {
+                CardLockCM.Header = "解锁主面板";
+            } else
+            {
+                CardLockCM.Header = "锁定主面板";
+            }
         }
     }
 }
