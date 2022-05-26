@@ -37,7 +37,7 @@
 ### GitHub
 [https://github.com/Demo-Liu/GeekDesk](https://github.com/Demo-Liu/GeekDesk)  
 ### 码云
-[https://gitee.com/demo_liu/GeekDesk](https://gitee.com/demo_liu/GeekDesk)
+[https://gitee.com/BookerLiu/GeekDesk](https://gitee.com/BookerLiu/GeekDesk)
 
  <img src="https://z3.ax1x.com/2021/07/20/WYdfmR.jpg" alt="WYdfmR.jpg" border="0" width="400px"/>
 
