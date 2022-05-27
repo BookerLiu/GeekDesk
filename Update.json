@@ -2,7 +2,7 @@
 	"title": "GeekDesk版本更新",
 	"subTitle": "V2.4.16",
 	"msgTitle": "本次更新内容如下",
-	"msg": "['兄弟萌求Star, 求Star', '这个版本没有功能性改变, 主要是为了修复上个版本的bug', '修复无法修改菜单名称的问题', '修复通过任务栏图标打开拾色器, 图标菜单消失问题']",
+	"msg": "['兄弟萌求Star, 求Star, 由于功能越来越多, 之后的更新我会测试一周再发布, 尽量做到没有BUG, 见谅', '这个版本没有功能性改变, 主要是为了修复上个版本的bug', '修复无法修改菜单名称的问题', '修复通过任务栏图标打开拾色器, 图标菜单消失问题']",
 	"githubUrl": "https://github.com/BookerLiu/GeekDesk/releases",
 	"giteeUrl": "https://gitee.com/BookerLiu/GeekDesk/releases",
 	"version": "2.4.16"
