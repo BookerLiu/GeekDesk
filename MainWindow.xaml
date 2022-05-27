@@ -125,7 +125,7 @@
                     </DockPanel>
 
 
-                    <uc:LeftCardControl Grid.Row="1" Grid.Column="0"/>
+                    <uc:LeftCardControl x:Name="LeftCard" Grid.Row="1" Grid.Column="0"/>
 
                     <!--分割线-->
                     <GridSplitter Opacity="0" Grid.Row="1" Grid.Column="0" Width="1"  VerticalAlignment="Stretch" HorizontalAlignment="Right"/>

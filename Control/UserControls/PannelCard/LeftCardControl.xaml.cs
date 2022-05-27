@@ -25,7 +25,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
 
         //是否正在修改菜单
-        private static bool IS_EDIT = false;
+        public bool IS_EDIT = false;
 
         public LeftCardControl()
         {
@@ -205,9 +205,9 @@ namespace GeekDesk.Control.UserControls.PannelCard
         /// <param name="e"></param>
         private void RenameMenu(object sender, RoutedEventArgs e)
         {
+            IS_EDIT = true;
             MenuInfo menuInfo = ((MenuItem)sender).Tag as MenuInfo;
             menuInfo.MenuEdit = (int)Visibility.Visible;
-            IS_EDIT = true;
         }
 
         /// <summary>
@@ -276,6 +276,8 @@ namespace GeekDesk.Control.UserControls.PannelCard
                     menuInfo.MenuEdit = Visibility.Collapsed;
                 }
                 IS_EDIT = false;
+                //为了解决无法修改菜单的问题
+                MainWindow.mainWindow.SearchBox.Focus();
                 MenuListBox.SelectedIndex = menuSelectIndexTemp;
             }
         }
@@ -309,6 +311,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
         private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (IS_EDIT) return;
             //设置对应菜单的图标列表
             if (MenuListBox.SelectedIndex == -1)
             {

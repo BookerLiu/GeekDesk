@@ -1,5 +1,6 @@
 ﻿using GeekDesk.Constant;
 using GeekDesk.Control.UserControls.Config;
+using GeekDesk.Control.UserControls.PannelCard;
 using GeekDesk.Control.Windows;
 using GeekDesk.Interface;
 using GeekDesk.MyThread;
@@ -725,7 +726,11 @@ namespace GeekDesk
 
         private void Window_GotFocus(object sender, RoutedEventArgs e)
         {
-            Keyboard.Focus(SearchBox);
+            if (!LeftCard.IS_EDIT)
+            {
+                //if判断是为了能够使修改菜单时  菜单能够获得焦点
+                Keyboard.Focus(SearchBox);
+            }
         }
 
         private void AppWindow_Deactivated(object sender, EventArgs e)
