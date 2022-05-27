@@ -718,20 +718,10 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void ColorPicker(object sender, RoutedEventArgs e)
         {
-            TaskbarContextMenu.Visibility = Visibility.Collapsed;
-            App.DoEvents();
+            TaskbarContextMenu.IsOpen = false;
             GlobalColorPickerWindow.CreateNoShow();
         }
 
-        /// <summary>
-        /// 防止点击拾色器后无法显示菜单的问题
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BarIcon_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            TaskbarContextMenu.Visibility = Visibility.Visible;
-        }
 
         private void Window_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -742,5 +732,6 @@ namespace GeekDesk
         {
             AppWindowLostFocus();
         }
+
     }
 }

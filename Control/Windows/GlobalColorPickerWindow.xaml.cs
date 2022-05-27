@@ -81,15 +81,25 @@ namespace GeekDesk.Control.Windows
             if (window == null || !window.Activate())
             {
                 window = new GlobalColorPickerWindow();
+                window.Opacity = 0;
+                App.DoEvents();
                 window.Show();
             }
             window.Hide();
-            GlobalColorPickerWindow thisWindow = (GlobalColorPickerWindow)window;
-            if (thisWindow.colorPickerWindow == null || !thisWindow.colorPickerWindow.Activate())
+            new Thread(() =>
             {
-                thisWindow.colorPickerWindow = new PixelColorPickerWindow(thisWindow.MyColorPicker);
-            }
-            thisWindow.colorPickerWindow.Show();
+                Thread.Sleep(200);
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    GlobalColorPickerWindow thisWindow = (GlobalColorPickerWindow)window;
+                    if (thisWindow.colorPickerWindow == null || !thisWindow.colorPickerWindow.Activate())
+                    {
+                        thisWindow.colorPickerWindow = new PixelColorPickerWindow(thisWindow.MyColorPicker);
+                    }
+                    thisWindow.colorPickerWindow.Show();
+                });
+            }).Start();
+            
         }
 
         public static void Show()
@@ -98,6 +108,7 @@ namespace GeekDesk.Control.Windows
             {
                 window = new GlobalColorPickerWindow();
             }
+            window.Opacity = 1;
             window.Show();
             Keyboard.Focus(window);
         }
