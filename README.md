@@ -35,7 +35,7 @@
 
 
 ### GitHub
-[https://github.com/Demo-Liu/GeekDesk](https://github.com/Demo-Liu/GeekDesk)  
+[https://github.com/BookerLiu/GeekDesk](https://github.com/BookerLiu/GeekDesk)  
 ### 码云
 [https://gitee.com/BookerLiu/GeekDesk](https://gitee.com/BookerLiu/GeekDesk)
 
