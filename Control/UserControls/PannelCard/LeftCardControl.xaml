@@ -18,11 +18,12 @@
             <Setter Property="Margin" Value="0,0,0,1"/>
             <Setter Property="Background">
                 <Setter.Value>
-                    <SolidColorBrush Opacity="0"/>
+                    <SolidColorBrush Color="Black" Opacity="0.01"/>
                 </Setter.Value>
             </Setter>
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
             <EventSetter Event="MouseEnter" Handler="Menu_MouseEnter"/>
+            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListBoxItem_MouseDown"/>
             <!--<EventSetter Event="Unselected" Handler="Lbi_Unselected"/>-->
             <Style.Triggers>
                 <MultiTrigger>
@@ -45,7 +46,11 @@
                         </BeginStoryboard>
                     </MultiTrigger.ExitActions>
                     <MultiTrigger.Setters>
-                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <SolidColorBrush Color="Black" Opacity="0.01"/>
+                            </Setter.Value>
+                        </Setter>
                         <Setter Property="Foreground" Value="Black"/>
                     </MultiTrigger.Setters>
                 </MultiTrigger>
@@ -133,7 +138,7 @@
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Tag="{Binding}" MouseDown="ListBoxItem_MouseDown">
+                        <StackPanel Tag="{Binding}">
                             <TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
                                     HorizontalAlignment="Left"
                                     Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}, ConverterParameter=35}"
