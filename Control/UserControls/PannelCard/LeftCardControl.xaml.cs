@@ -362,7 +362,30 @@ namespace GeekDesk.Control.UserControls.PannelCard
             {
                 MainWindow.mainWindow.HidedSearchBox();
             }
+
+            ListBoxItem lbi = sender as ListBoxItem;
+            MenuInfo mi = lbi.DataContext as MenuInfo;
+            int index = MenuListBox.Items.IndexOf(mi);
+            MenuListBox.SelectedIndex = index;
         }
+
+
+        ///// <summary>
+        ///// 点击菜单后  隐藏搜索框
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //private void ListBoxItemPanel_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    if (RunTimeStatus.SEARCH_BOX_SHOW)
+        //    {
+        //        MainWindow.mainWindow.HidedSearchBox();
+        //    }
+        //    MenuInfo mi = (sender as StackPanel).Tag as MenuInfo;
+        //    int index = MenuListBox.Items.IndexOf(mi);
+        //    MenuListBox.SelectedIndex = index;
+        //}
+
 
         /// <summary>
         /// 隐藏搜索框
