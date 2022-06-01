@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:GeekDesk.Control.UserControls.PannelCard"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:cvt="clr-namespace:GeekDesk.Converts"
+             xmlns:cst="clr-namespace:GeekDesk.Constant"
              xmlns:DraggAnimatedPanel="clr-namespace:DraggAnimatedPanel"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
@@ -21,6 +22,11 @@
                     <SolidColorBrush Color="Black" Opacity="0.01"/>
                 </Setter.Value>
             </Setter>
+            <Setter Property="AllowDrop" Value="True"/>
+            <EventSetter Event="Drop" Handler="Menu_Drop"/>
+            <EventSetter Event="PreviewDragEnter" Handler="Menu_PreviewDragEnter"/>
+            <EventSetter Event="PreviewDragLeave" Handler="Menu_PreviewDragLeave"/>
+            <EventSetter Event="MouseLeave" Handler="Menu_MouseLeave"/>
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
             <EventSetter Event="MouseEnter" Handler="Menu_MouseEnter"/>
             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListBoxItem_MouseDown"/>
@@ -71,110 +77,149 @@
                     <Setter Property="Foreground" Value="Black"/>
                 </Trigger>-->
                 <Trigger Property="IsMouseOver" Value="False">
-                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Background" Value="#00FFFFFF"/>
                     <Setter Property="Foreground" Value="Black"/>
                 </Trigger>
 
 
             </Style.Triggers>
         </Style>
+        <Style x:Key="MyPoptipStyle" TargetType="Border">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="CornerRadius" Value="{StaticResource DefaultCornerRadius}"/>
+            <Setter Property="Padding" Value="{StaticResource DefaultControlPadding}"/>
+            <!--<Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="hc:Poptip">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}">
+                            <ContentPresenter Margin="{TemplateBinding Padding}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" ContentStringFormat="{TemplateBinding ContentStringFormat}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>-->
+        </Style>
+
         <cvt:MenuWidthConvert x:Key="MenuWidthConvert"/>
         <cvt:OpcityConvert x:Key="OpcityConvert"/>
+        <cvt:StringAppendConvert x:Key="StringAppendConvert"/>
     </UserControl.Resources>
-    <!--左侧栏-->
-    <hc:Card x:Name="MyCard"
-             BorderThickness="1"
-             Effect="{DynamicResource EffectShadow2}" 
-             Margin="5,0,0,5"
-             MouseDown="MyCard_MouseDown"
-             >
-        <hc:Card.Background>
-            <SolidColorBrush Color="#FFFFFFFF" hc:GeometryEffect.GeometryEffect="20" Opacity="{Binding AppConfig.CardOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}">
+    <Grid Background="Transparent">
+        <Popup Name="MyPoptip" FlowDirection="LeftToRight" 
+               PopupAnimation="None" Placement="Mouse" IsOpen="False"
+               AllowsTransparency="True"
+               >
+            <Grid Background="Transparent">
+                <Border Style="{StaticResource MyPoptipStyle}">
+                    <TextBlock Name="MyPoptipContent" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Text="Test" FontSize="19"/>
+                </Border>
+            </Grid>
+        </Popup>
 
-            </SolidColorBrush>
-        </hc:Card.Background>
-        <hc:Card.BorderBrush>
-            <SolidColorBrush Color="#FFFFFFFF" Opacity="0"/>
-        </hc:Card.BorderBrush>
-        <hc:Card.ContextMenu>
-            <ContextMenu Width="200">
-                <MenuItem Header="新建菜单" Click="CreateMenu"/>
-            </ContextMenu>
-        </hc:Card.ContextMenu>
-        <WrapPanel Orientation="Horizontal">
-            <ListBox x:Name="MenuListBox"
-                     Padding="2,3,0,2"
-                     ItemsSource="{Binding MenuList}"
-                     Tag="{Binding AppConfig.MenuCardWidth}"
-                     BorderThickness="0" Foreground="{x:Null}"
-                     SelectedIndex="{Binding AppConfig.SelectedMenuIndex}"
-                     VirtualizingPanel.VirtualizationMode="Recycling"
-                     SelectionChanged="Menu_SelectionChanged"
-                     PreviewMouseWheel="Menu_MouseWheel"
-                     >
-                <ListBox.Resources>
-                    <ContextMenu x:Key="MenuDialog" Width="200">
-                        <MenuItem Header="新建菜单" Click="CreateMenu"/>
-                        <MenuItem Header="重命名"  Click="RenameMenu" Tag="{Binding}"/>
-                        <MenuItem Header="修改图标"  Click="EditMenuGeometry" Tag="{Binding}"/>
-                        <MenuItem Header="删除" Click="DeleteMenu" Tag="{Binding}"/>
-                    </ContextMenu>
-                </ListBox.Resources>
+        <!--左侧栏-->
+        <hc:Card x:Name="MyCard"
+            BorderThickness="1"
+            Effect="{DynamicResource EffectShadow2}" 
+            Margin="5,0,0,5"
+            MouseDown="MyCard_MouseDown"
+            >
+            <hc:Card.Background>
+                <SolidColorBrush Color="#FFFFFFFF" hc:GeometryEffect.GeometryEffect="20" Opacity="{Binding AppConfig.CardOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}">
 
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource MenuStyle}">
-                        <Setter Property="ContextMenu" Value="{StaticResource MenuDialog}"/>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <ListBox.Background>
-                    <SolidColorBrush Color="AliceBlue" Opacity="0"/>
-                </ListBox.Background>
+                </SolidColorBrush>
+            </hc:Card.Background>
+            <hc:Card.BorderBrush>
+                <SolidColorBrush Color="#FFFFFFFF" Opacity="0"/>
+            </hc:Card.BorderBrush>
+            <hc:Card.ContextMenu>
+                <ContextMenu Width="200">
+                    <MenuItem Header="新建菜单" Click="CreateMenu"/>
+                </ContextMenu>
+            </hc:Card.ContextMenu>
 
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <DraggAnimatedPanel:DraggAnimatedPanel ItemsHeight="33" ItemsWidth="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}, ConverterParameter=10}"   HorizontalAlignment="Center" VerticalAlignment="Top" SwapCommand="{Binding SwapCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
+            <WrapPanel Orientation="Horizontal">
 
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Tag="{Binding}">
-                            <TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
-                                    HorizontalAlignment="Left"
-                                    Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}, ConverterParameter=35}"
-                                    FontSize="16"
-                                    Height="28"
-                                    VerticalAlignment="Center"
-                                    TextAlignment="Left"
-                                    LostFocus="LostFocusOrEnterDown"
-                                    KeyDown="LostFocusOrEnterDown"
-                                    Tag="{Binding}"
-                                    Padding="2"
+
+
+
+                <ListBox x:Name="MenuListBox"
+                    Padding="2,3,0,2"
+                    ItemsSource="{Binding MenuList}"
+                    Tag="{Binding AppConfig.MenuCardWidth}"
+                    BorderThickness="0" Foreground="{x:Null}"
+                    SelectedIndex="{Binding AppConfig.SelectedMenuIndex}"
+                    VirtualizingPanel.VirtualizationMode="Recycling"
+                    SelectionChanged="Menu_SelectionChanged"
+                    PreviewMouseWheel="Menu_MouseWheel"
+                    >
+                    <ListBox.Resources>
+                        <ContextMenu x:Key="MenuDialog" Width="200">
+                            <MenuItem Header="新建菜单" Click="CreateMenu"/>
+                            <MenuItem Header="重命名"  Click="RenameMenu" Tag="{Binding}"/>
+                            <MenuItem Header="修改图标"  Click="EditMenuGeometry" Tag="{Binding}"/>
+                            <MenuItem Header="删除" Click="DeleteMenu" Tag="{Binding}"/>
+                        </ContextMenu>
+                    </ListBox.Resources>
+
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem" BasedOn="{StaticResource MenuStyle}">
+                            <Setter Property="ContextMenu" Value="{StaticResource MenuDialog}"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.Background>
+                        <SolidColorBrush Color="AliceBlue" Opacity="0"/>
+                    </ListBox.Background>
+
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <DraggAnimatedPanel:DraggAnimatedPanel ItemsHeight="33" ItemsWidth="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}, ConverterParameter=10}"   HorizontalAlignment="Center" VerticalAlignment="Top" SwapCommand="{Binding SwapCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Tag="{Binding}"
+                                        >
+                                <TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
+                                HorizontalAlignment="Left"
+                                Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}, ConverterParameter=35}"
+                                FontSize="16"
+                                Height="28"
+                                VerticalAlignment="Center"
+                                TextAlignment="Left"
+                                LostFocus="LostFocusOrEnterDown"
+                                KeyDown="LostFocusOrEnterDown"
+                                Tag="{Binding}"
+                                Padding="2"
+                                BorderThickness="0"
+                                IsVisibleChanged="MenuEditWhenVisibilityChanged"
+                                Visibility="{Binding MenuEdit}"/>
+                                <StackPanel Orientation="Horizontal"
+                                IsVisibleChanged="MenuWhenVisibilityChanged"
+                                Visibility="{Binding NotMenuEdit}">
+                                    <Button Background="Transparent" 
                                     BorderThickness="0"
-                                    IsVisibleChanged="MenuEditWhenVisibilityChanged"
-                                    Visibility="{Binding MenuEdit}"/>
-                            <StackPanel Orientation="Horizontal"
-                                    IsVisibleChanged="MenuWhenVisibilityChanged"
-                                    Visibility="{Binding NotMenuEdit}">
-                                <Button Background="Transparent" 
-                                        BorderThickness="0"
-                                        hc:IconElement.Geometry="{Binding MenuGeometry}"
-                                        hc:IconElement.Height="18"
-                                        hc:IconElement.Width="18"
-                                        IsEnabled="False"
-                                        Opacity="1"
-                                        Foreground="{Binding GeometryColor}"
+                                    hc:IconElement.Geometry="{Binding MenuGeometry}"
+                                    hc:IconElement.Height="18"
+                                    hc:IconElement.Width="18"
+                                    IsEnabled="False"
+                                    Opacity="1"
+                                    Foreground="{Binding GeometryColor}"
+                                    />
+                                    <TextBlock Text="{Binding MenuName}"
+                                        HorizontalAlignment="Center"
+                                        TextAlignment="Center"
+                                        VerticalAlignment="Center"
                                         />
-                                <TextBlock Text="{Binding MenuName}"
-                                           HorizontalAlignment="Center"
-                                           TextAlignment="Center"
-                                           VerticalAlignment="Center"
-                                            />
+                                </StackPanel>
                             </StackPanel>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </WrapPanel>
-    </hc:Card>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </WrapPanel>
+        </hc:Card>
+    </Grid>
 </UserControl>

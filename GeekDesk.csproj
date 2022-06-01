@@ -246,11 +246,13 @@
     <Compile Include="Util\AeroGlassHelper.cs" />
     <Compile Include="Util\BGSettingUtil.cs" />
     <Compile Include="Util\ColorUtil.cs" />
+    <Compile Include="Util\DragAdorner.cs" />
     <Compile Include="Util\GlobalHotKey.cs" />
     <Compile Include="Util\CommonCode.cs" />
     <Compile Include="Util\FileIcon.cs" />
     <Compile Include="Util\FileUtil.cs" />
     <Compile Include="Util\KeyUtil.cs" />
+    <Compile Include="Util\ListBoxDragDropManager.cs" />
     <Compile Include="Util\LogUtil.cs" />
     <Compile Include="Util\MarginHide.cs" />
     <Compile Include="Util\HttpUtil.cs" />

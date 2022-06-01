@@ -312,6 +312,9 @@ namespace GeekDesk.Control.UserControls.PannelCard
         private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (IS_EDIT) return;
+
+            MainWindow.mainWindow.RightCard.WrapCard.Visibility = Visibility.Collapsed;
+
             //设置对应菜单的图标列表
             if (MenuListBox.SelectedIndex == -1)
             {
@@ -321,6 +324,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
             {
                 appData.AppConfig.SelectedMenuIcons = appData.MenuList[MenuListBox.SelectedIndex].IconList;
             }
+            MainWindow.mainWindow.RightCard.WrapCard.Visibility = Visibility.Visible;
         }
 
 
@@ -426,6 +430,36 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 }
                 MenuListBox.SelectedIndex = index;
             }
+        }
+       
+
+        private void Menu_PreviewDragLeave(object sender, DragEventArgs e)
+        {
+            MyPoptip.IsOpen = false;
+        }
+
+        private void Menu_PreviewDragEnter(object sender, DragEventArgs e)
+        {
+            MenuInfo mi = (sender as ListBoxItem).DataContext as MenuInfo;
+            MyPoptipContent.Text = "移动至:" + mi.MenuName;
+            MyPoptip.VerticalOffset = 30;
+            MyPoptip.IsOpen = true;
+        }
+
+        private void Menu_MouseLeave(object sender, MouseEventArgs e)
+        {
+            MyPoptip.IsOpen = false;
+        }
+
+        private void Menu_Drop(object sender, DragEventArgs e)
+        {
+            MyPoptip.IsOpen = false;
+
+            MenuInfo mi = (sender as ListBoxItem).DataContext as MenuInfo;
+            IconInfo iconInfo = (IconInfo)e.Data.GetData(typeof(IconInfo));
+
+            appData.MenuList[MenuListBox.SelectedIndex].IconList.Remove(iconInfo);
+            appData.MenuList[MenuListBox.Items.IndexOf(mi)].IconList.Add(iconInfo);
         }
     }
 }

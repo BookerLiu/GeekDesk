@@ -37,7 +37,7 @@
         <cvt:IntToCornerRadius x:Key="IntToCornerRadius"/>
         <cvt:DoubleToGridLength x:Key="DoubleToGridLength"/>
         <Style x:Key="BorderBacStyle" TargetType="Border">
-            
+
         </Style>
 
     </Window.Resources>
@@ -77,6 +77,8 @@
                         <ColumnDefinition x:Name="RightColumn" Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
+
+                    <StackPanel HorizontalAlignment="Right" Panel.ZIndex="99" hc:Growl.GrowlParent="False" hc:Growl.Token="MainWindowGrowl" Grid.Column="1" Grid.Row="1"/>
                     <!--获取焦点用-->
                     <TextBox x:Name="EmptyTextBox" Width="0"/>
 

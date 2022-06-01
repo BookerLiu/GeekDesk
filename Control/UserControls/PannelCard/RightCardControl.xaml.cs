@@ -25,68 +25,75 @@ namespace GeekDesk.Control.UserControls.PannelCard
     {
         private AppData appData = MainWindow.appData;
 
-        private volatile static bool DROP_ICON = false;
-        private Thread dropCheckThread = null;
+        ListBoxDragDropManager<IconInfo> dragMgr;
+
+        //private Thread dropCheckThread = null;
 
         public RightCardControl()
         {
             InitializeComponent();
+            this.Loaded += RightCardControl_Loaded;
         }
 
-
-        #region 图标拖动
-        DelegateCommand<int[]> _swap;
-        public DelegateCommand<int[]> SwapCommand
+        private void RightCardControl_Loaded(object sender, RoutedEventArgs e)
         {
-            get
-            {
-                if (_swap == null)
-                    _swap = new DelegateCommand<int[]>(
-                        (indexes) =>
-                        {
-                            DROP_ICON = true;
-                            if (appData.AppConfig.IconSortType != SortType.CUSTOM
-                            && (dropCheckThread == null || !dropCheckThread.IsAlive))
-                            {
-                                dropCheckThread = new Thread(() =>
-                                {
-                                    do
-                                    {
-                                        DROP_ICON = false;
-                                        Thread.Sleep(1000);
-                                    } while (DROP_ICON);
-
-                                    MainWindow.appData.AppConfig.IconSortType = SortType.CUSTOM;
-                                    App.Current.Dispatcher.Invoke(() =>
-                                    {
-                                        if (MainWindow.mainWindow.Visibility == Visibility.Collapsed
-                                        || MainWindow.mainWindow.Opacity != 1)
-                                        {
-                                            Growl.WarningGlobal("已将图标排序规则重置为自定义!");
-                                        }
-                                        else
-                                        {
-                                            Growl.Warning("已将图标排序规则重置为自定义!", "MainWindowGrowl");
-                                        }
-                                    });
-                                });
-                                dropCheckThread.Start();
-                            }
-                            int fromS = indexes[0];
-                            int to = indexes[1];
-                            ObservableCollection<IconInfo> iconList = appData.MenuList[appData.AppConfig.SelectedMenuIndex].IconList;
-                            var elementSource = iconList[to];
-                            var dragged = iconList[fromS];
-
-                            iconList.Remove(dragged);
-                            iconList.Insert(to, dragged);
-                        }
-                    );
-                return _swap;
-            }
+            this.dragMgr = new ListBoxDragDropManager<IconInfo>(this.IconListBox);
         }
 
-        #endregion 图标拖动
+
+        //#region 图标拖动
+        //DelegateCommand<int[]> _swap;
+        //public DelegateCommand<int[]> SwapCommand
+        //{
+        //    get
+        //    {
+        //        if (_swap == null)
+        //            _swap = new DelegateCommand<int[]>(
+        //                (indexes) =>
+        //                {
+        //                    DROP_ICON = true;
+        //                    if (appData.AppConfig.IconSortType != SortType.CUSTOM
+        //                    && (dropCheckThread == null || !dropCheckThread.IsAlive))
+        //                    {
+        //                        dropCheckThread = new Thread(() =>
+        //                        {
+        //                            do
+        //                            {
+        //                                DROP_ICON = false;
+        //                                Thread.Sleep(1000);
+        //                            } while (DROP_ICON);
+
+        //                            MainWindow.appData.AppConfig.IconSortType = SortType.CUSTOM;
+        //                            App.Current.Dispatcher.Invoke(() =>
+        //                            {
+        //                                if (MainWindow.mainWindow.Visibility == Visibility.Collapsed
+        //                                || MainWindow.mainWindow.Opacity != 1)
+        //                                {
+        //                                    Growl.WarningGlobal("已将图标排序规则重置为自定义!");
+        //                                }
+        //                                else
+        //                                {
+        //                                    Growl.Warning("已将图标排序规则重置为自定义!", "MainWindowGrowl");
+        //                                }
+        //                            });
+        //                        });
+        //                        dropCheckThread.Start();
+        //                    }
+        //                    int fromS = indexes[0];
+        //                    int to = indexes[1];
+        //                    ObservableCollection<IconInfo> iconList = appData.MenuList[appData.AppConfig.SelectedMenuIndex].IconList;
+        //                    var elementSource = iconList[to];
+        //                    var dragged = iconList[fromS];
+
+        //                    iconList.Remove(dragged);
+        //                    iconList.Insert(to, dragged);
+        //                }
+        //            );
+        //        return _swap;
+        //    }
+        //}
+
+        //#endregion 图标拖动
 
 
 
