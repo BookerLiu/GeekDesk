@@ -36,6 +36,8 @@ namespace GeekDesk.Control.Windows
             RightCard.Content = about;
             this.Topmost = true;
             this.mainWindow = mainWindow;
+            UFG.Visibility = Visibility.Collapsed;
+            UFG.Visibility = Visibility.Visible;
         }
 
 

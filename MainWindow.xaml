@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uc="clr-namespace:GeekDesk.Control.UserControls.PannelCard"
         xmlns:cn="clr-namespace:GeekDesk.Constant"
+        xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
         mc:Ignorable="d"
         xmlns:cvt="clr-namespace:GeekDesk.Converts"
         x:Name="AppWindow"
@@ -20,7 +21,7 @@
         Opacity="0"
         Deactivated="AppWindow_Deactivated"
         SizeChanged="Window_SizeChanged"
-        KeyDown="OnKeyDown"
+        PreviewKeyDown="OnKeyDown"
         Focusable="True"
         MouseDown="MainWindow_MouseDown"
         MouseEnter="MainWindow_MouseEnter"
@@ -55,7 +56,7 @@
                               RenderingBias="Quality" ShadowDepth="2"/>
     </Window.Effect>
     <Border Margin="20" CornerRadius="{Binding AppConfig.PannelCornerRadius, Mode=TwoWay, Converter={StaticResource IntToCornerRadius}}"  BorderThickness="0"
-            Background="AliceBlue"
+            Background="#EBF7E3"
             Opacity="{Binding AppConfig.PannelOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}"
             hc:Dialog.Token="IconInfoDialog"
             Focusable="True"

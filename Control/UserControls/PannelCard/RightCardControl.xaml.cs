@@ -13,6 +13,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
@@ -722,6 +723,49 @@ namespace GeekDesk.Control.UserControls.PannelCard
             {
                 CardLockCM.Header = "锁定主面板";
             }
+        }
+
+        public void SearchListBoxIndexAdd()
+        {
+            if (SearchListBox.Items.Count > 0)
+            {
+                if (SearchListBox.SelectedIndex < SearchListBox.Items.Count - 1)
+                {
+                    SearchListBox.SelectedIndex += 1;
+                }
+            }
+        }
+
+        public void SearchListBoxIndexSub()
+        {
+            if (SearchListBox.Items.Count > 0)
+            {
+                if (SearchListBox.SelectedIndex > 0)
+                {
+                    SearchListBox.SelectedIndex -= 1;
+                }
+            }
+        }
+
+        public void StartupSelectionItem()
+        {
+            if (SearchListBox.SelectedItem != null)
+            {
+                IconInfo icon = SearchListBox.SelectedItem as IconInfo;
+                if (icon.AdminStartUp)
+                {
+                    StartIconApp(icon, IconStartType.ADMIN_STARTUP);
+                }
+                else
+                {
+                    StartIconApp(icon, IconStartType.DEFAULT_STARTUP);
+                }
+            }
+        }
+
+        private void SearchListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SearchListBox.ScrollIntoView(SearchListBox.SelectedItem);
         }
     }
 }

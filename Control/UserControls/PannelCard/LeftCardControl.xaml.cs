@@ -313,7 +313,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
         {
             if (IS_EDIT) return;
 
-            MainWindow.mainWindow.RightCard.WrapCard.Visibility = Visibility.Collapsed;
+            MainWindow.mainWindow.RightCard.WrapUFG.Visibility = Visibility.Collapsed;
 
             //设置对应菜单的图标列表
             if (MenuListBox.SelectedIndex == -1)
@@ -324,7 +324,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
             {
                 appData.AppConfig.SelectedMenuIcons = appData.MenuList[MenuListBox.SelectedIndex].IconList;
             }
-            MainWindow.mainWindow.RightCard.WrapCard.Visibility = Visibility.Visible;
+            MainWindow.mainWindow.RightCard.WrapUFG.Visibility = Visibility.Visible;
         }
 
 

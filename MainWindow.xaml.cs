@@ -16,6 +16,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using static GeekDesk.Util.ShowWindowFollowMouse;
@@ -52,7 +53,10 @@ namespace GeekDesk
             {
                 MarginHide.StartHide();
             }
+
         }
+
+       
 
 
         /// <summary>
@@ -116,6 +120,10 @@ namespace GeekDesk
             else
             {
                 SearchIconList.IconList.Clear();
+            }
+            if (RightCard.SearchListBox.Items.Count > 0)
+            {
+                RightCard.SearchListBox.SelectedIndex = 0;
             }
             RightCard.VerticalUFG.Visibility = Visibility.Visible;
         }
@@ -677,16 +685,24 @@ namespace GeekDesk
             {
                 HideApp();
             }
-            //else if (
-            //    appData.AppConfig.SearchType == SearchType.KEY_DOWN &&
-            //    (
-            //        (e.Key >= Key.D0 && e.Key <= Key.Z) 
-            //        || (e.Key >= Key.NumPad0 && e.Key < Key.NumPad9)
-            //        )
-            //    )
-            //{
-            //    ShowSearchBox();
-            //}
+
+            if (RunTimeStatus.SEARCH_BOX_SHOW && (e.Key == Key.Up 
+                || e.Key == Key.Down 
+                || e.Key == Key.Tab
+                || e.Key == Key.Enter
+                ))
+            {
+                if (e.Key == Key.Down || e.Key == Key.Tab)
+                {
+                    RightCard.SearchListBoxIndexAdd();
+                } else if (e.Key == Key.Up)
+                {
+                    RightCard.SearchListBoxIndexSub();
+                } else if (e.Key == Key.Enter)
+                {
+                    RightCard.StartupSelectionItem();
+                }
+            } 
         }
 
 
