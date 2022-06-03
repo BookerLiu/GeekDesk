@@ -107,5 +107,10 @@ namespace GeekDesk.Control.UserControls.Config
                 CountLowSort.Visibility = Visibility.Visible;
             }
         }
+
+        private void BakDataFile(object sender, RoutedEventArgs e)
+        {
+            CommonCode.BakAppData();
+        }
     }
 }

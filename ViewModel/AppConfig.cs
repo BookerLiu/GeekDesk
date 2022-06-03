@@ -93,8 +93,21 @@ namespace GeekDesk.ViewModel
 
         private SearchType searchType;
 
+        private string sysBakTime;  //系统自动备份时间
+
 
         #region GetSet
+        public string SysBakTime
+        {
+            get
+            {
+                return sysBakTime;
+            }
+            set
+            {
+                sysBakTime = value;
+            }
+        }
 
         public SearchType SearchType
         {
@@ -898,7 +911,7 @@ namespace GeekDesk.ViewModel
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            CommonCode.SaveAppData(MainWindow.appData);
+            CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
         }
 
         #endregion

@@ -18,9 +18,14 @@ namespace GeekDesk.Constant
         /// </summary>
         public static string DATA_FILE_PATH = APP_DIR + "Data";  //app数据文件路径
 
-        public static string LOG_FILE_PATH = APP_DIR + "Log.log";
+        /// <summary>
+        /// 备份文件路径
+        /// </summary>
+        public static string DATA_FILE_BAK_PATH = APP_DIR + "bak\\Data.bak";  //app数据文件路径
 
-        public static string ERROR_FILE_PATH = APP_DIR + "Error.log";
+        public static string LOG_FILE_PATH = APP_DIR + "logs\\log.log";
+
+        public static string ERROR_FILE_PATH = APP_DIR + "logs\\error.log";
 
         public static int SHADOW_WIDTH = 20;
 

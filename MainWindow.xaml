@@ -6,6 +6,7 @@
         xmlns:uc="clr-namespace:GeekDesk.Control.UserControls.PannelCard"
         xmlns:cn="clr-namespace:GeekDesk.Constant"
         xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
+        xmlns:local="clr-namespace:GeekDesk"
         mc:Ignorable="d"
         xmlns:cvt="clr-namespace:GeekDesk.Converts"
         x:Name="AppWindow"
@@ -26,6 +27,7 @@
         MouseDown="MainWindow_MouseDown"
         MouseEnter="MainWindow_MouseEnter"
         GotFocus="Window_GotFocus"
+        Loaded="Window_Loaded"
         >
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="15"/>
@@ -124,7 +126,6 @@
                                 FocusVisualStyle="{x:Null}"
                                 />
                         </hc:UniformSpacingPanel>
-
                     </DockPanel>
 
 
@@ -151,6 +152,7 @@
                             <ContextMenu Width="130" x:Name="TaskbarContextMenu">
                                 <MenuItem Header="打开面板" Click="ShowApp"/>
                                 <MenuItem Header="拾色器" Click="ColorPicker"/>
+                                <MenuItem Header="备份" Click="BakDataFile"/>
                                 <MenuItem Header="隐藏图标" Click="CloseBarIcon"/>
                                 <MenuItem Header="待办"  Click="BacklogMenuClick"/>
                                 <MenuItem Header="程序目录"  Click="OpenThisDir"/>

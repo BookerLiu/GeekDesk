@@ -62,7 +62,7 @@ namespace GeekDesk.Control.Other
             }
             ToDoTask.activityBacklog[info].Close(); //关闭桌面通知
             ToDoTask.activityBacklog.Remove(info);//激活任务删除
-            CommonCode.SaveAppData(appData);
+            CommonCode.SaveAppData(appData, Constants.DATA_FILE_PATH);
         }
 
 

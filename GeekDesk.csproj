@@ -167,6 +167,9 @@
     <Compile Include="Constant\TodoTaskExecType.cs" />
     <Compile Include="Constant\BGStyle.cs" />
     <Compile Include="Constant\UpdateType.cs" />
+    <Compile Include="Control\Other\GlobalMsgNotification.xaml.cs">
+      <DependentUpon>GlobalMsgNotification.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Control\Other\BacklogNotificatin.xaml.cs">
       <DependentUpon>BacklogNotificatin.xaml</DependentUpon>
     </Compile>
@@ -290,6 +293,10 @@
     <Compile Include="ViewModel\IconfontInfo.cs" />
     <Compile Include="ViewModel\IconInfo.cs" />
     <Compile Include="ViewModel\MenuInfo.cs" />
+    <Page Include="Control\Other\GlobalMsgNotification.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Control\Other\BacklogNotificatin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -515,4 +522,13 @@
   <Import Project="packages\Microsoft.Build.Tasks.Git.1.0.0\build\Microsoft.Build.Tasks.Git.targets" Condition="Exists('packages\Microsoft.Build.Tasks.Git.1.0.0\build\Microsoft.Build.Tasks.Git.targets')" />
   <Import Project="packages\Microsoft.SourceLink.Common.1.0.0\build\Microsoft.SourceLink.Common.targets" Condition="Exists('packages\Microsoft.SourceLink.Common.1.0.0\build\Microsoft.SourceLink.Common.targets')" />
   <Import Project="packages\Microsoft.SourceLink.GitHub.1.0.0\build\Microsoft.SourceLink.GitHub.targets" Condition="Exists('packages\Microsoft.SourceLink.GitHub.1.0.0\build\Microsoft.SourceLink.GitHub.targets')" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>; Move all assemblies and related files to lib folder
+ROBOCOPY "$(TargetDir) " "$(TargetDir)lib\ " /XF Data *.exe *.config *.manifest /XD lib logs bak /E /IS /MOVE
+if %25errorlevel%25 leq 4 exit 0 else exit %25errorlevel%25</PostBuildEvent>
+  </PropertyGroup>
 </Project>

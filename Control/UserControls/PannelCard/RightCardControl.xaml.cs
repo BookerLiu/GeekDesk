@@ -376,7 +376,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 MainWindow.appData.MenuList[appData.AppConfig.SelectedMenuIndex].IconList.Add(iconInfo);
             }
             CommonCode.SortIconList();
-            CommonCode.SaveAppData(MainWindow.appData);
+            CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
         }
 
         /// <summary>

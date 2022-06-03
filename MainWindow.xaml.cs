@@ -8,6 +8,7 @@ using GeekDesk.Task;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using GeekDesk.ViewModel.Temp;
+using Microsoft.Win32;
 using NPinyin;
 using System;
 using System.Collections.ObjectModel;
@@ -38,14 +39,19 @@ namespace GeekDesk
         public static MainWindow mainWindow;
         public MainWindow()
         {
+            //加载数据
             LoadData();
-            InitializeComponent();
-            mainWindow = this;
-            this.Topmost = true;
-            this.Loaded += Window_Loaded;
-            this.SizeChanged += MainWindow_Resize;
-            ToDoTask.BackLogCheck();
 
+            InitializeComponent();
+
+            //用于其他类访问
+            mainWindow = this;
+
+            //置于顶层
+            this.Topmost = true;
+
+            //执行待办提醒
+            ToDoTask.BackLogCheck();
 
             ////实例化隐藏 Hide类，进行时间timer设置
             MarginHide.ReadyHide(this);
@@ -60,7 +66,7 @@ namespace GeekDesk
 
 
         /// <summary>
-        /// 显示搜索框
+        /// 搜索快捷键按下
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -72,6 +78,9 @@ namespace GeekDesk
             }
         }
 
+        /// <summary>
+        /// 显示搜索框
+        /// </summary>
         private void ShowSearchBox()
         {
             RunTimeStatus.SEARCH_BOX_SHOW = true;
@@ -128,6 +137,9 @@ namespace GeekDesk
             RightCard.VerticalUFG.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// 隐藏搜索框
+        /// </summary>
         public void HidedSearchBox()
         {
             RunTimeStatus.SEARCH_BOX_SHOW = false;
@@ -214,6 +226,10 @@ namespace GeekDesk
 
             //更新线程开启  检测更新
             UpdateThread.Update();
+
+            //自动备份一次数据
+            appData.AppConfig.SysBakTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            CommonCode.SaveAppData(appData, Constants.DATA_FILE_BAK_PATH);
         }
 
         /// <summary>
@@ -337,21 +353,6 @@ namespace GeekDesk
             }
         }
 
-
-        /// <summary>
-        /// 重置窗体大小 写入缓存
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void MainWindow_Resize(object sender, System.EventArgs e)
-        {
-            if (this.DataContext != null)
-            {
-                AppData appData = this.DataContext as AppData;
-                appData.AppConfig.WindowWidth = this.Width;
-                appData.AppConfig.WindowHeight = this.Height;
-            }
-        }
 
 
 
@@ -752,6 +753,22 @@ namespace GeekDesk
         private void AppWindow_Deactivated(object sender, EventArgs e)
         {
             AppWindowLostFocus();
+        }
+
+        /// <summary>
+        /// 备份数据文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        [Obsolete]
+        private void BakDataFile(object sender, RoutedEventArgs e)
+        {
+            Thread t = new Thread(() =>
+            {
+                CommonCode.BakAppData();
+            });
+            t.ApartmentState = ApartmentState.STA;
+            t.Start();
         }
 
     }

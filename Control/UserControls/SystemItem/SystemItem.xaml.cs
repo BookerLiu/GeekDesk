@@ -42,7 +42,7 @@ namespace GeekDesk.Control.UserControls.SystemItem
                 iconInfo = CommonCode.GetIconInfoByPath(thisInfo.LnkPath_NoWrite);
             }
             menuInfo.IconList.Add(iconInfo);
-            CommonCode.SaveAppData(MainWindow.appData);
+            CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
         }
     }
 }

@@ -1,0 +1,54 @@
+﻿<Border x:Class="GeekDesk.Control.Other.GlobalMsgNotification"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        BorderThickness="0"
+        Style="{StaticResource BorderBG}"
+        Margin="15"
+        BorderBrush="{DynamicResource BorderBrush}"
+        Width="320"
+        Height="400">
+    <Border.Background>
+        <SolidColorBrush Color="AliceBlue" Opacity="0.96"/>
+    </Border.Background>
+    <Grid>
+
+        <StackPanel>
+            <Image Source="/Resource/Image/BacklogImg.png" Width="260" Margin="0,20,0,0"/>
+            <hc:Card Width="260" Height="220" BorderThickness="0" Effect="{DynamicResource EffectShadow2}" Margin="0,20,0,0">
+            
+            <Border CornerRadius="4,4,0,0" Height="160" Padding="10,0,10,0">
+                    <ScrollViewer>
+                        <TextBlock TextOptions.TextFormattingMode="Display"
+                                   TextOptions.TextHintingMode="Animated"
+                                   UseLayoutRounding="True"
+                                   TextWrapping="Wrap"
+                                   FontStyle="Normal"
+                                   FontSize="15"
+                                   LineHeight="22"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   Text="{Binding Msg}"/>
+                    </ScrollViewer>
+            </Border>
+            
+            
+            <!--<hc:Card.Footer>
+                <StackPanel Margin="10" Width="160">
+            
+                    <TextBlock TextWrapping="NoWrap" FontSize="20"  Style="{DynamicResource TextBlockLargeBold}" TextTrimming="CharacterEllipsis" 
+                                       Text="{Binding Title}" 
+                                       HorizontalAlignment="Left"/>
+                    
+            
+                    <TextBlock TextWrapping="NoWrap" Style="{DynamicResource TextBlockDefault}" TextTrimming="CharacterEllipsis" 
+                                        Margin="0,6,0,0"
+                                       HorizontalAlignment="Left"/>
+                </StackPanel>
+            </hc:Card.Footer>-->
+        </hc:Card>
+        </StackPanel>
+
+        <Button Click="Close_Click" Content="朕已阅" Margin="10,0,10,20" Width="298" VerticalAlignment="Bottom"/>
+    </Grid>
+</Border>
