@@ -12,7 +12,10 @@ namespace GeekDesk.Util
             try
             {
                 Exception ex = exception as Exception;
-
+                if (!Directory.Exists(Constants.ERROR_FILE_PATH.Substring(0, Constants.ERROR_FILE_PATH.LastIndexOf("\\"))))
+                {
+                    Directory.CreateDirectory(Constants.ERROR_FILE_PATH.Substring(0, Constants.ERROR_FILE_PATH.LastIndexOf("\\")));
+                }
                 using (FileStream fs = File.Open(Constants.ERROR_FILE_PATH, FileMode.OpenOrCreate, FileAccess.ReadWrite))
                 {
                     fs.Seek(0, SeekOrigin.End);
@@ -58,6 +61,10 @@ namespace GeekDesk.Util
         {
             try
             {
+                if (!Directory.Exists(Constants.LOG_FILE_PATH.Substring(0, Constants.LOG_FILE_PATH.LastIndexOf("\\"))))
+                {
+                    Directory.CreateDirectory(Constants.LOG_FILE_PATH.Substring(0, Constants.LOG_FILE_PATH.LastIndexOf("\\")));
+                }
                 using (FileStream fs = File.Open(Constants.LOG_FILE_PATH, FileMode.OpenOrCreate, FileAccess.ReadWrite))
                 {
                     fs.Seek(0, SeekOrigin.End);
