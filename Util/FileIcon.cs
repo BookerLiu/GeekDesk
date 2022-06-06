@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -10,15 +11,30 @@ namespace GeekDesk.Util
 {
     public class FileIcon
     {
-
-        private static List<string> GetBlurExts()
-        {
-            List<string> list = new List<string>();
-            list.Add(".exe");
-            list.Add(".cer");
-            list.Add(".lnk");
-            return list;
+        static List<string> blurExtsList;
+        static List<int[]> pixelList;
+        static FileIcon() {
+            blurExtsList = new List<string>
+            {
+                ".exe",
+                ".cer",
+                ".lnk",
+                ".chm"
+            };
+            pixelList = new List<int[]>
+            {
+                new int[]{ 256 / 4, 256 / 4 },
+                new int[]{ 256 / 2, 256 / 4 },
+                new int[]{ 256 / 4 * 3, 256 / 4 },
+                new int[]{ 256 / 4, 256 / 2 },
+                new int[]{ 256 / 4, 256 / 4 * 3 },
+                new int[]{ 256 / 4 * 3, 256 / 2 },
+                new int[]{ 256 / 4 * 3, 256 / 4 * 3 },
+                new int[]{ 256 / 2, 256 / 4 * 3 },
+            };
         }
+
+      
 
         [DllImport("User32.dll")]
         public static extern int PrivateExtractIcons(
@@ -53,7 +69,7 @@ namespace GeekDesk.Util
                 ip = hIcons[0];
                 ico = Icon.FromHandle(ip);
             }
-            else if (GetBlurExts().Contains(ext))
+            else if (blurExtsList.Contains(ext))
             {
                 ico = Icon.ExtractAssociatedIcon(filePath);
             }
@@ -61,7 +77,13 @@ namespace GeekDesk.Util
             {
                 ip = GetJumboIcon(GetIconIndex(filePath));
                 ico = Icon.FromHandle(ip);
+                if (CheckIsSmallIco(ico.ToBitmap()))
+                {
+                    ico = Icon.ExtractAssociatedIcon(filePath);
+                }
             }
+
+            
 
             Bitmap bmp = ico.ToBitmap();
             MemoryStream strm = new MemoryStream();
@@ -73,6 +95,7 @@ namespace GeekDesk.Util
             myEncoderParameters.Param[0] = myEncoderParameter;
 
             bmp.Save(strm, myImageCodecInfo, myEncoderParameters);
+
             BitmapImage bmpImage = new BitmapImage();
             bmpImage.BeginInit();
             strm.Seek(0, SeekOrigin.Begin);
@@ -82,6 +105,7 @@ namespace GeekDesk.Util
             {
                 Shell32.DestroyIcon(ip);
             }
+            DeleteObject(bmp.GetHbitmap());
             return bmpImage.Clone();
         }
 
@@ -97,6 +121,30 @@ namespace GeekDesk.Util
             }
             return null;
         }
+
+        private static bool CheckIsSmallIco(Bitmap bm)
+        {
+            Color color;
+            int count = 0;
+            foreach (int[] arr in pixelList)
+            {
+                color = bm.GetPixel(arr[0], arr[1]);
+                if (color.A == 0)
+                {
+                    count++;
+                }
+            }
+            DeleteObject(bm.GetHbitmap());
+            if (count >= 6)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+        public static extern bool DeleteObject(IntPtr onj);
 
 
 
