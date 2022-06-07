@@ -94,6 +94,7 @@ namespace GeekDesk.Util
         /// <param name="appData"></param>
         public static void SaveAppData(AppData appData, string filePath)
         {
+            appData.AppConfig.SysBakTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             if (!Directory.Exists(filePath.Substring(0, filePath.LastIndexOf("\\"))))
             {
                 Directory.CreateDirectory(filePath.Substring(0, filePath.LastIndexOf("\\")));
@@ -161,7 +162,7 @@ namespace GeekDesk.Util
             //    ext = System.IO.Path.GetExtension(path).ToLower();
             //}
 
-            string iconPath = null;
+            string iconPath;
             //if (".lnk".Equals(ext))
             //{
 
@@ -180,17 +181,18 @@ namespace GeekDesk.Util
             BitmapImage bi = ImageUtil.GetBitmapIconByPath(iconPath);
             IconInfo iconInfo = new IconInfo
             {
-                Path = path,
-                LnkPath = tempPath,
-                BitmapImage = bi,
-                StartArg = FileUtil.GetArgByLnk(tempPath)
+                Path_NoWrite = path,
+                LnkPath_NoWrite = tempPath,
+                BitmapImage_NoWrite = bi,
+                StartArg_NoWrite = FileUtil.GetArgByLnk(tempPath)
             };
-            iconInfo.DefaultImage = iconInfo.ImageByteArr;
-            iconInfo.Name = System.IO.Path.GetFileNameWithoutExtension(tempPath);
+            iconInfo.DefaultImage_NoWrite = iconInfo.ImageByteArr;
+            iconInfo.Name_NoWrite = System.IO.Path.GetFileNameWithoutExtension(tempPath);
             if (StringUtil.IsEmpty(iconInfo.Name))
             {
-                iconInfo.Name = path;
+                iconInfo.Name_NoWrite = path;
             }
+            iconInfo.RelativePath_NoWrite = FileUtil.MakeRelativePath(Constants.APP_DIR + "GeekDesk.exe", iconInfo.Path);
             return iconInfo;
         }
 

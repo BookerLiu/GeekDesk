@@ -227,13 +227,11 @@ namespace GeekDesk
             //更新线程开启  检测更新
             UpdateThread.Update();
 
-            //自动备份一次数据
-            appData.AppConfig.SysBakTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            CommonCode.SaveAppData(appData, Constants.DATA_FILE_BAK_PATH);
+            //建立相对路径
+            RelativePathThread.MakeRelativePath();
 
             //毛玻璃  暂时未解决阴影问题
             //BlurGlassUtil.EnableBlur(this);
-            AeroGlassUtil.GlassWindow(this);
         }
 
         /// <summary>

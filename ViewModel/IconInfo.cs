@@ -24,8 +24,35 @@ namespace GeekDesk.ViewModel
         private string startArg; //启动参数
         private string lnkPath;
 
+        private string relativePath; //相对路径
+
         private IconType iconType = IconType.OTHER;
 
+
+        public string RelativePath_NoWrite
+        {
+            get
+            {
+                return relativePath;
+            }
+            set
+            {
+                relativePath = value;
+            }
+        }
+
+        public string RelativePath
+        {
+            get
+            {
+                return relativePath;
+            }
+            set
+            {
+                relativePath = value;
+                OnPropertyChanged("RelativePath");
+            }
+        }
 
         public string LnkPath_NoWrite
         {
