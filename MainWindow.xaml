@@ -29,9 +29,7 @@
         GotFocus="Window_GotFocus"
         Loaded="Window_Loaded"
         >
-    <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="0" ResizeBorderThickness="15"/>
-    </WindowChrome.WindowChrome>
+    
     <Window.Resources>
         <RoutedUICommand x:Key="SearchHotKeyDown" Text="SearchHotKeyDown"/>
 
@@ -39,37 +37,31 @@
         <cvt:OpcityConvert x:Key="OpcityConvert"/>
         <cvt:IntToCornerRadius x:Key="IntToCornerRadius"/>
         <cvt:DoubleToGridLength x:Key="DoubleToGridLength"/>
-        <Style x:Key="BorderBacStyle" TargetType="Border">
-
-        </Style>
-
     </Window.Resources>
+    
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0" CornerRadius="30" ResizeBorderThickness="15"/>
+    </WindowChrome.WindowChrome>
+    
     <Window.InputBindings>
         <KeyBinding Gesture="Ctrl+F" Key="F"  Command="{StaticResource SearchHotKeyDown}"/>
     </Window.InputBindings>
     <Window.CommandBindings>
         <CommandBinding Command="{StaticResource SearchHotKeyDown}" CanExecute="SearchHotKeyDown"/>
-        <!--<CommandBinding Command="ChangeImgBG" Executed="ChangeImgBG_Executed" CanExecute="ChangeImgBG_CanExecute" />-->
-
     </Window.CommandBindings>
 
-    <Window.Effect>
-        <DropShadowEffect BlurRadius="30" Direction="-90" Color="Gray"
-                              RenderingBias="Quality" ShadowDepth="2"/>
-    </Window.Effect>
-    <Border Margin="20" CornerRadius="{Binding AppConfig.PannelCornerRadius, Mode=TwoWay, Converter={StaticResource IntToCornerRadius}}"  BorderThickness="0"
-            Background="#EBF7E3"
-            Opacity="{Binding AppConfig.PannelOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}"
-            hc:Dialog.Token="IconInfoDialog"
+    <!--Opacity="{Binding AppConfig.PannelOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}"-->
+    <Border Margin="20" CornerRadius="{Binding AppConfig.PannelCornerRadius, Mode=TwoWay, Converter={StaticResource IntToCornerRadius}}"  
+            BorderThickness="0"
             Focusable="True"
+            x:Name="BGBorder"
+            hc:Dialog.Token="IconInfoDialog"
             >
-        <hc:DialogContainer Focusable="True">
-            <!-- -1是为了解决圆角白线的问题-->
-            <Border x:Name="BGBorder" 
-                    CornerRadius="{Binding AppConfig.PannelCornerRadius, Mode=TwoWay, Converter={StaticResource IntToCornerRadius}}"  
-                    BorderThickness="0"
-                    Margin="-1"
-                    >
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="30" Direction="-90" Color="Gray"
+                              RenderingBias="Quality" ShadowDepth="2"/>
+        </Border.Effect>
+            <hc:DialogContainer Focusable="True">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" MouseMove="DragMove"></RowDefinition>
@@ -167,8 +159,7 @@
 
                     <StackPanel hc:Growl.GrowlParent="True" VerticalAlignment="Top" Margin="0,10,10,0"/>
                 </Grid>
-            </Border>
-        </hc:DialogContainer>
+            </hc:DialogContainer>
     </Border>
 
 </Window>

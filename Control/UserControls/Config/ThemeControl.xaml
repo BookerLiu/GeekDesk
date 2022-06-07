@@ -149,7 +149,7 @@
                    
 
                     <hc:UniformSpacingPanel Spacing="10" Margin="0,10,0,0" Grid.ColumnSpan="4">
-                        <TextBlock Text="背景图片不透明度" VerticalAlignment="Center"/>
+                        <TextBlock Text="背景不透明度" VerticalAlignment="Center"/>
                     </hc:UniformSpacingPanel>
                     <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
                         <hc:PreviewSlider Value="{Binding BgOpacity}"
@@ -164,7 +164,7 @@
                     </hc:UniformSpacingPanel>
 
 
-                    <hc:UniformSpacingPanel Spacing="10" Margin="0,10,0,0" Grid.ColumnSpan="4">
+                    <!--<hc:UniformSpacingPanel Spacing="10" Margin="0,10,0,0" Grid.ColumnSpan="4">
                         <TextBlock Text="主面板不透明度" VerticalAlignment="Center"/>
                     </hc:UniformSpacingPanel>
                     <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
@@ -177,7 +177,7 @@
                                 <Label Style="{StaticResource LabelPrimary}" Content="{Binding Path=(hc:PreviewSlider.PreviewPosition),RelativeSource={RelativeSource Self}}" ContentStringFormat="#0"/>
                             </hc:PreviewSlider.PreviewContent>
                         </hc:PreviewSlider>
-                    </hc:UniformSpacingPanel>
+                    </hc:UniformSpacingPanel>-->
 
                     <hc:UniformSpacingPanel Spacing="10" Margin="0,10,0,0" Grid.ColumnSpan="4">
                         <TextBlock Text="主面板圆角大小" VerticalAlignment="Center"/>

@@ -10,12 +10,21 @@ namespace GeekDesk.Converts
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             int val = int.Parse(value.ToString());
+            var param = 0;
+            if (parameter != null)
+            {
+                param = int.Parse(parameter.ToString());
+            }
+            if (val + param > 0)
+            {
+                val += param;
+            }
             return new CornerRadius(val);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }

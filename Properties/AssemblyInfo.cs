@@ -4,7 +4,7 @@ using System.Windows;
 
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
-// 与程序集关联的信息。
+// 与程序集关联的信息。 
 [assembly: AssemblyTitle("GeekDesk")]
 [assembly: AssemblyDescription("小巧、美观的桌面快速启动工具")]
 [assembly: AssemblyConfiguration("")]

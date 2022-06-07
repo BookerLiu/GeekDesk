@@ -21,6 +21,7 @@ namespace DraggAnimatedPanel
         #endregion
         static DraggAnimatedPanel()
         {
+
             DefaultStyleKeyProperty.OverrideMetadata(typeof(DraggAnimatedPanel), new FrameworkPropertyMetadata(typeof(DraggAnimatedPanel)));
         }
 
