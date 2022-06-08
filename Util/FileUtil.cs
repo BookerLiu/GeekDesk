@@ -157,24 +157,32 @@ namespace GeekDesk.Util
             }
         }
 
-        public static String MakeRelativePath(String fromPath, String toPath)
+        public static string MakeRelativePath(string fromPath, string toPath)
         {
-            if (String.IsNullOrEmpty(fromPath)) throw new ArgumentNullException("fromPath");
-            if (String.IsNullOrEmpty(toPath)) throw new ArgumentNullException("toPath");
+            //if (string.IsNullOrEmpty(fromPath)) throw new ArgumentNullException("fromPath");
+            //if (string.IsNullOrEmpty(toPath)) throw new ArgumentNullException("toPath");
 
-            Uri fromUri = new Uri(fromPath);
-            Uri toUri = new Uri(toPath);
+            //Uri fromUri = new Uri(fromPath);
+            //Uri toUri = new Uri(toPath);
 
-            if (fromUri.Scheme != toUri.Scheme) { return toPath; } // path can't be made relative.
+            //if (fromUri.Scheme != toUri.Scheme) { return toPath; } // path can't be made relative.
 
-            Uri relativeUri = fromUri.MakeRelativeUri(toUri);
-            String relativePath = Uri.UnescapeDataString(relativeUri.ToString());
+            //Uri relativeUri = fromUri.MakeRelativeUri(toUri);
+            //string relativePath = Uri.UnescapeDataString(relativeUri.ToString());
 
-            if (toUri.Scheme.Equals("file", StringComparison.InvariantCultureIgnoreCase))
-            {
-                relativePath = relativePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
-            }
-
+            //if (toUri.Scheme.Equals("file", StringComparison.InvariantCultureIgnoreCase))
+            //{
+            //    relativePath = relativePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+            //}
+            Uri file = new Uri(@toPath);
+            // Must end in a slash to indicate folder
+            Uri folder = new Uri(@fromPath);
+            string relativePath =
+            Uri.UnescapeDataString(
+                folder.MakeRelativeUri(file)
+                    .ToString()
+                    .Replace('/', Path.DirectorySeparatorChar)
+                );
             return relativePath;
         }
 

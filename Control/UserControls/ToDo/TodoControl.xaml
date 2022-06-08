@@ -6,7 +6,6 @@
              xmlns:local="clr-namespace:GeekDesk.Control.UserControls.PannelCard"
              xmlns:hc="https://handyorg.github.io/handycontrol" xmlns:viewmodel="clr-namespace:GeekDesk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:ToDoInfo}"
              mc:Ignorable="d" 
-             xmlns:cst="clr-namespace:GeekDesk.Converts"
              Background="Transparent"
              >
 

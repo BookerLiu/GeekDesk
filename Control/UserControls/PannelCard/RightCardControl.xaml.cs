@@ -171,33 +171,51 @@ namespace GeekDesk.Control.UserControls.PannelCard
             StartIconApp(icon, IconStartType.SHOW_IN_EXPLORE);
         }
 
-        private void StartIconApp(IconInfo icon, IconStartType type)
+        private void StartIconApp(IconInfo icon, IconStartType type, bool useRelativePath = false)
         {
+            
             try
             {
                 using (Process p = new Process())
                 {
                     string startArg = icon.StartArg;
-
+                    
                     if (startArg != null && Constants.SYSTEM_ICONS.ContainsKey(startArg))
                     {
                         StartSystemApp(startArg, type);
                     }
                     else
                     {
-                        p.StartInfo.FileName = icon.Path;
+                        string path;
+                        if (useRelativePath)
+                        {
+                            string fullPath = Path.Combine(Constants.APP_DIR, icon.RelativePath);
+                            path = Path.GetFullPath(fullPath);
+                        } else
+                        {
+                            path = icon.Path;
+                        }
+                        p.StartInfo.FileName = path;
                         if (!StringUtil.IsEmpty(startArg))
                         {
                             p.StartInfo.Arguments = startArg;
                         }
                         if (icon.IconType == IconType.OTHER)
                         {
-                            if (!File.Exists(icon.Path) && !Directory.Exists(icon.Path))
+                            if (!File.Exists(path) && !Directory.Exists(path))
                             {
-                                HandyControl.Controls.Growl.WarningGlobal("程序启动失败(文件路径不存在或已删除)!");
-                                return;
+                                //如果没有使用相对路径  那么使用相对路径启动一次
+                                if (!useRelativePath)
+                                {
+                                    StartIconApp(icon, type, true);
+                                    return;
+                                } else
+                                {
+                                    HandyControl.Controls.Growl.WarningGlobal("程序启动失败(文件路径不存在或已删除)!");
+                                    return;
+                                }
                             }
-                            p.StartInfo.WorkingDirectory = icon.Path.Substring(0, icon.Path.LastIndexOf("\\"));
+                            p.StartInfo.WorkingDirectory = path.Substring(0, path.LastIndexOf("\\"));
                             switch (type)
                             {
                                 case IconStartType.ADMIN_STARTUP:
@@ -265,6 +283,11 @@ namespace GeekDesk.Control.UserControls.PannelCard
                             }
                         }
                         p.Start();
+                        if (useRelativePath)
+                        {
+                            //如果使用相对路径启动成功 那么重新设置程序绝对路径
+                            icon.Path = path;
+                        }
                     }
                 }
                 icon.Count++;
@@ -277,8 +300,15 @@ namespace GeekDesk.Control.UserControls.PannelCard
             }
             catch (Exception e)
             {
-                HandyControl.Controls.Growl.WarningGlobal("程序启动失败(不支持的启动方式)!");
-                LogUtil.WriteErrorLog(e, "程序启动失败:path=" + icon.Path + ",type=" + type);
+                if (!useRelativePath)
+                {
+                    StartIconApp(icon, type, true);
+                }
+                else
+                {
+                    HandyControl.Controls.Growl.WarningGlobal("程序启动失败(可能为不支持的启动方式)!");
+                    LogUtil.WriteErrorLog(e, "程序启动失败:path=" + icon.Path + ",type=" + type);
+                }
             }
         }
 

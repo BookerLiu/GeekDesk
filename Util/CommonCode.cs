@@ -88,22 +88,27 @@ namespace GeekDesk.Util
             return appData;
         }
 
+        private readonly static object _MyLock = new object();
         /// <summary>
         /// 保存app 数据
         /// </summary>
         /// <param name="appData"></param>
         public static void SaveAppData(AppData appData, string filePath)
         {
-            appData.AppConfig.SysBakTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            if (!Directory.Exists(filePath.Substring(0, filePath.LastIndexOf("\\"))))
+            lock (_MyLock)
             {
-                Directory.CreateDirectory(filePath.Substring(0, filePath.LastIndexOf("\\")));
+                appData.AppConfig.SysBakTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                if (!Directory.Exists(filePath.Substring(0, filePath.LastIndexOf("\\"))))
+                {
+                    Directory.CreateDirectory(filePath.Substring(0, filePath.LastIndexOf("\\")));
+                }
+                using (FileStream fs = new FileStream(filePath, FileMode.Create))
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    bf.Serialize(fs, appData);
+                }
             }
-            using (FileStream fs = new FileStream(filePath, FileMode.Create))
-            {
-                BinaryFormatter bf = new BinaryFormatter();
-                bf.Serialize(fs, appData);
-            }
+            
         }
 
         public static void BakAppData()
@@ -192,7 +197,11 @@ namespace GeekDesk.Util
             {
                 iconInfo.Name_NoWrite = path;
             }
-            iconInfo.RelativePath_NoWrite = FileUtil.MakeRelativePath(Constants.APP_DIR + "GeekDesk.exe", iconInfo.Path);
+            string relativePath = FileUtil.MakeRelativePath(Constants.APP_DIR + "GeekDesk.exe", iconInfo.Path);
+            if (!string.IsNullOrEmpty(relativePath) && !relativePath.Equals(iconInfo.Path))
+            {
+                iconInfo.RelativePath_NoWrite = relativePath;
+            }
             return iconInfo;
         }
 
