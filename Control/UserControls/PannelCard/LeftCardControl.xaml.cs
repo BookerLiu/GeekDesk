@@ -1,5 +1,6 @@
 ﻿using DraggAnimatedPanelExample;
 using GeekDesk.Constant;
+using GeekDesk.Control.Other;
 using GeekDesk.Control.Windows;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
@@ -23,9 +24,6 @@ namespace GeekDesk.Control.UserControls.PannelCard
         private AppData appData = MainWindow.appData;
         private SolidColorBrush bac = new SolidColorBrush(Color.FromRgb(236, 236, 236));
 
-
-        //是否正在修改菜单
-        public bool IS_EDIT = false;
 
         public LeftCardControl()
         {
@@ -205,7 +203,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
         /// <param name="e"></param>
         private void RenameMenu(object sender, RoutedEventArgs e)
         {
-            IS_EDIT = true;
+            RunTimeStatus.IS_MENU_EDIT = true;
             MenuInfo menuInfo = ((MenuItem)sender).Tag as MenuInfo;
             menuInfo.MenuEdit = (int)Visibility.Visible;
         }
@@ -275,7 +273,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
                     menuInfo.MenuName = text;
                     menuInfo.MenuEdit = Visibility.Collapsed;
                 }
-                IS_EDIT = false;
+                RunTimeStatus.IS_MENU_EDIT = false;
                 //为了解决无法修改菜单的问题
                 MainWindow.mainWindow.SearchBox.Focus();
                 MenuListBox.SelectedIndex = menuSelectIndexTemp;
@@ -311,7 +309,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
         private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (IS_EDIT) return;
+            if (RunTimeStatus.IS_MENU_EDIT) return;
 
             MainWindow.mainWindow.RightCard.WrapUFG.Visibility = Visibility.Collapsed;
 
@@ -322,7 +320,18 @@ namespace GeekDesk.Control.UserControls.PannelCard
             }
             else
             {
-                appData.AppConfig.SelectedMenuIcons = appData.MenuList[MenuListBox.SelectedIndex].IconList;
+                if (appData.MenuList[MenuListBox.SelectedIndex].IsEncrypt)
+                {
+                    appData.AppConfig.SelectedMenuIcons = null;
+                    RunTimeStatus.SHOW_MENU_PASSWORDBOX = true;
+                    MainWindow.mainWindow.RightCard.PDDialog.Title.Text = "输入密码";
+                    MainWindow.mainWindow.RightCard.PDDialog.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    MainWindow.mainWindow.RightCard.PDDialog.Visibility = Visibility.Collapsed;
+                    appData.AppConfig.SelectedMenuIcons = appData.MenuList[MenuListBox.SelectedIndex].IconList;
+                }
             }
             MainWindow.mainWindow.RightCard.WrapUFG.Visibility = Visibility.Visible;
         }
@@ -335,7 +344,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
         /// <param name="e"></param>
         private void Menu_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (appData.AppConfig.HoverMenu && !IS_EDIT)
+            if (appData.AppConfig.HoverMenu && !RunTimeStatus.IS_MENU_EDIT)
             {
                 Thread t = new Thread(() =>
                 {
@@ -406,6 +415,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
         private void Menu_MouseWheel(object sender, MouseWheelEventArgs e)
         {
+            if (RunTimeStatus.IS_MENU_EDIT) return;
             if (e.Delta < 0)
             {
                 int index = MenuListBox.SelectedIndex;
@@ -460,6 +470,105 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
             appData.MenuList[MenuListBox.SelectedIndex].IconList.Remove(iconInfo);
             appData.MenuList[MenuListBox.Items.IndexOf(mi)].IconList.Add(iconInfo);
+        }
+
+        private void EncryptMenu(object sender, RoutedEventArgs e)
+        {
+            MenuInfo menuInfo = ((MenuItem)sender).Tag as MenuInfo;
+            if (menuInfo.IsEncrypt)
+            {
+                MainWindow.mainWindow.RightCard.PDDialog.menuInfo = menuInfo;
+                MainWindow.mainWindow.RightCard.PDDialog.Title.Text = "输入密码";
+                MainWindow.mainWindow.RightCard.PDDialog.type = PasswordType.CANCEL;
+                RunTimeStatus.SHOW_MENU_PASSWORDBOX = true;
+                MainWindow.mainWindow.RightCard.PDDialog.Visibility = Visibility.Visible;
+                //单独设置焦点
+                MainWindow.mainWindow.RightCard.PDDialog.SetFocus();
+            } else
+            {
+                if (string.IsNullOrEmpty(appData.AppConfig.MenuPassword))
+                {
+                    MainWindow.mainWindow.RightCard.PDDialog.menuInfo = menuInfo;
+                    MainWindow.mainWindow.RightCard.PDDialog.Title.Text = "设置新密码";
+                    MainWindow.mainWindow.RightCard.PDDialog.type = PasswordType.CREATE;
+                    RunTimeStatus.SHOW_MENU_PASSWORDBOX = true;                    
+                    MainWindow.mainWindow.RightCard.PDDialog.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    menuInfo.IsEncrypt = true;
+                    HandyControl.Controls.Growl.Success(menuInfo.MenuName + " 已加密!", "MainWindowGrowl");
+                }
+            }
+        }
+
+        private void AlterPassword(object sender, RoutedEventArgs e)
+        {
+            MainWindow.mainWindow.RightCard.PDDialog.Title.Text = "输入旧密码";
+            MainWindow.mainWindow.RightCard.PDDialog.type = PasswordType.ALTER;
+            MainWindow.mainWindow.RightCard.PDDialog.Visibility = Visibility.Visible;
+            //单独设置焦点
+            MainWindow.mainWindow.RightCard.PDDialog.SetFocus();
+        }
+
+        /// <summary>
+        /// 右键点击进行处理 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MyCard_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            RunTimeStatus.SHOW_RIGHT_BTN_MENU = true;
+            new Thread(() =>
+            {
+                Thread.Sleep(50);
+                RunTimeStatus.SHOW_RIGHT_BTN_MENU = false;
+            }).Start();
+
+            //在没有设置密码的情况下不弹出修改密码菜单
+            if (string.IsNullOrEmpty(appData.AppConfig.MenuPassword))
+            {
+                AlterPW1.Visibility = Visibility.Collapsed;
+            } else
+            {
+                AlterPW1.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void ListBoxItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ListBoxItem lbi = sender as ListBoxItem;
+            MenuInfo info = lbi.DataContext as MenuInfo;
+
+            ItemCollection ics =  lbi.ContextMenu.Items;
+
+            foreach (object obj in ics)
+            {
+                MenuItem mi = (MenuItem)obj;
+                if (mi.Header.Equals("修改密码"))
+                {
+                    if (string.IsNullOrEmpty(appData.AppConfig.MenuPassword))
+                    {
+                        mi.Visibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        mi.Visibility = Visibility.Visible;
+                    }
+                    break;
+                }
+                if (mi.Header.Equals("加密此列表") || mi.Header.Equals("取消加密此列表"))
+                {
+                    if (info.IsEncrypt)
+                    {
+                        mi.Header = "取消加密此列表";
+                    } else
+                    {
+                        mi.Header = "加密此列表";
+                    }
+                }
+            }
+
         }
     }
 }

@@ -8,6 +8,7 @@
              xmlns:cvt="clr-namespace:GeekDesk.Converts"
              xmlns:DraggAnimatedPanel="clr-namespace:DraggAnimatedPanel"
              xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
+             xmlns:ot="clr-namespace:GeekDesk.Control.Other"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              >
@@ -93,7 +94,9 @@
                  BorderThickness="1" 
                  Effect="{DynamicResource EffectShadow2}" 
                  Margin="5,0,5,5" Grid.ColumnSpan="2"
-                 PreviewMouseRightButtonDown="WrapCard_PreviewMouseRightButtonDown">
+                 PreviewMouseRightButtonDown="WrapCard_PreviewMouseRightButtonDown"
+                 hc:Dialog.Token="RightWrapCardDialog"
+                 >
             <hc:Card.Background>
                 <SolidColorBrush Color="AliceBlue"  hc:GeometryEffect.GeometryEffect="20" Opacity="{Binding AppConfig.CardOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}"/>
             </hc:Card.Background>
@@ -107,29 +110,36 @@
                     <MenuItem x:Name="CardLockCM" Header="锁定主面板" Click="LockAppPanel"/>
                 </ContextMenu>
             </hc:Card.ContextMenu>
-            <Grid>
-                <StackPanel Panel.ZIndex="1" Margin="0,-10,-0,0"/>
-                <WrapPanel Orientation="Horizontal" VirtualizingPanel.VirtualizationMode="Recycling"  
-                   VirtualizingPanel.IsVirtualizing="True" 
-                   VirtualizingPanel.IsContainerVirtualizable="True"
-                   >
-                    <UniformGrid x:Name="WrapUFG" xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndGrowHorizontally}, Event=Visibility}">
-                        <!--<hc:TransitioningContentControl TransitionStoryboard="{StaticResource Custom3Transition3}">-->
+            <hc:DialogContainer>
+                <Grid>
+                    <ot:PasswordDialog xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndGrowHorizontally}, Event=Visibility}"
+                                        x:Name="PDDialog"
+                                        Panel.ZIndex="99"
+                                        IsVisibleChanged="PDDialog_IsVisibleChanged"
+                                        Margin="0,-100,0,0"/>
+                    <StackPanel Panel.ZIndex="1" Margin="0,-10,-0,0"/>
+                    <WrapPanel Orientation="Horizontal" 
+                            VirtualizingPanel.VirtualizationMode="Recycling"  
+                            VirtualizingPanel.IsVirtualizing="True" 
+                            VirtualizingPanel.IsContainerVirtualizable="True"
+                            >
+                        <UniformGrid x:Name="WrapUFG" xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndGrowHorizontally}, Event=Visibility}">
+                            <!--<hc:TransitioningContentControl TransitionStoryboard="{StaticResource Custom3Transition3}">-->
                             <ListBox x:Name="IconListBox" 
-                                     ItemsSource="{Binding AppConfig.SelectedMenuIcons, Mode=OneWay}" 
-                                     BorderThickness="0"
-                                     Padding="0,10,0,0"
-                                     >
+                                ItemsSource="{Binding AppConfig.SelectedMenuIcons, Mode=OneWay}" 
+                                BorderThickness="0"
+                                Padding="0,10,0,0"
+                                >
                                 <ListBox.Background>
                                     <SolidColorBrush Opacity="0"/>
                                 </ListBox.Background>
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <!--<DraggAnimatedPanel:DraggAnimatedPanel Background="#00FFFFFF"
-                                                               ItemsWidth="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelWidth, Mode=OneWay}"
-                                                               ItemsHeight="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelHeight, Mode=OneWay}"
-                                                               HorizontalAlignment="Center" 
-                                                               SwapCommand="{Binding SwapCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>-->
+                                                        ItemsWidth="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelWidth, Mode=OneWay}"
+                                                        ItemsHeight="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelHeight, Mode=OneWay}"
+                                                        HorizontalAlignment="Center" 
+                                                        SwapCommand="{Binding SwapCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>-->
                                         <WrapPanel />
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
@@ -154,46 +164,46 @@
 
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        
-                                            <hc:SimpleStackPanel Tag="{Binding}"
-                                                         Height="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelHeight, Mode=OneWay}" 
-                                                         Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelWidth, Mode=OneWay}"
-                                                         HorizontalAlignment="Center"
-                                                         hc:Poptip.Content="{Binding Content}"
-                                                         hc:Poptip.Placement="BottomLeft"
-                                                         Background="#00FFFFFF"
-                                                         MouseEnter="StackPanel_MouseEnter"
-                                                         MouseLeave="StackPanel_MouseLeave"
-                                                         MouseLeftButtonDown="Icon_MouseLeftButtonDown"
-                                                         MouseLeftButtonUp="Icon_MouseLeftButtonUp"
-                                                         >
-                                                <!--<StackPanel Background="#00FFFFFF"
-                                                    MouseEnter="CursorPanel_MouseEnter"
-                                                    MouseLeave="CursorPanel_MouseLeave"
-                                                    Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImageWidth, Mode=OneWay}">-->
-                                                <Image Style="{StaticResource ImageStyle}"  
-                                                       RenderOptions.BitmapScalingMode="HighQuality"/>
-                                                <TextBlock MaxWidth="80"
-                                                           Margin="0,5,0,0"
-                                                           MaxHeight="40"
-                                                           FontSize="13"
-                                                           TextWrapping="Wrap" 
-                                                           TextTrimming="WordEllipsis"
-                                                           TextAlignment="Center" 
-                                                           VerticalAlignment="Center" 
-                                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.TextColor}"
-                                                           Text="{Binding Name}"/>
-                                                <!--</StackPanel>-->
 
-                                            </hc:SimpleStackPanel>
+                                        <hc:SimpleStackPanel Tag="{Binding}"
+                                                    Height="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelHeight, Mode=OneWay}" 
+                                                    Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelWidth, Mode=OneWay}"
+                                                    HorizontalAlignment="Center"
+                                                    hc:Poptip.Content="{Binding Content}"
+                                                    hc:Poptip.Placement="BottomLeft"
+                                                    Background="#00FFFFFF"
+                                                    MouseEnter="StackPanel_MouseEnter"
+                                                    MouseLeave="StackPanel_MouseLeave"
+                                                    MouseLeftButtonDown="Icon_MouseLeftButtonDown"
+                                                    MouseLeftButtonUp="Icon_MouseLeftButtonUp"
+                                                    >
+                                            <!--<StackPanel Background="#00FFFFFF"
+                                            MouseEnter="CursorPanel_MouseEnter"
+                                            MouseLeave="CursorPanel_MouseLeave"
+                                            Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImageWidth, Mode=OneWay}">-->
+                                            <Image Style="{StaticResource ImageStyle}"  
+                                                RenderOptions.BitmapScalingMode="HighQuality"/>
+                                            <TextBlock MaxWidth="80"
+                                                    Margin="0,5,0,0"
+                                                    MaxHeight="40"
+                                                    FontSize="13"
+                                                    TextWrapping="Wrap" 
+                                                    TextTrimming="WordEllipsis"
+                                                    TextAlignment="Center" 
+                                                    VerticalAlignment="Center" 
+                                                    Foreground="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.TextColor}"
+                                                    Text="{Binding Name}"/>
+                                            <!--</StackPanel>-->
+
+                                        </hc:SimpleStackPanel>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
-                        <!--</hc:TransitioningContentControl>-->
-                    </UniformGrid>
-                </WrapPanel>
-
-            </Grid>
+                            <!--</hc:TransitioningContentControl>-->
+                        </UniformGrid>
+                    </WrapPanel>
+                </Grid>
+            </hc:DialogContainer>
         </hc:Card>
 
         <hc:Card x:Name="VerticalCard"

@@ -55,7 +55,7 @@
             BorderThickness="0"
             Focusable="True"
             x:Name="BGBorder"
-            hc:Dialog.Token="IconInfoDialog"
+            hc:Dialog.Token="MainWindowDialog"
             >
         <Border.Effect>
             <DropShadowEffect BlurRadius="30" Direction="-90" Color="Gray"
@@ -74,9 +74,6 @@
 
 
                     <StackPanel HorizontalAlignment="Right" Panel.ZIndex="99" hc:Growl.GrowlParent="False" hc:Growl.Token="MainWindowGrowl" Grid.Column="1" Grid.Row="1"/>
-                    <!--获取焦点用-->
-                    <TextBox x:Name="EmptyTextBox" Width="0"/>
-
 
                     <DockPanel Grid.Row="0" Grid.Column="0" MouseMove="DragMove">
                         <DockPanel.Background>

@@ -30,6 +30,7 @@
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
             <EventSetter Event="MouseEnter" Handler="Menu_MouseEnter"/>
             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListBoxItem_MouseDown"/>
+            <EventSetter Event="PreviewMouseRightButtonDown" Handler="ListBoxItem_PreviewMouseRightButtonDown"/>
             <!--<EventSetter Event="Unselected" Handler="Lbi_Unselected"/>-->
             <Style.Triggers>
                 <MultiTrigger>
@@ -121,11 +122,12 @@
 
         <!--左侧栏-->
         <hc:Card x:Name="MyCard"
-            BorderThickness="1"
-            Effect="{DynamicResource EffectShadow2}" 
-            Margin="5,0,0,5"
-            MouseDown="MyCard_MouseDown"
-            >
+                 BorderThickness="1"
+                 Effect="{DynamicResource EffectShadow2}" 
+                 Margin="5,0,0,5"
+                 MouseDown="MyCard_MouseDown"
+                 PreviewMouseRightButtonDown="MyCard_PreviewMouseRightButtonDown"
+                 >
             <hc:Card.Background>
                 <SolidColorBrush Color="#FFFFFFFF" hc:GeometryEffect.GeometryEffect="20" Opacity="{Binding AppConfig.CardOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}">
 
@@ -137,28 +139,28 @@
             <hc:Card.ContextMenu>
                 <ContextMenu Width="200">
                     <MenuItem Header="新建菜单" Click="CreateMenu"/>
+                    <MenuItem x:Name="AlterPW1" Header="修改密码" Click="AlterPassword"/>
                 </ContextMenu>
             </hc:Card.ContextMenu>
 
             <WrapPanel Orientation="Horizontal">
-
-
-
-
                 <ListBox x:Name="MenuListBox"
-                    Padding="2,3,0,2"
-                    ItemsSource="{Binding MenuList}"
-                    Tag="{Binding AppConfig.MenuCardWidth}"
-                    BorderThickness="0" Foreground="{x:Null}"
-                    SelectedIndex="{Binding AppConfig.SelectedMenuIndex}"
-                    VirtualizingPanel.VirtualizationMode="Recycling"
-                    SelectionChanged="Menu_SelectionChanged"
-                    PreviewMouseWheel="Menu_MouseWheel"
-                    >
+                         Padding="2,3,0,2"
+                         ItemsSource="{Binding MenuList}"
+                         Tag="{Binding AppConfig.MenuCardWidth}"
+                         BorderThickness="0" Foreground="{x:Null}"
+                         SelectedIndex="{Binding AppConfig.SelectedMenuIndex}"
+                         VirtualizingPanel.VirtualizationMode="Recycling"
+                         SelectionChanged="Menu_SelectionChanged"
+                         PreviewMouseWheel="Menu_MouseWheel"
+                         PreviewMouseRightButtonDown="MyCard_PreviewMouseRightButtonDown"
+                         >
                     <ListBox.Resources>
                         <ContextMenu x:Key="MenuDialog" Width="200">
                             <MenuItem Header="新建菜单" Click="CreateMenu"/>
                             <MenuItem Header="重命名"  Click="RenameMenu" Tag="{Binding}"/>
+                            <MenuItem Header="加密此列表"  Click="EncryptMenu" Tag="{Binding}"/>
+                            <MenuItem x:Name="AlterPW2" Header="修改密码" Click="AlterPassword"/>
                             <MenuItem Header="修改图标"  Click="EditMenuGeometry" Tag="{Binding}"/>
                             <MenuItem Header="删除" Click="DeleteMenu" Tag="{Binding}"/>
                         </ContextMenu>
@@ -181,8 +183,7 @@
 
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Tag="{Binding}"
-                                        >
+                            <StackPanel Tag="{Binding}">
                                 <TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
                                 HorizontalAlignment="Left"
                                 Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}, ConverterParameter=35}"

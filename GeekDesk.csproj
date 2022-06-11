@@ -161,6 +161,7 @@
     <Compile Include="Constant\IconType.cs" />
     <Compile Include="Constant\CommonEnum.cs" />
     <Compile Include="Constant\IconStartType.cs" />
+    <Compile Include="Constant\PasswordType.cs" />
     <Compile Include="Constant\RunTimeStatus.cs" />
     <Compile Include="Constant\SearchType.cs" />
     <Compile Include="Constant\SortType.cs" />
@@ -178,6 +179,9 @@
     </Compile>
     <Compile Include="Control\Other\GradientBGDialog.xaml.cs">
       <DependentUpon>GradientBGDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Other\PasswordDialog.xaml.cs">
+      <DependentUpon>PasswordDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\Other\MyColorPickerDialog.xaml.cs">
       <DependentUpon>MyColorPickerDialog.xaml</DependentUpon>
@@ -278,6 +282,7 @@
     <Compile Include="Util\HttpUtil.cs" />
     <Compile Include="Util\ImageUtil.cs" />
     <Compile Include="Converts\MenuWidthConvert.cs" />
+    <Compile Include="Util\MD5Util.cs" />
     <Compile Include="Util\MouseUtil.cs" />
     <Compile Include="Util\RegisterUtil.cs" />
     <Compile Include="Util\ShellContextMenu.cs" />
@@ -307,6 +312,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Control\Other\GradientBGDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\Other\PasswordDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -506,7 +515,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties update_1json__JsonSchema="https://typedoc.org/schema.json" />
+      <UserProperties update_1json__JsonSchema="https://beaujs.com/schema.json" />
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

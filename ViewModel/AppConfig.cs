@@ -95,8 +95,36 @@ namespace GeekDesk.ViewModel
 
         private string sysBakTime;  //系统自动备份时间
 
+        private string menuPassword; //锁菜单密码
+
+        private string passwordHint; //密码提示
 
         #region GetSet
+        public string PasswordHint
+        {
+            get
+            {
+                return passwordHint;
+            }
+            set
+            {
+                passwordHint = value;
+                OnPropertyChanged("PasswordHint");
+            }
+        }
+        public string MenuPassword
+        {
+            get
+            {
+                return menuPassword;
+            }
+            set
+            {
+                menuPassword = value;
+                OnPropertyChanged("MenuPassword");
+            }
+        }
+
         public string SysBakTime
         {
             get

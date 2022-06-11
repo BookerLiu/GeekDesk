@@ -20,7 +20,20 @@
         public static bool LOCK_APP_PANEL = false;
 
 
+        /// <summary>
+        /// 是否弹出了菜单密码框
+        /// </summary>
+        public static bool SHOW_MENU_PASSWORDBOX = false;
 
+        /// <summary>
+        /// 是否弹出了右键菜单
+        /// </summary>
+        public static bool SHOW_RIGHT_BTN_MENU = false;
+
+        /// <summary>
+        /// 是否正在编辑菜单
+        /// </summary>
+        public static bool IS_MENU_EDIT = false;
 
     }
 }

@@ -435,6 +435,7 @@ namespace GeekDesk
             //}
 
             MainWindow.mainWindow.Activate();
+            mainWindow.Visibility = Visibility.Visible;
 
             if (MarginHide.ON_HIDE)
             {
@@ -454,7 +455,13 @@ namespace GeekDesk
 
             FadeStoryBoard(1, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Visible);
             Keyboard.Focus(mainWindow);
-            Keyboard.Focus(mainWindow.SearchBox);
+            if (RunTimeStatus.SHOW_MENU_PASSWORDBOX)
+            {
+                mainWindow.RightCard.PDDialog.SetFocus();
+            } else
+            {
+                Keyboard.Focus(mainWindow.SearchBox);
+            }
         }
 
         public static void HideApp()
@@ -742,14 +749,25 @@ namespace GeekDesk
             GlobalColorPickerWindow.CreateNoShow();
         }
 
-
         private void Window_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (!LeftCard.IS_EDIT)
+            // 如果没有在修改菜单 并且不是右键点击了面板
+            if (!RunTimeStatus.IS_MENU_EDIT
+                && !RunTimeStatus.SHOW_RIGHT_BTN_MENU)
             {
-                //if判断是为了能够使修改菜单时  菜单能够获得焦点
-                Keyboard.Focus(SearchBox);
+                if (RunTimeStatus.SHOW_MENU_PASSWORDBOX)
+                {
+                    //必须在其它文本框没有工作的时候才给密码框焦点
+                    RightCard.PDDialog.SetFocus();
+                }
+                else
+                {
+                    //必须在其它文本框没有工作的时候才给搜索框焦点
+                    Keyboard.Focus(SearchBox);
+                }
+                
             }
+            
         }
 
         private void AppWindow_Deactivated(object sender, EventArgs e)

@@ -97,7 +97,10 @@ namespace GeekDesk.Util
         {
             lock (_MyLock)
             {
-                appData.AppConfig.SysBakTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                if (filePath.Equals(Constants.DATA_FILE_BAK_PATH))
+                {
+                    appData.AppConfig.SysBakTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                }
                 if (!Directory.Exists(filePath.Substring(0, filePath.LastIndexOf("\\"))))
                 {
                     Directory.CreateDirectory(filePath.Substring(0, filePath.LastIndexOf("\\")));
@@ -108,8 +111,17 @@ namespace GeekDesk.Util
                     bf.Serialize(fs, appData);
                 }
             }
-            
         }
+
+
+        public static void SavePassword(string password)
+        {
+            using (StreamWriter sw = new StreamWriter(Constants.PW_FILE_BAK_PATH))
+            {
+                sw.Write(password);
+            }
+        }
+
 
         public static void BakAppData()
         {

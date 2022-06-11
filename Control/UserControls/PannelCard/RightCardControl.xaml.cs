@@ -34,6 +34,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
         {
             InitializeComponent();
             this.Loaded += RightCardControl_Loaded;
+            
         }
 
         private void RightCardControl_Loaded(object sender, RoutedEventArgs e)
@@ -443,11 +444,11 @@ namespace GeekDesk.Control.UserControls.PannelCard
             {
                 case IconType.URL:
                     IconInfoUrlDialog urlDialog = new IconInfoUrlDialog(info);
-                    urlDialog.dialog = HandyControl.Controls.Dialog.Show(urlDialog, "IconInfoDialog");
+                    urlDialog.dialog = HandyControl.Controls.Dialog.Show(urlDialog, "MainWindowDialog");
                     break;
                 default:
                     IconInfoDialog dialog = new IconInfoDialog(info);
-                    dialog.dialog = HandyControl.Controls.Dialog.Show(dialog, "IconInfoDialog");
+                    dialog.dialog = HandyControl.Controls.Dialog.Show(dialog, "MainWindowDialog");
                     break;
             }
         }
@@ -674,7 +675,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
         private void AddUrlIcon(object sender, RoutedEventArgs e)
         {
             IconInfoUrlDialog urlDialog = new IconInfoUrlDialog();
-            urlDialog.dialog = HandyControl.Controls.Dialog.Show(urlDialog, "IconInfoDialog");
+            urlDialog.dialog = HandyControl.Controls.Dialog.Show(urlDialog, "MainWindowDialog");
         }
 
         /// <summary>
@@ -796,6 +797,26 @@ namespace GeekDesk.Control.UserControls.PannelCard
         private void SearchListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SearchListBox.ScrollIntoView(SearchListBox.SelectedItem);
+        }
+
+        private void PDDialog_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (PDDialog.Visibility == Visibility.Visible)
+            {
+                RunTimeStatus.SHOW_MENU_PASSWORDBOX = true;
+                PDDialog.ClearVal();
+                PDDialog.ErrorMsg.Visibility = Visibility.Collapsed;
+                PDDialog.PasswordGrid.Visibility = Visibility.Visible;
+                PDDialog.HintGrid.Visibility = Visibility.Collapsed;
+                PDDialog.count = 0;
+                PDDialog.SetFocus();
+            }
+            else
+            {
+                RunTimeStatus.SHOW_MENU_PASSWORDBOX = false;
+                PDDialog.ClearVal();
+                MainWindow.mainWindow.Focus();
+            }
         }
     }
 }
