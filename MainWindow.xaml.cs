@@ -753,7 +753,8 @@ namespace GeekDesk
         {
             // 如果没有在修改菜单 并且不是右键点击了面板
             if (!RunTimeStatus.IS_MENU_EDIT
-                && !RunTimeStatus.SHOW_RIGHT_BTN_MENU)
+                && !RunTimeStatus.SHOW_RIGHT_BTN_MENU
+                && !RunTimeStatus.APP_BTN_IS_DOWN)
             {
                 if (RunTimeStatus.SHOW_MENU_PASSWORDBOX)
                 {
@@ -791,5 +792,15 @@ namespace GeekDesk
             t.Start();
         }
 
+        private void AppButton_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            //点击了面板
+            RunTimeStatus.APP_BTN_IS_DOWN = true;
+            new Thread(() =>
+            {
+                Thread.Sleep(50);
+                RunTimeStatus.APP_BTN_IS_DOWN = false;
+            }).Start();
+        }
     }
 }

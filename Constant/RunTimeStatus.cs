@@ -31,6 +31,11 @@
         public static bool SHOW_RIGHT_BTN_MENU = false;
 
         /// <summary>
+        /// 是否点击了面板功能按钮
+        /// </summary>
+        public static bool APP_BTN_IS_DOWN = false;
+
+        /// <summary>
         /// 是否正在编辑菜单
         /// </summary>
         public static bool IS_MENU_EDIT = false;
