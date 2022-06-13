@@ -41,7 +41,6 @@ namespace GeekDesk
         {
             //加载数据
             LoadData();
-
             InitializeComponent();
 
             //用于其他类访问
@@ -180,14 +179,7 @@ namespace GeekDesk
             BGSettingUtil.BGSetting();
             if (!appData.AppConfig.StartedShowPanel)
             {
-                if (appData.AppConfig.AppAnimation)
-                {
-                    this.Opacity = 0;
-                }
-                else
-                {
-                    this.Visibility = Visibility.Collapsed;
-                }
+                this.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -435,7 +427,15 @@ namespace GeekDesk
             //}
 
             MainWindow.mainWindow.Activate();
-            mainWindow.Visibility = Visibility.Visible;
+            mainWindow.Show();
+            //mainWindow.Visibility = Visibility.Visible;
+            if (appData.AppConfig.AppAnimation)
+            {
+                appData.AppConfig.IsShow = true;
+            } else
+            {
+                appData.AppConfig.IsShow = null;
+            }
 
             if (MarginHide.ON_HIDE)
             {
@@ -450,10 +450,12 @@ namespace GeekDesk
 
             if (appData.AppConfig.FollowMouse)
             {
-                ShowWindowFollowMouse.Show(mainWindow, MousePosition.CENTER, 0, 0, false);
+                ShowWindowFollowMouse.Show(mainWindow, MousePosition.CENTER, 0, 0);
             }
+            
 
-            FadeStoryBoard(1, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Visible);
+            //FadeStoryBoard(1, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Visible);
+
             Keyboard.Focus(mainWindow);
             if (RunTimeStatus.SHOW_MENU_PASSWORDBOX)
             {
@@ -466,25 +468,35 @@ namespace GeekDesk
 
         public static void HideApp()
         {
-            if (!MarginHide.IS_HIDE)
+            if (appData.AppConfig.AppAnimation)
             {
-                //关闭锁定
-                RunTimeStatus.LOCK_APP_PANEL = false;
-                if (RunTimeStatus.SEARCH_BOX_SHOW)
-                {
-                    mainWindow.HidedSearchBox();
-                    FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
-                }
-                else
-                {
-                    FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
-                }
+                appData.AppConfig.IsShow = false;
             }
             else
             {
-                ShowApp();
+                appData.AppConfig.IsShow = null;
+                HideAppVis();
             }
+            
+        }
 
+        private static void HideAppVis()
+        {
+            //关闭锁定
+            RunTimeStatus.LOCK_APP_PANEL = false;
+            if (RunTimeStatus.SEARCH_BOX_SHOW)
+            {
+                mainWindow.HidedSearchBox();
+            }
+            mainWindow.Visibility = Visibility.Collapsed;
+            //if (!MarginHide.IS_HIDE)
+            //{
+               
+            //}
+            //else
+            //{
+            //    ShowApp();
+            //}
         }
 
         /// <summary>
@@ -802,5 +814,30 @@ namespace GeekDesk
                 RunTimeStatus.APP_BTN_IS_DOWN = false;
             }).Start();
         }
+
+
+        private ICommand _hideCommand;
+        public ICommand HideCommand
+        {
+            get
+            {
+                if (_hideCommand == null)
+                {
+                    _hideCommand = new RelayCommand(
+                        p =>
+                        {
+                            return true;
+                        },
+                        p =>
+                        {
+                            HideAppVis();
+                        });
+                }
+                return _hideCommand;
+            }
+        }
+
+
+
     }
 }

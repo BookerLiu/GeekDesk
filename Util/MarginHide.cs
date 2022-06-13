@@ -77,8 +77,7 @@ namespace GeekDesk.Util
         #region 窗体贴边隐藏功能
         private static void HideWindow(object o, EventArgs e)
         {
-            if (window.Visibility != Visibility.Visible 
-                || RunTimeStatus.MARGIN_HIDE_AND_OTHER_SHOW 
+            if (RunTimeStatus.MARGIN_HIDE_AND_OTHER_SHOW 
                 || RunTimeStatus.LOCK_APP_PANEL) return;
 
             double screenLeft = SystemParameters.VirtualScreenLeft;
@@ -98,7 +97,7 @@ namespace GeekDesk.Util
 
             //鼠标不在窗口上
             if ((mouseX < windowLeft || mouseX > windowLeft + windowWidth
-                || mouseY < windowTop || mouseY > windowTop + windowHeight) && !IS_HIDE)
+                || mouseY < windowTop || mouseY > windowTop + windowHeight) && !IS_HIDE && window.Visibility == Visibility.Visible)
             {
                 //上方隐藏条件
                 if (windowTop <= screenTop)
@@ -126,8 +125,9 @@ namespace GeekDesk.Util
                 }
             }
             else if (mouseX >= windowLeft && mouseX <= windowLeft + windowWidth
-              && mouseY >= windowTop && mouseY <= windowTop + windowHeight && IS_HIDE)
+              && mouseY >= windowTop && mouseY <= windowTop + windowHeight && IS_HIDE && window.Visibility != Visibility.Visible)
             {
+                window.Visibility = Visibility.Visible;
                 //上方显示
                 if (windowTop <= screenTop - showMarginWidth)
                 {
@@ -189,6 +189,7 @@ namespace GeekDesk.Util
                 double windowTop = window.Top;
                 double windowLeft = window.Left;
 
+                window.Visibility = Visibility.Visible;
                 //左侧显示
                 if (windowLeft <= screenLeft - showMarginWidth)
                 {
@@ -286,6 +287,11 @@ namespace GeekDesk.Util
                             window.Top = to - 20;
                             break;
                     }
+                    if (hideType > HideType.RIGHT_SHOW)
+                    {
+                        window.Visibility = Visibility.Collapsed;
+                    }
+
                     //double toTemp = to;
                     //double leftT = 0;
                     //double topT = 0;

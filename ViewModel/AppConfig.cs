@@ -99,7 +99,23 @@ namespace GeekDesk.ViewModel
 
         private string passwordHint; //密码提示
 
+        private bool? isShow;
+
+
         #region GetSet
+        public bool? IsShow
+        {
+            get
+            {
+                return isShow;
+            }
+            set
+            {
+                isShow = value;
+                OnPropertyChanged("IsShow");
+            }
+        }
+
         public string PasswordHint
         {
             get

@@ -310,10 +310,9 @@ namespace GeekDesk.Control.UserControls.Config
         {
             if (MainWindow.mainWindow.Visibility == Visibility.Collapsed)
             {
-                MainWindow.mainWindow.Visibility = Visibility.Visible;
-                // 执行一下动画 防止太过突兀
-                MainWindow.FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
+                appConfig.IsShow = true;
             }
+            appConfig.IsShow = null;
         }
 
 

@@ -256,6 +256,7 @@
     <Compile Include="Converts\OpcityConvert.cs" />
     <Compile Include="Converts\BGStyleConvert.cs" />
     <Compile Include="Converts\UpdateTypeConvert.cs" />
+    <Compile Include="Converts\ReverseBoolConvert.cs" />
     <Compile Include="Converts\Visibility2BooleanConverter.cs" />
     <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.cs" />
     <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.Drag.cs" />
@@ -285,6 +286,7 @@
     <Compile Include="Util\MD5Util.cs" />
     <Compile Include="Util\MouseUtil.cs" />
     <Compile Include="Util\RegisterUtil.cs" />
+    <Compile Include="Util\RelayCommand.cs" />
     <Compile Include="Util\ShellContextMenu.cs" />
     <Compile Include="Util\ShowWindowFollowMouse.cs" />
     <Compile Include="Util\StringUtil.cs" />

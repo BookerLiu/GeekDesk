@@ -19,7 +19,7 @@
         AllowsTransparency="True"
         Background="Transparent"
         ShowInTaskbar="False"
-        Opacity="0"
+        Opacity="1"
         Deactivated="AppWindow_Deactivated"
         SizeChanged="Window_SizeChanged"
         PreviewKeyDown="OnKeyDown"
@@ -27,8 +27,7 @@
         MouseDown="MainWindow_MouseDown"
         MouseEnter="MainWindow_MouseEnter"
         GotFocus="Window_GotFocus"
-        Loaded="Window_Loaded"
-        xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndGrowHorizontally}, Event=Visibility}"
+        Loaded="Window_Loaded"          
         >
     
     <Window.Resources>
@@ -38,6 +37,7 @@
         <cvt:OpcityConvert x:Key="OpcityConvert"/>
         <cvt:IntToCornerRadius x:Key="IntToCornerRadius"/>
         <cvt:DoubleToGridLength x:Key="DoubleToGridLength"/>
+        <cvt:ReverseBoolConvert x:Key="ReverseBoolConvert"/>
     </Window.Resources>
     
     <WindowChrome.WindowChrome>
@@ -57,6 +57,12 @@
             Focusable="True"
             x:Name="BGBorder"
             hc:Dialog.Token="MainWindowDialog"
+            xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndGrowHorizontally}, Event=None}"
+            xf:Animations.PrimaryBinding="{Binding AppConfig.IsShow, Mode=OneWay}"
+            xf:Animations.Secondary="{xf:Animate BasedOn={StaticResource  FadeOut}, Event=None}"
+            xf:Animations.SecondaryBinding="{Binding AppConfig.IsShow, Mode=OneWay, Converter={StaticResource ReverseBoolConvert}}"
+            xf:Animations.SecondaryCompletionCommand="{Binding HideCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+            xf:Animations.AllowOpacityReset="False"
             >
         <Border.Effect>
             <DropShadowEffect BlurRadius="30" Direction="-90" Color="Gray"
@@ -73,6 +79,8 @@
                         <ColumnDefinition x:Name="RightColumn" Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
+                    <CheckBox x:Name="ShowBox" Visibility="Hidden" Panel.ZIndex="2"/>
+                    <CheckBox x:Name="HideBox" Visibility="Hidden" Panel.ZIndex="2"/>
 
                     <StackPanel HorizontalAlignment="Right" Panel.ZIndex="99" hc:Growl.GrowlParent="False" hc:Growl.Token="MainWindowGrowl" Grid.Column="1" Grid.Row="1"/>
 
