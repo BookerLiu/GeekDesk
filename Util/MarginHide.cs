@@ -25,8 +25,8 @@ namespace GeekDesk.Util
     {
         private static Window window;//定义使用该方法的窗体
 
-        private static readonly int hideTime = 50;
-        private static readonly int showTime = 30;
+        private static readonly int hideTime = 65;
+        private static readonly int showTime = 15;
 
         private static int animalTime;
 
@@ -127,8 +127,7 @@ namespace GeekDesk.Util
             else if (mouseX >= windowLeft && mouseX <= windowLeft + windowWidth
               && mouseY >= windowTop && mouseY <= windowTop + windowHeight && IS_HIDE && window.Visibility != Visibility.Visible)
             {
-                window.Visibility = Visibility.Visible;
-                App.DoEvents();
+                window.Show();
                 //上方显示
                 if (windowTop <= screenTop - showMarginWidth)
                 {
@@ -228,17 +227,30 @@ namespace GeekDesk.Util
             {
                 App.Current.Dispatcher.Invoke(() =>
                 {
-                    double abs = Math.Abs(Math.Abs(to) - Math.Abs(from));
-                    double subLen = abs / hideTime;
 
-                    if ((int)hideType <= 3)
+                    switch (hideType)
+                    {
+                        case HideType.LEFT_SHOW:
+                            to -= 20;
+                            break;
+                        case HideType.RIGHT_SHOW:
+                            to += 20;
+                            break;
+                        case HideType.TOP_SHOW:
+                            to -= 20;
+                            break;
+                    }
+
+                    double abs = Math.Abs(Math.Abs(to) - Math.Abs(from));
+
+                    if (hideType <= HideType.RIGHT_SHOW)
                     {
                         animalTime = showTime;                        
                     } else
                     {
                         animalTime = hideTime;
                     }
-
+                    double subLen = abs / animalTime;
                     int count = 0;
                     while (count < animalTime)
                     {
@@ -269,86 +281,20 @@ namespace GeekDesk.Util
 
                     switch (hideType)
                     {
-                        case HideType.LEFT_HIDE:
-                            window.Left = to;
-                            break;
-                        case HideType.LEFT_SHOW:
-                            window.Left = to - 20;
-                            break;
-                        case HideType.RIGHT_HIDE:
-                            window.Left = to;
-                            break;
-                        case HideType.RIGHT_SHOW:
-                            window.Left = to + 20;
-                            break;
                         case HideType.TOP_HIDE:
                             window.Top = to;
                             break;
                         case HideType.TOP_SHOW:
-                            window.Top = to - 20;
+                            window.Top = to;
                             break;
+                        default:
+                        window.Left = to;
+                        break;
                     }
                     if (hideType > HideType.RIGHT_SHOW)
                     {
                         window.Visibility = Visibility.Collapsed;
                     }
-
-                    //double toTemp = to;
-                    //double leftT = 0;
-                    //double topT = 0;
-                    //switch (hideType)
-                    //{
-                    //    case HideType.LEFT_HIDE:
-                    //        to += leftT;
-                    //        break;
-                    //    case HideType.LEFT_SHOW:
-                    //        to -= leftT;
-                    //        break;
-                    //    case HideType.RIGHT_HIDE:
-                    //        to -= leftT;
-                    //        break;
-                    //    case HideType.RIGHT_SHOW:
-                    //        to += leftT;
-                    //        break;
-                    //    case HideType.TOP_HIDE:
-                    //        to += topT;
-                    //        break;
-                    //    case HideType.TOP_SHOW:
-                    //        to -= topT;
-                    //        break;
-                    //}
-                    //DoubleAnimation da = new DoubleAnimation
-                    //{
-                    //    From = from,
-                    //    To = to,
-                    //    Duration = new Duration(TimeSpan.FromMilliseconds(hideTime))
-                    //};
-                    //// 如果是显示 则贴屏幕侧不显示阴影
-                    //bool isShow = false;
-                    //int shadowWidthTemp = Constants.SHADOW_WIDTH;
-                    //if (hideType <= HideType.RIGHT_SHOW)
-                    //{
-                    //    isShow = true;
-                    //    if (hideType == HideType.RIGHT_SHOW)
-                    //    {
-                    //        shadowWidthTemp = -shadowWidthTemp;
-                    //    }
-                    //}
-                    //da.Completed += (s, e) =>
-                    //{
-                    //    if ("Top".Equals(property.Name))
-                    //    {
-                    //        window.Top = isShow ? toTemp - shadowWidthTemp : toTemp;
-                    //    }
-                    //    else
-                    //    {
-                    //        window.Left = isShow ? toTemp - shadowWidthTemp : toTemp;
-                    //    }
-                    //    window.BeginAnimation(property, null);
-                    //};
-
-                    //Timeline.SetDesiredFrameRate(da, 60);
-                    //window.BeginAnimation(property, da);
                 });
             }).Start();
             
