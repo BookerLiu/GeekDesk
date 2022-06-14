@@ -101,8 +101,22 @@ namespace GeekDesk.ViewModel
 
         private bool? isShow;
 
+        private bool itemSpradeAnimation; //列表展开动画
 
         #region GetSet
+        public bool ItemSpradeAnimation
+        {
+            get
+            {
+                return itemSpradeAnimation;
+            }
+            set
+            {
+                itemSpradeAnimation = value;
+                OnPropertyChanged("ItemSpradeAnimation");
+            }
+        }
+
         public bool? IsShow
         {
             get

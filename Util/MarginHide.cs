@@ -128,6 +128,7 @@ namespace GeekDesk.Util
               && mouseY >= windowTop && mouseY <= windowTop + windowHeight && IS_HIDE && window.Visibility != Visibility.Visible)
             {
                 window.Visibility = Visibility.Visible;
+                App.DoEvents();
                 //上方显示
                 if (windowTop <= screenTop - showMarginWidth)
                 {

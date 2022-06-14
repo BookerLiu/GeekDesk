@@ -110,7 +110,25 @@
 
                 <hc:Divider LineStrokeDashArray="3,3" Margin="0,0,0,0" Height="20" LineStroke="Black" Grid.ColumnSpan="1"/>
 
-                <hc:UniformSpacingPanel Spacing="10" Margin="5,-10,0,0"  Grid.ColumnSpan="4">
+                <hc:UniformSpacingPanel Spacing="10" Margin="5,-10,0,0" Grid.ColumnSpan="4">
+                    <CheckBox  Content="主窗口动画" IsChecked="{Binding AppAnimation}" Click="Animation_Checked">
+                        <CheckBox.Background>
+                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                                <GradientStop Color="#FF9EA3A6"/>
+                            </LinearGradientBrush>
+                        </CheckBox.Background>
+                    </CheckBox>
+                </hc:UniformSpacingPanel>
+                <hc:UniformSpacingPanel Spacing="10" Margin="5,10,0,0" Grid.ColumnSpan="4">
+                    <CheckBox  Content="列表展开动画" IsChecked="{Binding ItemSpradeAnimation}">
+                        <CheckBox.Background>
+                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                                <GradientStop Color="#FF9EA3A6"/>
+                            </LinearGradientBrush>
+                        </CheckBox.Background>
+                    </CheckBox>
+                </hc:UniformSpacingPanel>
+                <hc:UniformSpacingPanel Spacing="10" Margin="5,10,0,0"  Grid.ColumnSpan="4">
                     <CheckBox x:Name="BarIcon" Content="显示托盘图标" IsChecked="{Binding ShowBarIcon}">
                         <CheckBox.Background>
                             <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
@@ -120,7 +138,7 @@
                     </CheckBox>
                 </hc:UniformSpacingPanel>
 
-                <hc:UniformSpacingPanel Spacing="10" Margin="5,5,0,0"  Grid.ColumnSpan="4">
+                <hc:UniformSpacingPanel Spacing="10" Margin="5,10,0,0"  Grid.ColumnSpan="4">
                     <CheckBox  Content="显示主面板Logo" IsChecked="{Binding TitleLogoVisible, Mode=TwoWay, Converter={StaticResource Visibility2BooleanConverter}}">
                         <CheckBox.Background>
                             <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">

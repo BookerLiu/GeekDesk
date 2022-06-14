@@ -110,7 +110,7 @@
                             </hc:SideMenu>
                         </hc:Card>
                         <hc:ScrollViewer  Grid.Row="0" Grid.Column="1" BorderThickness="0" Margin="0,5,1,5">
-                            <UniformGrid x:Name="UFG" xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndSlideFromLeft}, Event=Visibility}">
+                            <UniformGrid x:Name="UFG" xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeIn}, Event=Visibility, Delay=0}">
                                 <!--<hc:TransitioningContentControl TransitionMode="Left2RightWithFade">-->
                                     <hc:Card x:Name="RightCard" BorderThickness="0"  MouseDown="DragMove">
                                         <hc:Card.Background>

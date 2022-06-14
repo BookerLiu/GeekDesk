@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cvt="clr-namespace:GeekDesk.Converts"
+             xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
              xmlns:local="clr-namespace:GeekDesk.Control.UserControls.PannelCard"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" 
@@ -16,7 +17,11 @@
     <Grid MouseDown="DragMove">
         <hc:SimplePanel Margin="20,50,20,20" >
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
-                <Image Source="/Resource/Image/About.png" Width="400" Height="100"/>
+                <Image Source="/Resource/Image/About.png"
+                       Width="400"
+                       Height="100"
+                       xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndContract}, Delay=250}"
+                       />
                 <TextBlock x:Name="AppInfo"  TextAlignment="Center"  Text="Copyright ©  2021 GeekDesk V"/>
                 <hc:UniformSpacingPanel Spacing="5" HorizontalAlignment="Center" Margin="10,10,0,0" VerticalAlignment="Center">
                     <hc:Shield Subject=".net" Status=">=4.72" Margin="0,0,10,0" Color="#1182c3"/>

@@ -311,7 +311,11 @@ namespace GeekDesk.Control.UserControls.PannelCard
         {
             if (RunTimeStatus.IS_MENU_EDIT) return;
 
-            MainWindow.mainWindow.RightCard.WrapUFG.Visibility = Visibility.Collapsed;
+            if (appData.AppConfig.ItemSpradeAnimation)
+            {
+                //是否启用列表展开动画
+                MainWindow.mainWindow.RightCard.WrapUFG.Visibility = Visibility.Collapsed;
+            }
 
             //设置对应菜单的图标列表
             if (MenuListBox.SelectedIndex == -1)

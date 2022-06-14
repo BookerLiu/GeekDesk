@@ -112,11 +112,11 @@
             </hc:Card.ContextMenu>
             <hc:DialogContainer>
                 <Grid>
-                    <ot:PasswordDialog xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndGrowHorizontally}, Event=Visibility}"
-                                        x:Name="PDDialog"
-                                        Panel.ZIndex="99"
-                                        IsVisibleChanged="PDDialog_IsVisibleChanged"
-                                        Margin="0,-100,0,0"/>
+                    <ot:PasswordDialog xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndGrowHorizontally}, Event=Visibility, Duration=50, Delay=0}"
+                                       x:Name="PDDialog"
+                                       Panel.ZIndex="99"
+                                       IsVisibleChanged="PDDialog_IsVisibleChanged"
+                                       Margin="0,-100,0,0"/>
                     <StackPanel Panel.ZIndex="1" Margin="0,-10,-0,0"/>
                     <WrapPanel Orientation="Horizontal" 
                             VirtualizingPanel.VirtualizationMode="Recycling"  
