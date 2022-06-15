@@ -157,5 +157,16 @@ namespace GeekDesk.Control.UserControls.Config
             GradientBGDialog gbg = new GradientBGDialog();
             gbg.dialog = HandyControl.Controls.Dialog.Show(gbg, "ConfigWindowDialog");
         }
+
+
+        private void Animation_Checked(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.mainWindow.Visibility == Visibility.Collapsed)
+            {
+                appConfig.IsShow = true;
+            }
+            appConfig.IsShow = null;
+        }
+
     }
 }

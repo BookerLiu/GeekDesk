@@ -60,7 +60,7 @@ namespace GeekDesk.Task
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
                 SetProcessWorkingSetSize(System.Diagnostics.Process.GetCurrentProcess().Handle, -1, -1);
-            }
+            } 
         }
 
         #region 内存回收

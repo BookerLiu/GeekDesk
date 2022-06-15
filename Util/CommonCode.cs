@@ -1,5 +1,9 @@
 ﻿using GeekDesk.Constant;
+using GeekDesk.Control.Other;
 using GeekDesk.ViewModel;
+using HandyControl.Data;
+using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,6 +12,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using static GeekDesk.Control.Other.GlobalMsgNotification;
 
 /// <summary>
 /// 提取一些代码
@@ -28,30 +33,112 @@ namespace GeekDesk.Util
             {
                 using (FileStream fs = File.Create(Constants.DATA_FILE_PATH)) { }
                 appData = new AppData();
-                SaveAppData(appData);
-
+                SaveAppData(appData, Constants.DATA_FILE_PATH);
             }
             else
             {
-                using (FileStream fs = new FileStream(Constants.DATA_FILE_PATH, FileMode.Open))
+                try
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    appData = bf.Deserialize(fs) as AppData;
+                    using (FileStream fs = new FileStream(Constants.DATA_FILE_PATH, FileMode.Open))
+                    {
+                        BinaryFormatter bf = new BinaryFormatter();
+                        appData = bf.Deserialize(fs) as AppData;
+                    }
+                } 
+                catch
+                {
+                    if (File.Exists(Constants.DATA_FILE_BAK_PATH))
+                    {
+                        try
+                        {
+                            using (FileStream fs = new FileStream(Constants.DATA_FILE_BAK_PATH, FileMode.Open))
+                            {
+                                BinaryFormatter bf = new BinaryFormatter();
+                                appData = bf.Deserialize(fs) as AppData;
+                            }
+
+                            DialogMsg msg = new DialogMsg();
+                            msg.msg = "不幸的是, GeekDesk当前的数据文件已经损坏, " +
+                                "现在已经启用系统自动备份的数据\n\n" +
+                                "如果你有较新的备份, " +
+                                "请退出GeekDesk, " +
+                                "将备份文件重命名为:Data, " +
+                                "然后将Data覆盖到GeekDesk的根目录即可\n\n" +
+                                "系统上次备份时间: \n" + appData.AppConfig.SysBakTime +
+                                "\n\n如果当前数据就是你想要的数据, 那么请不用管它";
+                            GlobalMsgNotification gm = new GlobalMsgNotification(msg);
+                            HandyControl.Controls.Notification ntf = HandyControl.Controls.Notification.Show(gm, ShowAnimation.Fade, true);
+                            gm.ntf = ntf;
+                        } catch 
+                        {
+                            MessageBox.Show("不幸的是, GeekDesk当前的数据文件已经损坏\n如果你有备份, 请将备份文件重命名为:Data 然后将Data覆盖到GeekDesk的根目录即可!");
+                            Application.Current.Shutdown();
+                            return null;
+                        }
+                        
+                    } else
+                    {
+                        MessageBox.Show("不幸的是, GeekDesk当前的数据文件已经损坏\n如果你有备份, 请将备份文件重命名为:Data 然后将Data覆盖到GeekDesk的根目录即可!");
+                        Application.Current.Shutdown();
+                        return null;
+                    }
+                    
                 }
             }
             return appData;
         }
 
+        private readonly static object _MyLock = new object();
         /// <summary>
         /// 保存app 数据
         /// </summary>
         /// <param name="appData"></param>
-        public static void SaveAppData(AppData appData)
+        public static void SaveAppData(AppData appData, string filePath)
         {
-            using (FileStream fs = new FileStream(Constants.DATA_FILE_PATH, FileMode.Create))
+            lock (_MyLock)
             {
-                BinaryFormatter bf = new BinaryFormatter();
-                bf.Serialize(fs, appData);
+                if (filePath.Equals(Constants.DATA_FILE_BAK_PATH))
+                {
+                    appData.AppConfig.SysBakTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                }
+                if (!Directory.Exists(filePath.Substring(0, filePath.LastIndexOf("\\"))))
+                {
+                    Directory.CreateDirectory(filePath.Substring(0, filePath.LastIndexOf("\\")));
+                }
+                using (FileStream fs = new FileStream(filePath, FileMode.Create))
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    bf.Serialize(fs, appData);
+                }
+            }
+        }
+
+
+        public static void SavePassword(string password)
+        {
+            using (StreamWriter sw = new StreamWriter(Constants.PW_FILE_BAK_PATH))
+            {
+                sw.Write(password);
+            }
+        }
+
+
+        public static void BakAppData()
+        {
+
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                Title = "备份文件",
+                Filter = "bak文件(*.bak)|*.bak",
+                FileName = "Data-GD-" + DateTime.Now.ToString("yyMMdd") + ".bak",
+            };
+            if (sfd.ShowDialog() == true)
+            {
+                using (FileStream fs = new FileStream(sfd.FileName, FileMode.Create))
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    bf.Serialize(fs, MainWindow.appData);
+                }
             }
         }
 
@@ -92,7 +179,7 @@ namespace GeekDesk.Util
             //    ext = System.IO.Path.GetExtension(path).ToLower();
             //}
 
-            string iconPath = null;
+            string iconPath;
             //if (".lnk".Equals(ext))
             //{
 
@@ -111,16 +198,21 @@ namespace GeekDesk.Util
             BitmapImage bi = ImageUtil.GetBitmapIconByPath(iconPath);
             IconInfo iconInfo = new IconInfo
             {
-                Path = path,
-                LnkPath = tempPath,
-                BitmapImage = bi,
-                StartArg = FileUtil.GetArgByLnk(tempPath)
+                Path_NoWrite = path,
+                LnkPath_NoWrite = tempPath,
+                BitmapImage_NoWrite = bi,
+                StartArg_NoWrite = FileUtil.GetArgByLnk(tempPath)
             };
-            iconInfo.DefaultImage = iconInfo.ImageByteArr;
-            iconInfo.Name = System.IO.Path.GetFileNameWithoutExtension(tempPath);
+            iconInfo.DefaultImage_NoWrite = iconInfo.ImageByteArr;
+            iconInfo.Name_NoWrite = System.IO.Path.GetFileNameWithoutExtension(tempPath);
             if (StringUtil.IsEmpty(iconInfo.Name))
             {
-                iconInfo.Name = path;
+                iconInfo.Name_NoWrite = path;
+            }
+            string relativePath = FileUtil.MakeRelativePath(Constants.APP_DIR + "GeekDesk.exe", iconInfo.Path);
+            if (!string.IsNullOrEmpty(relativePath) && !relativePath.Equals(iconInfo.Path))
+            {
+                iconInfo.RelativePath_NoWrite = relativePath;
             }
             return iconInfo;
         }

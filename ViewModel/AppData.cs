@@ -1,4 +1,5 @@
-﻿using GeekDesk.Util;
+﻿using GeekDesk.Constant;
+using GeekDesk.Util;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -88,7 +89,7 @@ namespace GeekDesk.ViewModel
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            CommonCode.SaveAppData(MainWindow.appData);
+            CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
         }
 
     }

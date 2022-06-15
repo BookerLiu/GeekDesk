@@ -1,4 +1,5 @@
-﻿using GeekDesk.Control.Windows;
+﻿using GeekDesk.Constant;
+using GeekDesk.Control.Windows;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using HandyControl.Controls;
@@ -42,7 +43,7 @@ namespace GeekDesk.Control.UserControls.Backlog
                     {
                         MainWindow.appData.HiToDoList.Remove(info);
                     }
-                    CommonCode.SaveAppData(MainWindow.appData);
+                    CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
                 }
                 return true;
             }, "DeleteConfirm");

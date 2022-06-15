@@ -13,14 +13,22 @@ namespace GeekDesk.Constant
 
         public static string MY_NAME = DEV ? "GeekDesk-D" : "GeekDesk";
 
+
         /// <summary>
         /// app数据文件路径
         /// </summary>
         public static string DATA_FILE_PATH = APP_DIR + "Data";  //app数据文件路径
 
-        public static string LOG_FILE_PATH = APP_DIR + "Log.log";
+        /// <summary>
+        /// 备份文件路径
+        /// </summary>
+        public static string DATA_FILE_BAK_PATH = APP_DIR + "bak\\Data.bak";  //app备份数据文件路径
 
-        public static string ERROR_FILE_PATH = APP_DIR + "Error.log";
+        public static string PW_FILE_BAK_PATH = APP_DIR + "bak\\pw.txt";  //密码文件路径
+
+        public static string LOG_FILE_PATH = APP_DIR + "logs\\log.log"; //日志文件
+
+        public static string ERROR_FILE_PATH = APP_DIR + "logs\\error.log"; // 错误日志
 
         public static int SHADOW_WIDTH = 20;
 

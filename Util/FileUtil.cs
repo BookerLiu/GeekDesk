@@ -1,5 +1,6 @@
 ﻿using IWshRuntimeLibrary;
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -154,6 +155,21 @@ namespace GeekDesk.Util
             {
                 return null;
             }
+        }
+
+        public static string MakeRelativePath(string fromPath, string toPath)
+        {
+            if (string.IsNullOrEmpty(toPath) || string.IsNullOrEmpty(fromPath)) return null;
+            Uri file = new Uri(@toPath);
+            // Must end in a slash to indicate folder
+            Uri folder = new Uri(@fromPath);
+            string relativePath =
+            Uri.UnescapeDataString(
+                folder.MakeRelativeUri(file)
+                    .ToString()
+                    .Replace('/', Path.DirectorySeparatorChar)
+                );
+            return relativePath;
         }
 
     }

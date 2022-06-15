@@ -93,6 +93,16 @@
                              Foreground="Black"
                              IsChecked="{Binding UpdateType, Mode=TwoWay, Converter={StaticResource UpdateTypeConvert}, ConverterParameter=2}"/>
                 </hc:UniformSpacingPanel>
+                
+                <TextBlock Text="其它"  Margin="0,25,0,0"/>
+                <hc:UniformSpacingPanel Spacing="10" Margin="20,8,0,0">
+                    <Button Content="备份数据" 
+                            hc:Poptip.Content="当数据文件损坏时, 以便能够恢复部分数据 (损坏时将有操作提示)"
+                            hc:Poptip.Placement="TopLeft"
+                            hc:Poptip.Offset="10"
+                            Style="{StaticResource Btn1}" 
+                            Click="BakDataFile"/>
+                </hc:UniformSpacingPanel>
             </StackPanel>
         </hc:SimplePanel>
     </Grid>

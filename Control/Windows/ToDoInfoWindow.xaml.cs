@@ -178,7 +178,7 @@ namespace GeekDesk.Control.Windows
                 Growl.SuccessGlobal("设置待办任务成功, 系统将在 " + minutes + " 分钟后提醒您!");
             }
 
-            CommonCode.SaveAppData(MainWindow.appData);
+            CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
             this.Close();
         }
 

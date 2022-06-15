@@ -8,7 +8,10 @@ namespace GeekDesk.Converts
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) return null;
+           if (value == null)
+            {
+                value = "";
+            }
             if (parameter == null)
             {
                 return value.ToString();
@@ -16,7 +19,14 @@ namespace GeekDesk.Converts
             else
             {
                 string val = value.ToString();
+                if (string.IsNullOrEmpty(val))
+                {
+                    return parameter.ToString()
+                        .Replace("\\n", "")
+                        .Replace("{}", "");
+                }
                 string param = parameter.ToString();
+                param = param.Replace("\\n", "\n");
                 return param.Replace("{}", val);
             }
         }

@@ -1,4 +1,5 @@
-﻿using GeekDesk.Util;
+﻿using GeekDesk.Constant;
+using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using Microsoft.Win32;
 using System;
@@ -38,7 +39,7 @@ namespace GeekDesk.Control.Other
             info.Name = IconName.Text;
             info.AdminStartUp = IconIsAdmin.IsChecked.Value;
             info.StartArg = StartArg.Text;
-            CommonCode.SaveAppData(MainWindow.appData);
+            CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
             dialog.Close();
         }
 
@@ -51,7 +52,7 @@ namespace GeekDesk.Control.Other
         {
             IconInfo info = this.DataContext as IconInfo;
             info.BitmapImage = ImageUtil.ByteArrToImage(info.DefaultImage);
-            CommonCode.SaveAppData(MainWindow.appData);
+            CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
         }
 
         /// <summary>
@@ -72,7 +73,7 @@ namespace GeekDesk.Control.Other
                 {
                     IconInfo info = this.DataContext as IconInfo;
                     info.BitmapImage = ImageUtil.GetBitmapIconByPath(ofd.FileName);
-                    CommonCode.SaveAppData(MainWindow.appData);
+                    CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
                 }
             }
             catch (Exception e1)

@@ -13,6 +13,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
@@ -25,68 +26,76 @@ namespace GeekDesk.Control.UserControls.PannelCard
     {
         private AppData appData = MainWindow.appData;
 
-        private volatile static bool DROP_ICON = false;
-        private Thread dropCheckThread = null;
+        ListBoxDragDropManager<IconInfo> dragMgr;
+
+        //private Thread dropCheckThread = null;
 
         public RightCardControl()
         {
             InitializeComponent();
+            this.Loaded += RightCardControl_Loaded;
+            
         }
 
-
-        #region 图标拖动
-        DelegateCommand<int[]> _swap;
-        public DelegateCommand<int[]> SwapCommand
+        private void RightCardControl_Loaded(object sender, RoutedEventArgs e)
         {
-            get
-            {
-                if (_swap == null)
-                    _swap = new DelegateCommand<int[]>(
-                        (indexes) =>
-                        {
-                            DROP_ICON = true;
-                            if (appData.AppConfig.IconSortType != SortType.CUSTOM
-                            && (dropCheckThread == null || !dropCheckThread.IsAlive))
-                            {
-                                dropCheckThread = new Thread(() =>
-                                {
-                                    do
-                                    {
-                                        DROP_ICON = false;
-                                        Thread.Sleep(1000);
-                                    } while (DROP_ICON);
-
-                                    MainWindow.appData.AppConfig.IconSortType = SortType.CUSTOM;
-                                    App.Current.Dispatcher.Invoke(() =>
-                                    {
-                                        if (MainWindow.mainWindow.Visibility == Visibility.Collapsed
-                                        || MainWindow.mainWindow.Opacity != 1)
-                                        {
-                                            Growl.WarningGlobal("已将图标排序规则重置为自定义!");
-                                        }
-                                        else
-                                        {
-                                            Growl.Warning("已将图标排序规则重置为自定义!", "MainWindowGrowl");
-                                        }
-                                    });
-                                });
-                                dropCheckThread.Start();
-                            }
-                            int fromS = indexes[0];
-                            int to = indexes[1];
-                            ObservableCollection<IconInfo> iconList = appData.MenuList[appData.AppConfig.SelectedMenuIndex].IconList;
-                            var elementSource = iconList[to];
-                            var dragged = iconList[fromS];
-
-                            iconList.Remove(dragged);
-                            iconList.Insert(to, dragged);
-                        }
-                    );
-                return _swap;
-            }
+            this.dragMgr = new ListBoxDragDropManager<IconInfo>(this.IconListBox);
         }
 
-        #endregion 图标拖动
+
+        //#region 图标拖动
+        //DelegateCommand<int[]> _swap;
+        //public DelegateCommand<int[]> SwapCommand
+        //{
+        //    get
+        //    {
+        //        if (_swap == null)
+        //            _swap = new DelegateCommand<int[]>(
+        //                (indexes) =>
+        //                {
+        //                    DROP_ICON = true;
+        //                    if (appData.AppConfig.IconSortType != SortType.CUSTOM
+        //                    && (dropCheckThread == null || !dropCheckThread.IsAlive))
+        //                    {
+        //                        dropCheckThread = new Thread(() =>
+        //                        {
+        //                            do
+        //                            {
+        //                                DROP_ICON = false;
+        //                                Thread.Sleep(1000);
+        //                            } while (DROP_ICON);
+
+        //                            MainWindow.appData.AppConfig.IconSortType = SortType.CUSTOM;
+        //                            App.Current.Dispatcher.Invoke(() =>
+        //                            {
+        //                                if (MainWindow.mainWindow.Visibility == Visibility.Collapsed
+        //                                || MainWindow.mainWindow.Opacity != 1)
+        //                                {
+        //                                    Growl.WarningGlobal("已将图标排序规则重置为自定义!");
+        //                                }
+        //                                else
+        //                                {
+        //                                    Growl.Warning("已将图标排序规则重置为自定义!", "MainWindowGrowl");
+        //                                }
+        //                            });
+        //                        });
+        //                        dropCheckThread.Start();
+        //                    }
+        //                    int fromS = indexes[0];
+        //                    int to = indexes[1];
+        //                    ObservableCollection<IconInfo> iconList = appData.MenuList[appData.AppConfig.SelectedMenuIndex].IconList;
+        //                    var elementSource = iconList[to];
+        //                    var dragged = iconList[fromS];
+
+        //                    iconList.Remove(dragged);
+        //                    iconList.Insert(to, dragged);
+        //                }
+        //            );
+        //        return _swap;
+        //    }
+        //}
+
+        //#endregion 图标拖动
 
 
 
@@ -163,33 +172,51 @@ namespace GeekDesk.Control.UserControls.PannelCard
             StartIconApp(icon, IconStartType.SHOW_IN_EXPLORE);
         }
 
-        private void StartIconApp(IconInfo icon, IconStartType type)
+        private void StartIconApp(IconInfo icon, IconStartType type, bool useRelativePath = false)
         {
+            
             try
             {
                 using (Process p = new Process())
                 {
                     string startArg = icon.StartArg;
-
+                    
                     if (startArg != null && Constants.SYSTEM_ICONS.ContainsKey(startArg))
                     {
                         StartSystemApp(startArg, type);
                     }
                     else
                     {
-                        p.StartInfo.FileName = icon.Path;
+                        string path;
+                        if (useRelativePath)
+                        {
+                            string fullPath = Path.Combine(Constants.APP_DIR, icon.RelativePath);
+                            path = Path.GetFullPath(fullPath);
+                        } else
+                        {
+                            path = icon.Path;
+                        }
+                        p.StartInfo.FileName = path;
                         if (!StringUtil.IsEmpty(startArg))
                         {
                             p.StartInfo.Arguments = startArg;
                         }
                         if (icon.IconType == IconType.OTHER)
                         {
-                            if (!File.Exists(icon.Path) && !Directory.Exists(icon.Path))
+                            if (!File.Exists(path) && !Directory.Exists(path))
                             {
-                                HandyControl.Controls.Growl.WarningGlobal("程序启动失败(文件路径不存在或已删除)!");
-                                return;
+                                //如果没有使用相对路径  那么使用相对路径启动一次
+                                if (!useRelativePath)
+                                {
+                                    StartIconApp(icon, type, true);
+                                    return;
+                                } else
+                                {
+                                    HandyControl.Controls.Growl.WarningGlobal("程序启动失败(文件路径不存在或已删除)!");
+                                    return;
+                                }
                             }
-                            p.StartInfo.WorkingDirectory = icon.Path.Substring(0, icon.Path.LastIndexOf("\\"));
+                            p.StartInfo.WorkingDirectory = path.Substring(0, path.LastIndexOf("\\"));
                             switch (type)
                             {
                                 case IconStartType.ADMIN_STARTUP:
@@ -257,6 +284,11 @@ namespace GeekDesk.Control.UserControls.PannelCard
                             }
                         }
                         p.Start();
+                        if (useRelativePath)
+                        {
+                            //如果使用相对路径启动成功 那么重新设置程序绝对路径
+                            icon.Path = path;
+                        }
                     }
                 }
                 icon.Count++;
@@ -269,8 +301,15 @@ namespace GeekDesk.Control.UserControls.PannelCard
             }
             catch (Exception e)
             {
-                HandyControl.Controls.Growl.WarningGlobal("程序启动失败(不支持的启动方式)!");
-                LogUtil.WriteErrorLog(e, "程序启动失败:path=" + icon.Path + ",type=" + type);
+                if (!useRelativePath)
+                {
+                    StartIconApp(icon, type, true);
+                }
+                else
+                {
+                    HandyControl.Controls.Growl.WarningGlobal("程序启动失败(可能为不支持的启动方式)!");
+                    LogUtil.WriteErrorLog(e, "程序启动失败:path=" + icon.Path + ",type=" + type);
+                }
             }
         }
 
@@ -368,7 +407,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 MainWindow.appData.MenuList[appData.AppConfig.SelectedMenuIndex].IconList.Add(iconInfo);
             }
             CommonCode.SortIconList();
-            CommonCode.SaveAppData(MainWindow.appData);
+            CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
         }
 
         /// <summary>
@@ -405,11 +444,11 @@ namespace GeekDesk.Control.UserControls.PannelCard
             {
                 case IconType.URL:
                     IconInfoUrlDialog urlDialog = new IconInfoUrlDialog(info);
-                    urlDialog.dialog = HandyControl.Controls.Dialog.Show(urlDialog, "IconInfoDialog");
+                    urlDialog.dialog = HandyControl.Controls.Dialog.Show(urlDialog, "MainWindowDialog");
                     break;
                 default:
                     IconInfoDialog dialog = new IconInfoDialog(info);
-                    dialog.dialog = HandyControl.Controls.Dialog.Show(dialog, "IconInfoDialog");
+                    dialog.dialog = HandyControl.Controls.Dialog.Show(dialog, "MainWindowDialog");
                     break;
             }
         }
@@ -636,7 +675,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
         private void AddUrlIcon(object sender, RoutedEventArgs e)
         {
             IconInfoUrlDialog urlDialog = new IconInfoUrlDialog();
-            urlDialog.dialog = HandyControl.Controls.Dialog.Show(urlDialog, "IconInfoDialog");
+            urlDialog.dialog = HandyControl.Controls.Dialog.Show(urlDialog, "MainWindowDialog");
         }
 
         /// <summary>
@@ -714,6 +753,69 @@ namespace GeekDesk.Control.UserControls.PannelCard
             } else
             {
                 CardLockCM.Header = "锁定主面板";
+            }
+        }
+
+        public void SearchListBoxIndexAdd()
+        {
+            if (SearchListBox.Items.Count > 0)
+            {
+                if (SearchListBox.SelectedIndex < SearchListBox.Items.Count - 1)
+                {
+                    SearchListBox.SelectedIndex += 1;
+                }
+            }
+        }
+
+        public void SearchListBoxIndexSub()
+        {
+            if (SearchListBox.Items.Count > 0)
+            {
+                if (SearchListBox.SelectedIndex > 0)
+                {
+                    SearchListBox.SelectedIndex -= 1;
+                }
+            }
+        }
+
+        public void StartupSelectionItem()
+        {
+            if (SearchListBox.SelectedItem != null)
+            {
+                IconInfo icon = SearchListBox.SelectedItem as IconInfo;
+                if (icon.AdminStartUp)
+                {
+                    StartIconApp(icon, IconStartType.ADMIN_STARTUP);
+                }
+                else
+                {
+                    StartIconApp(icon, IconStartType.DEFAULT_STARTUP);
+                }
+            }
+        }
+
+        private void SearchListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SearchListBox.ScrollIntoView(SearchListBox.SelectedItem);
+        }
+
+        private void PDDialog_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (PDDialog.Visibility == Visibility.Visible)
+            {
+                RunTimeStatus.SHOW_MENU_PASSWORDBOX = true;
+                PDDialog.ClearVal();
+                PDDialog.ErrorMsg.Visibility = Visibility.Collapsed;
+                PDDialog.PasswordGrid.Visibility = Visibility.Visible;
+                PDDialog.HintGrid.Visibility = Visibility.Collapsed;
+                PDDialog.count = 0;
+                PDDialog.SetFocus();
+            }
+            else
+            {
+                RunTimeStatus.SHOW_MENU_PASSWORDBOX = false;
+                PDDialog.ClearVal();
+                MainWindow.mainWindow.Focus();
             }
         }
     }

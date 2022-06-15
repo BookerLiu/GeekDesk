@@ -4,6 +4,7 @@
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
            xmlns:hc="https://handyorg.github.io/handycontrol"
+           xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
            xmlns:local="clr-namespace:GeekDesk"
            Title="Setting"
            mc:Ignorable="d"
@@ -109,14 +110,14 @@
                             </hc:SideMenu>
                         </hc:Card>
                         <hc:ScrollViewer  Grid.Row="0" Grid.Column="1" BorderThickness="0" Margin="0,5,1,5">
-                            <UniformGrid x:Name="UFG">
-                                <hc:TransitioningContentControl TransitionMode="Left2RightWithFade">
+                            <UniformGrid x:Name="UFG" xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeIn}, Event=Visibility, Delay=0}">
+                                <!--<hc:TransitioningContentControl TransitionMode="Left2RightWithFade">-->
                                     <hc:Card x:Name="RightCard" BorderThickness="0"  MouseDown="DragMove">
                                         <hc:Card.Background>
                                             <SolidColorBrush  Opacity="0"/>
                                         </hc:Card.Background>
                                     </hc:Card>
-                                </hc:TransitioningContentControl>
+                                <!--</hc:TransitioningContentControl>-->
                             </UniformGrid>
                         </hc:ScrollViewer>
 

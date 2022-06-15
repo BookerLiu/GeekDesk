@@ -52,7 +52,7 @@ namespace GeekDesk.Control.Other
             {
                 MainWindow.appData.MenuList[MainWindow.appData.AppConfig.SelectedMenuIndex].IconList.Add(info);
             }
-            CommonCode.SaveAppData(MainWindow.appData);
+            CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
             dialog.Close();
         }
 
@@ -65,7 +65,7 @@ namespace GeekDesk.Control.Other
         {
             IconInfo info = this.DataContext as IconInfo;
             info.BitmapImage = ImageUtil.ByteArrToImage(info.DefaultImage);
-            CommonCode.SaveAppData(MainWindow.appData);
+            CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace GeekDesk.Control.Other
                 {
                     IconInfo info = this.DataContext as IconInfo;
                     info.BitmapImage = ImageUtil.GetBitmapIconByPath(ofd.FileName);
-                    CommonCode.SaveAppData(MainWindow.appData);
+                    CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
                 }
             }
             catch (Exception ex)

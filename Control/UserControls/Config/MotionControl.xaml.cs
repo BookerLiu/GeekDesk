@@ -35,8 +35,6 @@ namespace GeekDesk.Control.UserControls.Config
         /// <param name="e"></param>
         private void HotKeyDown(object sender, KeyEventArgs e)
         {
-            Console.WriteLine("downKey:" + e.Key.ToString());
-
             lock (this)
             {
                 HotKeyType hkType = (HotKeyType)(sender as TextBox).Tag;
@@ -49,8 +47,6 @@ namespace GeekDesk.Control.UserControls.Config
 
                 if (!CheckIsEnable(hkType)) return;
 
-
-                Console.WriteLine("prevKeyTemp:" + prevKeyTemp.ToString());
                 
                 if (prevKeyTemp == Key.None || prevKeyTemp != downKey)
                 {
@@ -101,7 +97,6 @@ namespace GeekDesk.Control.UserControls.Config
                                     appConfig.ColorPickerHotkeyModifiers = GetModifierKeys(downKey);
                                     break;
                             }
-                            Console.WriteLine("进入设置" + downKey.ToString());
                             prevKeyTemp = downKey;
                             keysTemp.Add(e);
                         }
@@ -119,7 +114,10 @@ namespace GeekDesk.Control.UserControls.Config
                             KeyUtil.KeyProp keyProp = new KeyUtil.KeyProp();
                             KeyUtil.KeyToChar(downKey, ref keyProp, true);
                             string downKeyStr = keyProp.character.ToString();
-                            //string downKeyStr = "";
+                            if (keyProp.character == '\x00')
+                            {
+                                downKeyStr = downKey.ToString();
+                            }
                             switch (hkType)
                             {
                                 case HotKeyType.Main:
@@ -308,15 +306,6 @@ namespace GeekDesk.Control.UserControls.Config
             }
         }
 
-        private void Animation_Checked(object sender, RoutedEventArgs e)
-        {
-            if (MainWindow.mainWindow.Visibility == Visibility.Collapsed)
-            {
-                MainWindow.mainWindow.Visibility = Visibility.Visible;
-                // 执行一下动画 防止太过突兀
-                MainWindow.FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
-            }
-        }
 
 
         /// <summary>

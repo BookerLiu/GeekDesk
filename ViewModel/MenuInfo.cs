@@ -20,7 +20,21 @@ namespace GeekDesk.ViewModel
         private string menuGeometry;  //菜单几何图标
         private string geometryColor; //几何图标颜色
         private ObservableCollection<IconInfo> iconList = new ObservableCollection<IconInfo>();
+        private bool isEncrypt;  //是否加密
 
+
+        public bool IsEncrypt
+        {
+            get
+            {
+                return isEncrypt;
+            }
+            set
+            {
+                isEncrypt = value;
+                OnPropertyChanged("IsEncrypt");
+            }
+        }
 
         public string MenuGeometry
         {
@@ -134,7 +148,7 @@ namespace GeekDesk.ViewModel
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            CommonCode.SaveAppData(MainWindow.appData);
+            CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
         }
     }
 }

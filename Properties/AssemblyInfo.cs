@@ -4,7 +4,7 @@ using System.Windows;
 
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
-// 与程序集关联的信息。
+// 与程序集关联的信息。 
 [assembly: AssemblyTitle("GeekDesk")]
 [assembly: AssemblyDescription("小巧、美观的桌面快速启动工具")]
 [assembly: AssemblyConfiguration("")]
@@ -49,5 +49,5 @@ using System.Windows;
 //可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值
 //通过使用 "*"，如下所示:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.4.1.6")]
-[assembly: AssemblyFileVersion("2.4.1.6")]
+[assembly: AssemblyVersion("2.5.1.0")]
+[assembly: AssemblyFileVersion("2.5.1.0")]

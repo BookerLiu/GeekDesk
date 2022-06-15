@@ -21,7 +21,7 @@ namespace GeekDesk.Util
         /// <summary>
         /// 随鼠标位置显示面板 
         /// </summary>
-        public static void Show(Window window, MousePosition position, double widthOffset = 0, double heightOffset = 0, bool visibility = true)
+        public static void Show(Window window, MousePosition position, double widthOffset = 0, double heightOffset = 0)
         {
             //获取鼠标位置
             System.Windows.Point p = MouseUtil.GetMousePosition();
@@ -100,11 +100,6 @@ namespace GeekDesk.Util
             else
             {
                 window.Top = p.Y - afterHeight;
-            }
-            if (visibility)
-            {
-                window.Opacity = 0;
-                window.Visibility = Visibility.Visible;
             }
         }
 

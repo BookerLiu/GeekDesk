@@ -93,8 +93,79 @@ namespace GeekDesk.ViewModel
 
         private SearchType searchType;
 
+        private string sysBakTime;  //系统自动备份时间
+
+        private string menuPassword; //锁菜单密码
+
+        private string passwordHint; //密码提示
+
+        private bool? isShow;
+
+        private bool itemSpradeAnimation; //列表展开动画
 
         #region GetSet
+        public bool ItemSpradeAnimation
+        {
+            get
+            {
+                return itemSpradeAnimation;
+            }
+            set
+            {
+                itemSpradeAnimation = value;
+                OnPropertyChanged("ItemSpradeAnimation");
+            }
+        }
+
+        public bool? IsShow
+        {
+            get
+            {
+                return isShow;
+            }
+            set
+            {
+                isShow = value;
+                OnPropertyChanged("IsShow");
+            }
+        }
+
+        public string PasswordHint
+        {
+            get
+            {
+                return passwordHint;
+            }
+            set
+            {
+                passwordHint = value;
+                OnPropertyChanged("PasswordHint");
+            }
+        }
+        public string MenuPassword
+        {
+            get
+            {
+                return menuPassword;
+            }
+            set
+            {
+                menuPassword = value;
+                OnPropertyChanged("MenuPassword");
+            }
+        }
+
+        public string SysBakTime
+        {
+            get
+            {
+                return sysBakTime;
+            }
+            set
+            {
+                sysBakTime = value;
+            }
+        }
 
         public SearchType SearchType
         {
@@ -898,7 +969,7 @@ namespace GeekDesk.ViewModel
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            CommonCode.SaveAppData(MainWindow.appData);
+            CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
         }
 
         #endregion

@@ -8,6 +8,7 @@ using GeekDesk.Task;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using GeekDesk.ViewModel.Temp;
+using Microsoft.Win32;
 using NPinyin;
 using System;
 using System.Collections.ObjectModel;
@@ -16,6 +17,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using static GeekDesk.Util.ShowWindowFollowMouse;
@@ -37,14 +39,18 @@ namespace GeekDesk
         public static MainWindow mainWindow;
         public MainWindow()
         {
+            //加载数据
             LoadData();
             InitializeComponent();
-            mainWindow = this;
-            this.Topmost = true;
-            this.Loaded += Window_Loaded;
-            this.SizeChanged += MainWindow_Resize;
-            ToDoTask.BackLogCheck();
 
+            //用于其他类访问
+            mainWindow = this;
+
+            //置于顶层
+            this.Topmost = true;
+
+            //执行待办提醒
+            ToDoTask.BackLogCheck();
 
             ////实例化隐藏 Hide类，进行时间timer设置
             MarginHide.ReadyHide(this);
@@ -52,11 +58,14 @@ namespace GeekDesk
             {
                 MarginHide.StartHide();
             }
+
         }
+
+       
 
 
         /// <summary>
-        /// 显示搜索框
+        /// 搜索快捷键按下
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -68,6 +77,9 @@ namespace GeekDesk
             }
         }
 
+        /// <summary>
+        /// 显示搜索框
+        /// </summary>
         private void ShowSearchBox()
         {
             RunTimeStatus.SEARCH_BOX_SHOW = true;
@@ -117,9 +129,16 @@ namespace GeekDesk
             {
                 SearchIconList.IconList.Clear();
             }
+            if (RightCard.SearchListBox.Items.Count > 0)
+            {
+                RightCard.SearchListBox.SelectedIndex = 0;
+            }
             RightCard.VerticalUFG.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// 隐藏搜索框
+        /// </summary>
         public void HidedSearchBox()
         {
             RunTimeStatus.SEARCH_BOX_SHOW = false;
@@ -160,14 +179,7 @@ namespace GeekDesk
             BGSettingUtil.BGSetting();
             if (!appData.AppConfig.StartedShowPanel)
             {
-                if (appData.AppConfig.AppAnimation)
-                {
-                    this.Opacity = 0;
-                }
-                else
-                {
-                    this.Visibility = Visibility.Collapsed;
-                }
+                this.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -206,6 +218,12 @@ namespace GeekDesk
 
             //更新线程开启  检测更新
             UpdateThread.Update();
+
+            //建立相对路径
+            RelativePathThread.MakeRelativePath();
+
+            //毛玻璃  暂时未解决阴影问题
+            //BlurGlassUtil.EnableBlur(this);
         }
 
         /// <summary>
@@ -330,21 +348,6 @@ namespace GeekDesk
         }
 
 
-        /// <summary>
-        /// 重置窗体大小 写入缓存
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void MainWindow_Resize(object sender, System.EventArgs e)
-        {
-            if (this.DataContext != null)
-            {
-                AppData appData = this.DataContext as AppData;
-                appData.AppConfig.WindowWidth = this.Width;
-                appData.AppConfig.WindowHeight = this.Height;
-            }
-        }
-
 
 
         /// <summary>
@@ -424,6 +427,15 @@ namespace GeekDesk
             //}
 
             MainWindow.mainWindow.Activate();
+            mainWindow.Show();
+            //mainWindow.Visibility = Visibility.Visible;
+            if (appData.AppConfig.AppAnimation)
+            {
+                appData.AppConfig.IsShow = true;
+            } else
+            {
+                appData.AppConfig.IsShow = null;
+            }
 
             if (MarginHide.ON_HIDE)
             {
@@ -438,35 +450,53 @@ namespace GeekDesk
 
             if (appData.AppConfig.FollowMouse)
             {
-                ShowWindowFollowMouse.Show(mainWindow, MousePosition.CENTER, 0, 0, false);
+                ShowWindowFollowMouse.Show(mainWindow, MousePosition.CENTER, 0, 0);
             }
+            
 
-            FadeStoryBoard(1, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Visible);
+            //FadeStoryBoard(1, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Visible);
+
             Keyboard.Focus(mainWindow);
-            Keyboard.Focus(mainWindow.SearchBox);
+            if (RunTimeStatus.SHOW_MENU_PASSWORDBOX)
+            {
+                mainWindow.RightCard.PDDialog.SetFocus();
+            } else
+            {
+                Keyboard.Focus(mainWindow.SearchBox);
+            }
         }
 
         public static void HideApp()
         {
-            if (!MarginHide.IS_HIDE)
+            if (appData.AppConfig.AppAnimation)
             {
-                //关闭锁定
-                RunTimeStatus.LOCK_APP_PANEL = false;
-                if (RunTimeStatus.SEARCH_BOX_SHOW)
-                {
-                    mainWindow.HidedSearchBox();
-                    FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
-                }
-                else
-                {
-                    FadeStoryBoard(0, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Collapsed);
-                }
+                appData.AppConfig.IsShow = false;
             }
             else
             {
-                ShowApp();
+                appData.AppConfig.IsShow = null;
+                HideAppVis();
             }
+            
+        }
 
+        private static void HideAppVis()
+        {
+            //关闭锁定
+            RunTimeStatus.LOCK_APP_PANEL = false;
+            if (RunTimeStatus.SEARCH_BOX_SHOW)
+            {
+                mainWindow.HidedSearchBox();
+            }
+            mainWindow.Visibility = Visibility.Collapsed;
+            //if (!MarginHide.IS_HIDE)
+            //{
+               
+            //}
+            //else
+            //{
+            //    ShowApp();
+            //}
         }
 
         /// <summary>
@@ -677,16 +707,24 @@ namespace GeekDesk
             {
                 HideApp();
             }
-            //else if (
-            //    appData.AppConfig.SearchType == SearchType.KEY_DOWN &&
-            //    (
-            //        (e.Key >= Key.D0 && e.Key <= Key.Z) 
-            //        || (e.Key >= Key.NumPad0 && e.Key < Key.NumPad9)
-            //        )
-            //    )
-            //{
-            //    ShowSearchBox();
-            //}
+
+            if (RunTimeStatus.SEARCH_BOX_SHOW && (e.Key == Key.Up 
+                || e.Key == Key.Down 
+                || e.Key == Key.Tab
+                || e.Key == Key.Enter
+                ))
+            {
+                if (e.Key == Key.Down || e.Key == Key.Tab)
+                {
+                    RightCard.SearchListBoxIndexAdd();
+                } else if (e.Key == Key.Up)
+                {
+                    RightCard.SearchListBoxIndexSub();
+                } else if (e.Key == Key.Enter)
+                {
+                    RightCard.StartupSelectionItem();
+                }
+            } 
         }
 
 
@@ -723,20 +761,83 @@ namespace GeekDesk
             GlobalColorPickerWindow.CreateNoShow();
         }
 
-
         private void Window_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (!LeftCard.IS_EDIT)
+            // 如果没有在修改菜单 并且不是右键点击了面板
+            if (!RunTimeStatus.IS_MENU_EDIT
+                && !RunTimeStatus.SHOW_RIGHT_BTN_MENU
+                && !RunTimeStatus.APP_BTN_IS_DOWN)
             {
-                //if判断是为了能够使修改菜单时  菜单能够获得焦点
-                Keyboard.Focus(SearchBox);
+                if (RunTimeStatus.SHOW_MENU_PASSWORDBOX)
+                {
+                    //必须在其它文本框没有工作的时候才给密码框焦点
+                    RightCard.PDDialog.SetFocus();
+                }
+                else
+                {
+                    //必须在其它文本框没有工作的时候才给搜索框焦点
+                    Keyboard.Focus(SearchBox);
+                }
+                
             }
+            
         }
 
         private void AppWindow_Deactivated(object sender, EventArgs e)
         {
             AppWindowLostFocus();
         }
+
+        /// <summary>
+        /// 备份数据文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        [Obsolete]
+        private void BakDataFile(object sender, RoutedEventArgs e)
+        {
+            Thread t = new Thread(() =>
+            {
+                CommonCode.BakAppData();
+            });
+            t.ApartmentState = ApartmentState.STA;
+            t.Start();
+        }
+
+        private void AppButton_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            //点击了面板
+            RunTimeStatus.APP_BTN_IS_DOWN = true;
+            new Thread(() =>
+            {
+                Thread.Sleep(50);
+                RunTimeStatus.APP_BTN_IS_DOWN = false;
+            }).Start();
+        }
+
+
+        private ICommand _hideCommand;
+        public ICommand HideCommand
+        {
+            get
+            {
+                if (_hideCommand == null)
+                {
+                    _hideCommand = new RelayCommand(
+                        p =>
+                        {
+                            return true;
+                        },
+                        p =>
+                        {
+                            HideAppVis();
+                        });
+                }
+                return _hideCommand;
+            }
+        }
+
+
 
     }
 }

@@ -138,7 +138,7 @@ namespace GeekDesk.Control.Windows
             }
             window.Show();
             Keyboard.Focus(window);
-            ShowWindowFollowMouse.Show(window, MousePosition.LEFT_CENTER, 0, 0, false);
+            ShowWindowFollowMouse.Show(window, MousePosition.LEFT_CENTER, 0, 0);
         }
 
         private void CustomButton_Click(object sender, RoutedEventArgs e)
