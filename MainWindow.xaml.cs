@@ -185,7 +185,7 @@ namespace GeekDesk
             {
                 ShowApp();
             }
-
+            //ShowSecondTask.SHowSecond();
             //给任务栏图标一个名字
             BarIcon.Text = Constants.MY_NAME;
 
@@ -426,17 +426,6 @@ namespace GeekDesk
             //    return;
             //}
 
-            MainWindow.mainWindow.Activate();
-            mainWindow.Show();
-            //mainWindow.Visibility = Visibility.Visible;
-            if (appData.AppConfig.AppAnimation)
-            {
-                appData.AppConfig.IsShow = true;
-            } else
-            {
-                appData.AppConfig.IsShow = null;
-            }
-
             if (MarginHide.ON_HIDE)
             {
                 //修改贴边隐藏状态为未隐藏
@@ -452,7 +441,19 @@ namespace GeekDesk
             {
                 ShowWindowFollowMouse.Show(mainWindow, MousePosition.CENTER, 0, 0);
             }
-            
+
+            MainWindow.mainWindow.Activate();
+            mainWindow.Show();
+            //mainWindow.Visibility = Visibility.Visible;
+            if (appData.AppConfig.AppAnimation)
+            {
+                appData.AppConfig.IsShow = true;
+            }
+            else
+            {
+                appData.AppConfig.IsShow = null;
+            }
+
 
             //FadeStoryBoard(1, (int)CommonEnum.WINDOW_ANIMATION_TIME, Visibility.Visible);
 

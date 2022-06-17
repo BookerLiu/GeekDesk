@@ -205,6 +205,14 @@ namespace GeekDesk.ViewModel
             set
             {
                 name = value;
+                if (StringUtil.IsEmpty(Path))
+                {
+                    content = Name + "\n使用次数: " + Count;
+                }
+                else
+                {
+                    content = Path + "\n" + Name + "\n使用次数: " + Count;
+                }
             }
         }
 
@@ -238,6 +246,14 @@ namespace GeekDesk.ViewModel
             set
             {
                 path = value;
+                if (StringUtil.IsEmpty(Path))
+                {
+                    content = Name + "\n使用次数: " + Count;
+                }
+                else
+                {
+                    content = Path + "\n" + Name + "\n使用次数: " + Count;
+                }
             }
         }
 

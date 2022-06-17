@@ -32,18 +32,21 @@
                                MouseLeave="SC_MouseLeave"
                                Command="hc:ControlCommands.OpenLink" 
                                CommandParameter="https://github.com/BookerLiu/GeekDesk"
-                               Margin="0,0,10,0" Color="#24292F"/>
+                               Margin="0,0,10,0" Color="#24292F"
+                               />
+
                     <hc:Shield Subject="Gitee" Visibility="Visible" Status="Star"
                                MouseEnter="SC_MouseEnter"
                                MouseLeave="SC_MouseLeave"
                                Command="hc:ControlCommands.OpenLink" 
                                CommandParameter="https://gitee.com/BookerLiu/GeekDesk" 
-                               Margin="0,0,10,0" Color="#C71D23"/>
+                               Margin="0,0,10,0" Color="#C71D23"
+                               />
 
 
                 </hc:UniformSpacingPanel>
                 <hc:UniformSpacingPanel Spacing="10" HorizontalAlignment="Center" Margin="0,5,0,0">
-                    <hc:Shield Subject="公众号" Visibility="Visible" Status="抓几个娃" Margin="0,0,5,0"  Color="#04913B">
+                    <hc:Shield x:Name="PublicWeChatPanel" Subject="公众号" Visibility="Visible" Status="抓几个娃" Margin="0,0,5,0"  Color="#04913B">
                         <hc:Poptip.Instance>
                             <hc:Poptip PlacementType="Top">
                                 <hc:Poptip.Content>
