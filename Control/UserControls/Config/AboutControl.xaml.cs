@@ -16,6 +16,15 @@ namespace GeekDesk.Control.UserControls.Config
         {
             InitializeComponent();
             AppInfo.Text += ConfigurationManager.AppSettings["Version"];
+            string showPublicWeChat = ConfigurationManager.AppSettings["ShowPublicWeChat"];
+            if ("Y".Equals(showPublicWeChat))
+            {
+                PublicWeChatPanel.Visibility = Visibility.Visible;
+            } else
+            {
+                PublicWeChatPanel.Visibility = Visibility.Collapsed;
+            }
+            
             PublicWeChat.Source = ImageUtil.Base64ToBitmapImage(Constants.PUBLIC_WE_CHAT_IMG_BASE64);
             WeChatCode.Source = ImageUtil.Base64ToBitmapImage(Constants.WE_CHAT_CODE_IMG_BASE64);
             ZFBCode.Source = ImageUtil.Base64ToBitmapImage(Constants.ZFB_CODE_IMG_BASE64);
