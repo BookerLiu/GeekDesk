@@ -19,6 +19,7 @@ namespace GeekDesk.Control.Windows
             InitializeComponent();
             RightCard.Content = backlog;
             backlog.BacklogList.ItemsSource = appData.ToDoList;
+            backlog.type = ToDoType.NEW;
             this.Topmost = true;
             if (backlog.BacklogList.Items.Count > 0)
             {
