@@ -10,6 +10,7 @@ using GeekDesk.ViewModel;
 using GeekDesk.ViewModel.Temp;
 using Microsoft.Win32;
 using NPinyin;
+using ShowSeconds;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -176,6 +177,7 @@ namespace GeekDesk
         /// <param name="e"></param>
         void Window_Loaded(object sender, RoutedEventArgs e)
         {
+
             BGSettingUtil.BGSetting();
             if (!appData.AppConfig.StartedShowPanel)
             {
@@ -185,7 +187,6 @@ namespace GeekDesk
             {
                 ShowApp();
             }
-            //ShowSecondTask.SHowSecond();
             //给任务栏图标一个名字
             BarIcon.Text = Constants.MY_NAME;
 
@@ -216,6 +217,12 @@ namespace GeekDesk
                 MouseHookThread.MiddleHook();
             }
 
+            //启动显秒程序
+            if (appData.AppConfig.SecondsWindow == true)
+            {
+                SecondsWindow.ShowWindow();
+            }
+
             //更新线程开启  检测更新
             UpdateThread.Update();
 
@@ -224,6 +231,8 @@ namespace GeekDesk
 
             //毛玻璃  暂时未解决阴影问题
             //BlurGlassUtil.EnableBlur(this);
+
+            MessageUtil.ChangeWindowMessageFilter(MessageUtil.WM_COPYDATA, 1);
         }
 
         /// <summary>
@@ -665,8 +674,9 @@ namespace GeekDesk
         {
             if (appData.AppConfig.MouseMiddleShow)
             {
-                MouseHookThread.Dispose();
+                MouseHookThread.DisposeMiddle();
             }
+            SecondsWindow.Dispose();
             Application.Current.Shutdown();
         }
         /// <summary>
@@ -678,8 +688,10 @@ namespace GeekDesk
         {
             if (appData.AppConfig.MouseMiddleShow)
             {
-                MouseHookThread.Dispose();
+                MouseHookThread.DisposeMiddle();
             }
+
+            SecondsWindow.Dispose();
 
             Process p = new Process();
             p.StartInfo.FileName = Constants.APP_DIR + "GeekDesk.exe";
@@ -836,6 +848,30 @@ namespace GeekDesk
                 }
                 return _hideCommand;
             }
+        }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            HwndSource hwndSource = PresentationSource.FromVisual(this) as HwndSource;
+            if (hwndSource != null)
+            {
+                IntPtr handle = hwndSource.Handle;
+                hwndSource.AddHook(new HwndSourceHook(WndProc));
+            }
+        }
+
+        IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            if (msg == MessageUtil.WM_COPYDATA)
+            {
+                MessageUtil.CopyDataStruct cds = (MessageUtil.CopyDataStruct)System.Runtime.InteropServices.Marshal.PtrToStructure(lParam, typeof(MessageUtil.CopyDataStruct));
+                if ("ShowApp".Equals(cds.msg))
+                {
+                    ShowApp();
+                }
+            }
+            return hwnd;
         }
 
 

@@ -142,26 +142,7 @@ namespace GeekDesk.Util
             }
         }
 
-
-
-        /// <summary>
-        /// 判断当前屏幕(鼠标最后活动屏幕)是否有全屏化应用
-        /// </summary>
-        /// <returns></returns>
-        public static bool IsPrimaryFullScreen()
-        {
-            RECT rect = new RECT();
-            GetWindowRect(new HandleRef(null, GetForegroundWindow()), ref rect);
-
-            int windowHeight = rect.bottom - rect.top;
-            int screenHeight = (int)SystemParameters.PrimaryScreenHeight;
-
-            if (windowHeight >= screenHeight)
-            {
-                return true;
-            }
-            return false;
-        }
+        
 
         /// <summary>
         /// 根据路径获取文件图标等信息
@@ -263,21 +244,7 @@ namespace GeekDesk.Util
         }
 
 
-        [StructLayout(LayoutKind.Sequential)]
-        private struct RECT
-        {
-            public int left;
-            public int top;
-            public int right;
-            public int bottom;
-        }
-
-        [DllImport("user32.dll")]
-        private static extern bool GetWindowRect(HandleRef hWnd, [In, Out] ref RECT rect);
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr GetForegroundWindow();
-
+        
 
 
         /// <summary>

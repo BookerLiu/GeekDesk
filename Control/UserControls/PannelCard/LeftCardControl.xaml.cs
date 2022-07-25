@@ -161,13 +161,17 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
         private void Lbi_Selected(object sender, RoutedEventArgs e)
         {
-            ListBoxItem lbi = sender as ListBoxItem;
+            try
+            {
+                ListBoxItem lbi = sender as ListBoxItem;
 
-            SolidColorBrush fontColor = new SolidColorBrush(Colors.Black);
+                SolidColorBrush fontColor = new SolidColorBrush(Colors.Black);
 
-            lbi.MouseLeave -= Lbi_MouseLeave;
-            lbi.Background = bac;
-            lbi.Foreground = fontColor;
+                lbi.MouseLeave -= Lbi_MouseLeave;
+                lbi.Background = bac;
+                lbi.Foreground = fontColor;
+            } catch { }
+            
         }
 
         private void Lbi_MouseLeave(object sender, MouseEventArgs e)
@@ -338,6 +342,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 }
             }
             MainWindow.mainWindow.RightCard.WrapUFG.Visibility = Visibility.Visible;
+            //App.DoEvents();
         }
 
 

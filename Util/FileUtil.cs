@@ -179,5 +179,25 @@ namespace GeekDesk.Util
             return relativePath;
         }
 
+
+        public static FileInfo GetFileByNameWithDir(string name, string dir)
+        {
+            DirectoryInfo d = new DirectoryInfo(dir);
+            FileInfo[] files = d.GetFiles();//文件
+            foreach (FileInfo fi in files)
+            {
+                if (fi.Name.Equals(name))
+                {
+                    return fi;
+                }
+            }
+            DirectoryInfo[] directs = d.GetDirectories();
+            foreach (DirectoryInfo direct in directs)
+            {
+                return GetFileByNameWithDir(name, direct.FullName);
+            }
+            return null;
+        }
+
     }
 }

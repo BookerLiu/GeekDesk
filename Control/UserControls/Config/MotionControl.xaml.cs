@@ -321,7 +321,7 @@ namespace GeekDesk.Control.UserControls.Config
             }
             else
             {
-                MouseHookThread.Dispose();
+                MouseHookThread.DisposeMiddle();
             }
         }
 
