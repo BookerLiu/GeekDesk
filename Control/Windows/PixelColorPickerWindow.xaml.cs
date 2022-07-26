@@ -7,10 +7,14 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Cursors = System.Windows.Input.Cursors;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
 namespace GeekDesk.Control.Windows
 {
@@ -28,10 +32,14 @@ namespace GeekDesk.Control.Windows
 
         private readonly ColorPicker colorPicker;
 
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool SetProcessDPIAware();
+
         public PixelColorPickerWindow(ColorPicker colorPicker)
         {
             InitializeComponent();
             this.colorPicker = colorPicker;
+            SetProcessDPIAware();
             ColorPickerWindow_Init();
         }
 
@@ -51,8 +59,8 @@ namespace GeekDesk.Control.Windows
             this.Topmost = true;
 
             bgBitmap = new System.Drawing.Bitmap(
-                    (int)SystemParameters.VirtualScreenWidth,
-                    (int)SystemParameters.VirtualScreenHeight,
+                    Screen.AllScreens[0].Bounds.Width,
+                    Screen.AllScreens[0].Bounds.Height,
                     System.Drawing.Imaging.PixelFormat.Format32bppArgb
                 );
 
