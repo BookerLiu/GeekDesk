@@ -134,15 +134,22 @@ namespace GeekDesk.Util
         /// <returns></returns>
         public static double GetScreenScalingFactor()
         {
-            var g = Graphics.FromHwnd(IntPtr.Zero);
-            IntPtr desktop = g.GetHdc();
-            var physicalScreenHeight = GetDeviceCaps(desktop, (int)DESKTOPVERTRES);
+            try
+            {
+                var g = Graphics.FromHwnd(IntPtr.Zero);
+                IntPtr desktop = g.GetHdc();
+                var physicalScreenHeight = GetDeviceCaps(desktop, (int)DESKTOPVERTRES);
 
-            var screenScalingFactor =
-                (double)physicalScreenHeight / SystemParameters.PrimaryScreenHeight;
-            //SystemParameters.PrimaryScreenHeight;
+                var screenScalingFactor =
+                    (double)physicalScreenHeight / SystemParameters.PrimaryScreenHeight;
+                //SystemParameters.PrimaryScreenHeight;
 
-            return screenScalingFactor;
+                return screenScalingFactor;
+            } catch (Exception e)
+            {
+                return 1;
+            }
+            
         }
 
     }
