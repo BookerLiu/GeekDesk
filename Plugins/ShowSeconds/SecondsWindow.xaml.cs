@@ -154,7 +154,7 @@ namespace ShowSeconds
 
                     //获取实际坐标  windows可能会有缩放
                     IntPtr hdc = GetDC(IntPtr.Zero);
-                    double scale = GetScreenScalingFactor();
+                    double scale = ScreenUtil.GetScreenScalingFactor();
                     
                     x = (int)(x / scale);
                     y = (int)(y / scale);
@@ -268,7 +268,7 @@ namespace ShowSeconds
             double h = 1080;
             double width = SystemParameters.PrimaryScreenWidth;
             double height = SystemParameters.PrimaryScreenHeight;
-            double scale = GetScreenScalingFactor();
+            double scale = ScreenUtil.GetScreenScalingFactor();
 
             Console.WriteLine("bef:" + w2 / w * width);
             Console.WriteLine("af:" + w2 / w * width * scale);
@@ -347,23 +347,9 @@ namespace ShowSeconds
 
 
         //#######################################################
-        public const int HORZRES = 8;
-        public const int VERTRES = 10;
-        public const int DESKTOPVERTRES = 117;
-        public const int DESKTOPHORZRES = 118;
+     
 
-        private static double GetScreenScalingFactor()
-        {
-            var g = Graphics.FromHwnd(IntPtr.Zero);
-            IntPtr desktop = g.GetHdc();
-            var physicalScreenHeight = GetDeviceCaps(desktop, (int)DESKTOPVERTRES);
-
-            var screenScalingFactor =
-                (double)physicalScreenHeight / SystemParameters.PrimaryScreenHeight;
-            //SystemParameters.PrimaryScreenHeight;
-
-            return screenScalingFactor;
-        }
+        
 
 
         /// <summary>
@@ -385,7 +371,6 @@ namespace ShowSeconds
         public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
         [DllImport("user32")]
         public static extern bool GetCursorPos(out System.Drawing.Point pt);
-        [DllImport("gdi32")]
-        static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
+
     }
 }

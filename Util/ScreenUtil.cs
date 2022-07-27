@@ -120,5 +120,30 @@ namespace GeekDesk.Util
             return screenPixel.GetPixel(0, 0);
         }
 
+
+        [DllImport("gdi32")]
+        static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
+
+        public const int HORZRES = 8;
+        public const int VERTRES = 10;
+        public const int DESKTOPVERTRES = 117;
+        public const int DESKTOPHORZRES = 118;
+        /// <summary>
+        /// 获取屏幕缩放比例
+        /// </summary>
+        /// <returns></returns>
+        public static double GetScreenScalingFactor()
+        {
+            var g = Graphics.FromHwnd(IntPtr.Zero);
+            IntPtr desktop = g.GetHdc();
+            var physicalScreenHeight = GetDeviceCaps(desktop, (int)DESKTOPVERTRES);
+
+            var screenScalingFactor =
+                (double)physicalScreenHeight / SystemParameters.PrimaryScreenHeight;
+            //SystemParameters.PrimaryScreenHeight;
+
+            return screenScalingFactor;
+        }
+
     }
 }

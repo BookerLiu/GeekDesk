@@ -39,7 +39,11 @@ namespace GeekDesk.Control.Windows
         {
             InitializeComponent();
             this.colorPicker = colorPicker;
-            SetProcessDPIAware();
+            try
+            {
+                SetProcessDPIAware();
+            }
+            catch (Exception e) { }
             ColorPickerWindow_Init();
         }
 
@@ -58,9 +62,12 @@ namespace GeekDesk.Control.Windows
             DesktopBG.Height = this.Height;
             this.Topmost = true;
 
+            //获取缩放比例
+            double scale = ScreenUtil.GetScreenScalingFactor();
+
             bgBitmap = new System.Drawing.Bitmap(
-                    Screen.AllScreens[0].Bounds.Width,
-                    Screen.AllScreens[0].Bounds.Height,
+                    (int)(Width * scale),
+                    (int)(Height * scale),
                     System.Drawing.Imaging.PixelFormat.Format32bppArgb
                 );
 
