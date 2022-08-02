@@ -490,6 +490,7 @@ namespace GeekDesk.Util
 					return false;
 
 				ListBoxItem item = this.GetListBoxItem( this.indexToSelect );
+				if (item == null) return false;
 				Rect bounds = VisualTreeHelper.GetDescendantBounds( item );
 				Point ptInItem = this.listBox.TranslatePoint( this.ptMouseDown, item );
 

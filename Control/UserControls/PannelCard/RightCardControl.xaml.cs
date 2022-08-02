@@ -9,6 +9,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -453,8 +454,28 @@ namespace GeekDesk.Control.UserControls.PannelCard
             }
         }
 
-        private void StackPanel_MouseEnter(object sender, MouseEventArgs e)
+        private void MenuIcon_MouseEnter(object sender, MouseEventArgs e)
         {
+            RunTimeStatus.MOUSE_ENTER_ICON = true;
+            if (!RunTimeStatus.ICONLIST_MOUSE_WHEEL)
+            {
+                new Thread(() =>
+                {
+                    this.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        IconInfo info = (sender as Panel).Tag as IconInfo;
+                        MyPoptipContent.Text = info.Content;
+                        MyPoptip.VerticalOffset = 30;
+                        Thread.Sleep(100);
+                        if (!RunTimeStatus.ICONLIST_MOUSE_WHEEL)
+                        {
+                            MyPoptip.IsOpen = true;
+                        }
+                    }));
+                }).Start();
+            }
+            
+
 
             double width = appData.AppConfig.ImageWidth;
             double height = appData.AppConfig.ImageHeight;
@@ -469,12 +490,12 @@ namespace GeekDesk.Control.UserControls.PannelCard
             });
             t.IsBackground = true;
             t.Start();
-
         }
 
-        private void StackPanel_MouseLeave(object sender, MouseEventArgs e)
+        private void MenuIcon_MouseLeave(object sender, MouseEventArgs e)
         {
-
+            RunTimeStatus.MOUSE_ENTER_ICON = false;
+            MyPoptip.IsOpen = false;
             Thread t = new Thread(() =>
             {
             this.Dispatcher.BeginInvoke(new Action(() =>
@@ -484,7 +505,6 @@ namespace GeekDesk.Control.UserControls.PannelCard
             });
             t.IsBackground = true;
             t.Start();
-
         }
 
 
@@ -758,6 +778,10 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
         public void SearchListBoxIndexAdd()
         {
+            //控制移动后 鼠标即使在图标上也不显示popup
+            RunTimeStatus.MOUSE_MOVE_COUNT = 0;
+            MyPoptip.IsOpen = false;
+
             if (SearchListBox.Items.Count > 0)
             {
                 if (SearchListBox.SelectedIndex < SearchListBox.Items.Count - 1)
@@ -769,6 +793,10 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
         public void SearchListBoxIndexSub()
         {
+            //控制移动后 鼠标即使在图标上也不显示popup
+            RunTimeStatus.MOUSE_MOVE_COUNT = 0;
+            MyPoptip.IsOpen = false;
+
             if (SearchListBox.Items.Count > 0)
             {
                 if (SearchListBox.SelectedIndex > 0)
@@ -817,6 +845,206 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 PDDialog.ClearVal();
                 MainWindow.mainWindow.Focus();
             }
+        }
+
+        /// <summary>
+        /// 菜单结果icon 列表鼠标滚轮预处理时间  
+        /// 主要使用自定义popup解决卡顿问题解决卡顿问题
+        /// 以及滚动条收尾切换菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void IconListBox_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+
+            //控制在滚动时不显示popup 否则会在低GPU性能机器上造成卡顿
+            MyPoptip.IsOpen = false;
+            if (RunTimeStatus.ICONLIST_MOUSE_WHEEL)
+            {
+                RunTimeStatus.MOUSE_WHEEL_WAIT_MS = 500;
+            } else
+            {
+                RunTimeStatus.ICONLIST_MOUSE_WHEEL = true;
+
+                new Thread(() =>
+                {
+                    while (RunTimeStatus.MOUSE_WHEEL_WAIT_MS > 0)
+                    {
+                        Thread.Sleep(1);
+                        RunTimeStatus.MOUSE_WHEEL_WAIT_MS -= 1;
+                    }
+                    if (RunTimeStatus.MOUSE_ENTER_ICON)
+                    {
+                        this.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            MyPoptip.IsOpen = true;
+                        }));
+                    }
+                    RunTimeStatus.MOUSE_WHEEL_WAIT_MS = 100;
+                    RunTimeStatus.ICONLIST_MOUSE_WHEEL = false;
+                }).Start();
+            }
+
+            //修改菜单时不切换菜单
+            if (RunTimeStatus.IS_MENU_EDIT) return;
+
+
+            //切换菜单
+            System.Windows.Controls.ScrollViewer scrollViewer = sender as System.Windows.Controls.ScrollViewer;
+            if (scrollViewer == null)
+            {
+                //在card 上获取的事件
+                scrollViewer = ScrollUtil.FindSimpleVisualChild<System.Windows.Controls.ScrollViewer>(IconListBox);
+            }   
+            if (e.Delta < 0)
+            {
+                int index = MainWindow.mainWindow.LeftCard.MenuListBox.SelectedIndex;
+                if (ScrollUtil.IsBootomScrollView(scrollViewer))
+                {
+                    if (index < MainWindow.mainWindow.LeftCard.MenuListBox.Items.Count - 1)
+                    {
+                        index++;
+                    }
+                    else
+                    {
+                        index = 0;
+                    }
+                    Console.WriteLine("进入");
+                    MainWindow.mainWindow.LeftCard.MenuListBox.SelectedIndex = index;
+                    scrollViewer.ScrollToVerticalOffset(0);
+                }
+            }
+            else if (e.Delta > 0)
+            {
+                if (ScrollUtil.IsTopScrollView(scrollViewer))
+                {
+                    int index = MainWindow.mainWindow.LeftCard.MenuListBox.SelectedIndex;
+                    if (index > 0)
+                    {
+                        index--;
+                    }
+                    else
+                    {
+                        index = MainWindow.mainWindow.LeftCard.MenuListBox.Items.Count - 1;
+                    }
+                    MainWindow.mainWindow.LeftCard.MenuListBox.SelectedIndex = index;
+                    scrollViewer.ScrollToVerticalOffset(0);
+                }
+            }
+
+
+        }
+
+        /// <summary>
+        /// 搜索结果icon 列表鼠标滚轮预处理时间  
+        /// 主要使用自定义popup解决卡顿问题解决卡顿问题
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void VerticalIconList_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            //控制在滚动时不显示popup 否则会在低GPU性能机器上造成卡顿
+            MyPoptip.IsOpen = false;
+            if (RunTimeStatus.ICONLIST_MOUSE_WHEEL)
+            {
+                RunTimeStatus.MOUSE_WHEEL_WAIT_MS = 500;
+            }
+            else
+            {
+                RunTimeStatus.ICONLIST_MOUSE_WHEEL = true;
+
+                new Thread(() =>
+                {
+                    while (RunTimeStatus.MOUSE_WHEEL_WAIT_MS > 0)
+                    {
+                        Thread.Sleep(1);
+                        RunTimeStatus.MOUSE_WHEEL_WAIT_MS -= 1;
+                    }
+                    if (RunTimeStatus.MOUSE_ENTER_ICON)
+                    {
+                        this.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            MyPoptip.IsOpen = true;
+                        }));
+                    }
+                    RunTimeStatus.MOUSE_WHEEL_WAIT_MS = 100;
+                    RunTimeStatus.ICONLIST_MOUSE_WHEEL = false;
+                }).Start();
+            }
+        }
+
+        /// <summary>
+        /// 查询结果 ICON 鼠标进入事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SearchIcon_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+            //显示popup
+            RunTimeStatus.MOUSE_ENTER_ICON = true;
+            if (!RunTimeStatus.ICONLIST_MOUSE_WHEEL)
+            {
+                new Thread(() =>
+                {
+                    this.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        IconInfo info = (sender as Panel).Tag as IconInfo;
+                        MyPoptipContent.Text = info.Content;
+                        MyPoptip.VerticalOffset = 30;
+                        Thread.Sleep(100);
+                        if (!RunTimeStatus.ICONLIST_MOUSE_WHEEL && RunTimeStatus.MOUSE_MOVE_COUNT > 1)
+                        {
+                            MyPoptip.IsOpen = true;
+                        }
+                    }));
+                }).Start();
+            }
+        }
+
+        /// <summary>
+        /// 查询结果ICON鼠标离开事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SearchIcon_MouseLeave(object sender, MouseEventArgs e)
+        {
+            RunTimeStatus.MOUSE_ENTER_ICON = false;
+            MyPoptip.IsOpen = false;
+        }
+
+        /// <summary>
+        /// 查询结果ICON鼠标移动事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SearchIcon_MouseMove(object sender, MouseEventArgs e)
+        {
+            //控制首次刷新搜索结果后, 鼠标首次移动后显示popup
+            RunTimeStatus.MOUSE_MOVE_COUNT++;
+
+            //防止移动后不刷新popup content
+            IconInfo info = (sender as Panel).Tag as IconInfo;
+            MyPoptipContent.Text = info.Content;
+            MyPoptip.VerticalOffset = 30;
+
+            if (RunTimeStatus.MOUSE_MOVE_COUNT > 1 && !RunTimeStatus.ICONLIST_MOUSE_WHEEL)
+            {
+                MyPoptip.IsOpen = true;
+            }
+        }
+
+        /// <summary>
+        /// menu结果ICON鼠标移动事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MenuIcon_MouseMove(object sender, MouseEventArgs e)
+        {
+            //防止移动后不刷新popup content
+            IconInfo info = (sender as Panel).Tag as IconInfo;
+            MyPoptipContent.Text = info.Content;
+            MyPoptip.VerticalOffset = 30;
         }
     }
 }

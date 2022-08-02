@@ -107,6 +107,11 @@ namespace GeekDesk
 
             if (!RunTimeStatus.SEARCH_BOX_SHOW) ShowSearchBox();
 
+            //刷新搜索后 鼠标移动次数置为0
+            RunTimeStatus.MOUSE_MOVE_COUNT = 0;
+            //隐藏popup
+            RightCard.MyPoptip.IsOpen = false;
+
             string inputText = SearchBox.Text.ToLower();
             RightCard.VerticalUFG.Visibility = Visibility.Collapsed;
             if (!string.IsNullOrEmpty(inputText))

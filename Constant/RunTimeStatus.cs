@@ -40,5 +40,23 @@
         /// </summary>
         public static bool IS_MENU_EDIT = false;
 
+
+        /// <summary>
+        /// 图标card 鼠标滚轮是否正在工作  
+        /// 用来控制popup的显示 否则低性能机器会造成卡顿
+        /// </summary>
+        public static bool ICONLIST_MOUSE_WHEEL = false;
+        /// <summary>
+        /// 控制多少毫秒后 关闭(ICONLIST_MOUSE_WHEEL)鼠标滚轮运行状态
+        /// </summary>
+        public static int MOUSE_WHEEL_WAIT_MS = 100;
+        /// <summary>
+        /// 与关闭popup 配合使用, 避免线程结束后不显示popup
+        /// </summary>
+        public static bool MOUSE_ENTER_ICON = false;
+        /// <summary>
+        /// 控制每次刷新搜索结果 鼠标移动后显示popup
+        /// </summary>
+        public static int MOUSE_MOVE_COUNT = 0;
     }
 }

@@ -172,6 +172,7 @@
     <Compile Include="Constant\TodoTaskExecType.cs" />
     <Compile Include="Constant\BGStyle.cs" />
     <Compile Include="Constant\UpdateType.cs" />
+    <Compile Include="Constant\WidthTypeEnum.cs" />
     <Compile Include="Control\Other\GlobalMsgNotification.xaml.cs">
       <DependentUpon>GlobalMsgNotification.xaml</DependentUpon>
     </Compile>
@@ -253,7 +254,7 @@
     <Compile Include="Converts\StringAppendConvert.cs" />
     <Compile Include="Converts\DoubleToGridLength.cs" />
     <Compile Include="Converts\MenuInfoConvert.cs" />
-    <Compile Include="Converts\SearchResWidth.cs" />
+    <Compile Include="Converts\GetWidthByWWConvert.cs" />
     <Compile Include="Converts\SortTypeConvert.cs" />
     <Compile Include="Converts\TodoTaskExecConvert.cs" />
     <Compile Include="Converts\IntToCornerRadius.cs" />
@@ -298,6 +299,7 @@
     <Compile Include="Util\RegisterUtil.cs" />
     <Compile Include="Util\RelayCommand.cs" />
     <Compile Include="Util\ScreenUtil.cs" />
+    <Compile Include="Util\ScrollUtil.cs" />
     <Compile Include="Util\ShellContextMenu.cs" />
     <Compile Include="Util\ShowWindowFollowMouse.cs" />
     <Compile Include="Util\StringUtil.cs" />
