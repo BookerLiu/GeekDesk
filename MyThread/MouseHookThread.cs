@@ -3,6 +3,7 @@ using GeekDesk.Control.Windows;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using Gma.System.MouseKeyHook;
+using ShowSeconds;
 using System;
 using System.Drawing;
 using System.Threading;
@@ -13,89 +14,100 @@ namespace GeekDesk.MyThread
 {
     public class MouseHookThread
     {
-        private static AppConfig appConfig = MainWindow.appData.AppConfig;
-        private static IKeyboardMouseEvents middleHook = null;
-        private static Dispatcher middleDP;
+        private static readonly AppConfig appConfig = MainWindow.appData.AppConfig;
+        public static Dispatcher dispatcher;
+        private static UserActivityHook hook;
 
-        public static void MiddleHook()
+        public static void Hook()
         {
-            //使用dispatcher来单独监听UI线程  防止程序卡顿
-            middleDP = DispatcherBuild.Build();
-            middleHook = Hook.GlobalEvents();
-            middleDP.Invoke((Action)(() =>
+            //使用dispatcher来单独监听UI线程 防止程序卡顿
+            dispatcher = DispatcherBuild.Build();
+            dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
             {
-                middleHook.MouseUpExt += MiddleHookFun;
+                hook = new UserActivityHook();
+
+                if (appConfig.MouseMiddleShow)
+                {
+                    hook.OnMouseWheelUp += OnMouseWheelUp;
+                }
+
+                if (appConfig.SecondsWindow == true)
+                {
+                    hook.OnMouseLeftDown += OnMouseLeftDown;
+                    hook.OnMouseLeftUp += OnMouseLeftUp;
+                }
+
+                hook.Start(true, false);
             }));
         }
 
-
-        private static Color GetBottomBeforeColor()
+        private static void OnMouseLeftDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            return GetColor(1760, 985);
+            SecondsWindow.SecondsBakColorFun(sender, e);
         }
 
-        private static Color GetTopBeforeColor()
+        private static void OnMouseLeftUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            return GetColor(1751, 693);
+            SecondsWindow.SecondsHookSetFuc(sender, e);
         }
 
-        private static Color GetColor(int w2, int h2)
+        private static void OnMouseWheelUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            double w = 1920;
-            double h = 1080;
-            double width = SystemParameters.PrimaryScreenWidth;
-            double height = SystemParameters.PrimaryScreenHeight;
-            System.Drawing.Point p = new System.Drawing.Point((int)(w2 / w * width), (int)(h2 / h * height));
-            return ScreenUtil.GetColorAt(p);
+            MouseWheelShowApp(sender, e);
         }
-
-        
 
         /// <summary>
         /// 鼠标中键呼出
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private static void MiddleHookFun(object sender, System.Windows.Forms.MouseEventArgs e)
+        private static void MouseWheelShowApp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            if (e.Button == System.Windows.Forms.MouseButtons.Middle)
+            //中键打开App
+            if (appConfig.MouseMiddleShow && MotionControl.hotkeyFinished)
             {
-                //中键打开App
-                if (appConfig.MouseMiddleShow)
+                App.Current.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
                 {
-                    if (MotionControl.hotkeyFinished)
+                    if (MainWindow.mainWindow.Visibility == Visibility.Collapsed || MainWindow.mainWindow.Opacity == 0)
                     {
-                        App.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render, new Action(() =>
-                        {
-                            if (MainWindow.mainWindow.Visibility == Visibility.Collapsed || MainWindow.mainWindow.Opacity == 0)
-                            {
-                                MainWindow.ShowApp();
-                            }
-                            else
-                            {
-                                MainWindow.HideApp();
-                            }
-                        }));
+                        MainWindow.ShowApp();
                     }
-                }
+                    else
+                    {
+                        MainWindow.HideApp();
+                    }
+                }));
             }
         }
 
 
-        public static void DisposeMiddle()
+        public static void Dispose()
         {
             try
             {
-                if (middleHook != null)
+                if (hook != null)
                 {
-                    middleHook.MouseUpExt -= MiddleHookFun;
-                    middleHook.Dispose();
-                    middleDP.InvokeShutdown();
+                    if (hook.MouseWheelUpEnable())
+                    {
+                        hook.OnMouseWheelUp -= OnMouseWheelUp;
+                    }
+                    if (hook.MouseLeftDownEnable())
+                    {
+                        hook.OnMouseLeftDown -= OnMouseLeftDown;
+                    }
+                    if (hook.MouseLeftUpEnable())
+                    {
+                        hook.OnMouseLeftUp -= OnMouseLeftUp;
+                    }
+                    hook.Stop();
+                    dispatcher.InvokeShutdown();
+                    hook = null;
+                    dispatcher = null;
                 }
-               
             }
-            catch (Exception ex) { }
-
+            catch (Exception ex) {
+                LogUtil.WriteErrorLog(ex, "关闭hook出错");
+            }
         }
 
 

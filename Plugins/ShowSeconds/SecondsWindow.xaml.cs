@@ -1,7 +1,6 @@
 ﻿using GeekDesk;
 using GeekDesk.MyThread;
 using GeekDesk.Util;
-using Gma.System.MouseKeyHook;
 using ShowSeconds.ViewModel;
 using System;
 using System.Collections;
@@ -33,8 +32,8 @@ namespace ShowSeconds
     public partial class SecondsWindow : Window
     {
 
-        private Color beforeColor;
-        private Color topBeforeColor;
+        private static Color beforeColor;
+        private static Color topBeforeColor;
 
         //dark theam
         private readonly static System.Windows.Media.SolidColorBrush darkBG
@@ -62,15 +61,11 @@ namespace ShowSeconds
                 Color = System.Windows.Media.Color.FromRgb(65, 63, 61),
             };
 
-        private bool expandClock = true; //是否展开时钟
-        private System.Windows.Forms.Timer timer;
-
-        Dispatcher secondsDP = DispatcherBuild.Build();
-        IKeyboardMouseEvents secondsHook = Hook.GlobalEvents();
-
-        private double lProportion = 0.82;
-        private double tProportion = 0.03;
-        private int sleepTime = 800;
+        private static bool expandClock = true; //是否展开时钟
+        private static System.Windows.Forms.Timer timer;
+        private static double lProportion = 0.82;
+        private static double tProportion = 0.03;
+        private static int sleepTime = 800;
         public SecondsWindow()
         {
             SecondsDataContext dc = new SecondsDataContext
@@ -101,19 +96,147 @@ namespace ShowSeconds
             BGBorder.Visibility = Visibility.Collapsed;
         }
 
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             timer = new System.Windows.Forms.Timer();
             timer.Interval = 1000;
-            timer.Tick += Timer_Tick;
-            secondsDP.Invoke((Action)(() =>
-            {
-                secondsHook.MouseDownExt += SecondsBakColorFun;
-                secondsHook.MouseUpExt += SecondsHookSetFuc;
-            }));
+            timer.Tick += Timer_Tick;         
             HideWindowUtil.HideAltTab(this);
         }
+
+        public static void SecondsHookSetFuc(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            ThreadPool.QueueUserWorkItem(state =>
+            {
+                window.Dispatcher.Invoke(() =>
+                {
+                    if (ScreenUtil.IsPrimaryFullScreen()) return;
+
+                    App.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render, new Action(() =>
+                    {
+                        int x = e.X;
+                        int y = e.Y;
+
+                        //获取实际坐标  windows可能会有缩放
+                        IntPtr hdc = GetDC(IntPtr.Zero);
+                        double scale = ScreenUtil.GetScreenScalingFactor();
+
+                        x = (int)(x / scale);
+                        y = (int)(y / scale);
+
+                        double w = 1920;
+                        double h = 1080;
+                        double width = SystemParameters.PrimaryScreenWidth;
+                        double height = SystemParameters.PrimaryScreenHeight;
+
+                        if (x > 1843 / w * width
+                            && x < 1907 / w * width
+                            && y > 1037 / h * height
+                            && y < 1074 / h * height)
+                        {
+                            Color c;
+                            int count = sleepTime;
+                            do
+                            {
+                                c = GetBottomBeforeColor();
+                                if (c.A != beforeColor.A
+                                || c.R != beforeColor.R
+                                || c.G != beforeColor.G
+                                || c.B != beforeColor.B)
+                                {
+                                    break;
+                                }
+                                Thread.Sleep(50);
+                                count -= 50;
+                            } while (count > 0);
+                           
+                            if (c.A != beforeColor.A
+                                || c.R != beforeColor.R
+                                || c.G != beforeColor.G
+                                || c.B != beforeColor.B)
+                            {
+                                //判断是否展开时钟
+                                Color ct = GetTopBeforeColor();
+                                if (ct.A != topBeforeColor.A
+                                || ct.R != topBeforeColor.R
+                                || ct.G != topBeforeColor.G
+                                || ct.B != topBeforeColor.B)
+                                {
+                                    expandClock = true;
+                                }
+                                else
+                                {
+                                    expandClock = false;
+                                }
+
+                                if (!window.BGBorder.IsVisible)
+                                {
+                                    Color theamColor = GetColor(1919, 1079);
+                                    if (CalculateLight(theamColor) > 255 / 2)
+                                    {
+                                        //light
+                                        window.BGBorder.Background = lightBG;
+                                        window.SecondsText.Foreground = lightFont;
+                                    }
+                                    else
+                                    {
+                                        // dark
+                                        window.BGBorder.Background = darkBG;
+                                        window.SecondsText.Foreground = darkFont;
+                                    }
+
+                                    SecondsDataContext dc = window.DataContext as SecondsDataContext;
+                                    dc.Seconds = (DateTime.Now.Hour).ToString() + ":" +
+                                        FormatMS(DateTime.Now.Minute) + ":" +
+                                        FormatMS(DateTime.Now.Second);
+
+                                    int sx = (int)(width * lProportion);
+                                    int sMarginBottom = (int)(height * tProportion);
+                                    window.Left = sx - window.Width;
+                                    window.Top = SystemParameters.WorkArea.Height - window.Height;
+                                    window.BGBorder.Visibility = Visibility.Visible;
+                                    timer.Start();
+                                }
+                                else
+                                {
+                                    window.BGBorder.Visibility = Visibility.Collapsed;
+                                    timer.Stop();
+                                }
+                            }
+                        }
+                        else if ((expandClock && (x < 1574 / w * width
+                                    || x > 1906 / w * width
+                                    || y < 598 / h * height
+                                    || y > 1020 / h * height)
+                                    )
+                                    || !expandClock && (x < 1574 / w * width
+                                    || x > 1906 / w * width
+                                    || y < 950 / h * height
+                                    || y > 1020 / h * height)
+                                    )
+                        {
+                            window.BGBorder.Visibility = Visibility.Collapsed;
+                            timer.Stop();
+                        }
+                    }));
+                });
+            });
+           
+        }
+
+        public static void SecondsBakColorFun(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            ThreadPool.QueueUserWorkItem(state =>
+            {
+                window.Dispatcher.Invoke(() =>
+                {
+                    beforeColor = GetBottomBeforeColor();
+                    topBeforeColor = GetTopBeforeColor();
+                });
+
+            });
+        }
+
 
         private void Timer_Tick(object sender, EventArgs e)
         {
@@ -127,8 +250,6 @@ namespace ShowSeconds
             this.DataContext = dc;
         }
 
-
-
         private static string FormatMS(int ms)
         {
             if (ms < 10)
@@ -138,117 +259,6 @@ namespace ShowSeconds
             else
             {
                 return ms.ToString();
-            }
-        }
-
-        private void SecondsHookSetFuc(object sender, MouseEventExtArgs e)
-        {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left)
-            {
-                if (ScreenUtil.IsPrimaryFullScreen()) return;
-
-                App.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render, new Action(() =>
-                {
-                    int x = e.X;
-                    int y = e.Y;
-
-                    //获取实际坐标  windows可能会有缩放
-                    IntPtr hdc = GetDC(IntPtr.Zero);
-                    double scale = ScreenUtil.GetScreenScalingFactor();
-                    
-                    x = (int)(x / scale);
-                    y = (int)(y / scale);
-
-                    double w = 1920;
-                    double h = 1080;
-                    double width = SystemParameters.PrimaryScreenWidth;
-                    double height = SystemParameters.PrimaryScreenHeight;
-                    
-                    if (x > 1843 / w * width
-                        && x < 1907 / w * width
-                        && y > 1037 / h * height
-                        && y < 1074 / h * height)
-                    {
-                        Thread.Sleep(sleepTime);
-                        Color c = GetBottomBeforeColor();
-                        if (c.A != beforeColor.A
-                            || c.R != beforeColor.R
-                            || c.G != beforeColor.G
-                            || c.B != beforeColor.B)
-                        {
-                            //判断是否展开时钟
-                            Color ct = GetTopBeforeColor();
-                            if (ct.A != topBeforeColor.A
-                            || ct.R != topBeforeColor.R
-                            || ct.G != topBeforeColor.G
-                            || ct.B != topBeforeColor.B)
-                            {
-                                expandClock = true;
-                            }
-                            else
-                            {
-                                expandClock = false;
-                            }
-
-                            if (!BGBorder.IsVisible)
-                            {
-                                Color theamColor = GetColor(1919, 1079);
-                                if (CalculateLight(theamColor) > 255 / 2)
-                                {
-                                    //light
-                                    BGBorder.Background = lightBG;
-                                    SecondsText.Foreground = lightFont;
-                                }
-                                else
-                                {
-                                    // dark
-                                    BGBorder.Background = darkBG;
-                                    SecondsText.Foreground = darkFont;
-                                }
-
-                                SecondsDataContext dc = this.DataContext as SecondsDataContext;
-                                dc.Seconds = (DateTime.Now.Hour).ToString() + ":" +
-                                   FormatMS(DateTime.Now.Minute) + ":" +
-                                   FormatMS(DateTime.Now.Second);
-
-                                int sx = (int)(width * lProportion);
-                                int sMarginBottom = (int)(height * tProportion);
-                                Left = sx - Width;
-                                Top = SystemParameters.WorkArea.Height - Height;
-                                BGBorder.Visibility = Visibility.Visible;
-                                timer.Start();
-                            }
-                            else
-                            {
-                                BGBorder.Visibility= Visibility.Collapsed;
-                                timer.Stop();
-                            }
-                        }
-                    }
-                    else if ((expandClock && (x < 1574 / w * width
-                              || x > 1906 / w * width
-                              || y < 598 / h * height
-                              || y > 1020 / h * height)
-                              )
-                              || !expandClock && (x < 1574 / w * width
-                              || x > 1906 / w * width
-                              || y < 950 / h * height
-                              || y > 1020 / h * height)
-                              )
-                    {
-                        BGBorder.Visibility = Visibility.Collapsed;
-                        timer.Stop();
-                    }
-                }));
-            }
-        }
-
-        private void SecondsBakColorFun(object sender, MouseEventExtArgs e)
-        {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left)
-            {
-                beforeColor = GetBottomBeforeColor();
-                topBeforeColor = GetTopBeforeColor();
             }
         }
 
@@ -270,8 +280,6 @@ namespace ShowSeconds
             double height = SystemParameters.PrimaryScreenHeight;
             double scale = ScreenUtil.GetScreenScalingFactor();
 
-            Console.WriteLine("bef:" + w2 / w * width);
-            Console.WriteLine("af:" + w2 / w * width * scale);
             System.Drawing.Point p = new System.Drawing.Point((int)(w2 / w * width * scale), (int)(h2 / h * height * scale));
             return ScreenUtil.GetColorAt(p);
         }
@@ -295,29 +303,12 @@ namespace ShowSeconds
                 
                 if ("Shutdown".Equals(cds.msg))
                 {
-                    Dispose();
                     Application.Current.Shutdown();
                 }
             }
             return hwnd;
         }
 
-
-        public static void Dispose()
-        {
-            try
-            {
-                if (window.secondsHook != null)
-                {
-                    window.secondsHook.MouseDownExt -= window.SecondsBakColorFun;
-                    window.secondsHook.MouseUpExt -= window.SecondsHookSetFuc;
-                    window.secondsHook.Dispose();
-                    window.secondsDP.InvokeShutdown();
-                }
-                window.Close();
-            }
-            catch (Exception ex) { }
-        }
 
         private static int CalculateLight(Color color)
         {

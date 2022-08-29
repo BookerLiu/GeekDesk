@@ -315,14 +315,17 @@ namespace GeekDesk.Control.UserControls.Config
         /// <param name="e"></param>
         private void MouseMiddle_Changed(object sender, RoutedEventArgs e)
         {
-            if (appConfig.MouseMiddleShow)
-            {
-                MouseHookThread.MiddleHook();
-            }
-            else
-            {
-                MouseHookThread.DisposeMiddle();
-            }
+            //if (appConfig.MouseMiddleShow)
+            //{
+            //    MouseHookThread.MiddleHook();
+            //}
+            //else
+            //{
+            //    MouseHookThread.DisposeMiddle();
+            //}
+
+            MouseHookThread.Dispose();
+            MouseHookThread.Hook();
         }
 
         /// <summary>

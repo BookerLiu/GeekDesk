@@ -174,7 +174,6 @@ namespace GeekDesk
             this.Height = appData.AppConfig.WindowHeight;
         }
 
-
         /// <summary>
         /// 窗口加载完毕 执行方法
         /// </summary>
@@ -182,6 +181,7 @@ namespace GeekDesk
         /// <param name="e"></param>
         void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            SecondsWindow.ShowWindow();
 
             BGSettingUtil.BGSetting();
             if (!appData.AppConfig.StartedShowPanel)
@@ -216,17 +216,12 @@ namespace GeekDesk
                 RegisterUtil.SetSelfStarting(appData.AppConfig.SelfStartUp, Constants.MY_NAME);
             }
 
-            //注册鼠标中键监听事件
-            if (appData.AppConfig.MouseMiddleShow)
+            //注册鼠标监听事件
+            if (appData.AppConfig.MouseMiddleShow || appData.AppConfig.SecondsWindow==true)
             {
-                MouseHookThread.MiddleHook();
+                MouseHookThread.Hook();
             }
-
-            //启动显秒程序
-            if (appData.AppConfig.SecondsWindow == true)
-            {
-                SecondsWindow.ShowWindow();
-            }
+           
 
             //更新线程开启  检测更新
             UpdateThread.Update();
@@ -466,6 +461,11 @@ namespace GeekDesk
             else
             {
                 appData.AppConfig.IsShow = null;
+                //防止永远不显示界面
+                if (mainWindow.Opacity < 1)
+                {
+                    mainWindow.Opacity = 1;
+                }
             }
 
 
@@ -677,11 +677,10 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void ExitApp(object sender, RoutedEventArgs e)
         {
-            if (appData.AppConfig.MouseMiddleShow)
+            if (appData.AppConfig.MouseMiddleShow || appData.AppConfig.SecondsWindow==true)
             {
-                MouseHookThread.DisposeMiddle();
+                MouseHookThread.Dispose();
             }
-            SecondsWindow.Dispose();
             Application.Current.Shutdown();
         }
         /// <summary>
@@ -691,12 +690,10 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void ReStartApp(object sender, RoutedEventArgs e)
         {
-            if (appData.AppConfig.MouseMiddleShow)
+            if (appData.AppConfig.MouseMiddleShow || appData.AppConfig.SecondsWindow == true)
             {
-                MouseHookThread.DisposeMiddle();
+                MouseHookThread.Dispose();
             }
-
-            SecondsWindow.Dispose();
 
             Process p = new Process();
             p.StartInfo.FileName = Constants.APP_DIR + "GeekDesk.exe";

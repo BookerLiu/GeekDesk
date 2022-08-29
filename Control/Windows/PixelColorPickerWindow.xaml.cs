@@ -39,11 +39,11 @@ namespace GeekDesk.Control.Windows
         {
             InitializeComponent();
             this.colorPicker = colorPicker;
-            try
-            {
-                SetProcessDPIAware();
-            }
-            catch (Exception e) { }
+            //try
+            //{
+            //    SetProcessDPIAware();
+            //}
+            //catch (Exception e) { }
             ColorPickerWindow_Init();
         }
 
@@ -206,5 +206,16 @@ namespace GeekDesk.Control.Windows
             SetPixelAbout(e);
         }
 
+        /// <summary>
+        /// 右键按下
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            GlobalColorPickerWindow.ShowOrHide();
+            //关闭
+            this.Close();
+        }
     }
 }

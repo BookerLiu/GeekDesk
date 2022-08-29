@@ -178,8 +178,15 @@ namespace GeekDesk.Control.UserControls.PannelCard
             
             try
             {
-                using (Process p = new Process())
-                {
+                Process p = new Process();
+                //using ()
+                //{
+                    p.StartInfo.UseShellExecute = false;
+                    p.StartInfo.RedirectStandardInput = true;
+                    p.StartInfo.RedirectStandardOutput = true;
+                    p.StartInfo.RedirectStandardError = true;
+                    p.StartInfo.CreateNoWindow = true;
+
                     string startArg = icon.StartArg;
                     
                     if (startArg != null && Constants.SYSTEM_ICONS.ContainsKey(startArg))
@@ -221,11 +228,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
                             switch (type)
                             {
                                 case IconStartType.ADMIN_STARTUP:
-                                    //p.StartInfo.Arguments = "1";//启动参数
                                     p.StartInfo.Verb = "runas";
-                                    //p.StartInfo.CreateNoWindow = false; //设置显示窗口
-                                    p.StartInfo.UseShellExecute = true;//不使用操作系统外壳程序启动进程
-                                    //p.StartInfo.ErrorDialog = false;
                                     if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
                                     {
                                         //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
@@ -243,7 +246,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
                                     }
                                     break;// c#好像不能case穿透
-                                case IconStartType.DEFAULT_STARTUP:
+                                case IconStartType.DEFAULT_STARTUP:                                   
                                     if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
                                     {
                                         //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
@@ -285,13 +288,15 @@ namespace GeekDesk.Control.UserControls.PannelCard
                             }
                         }
                         p.Start();
+                        p.Close();
+                        p.Dispose();
                         if (useRelativePath)
                         {
                             //如果使用相对路径启动成功 那么重新设置程序绝对路径
                             icon.Path = path;
                         }
                     }
-                }
+                //}
                 icon.Count++;
 
                 //隐藏搜索框
@@ -311,7 +316,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
                     HandyControl.Controls.Growl.WarningGlobal("程序启动失败(可能为不支持的启动方式)!");
                     LogUtil.WriteErrorLog(e, "程序启动失败:path=" + icon.Path + ",type=" + type);
                 }
-            }
+            } 
         }
 
 
@@ -459,20 +464,20 @@ namespace GeekDesk.Control.UserControls.PannelCard
             RunTimeStatus.MOUSE_ENTER_ICON = true;
             if (!RunTimeStatus.ICONLIST_MOUSE_WHEEL)
             {
-                new Thread(() =>
+                ThreadPool.QueueUserWorkItem(state =>
                 {
                     this.Dispatcher.BeginInvoke(new Action(() =>
                     {
                         IconInfo info = (sender as Panel).Tag as IconInfo;
                         MyPoptipContent.Text = info.Content;
                         MyPoptip.VerticalOffset = 30;
-                        Thread.Sleep(100);
+                        Thread.Sleep(50);
                         if (!RunTimeStatus.ICONLIST_MOUSE_WHEEL)
                         {
                             MyPoptip.IsOpen = true;
                         }
                     }));
-                }).Start();
+                });
             }
             
 
@@ -481,30 +486,28 @@ namespace GeekDesk.Control.UserControls.PannelCard
             double height = appData.AppConfig.ImageHeight;
             width += width * 0.15;
             height += height * 0.15;
-            Thread t = new Thread(() =>
+
+            ThreadPool.QueueUserWorkItem(state =>
             {
                 this.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     ImgStoryBoard(sender, (int)width, (int)height, 1, true);
                 }));
             });
-            t.IsBackground = true;
-            t.Start();
         }
 
         private void MenuIcon_MouseLeave(object sender, MouseEventArgs e)
         {
             RunTimeStatus.MOUSE_ENTER_ICON = false;
             MyPoptip.IsOpen = false;
-            Thread t = new Thread(() =>
+
+            ThreadPool.QueueUserWorkItem(state =>
             {
-            this.Dispatcher.BeginInvoke(new Action(() =>
-            {
-                ImgStoryBoard(sender, appData.AppConfig.ImageWidth, appData.AppConfig.ImageHeight, 260);
-            }));
+                this.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    ImgStoryBoard(sender, appData.AppConfig.ImageWidth, appData.AppConfig.ImageHeight, 260);
+                }));
             });
-            t.IsBackground = true;
-            t.Start();
         }
 
 
@@ -909,7 +912,6 @@ namespace GeekDesk.Control.UserControls.PannelCard
                     {
                         index = 0;
                     }
-                    Console.WriteLine("进入");
                     MainWindow.mainWindow.LeftCard.MenuListBox.SelectedIndex = index;
                     scrollViewer.ScrollToVerticalOffset(0);
                 }

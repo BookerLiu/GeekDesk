@@ -121,15 +121,21 @@ namespace GeekDesk.Control.UserControls.Config
 
         private void ShowSeconds_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.appData.AppConfig.SecondsWindow == true)
-            {
-                //StartSecondsWindow();
-                SecondsWindow.ShowWindow();
-            }
-            else
-            {
-                SecondsWindow.Dispose();
-            }
+            //if (MainWindow.appData.AppConfig.SecondsWindow == true)
+            //{
+            //    //StartSecondsWindow();
+            //    //SecondsWindow.ShowWindow();
+            //    MouseHookThread.Dispose();
+            //    MouseHookThread.Hook();
+            //}
+            //else
+            //{
+            //    MouseHookThread.Dispose();
+            //    MouseHookThread.Hook();
+            //}
+
+            MouseHookThread.Dispose();
+            MouseHookThread.Hook();
         }
 
         public static void StopSecondsWindow()

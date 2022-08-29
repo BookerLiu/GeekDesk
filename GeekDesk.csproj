@@ -76,6 +76,9 @@
   <PropertyGroup>
     <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonServiceLocator, Version=2.0.6.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>packages\CommonServiceLocator.2.0.6\lib\net45\CommonServiceLocator.dll</HintPath>
@@ -85,9 +88,6 @@
     </Reference>
     <Reference Include="HandyControl, Version=3.3.0.0, Culture=neutral, PublicKeyToken=45be8712787a1e5b, processorArchitecture=MSIL">
       <HintPath>packages\HandyControl.3.3.0\lib\net472\HandyControl.dll</HintPath>
-    </Reference>
-    <Reference Include="KeyMouseHook, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\KeyMouseHook.1.0.6\lib\net40\KeyMouseHook.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Extensions.Logging.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
@@ -295,6 +295,7 @@
     <Compile Include="Converts\MenuWidthConvert.cs" />
     <Compile Include="Util\MD5Util.cs" />
     <Compile Include="Util\MessageUtil.cs" />
+    <Compile Include="Util\MouseHook.cs" />
     <Compile Include="Util\MouseUtil.cs" />
     <Compile Include="Util\RegisterUtil.cs" />
     <Compile Include="Util\RelayCommand.cs" />
@@ -304,6 +305,7 @@
     <Compile Include="Util\ShowWindowFollowMouse.cs" />
     <Compile Include="Util\StringUtil.cs" />
     <Compile Include="Util\SvgToGeometry.cs" />
+    <Compile Include="Util\UserActivityHook.cs" />
     <Compile Include="ViewModel\AppConfig.cs" />
     <Compile Include="ViewModel\AppData.cs" />
     <Compile Include="ViewModel\GradientBGParam.cs" />
@@ -463,6 +465,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="Resource\Iconfont\iconfont.json" />
+    <None Include="app.manifest" />
     <None Include="Properties\app.manifest" />
     <None Include="Update.json" />
     <None Include="packages.config" />

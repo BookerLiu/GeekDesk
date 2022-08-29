@@ -46,7 +46,7 @@ namespace GeekDesk.Task
                         }
                     }
                 }
-                ClearMemory();
+                //ClearMemory();
             }));
         }
 
