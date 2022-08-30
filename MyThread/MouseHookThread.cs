@@ -1,7 +1,12 @@
 ﻿using GeekDesk.Control.UserControls.Config;
+using GeekDesk.Control.Windows;
+using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using Gma.System.MouseKeyHook;
+//using ShowSeconds;
 using System;
+using System.Drawing;
+using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -9,28 +14,46 @@ namespace GeekDesk.MyThread
 {
     public class MouseHookThread
     {
-        private static AppConfig appConfig = MainWindow.appData.AppConfig;
-        private static IKeyboardMouseEvents m_GlobalHook = Hook.GlobalEvents();
-        private static Dispatcher dispatcher;
+        private static readonly AppConfig appConfig = MainWindow.appData.AppConfig;
+        public static Dispatcher dispatcher;
+        private static UserActivityHook hook;
 
-
-
-        public static void MiddleHook()
+        public static void Hook()
         {
-            //使用dispatcher来单独监听UI线程  防止程序卡顿
+            //使用dispatcher来单独监听UI线程 防止程序卡顿
             dispatcher = DispatcherBuild.Build();
-            m_GlobalHook = Hook.GlobalEvents();
-            dispatcher.BeginInvoke((Action)(() =>
+            dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
             {
-                m_GlobalHook.MouseUpExt += M_GlobalHook_MouseUpExt;
+                hook = new UserActivityHook();
+
+                if (appConfig.MouseMiddleShow)
+                {
+                    hook.OnMouseWheelUp += OnMouseWheelUp;
+                }
+
+                //if (appConfig.SecondsWindow == true)
+                //{
+                //    hook.OnMouseLeftDown += OnMouseLeftDown;
+                //    hook.OnMouseLeftUp += OnMouseLeftUp;
+                //}
+
+                hook.Start(true, false);
             }));
         }
 
-        public static void Dispose()
+        private static void OnMouseLeftDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            m_GlobalHook.MouseUpExt -= M_GlobalHook_MouseUpExt;
-            m_GlobalHook.Dispose();
-            dispatcher.InvokeShutdown();
+            //SecondsWindow.SecondsBakColorFun(sender, e);
+        }
+
+        private static void OnMouseLeftUp(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            //SecondsWindow.SecondsHookSetFuc(sender, e);
+        }
+
+        private static void OnMouseWheelUp(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            MouseWheelShowApp(sender, e);
         }
 
         /// <summary>
@@ -38,26 +61,56 @@ namespace GeekDesk.MyThread
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private static void M_GlobalHook_MouseUpExt(object sender, System.Windows.Forms.MouseEventArgs e)
+        private static void MouseWheelShowApp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            if (appConfig.MouseMiddleShow && e.Button == System.Windows.Forms.MouseButtons.Middle)
+            //中键打开App
+            if (appConfig.MouseMiddleShow && MotionControl.hotkeyFinished)
             {
-                if (MotionControl.hotkeyFinished)
+                App.Current.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
                 {
-                    App.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render, new Action(() =>
+                    if (MainWindow.mainWindow.Visibility == Visibility.Collapsed || MainWindow.mainWindow.Opacity == 0)
                     {
-                        if (MainWindow.mainWindow.Visibility == Visibility.Collapsed || MainWindow.mainWindow.Opacity == 0)
-                        {
-                            MainWindow.ShowApp();
-                        }
-                        else
-                        {
-                            MainWindow.HideApp();
-                        }
-                    }));
-                }
+                        MainWindow.ShowApp();
+                    }
+                    else
+                    {
+                        MainWindow.HideApp();
+                    }
+                }));
             }
         }
+
+
+        public static void Dispose()
+        {
+            try
+            {
+                if (hook != null)
+                {
+                    if (hook.MouseWheelUpEnable())
+                    {
+                        hook.OnMouseWheelUp -= OnMouseWheelUp;
+                    }
+                    if (hook.MouseLeftDownEnable())
+                    {
+                        hook.OnMouseLeftDown -= OnMouseLeftDown;
+                    }
+                    if (hook.MouseLeftUpEnable())
+                    {
+                        hook.OnMouseLeftUp -= OnMouseLeftUp;
+                    }
+                    hook.Stop();
+                    dispatcher.InvokeShutdown();
+                    hook = null;
+                    dispatcher = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogUtil.WriteErrorLog(ex, "关闭hook出错");
+            }
+        }
+
 
     }
 }

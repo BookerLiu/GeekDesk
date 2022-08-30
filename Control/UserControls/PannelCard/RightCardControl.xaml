@@ -6,9 +6,11 @@
              xmlns:temp="clr-namespace:GeekDesk.ViewModel.Temp"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:cvt="clr-namespace:GeekDesk.Converts"
+              xmlns:cst="clr-namespace:GeekDesk.Constant"
              xmlns:DraggAnimatedPanel="clr-namespace:DraggAnimatedPanel"
              xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
-             xmlns:ot="clr-namespace:GeekDesk.Control.Other"
+             xmlns:ot="clr-namespace:GeekDesk.Control.Other" 
+             xmlns:viewmodel="clr-namespace:GeekDesk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AppData}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              >
@@ -58,6 +60,25 @@
             </Setter>
         </Style>
 
+        <Style x:Key="MyPoptipStyle" TargetType="Border">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="CornerRadius" Value="{StaticResource DefaultCornerRadius}"/>
+            <Setter Property="Padding" Value="{StaticResource DefaultControlPadding}"/>
+            <!--<Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="hc:Poptip">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}">
+                            <ContentPresenter Margin="{TemplateBinding Padding}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" ContentStringFormat="{TemplateBinding ContentStringFormat}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>-->
+        </Style>
+
         <Storyboard x:Key="Custom1Transition1" x:Shared="False">
             <DoubleAnimation From="50" To="0" Duration="0:0:0.4" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
                 <DoubleAnimation.EasingFunction>
@@ -82,11 +103,23 @@
         </Storyboard>
 
         <cvt:OpcityConvert x:Key="OpcityConvert"/>
-        <cvt:SearchResWidth x:Key="SearchResWidth"/>
+        <cvt:GetWidthByWWConvert x:Key="GetWidthByWWConvert"/>
         <temp:SearchIconList x:Key="SearchIconList"/>
     </UserControl.Resources>
     <!--右侧栏-->
     <Grid>
+        <Popup Name="MyPoptip" FlowDirection="LeftToRight" 
+               PopupAnimation="None" Placement="Mouse"
+               IsOpen="False"
+               AllowsTransparency="True"
+               >
+            <Grid Background="Transparent">
+                <Border Style="{StaticResource MyPoptipStyle}">
+                    <TextBlock Name="MyPoptipContent" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Left" Text="Test" FontSize="13"/>
+                </Border>
+            </Grid>
+        </Popup>
+
         <hc:Card AllowDrop="True" 
                  x:Name="WrapCard"
                  Visibility="Visible"
@@ -96,6 +129,7 @@
                  Margin="5,0,5,5" Grid.ColumnSpan="2"
                  PreviewMouseRightButtonDown="WrapCard_PreviewMouseRightButtonDown"
                  hc:Dialog.Token="RightWrapCardDialog"
+                 MouseWheel="IconListBox_MouseWheel"
                  >
             <hc:Card.Background>
                 <SolidColorBrush Color="AliceBlue"  hc:GeometryEffect.GeometryEffect="20" Opacity="{Binding AppConfig.CardOpacity, Mode=TwoWay, Converter={StaticResource OpcityConvert}}"/>
@@ -118,6 +152,7 @@
                                        IsVisibleChanged="PDDialog_IsVisibleChanged"
                                        Margin="0,-100,0,0"/>
                     <StackPanel Panel.ZIndex="1" Margin="0,-10,-0,0"/>
+
                     <WrapPanel Orientation="Horizontal" 
                             VirtualizingPanel.VirtualizationMode="Recycling"  
                             VirtualizingPanel.IsVirtualizing="True" 
@@ -126,12 +161,30 @@
                         <UniformGrid x:Name="WrapUFG" xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndGrowHorizontally}, Event=Visibility}">
                             <!--<hc:TransitioningContentControl TransitionStoryboard="{StaticResource Custom3Transition3}">-->
                             <ListBox x:Name="IconListBox" 
-                                ItemsSource="{Binding AppConfig.SelectedMenuIcons, Mode=OneWay}" 
-                                BorderThickness="0"
-                                Padding="0,10,0,0"
-                                >
+                                         ItemsSource="{Binding AppConfig.SelectedMenuIcons, Mode=OneWay}" 
+                                         BorderThickness="0"
+                                         Padding="0,10,0,0"
+                                         ScrollViewer.CanContentScroll ="False"
+                                         >
+                                <ListBox.Template>
+                                    <ControlTemplate TargetType="ListBox">
+                                        <hc:ScrollViewer x:Name="WrapScroll"
+                                                         Orientation="Vertical" 
+                                                         HorizontalScrollBarVisibility="Hidden" 
+                                                         VerticalScrollBarVisibility="Auto" 
+                                                         IsInertiaEnabled="True"
+                                                         CanContentScroll="True"
+                                                         PreviewMouseWheel="IconListBox_MouseWheel"
+                                                         >
+                                            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderBrush}">
+                                                <ItemsPresenter/>
+
+                                            </Border>
+                                        </hc:ScrollViewer>
+                                    </ControlTemplate>
+                                </ListBox.Template>
                                 <ListBox.Background>
-                                    <SolidColorBrush Opacity="0"/>
+                                    <SolidColorBrush Color="#00FFFFFF"  />
                                 </ListBox.Background>
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -140,7 +193,12 @@
                                                         ItemsHeight="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelHeight, Mode=OneWay}"
                                                         HorizontalAlignment="Center" 
                                                         SwapCommand="{Binding SwapCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>-->
-                                        <WrapPanel />
+
+                                        <WrapPanel Background="#00FFFFFF"
+                                                Width="{Binding AppConfig.WindowWidth, Mode=OneWay, 
+                                                Converter={StaticResource GetWidthByWWConvert}, 
+                                                ConverterParameter={x:Static cst:WidthTypeEnum.RIGHT_CARD}}"
+                                                />
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
 
@@ -166,17 +224,16 @@
                                     <DataTemplate>
 
                                         <hc:SimpleStackPanel Tag="{Binding}"
-                                                    Height="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelHeight, Mode=OneWay}" 
-                                                    Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelWidth, Mode=OneWay}"
-                                                    HorizontalAlignment="Center"
-                                                    hc:Poptip.Content="{Binding Content}"
-                                                    hc:Poptip.Placement="BottomLeft"
-                                                    Background="#00FFFFFF"
-                                                    MouseEnter="StackPanel_MouseEnter"
-                                                    MouseLeave="StackPanel_MouseLeave"
-                                                    MouseLeftButtonDown="Icon_MouseLeftButtonDown"
-                                                    MouseLeftButtonUp="Icon_MouseLeftButtonUp"
-                                                    >
+                                                                 Height="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelHeight, Mode=OneWay}" 
+                                                                 Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImgPanelWidth, Mode=OneWay}"
+                                                                 HorizontalAlignment="Center"
+                                                                 Background="#00FFFFFF"
+                                                                 MouseEnter="MenuIcon_MouseEnter"
+                                                                 MouseLeave="MenuIcon_MouseLeave"
+                                                                 MouseMove="MenuIcon_MouseMove"        
+                                                                 MouseLeftButtonDown="Icon_MouseLeftButtonDown"
+                                                                 MouseLeftButtonUp="Icon_MouseLeftButtonUp"
+                                                                 >
                                             <!--<StackPanel Background="#00FFFFFF"
                                             MouseEnter="CursorPanel_MouseEnter"
                                             MouseLeave="CursorPanel_MouseLeave"
@@ -202,6 +259,7 @@
                             <!--</hc:TransitioningContentControl>-->
                         </UniformGrid>
                     </WrapPanel>
+
                 </Grid>
             </hc:DialogContainer>
         </hc:Card>
@@ -228,44 +286,62 @@
                    >
                     <UniformGrid x:Name="VerticalUFG" xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeIn}, OffsetY= -10, Event=Visibility}">
                         <!--<hc:TransitioningContentControl TransitionMode="Left2RightWithFade">-->
-                            <ListBox ItemsSource="{Binding Source={StaticResource SearchIconList},Path=IconList}" 
+                        <ListBox ItemsSource="{Binding Source={StaticResource SearchIconList},Path=IconList}" 
                                      BorderThickness="0"
                                      Padding="0,10,0,0"
                                      x:Name="SearchListBox"
                                      SelectionChanged="SearchListBox_SelectionChanged"
                                      >
-                                <ListBox.Background>
-                                    <SolidColorBrush Opacity="0"/>
-                                </ListBox.Background>
+                            <ListBox.Template>
+                                <ControlTemplate TargetType="ListBox">
+                                    <hc:ScrollViewer Orientation="Vertical" 
+                                                     HorizontalScrollBarVisibility="Hidden" 
+                                                     VerticalScrollBarVisibility="Auto" 
+                                                     IsInertiaEnabled="True"
+                                                     CanContentScroll="True"
+                                                     PreviewMouseWheel="VerticalIconList_PreviewMouseWheel"
+                                                     >
+                                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderBrush}">
+                                            <ItemsPresenter/>
+                                        </Border>
+                                    </hc:ScrollViewer>
+                                </ControlTemplate>
+                            </ListBox.Template>
 
-                                <ListBox.Resources>
-                                    <ContextMenu x:Key="IconDialog" Width="200">
-                                        <MenuItem Header="管理员方式运行" Click="IconAdminStart" Tag="{Binding}"/>
-                                        <MenuItem Header="打开文件所在位置" Click="ShowInExplore" Tag="{Binding}"/>
-                                        <MenuItem Header="添加URL项目" Click="AddUrlIcon"/>
-                                        <MenuItem Header="添加系统项目" Click="AddSystemIcon"/>
-                                        <MenuItem Header="资源管理器菜单" Click="SystemContextMenu" Tag="{Binding}"/>
-                                        <MenuItem Header="属性" Click="PropertyConfig" Tag="{Binding}"/>
-                                    </ContextMenu>
-                                </ListBox.Resources>
+                            <ListBox.Background>
+                                <SolidColorBrush Opacity="0"/>
+                            </ListBox.Background>
 
-                                <ListBox.ItemContainerStyle>
-                                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource SearchListBoxItemStyle}">
-                                        <Setter Property="ContextMenu" Value="{StaticResource IconDialog}"/>
-                                    </Style>
-                                </ListBox.ItemContainerStyle>
+                            <ListBox.Resources>
+                                <ContextMenu x:Key="IconDialog" Width="200">
+                                    <MenuItem Header="管理员方式运行" Click="IconAdminStart" Tag="{Binding}"/>
+                                    <MenuItem Header="打开文件所在位置" Click="ShowInExplore" Tag="{Binding}"/>
+                                    <MenuItem Header="添加URL项目" Click="AddUrlIcon"/>
+                                    <MenuItem Header="添加系统项目" Click="AddSystemIcon"/>
+                                    <MenuItem Header="资源管理器菜单" Click="SystemContextMenu" Tag="{Binding}"/>
+                                    <MenuItem Header="属性" Click="PropertyConfig" Tag="{Binding}"/>
+                                </ContextMenu>
+                            </ListBox.Resources>
 
-                                <ListBox.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Background="#00FFFFFF"
-                                            Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.MenuCardWidth, Mode=OneWay, Converter={StaticResource SearchResWidth}, ConverterParameter=1}"
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem" BasedOn="{StaticResource SearchListBoxItemStyle}">
+                                    <Setter Property="ContextMenu" Value="{StaticResource IconDialog}"/>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Background="#00FFFFFF"
+                                           Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.WindowWidth, Mode=OneWay, 
+                                                Converter={StaticResource GetWidthByWWConvert}, 
+                                                ConverterParameter={x:Static cst:WidthTypeEnum.RIGHT_CARD}}"
                                             />
-                                    </ItemsPanelTemplate>
-                                </ListBox.ItemsPanel>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
 
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border CornerRadius="8">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border CornerRadius="8">
                                         <Border.Style>
                                             <Style TargetType="Border">
                                                 <Setter Property="VerticalAlignment" Value="Center"/>
@@ -283,16 +359,19 @@
                                         </Border.Style>
                                         <WrapPanel Tag="{Binding}"
                                                    Height="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImageHeight, Mode=OneWay}" 
-                                                   Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.MenuCardWidth, Mode=OneWay, Converter={StaticResource SearchResWidth}, ConverterParameter=2}" 
+                                                   Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.WindowWidth, Mode=OneWay, 
+                                                        Converter={StaticResource GetWidthByWWConvert}, 
+                                                        ConverterParameter={x:Static cst:WidthTypeEnum.RIGHT_CARD_HALF}}" 
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"
                                                    hc:Poptip.HitMode="None"
-                                                   hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
-                                                   hc:Poptip.Content="{Binding Content}"
                                                    hc:Poptip.Placement="BottomLeft"
                                                    Background="#00FFFFFF"
+                                                   MouseEnter="SearchIcon_MouseEnter"
+                                                   MouseLeave="SearchIcon_MouseLeave"
                                                    MouseLeftButtonDown="Icon_MouseLeftButtonDown"
                                                    MouseLeftButtonUp="Icon_MouseLeftButtonUp"
+                                                   MouseMove="SearchIcon_MouseMove"
                                                    Margin="25,10,0,10"
                                                    >
                                             <Image Style="{StaticResource ImageStyle}"  RenderOptions.BitmapScalingMode="HighQuality"/>
@@ -308,9 +387,9 @@
                                                Text="{Binding Name}"/>
                                         </WrapPanel>
                                     </Border>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
 
                         <!--</hc:TransitioningContentControl>-->
                     </UniformGrid>

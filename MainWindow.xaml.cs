@@ -10,6 +10,7 @@ using GeekDesk.ViewModel;
 using GeekDesk.ViewModel.Temp;
 using Microsoft.Win32;
 using NPinyin;
+//using ShowSeconds;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -61,7 +62,7 @@ namespace GeekDesk
 
         }
 
-       
+
 
 
         /// <summary>
@@ -94,9 +95,9 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-             if (!RunTimeStatus.SEARCH_BOX_SHOW 
-                && appData.AppConfig.SearchType != SearchType.KEY_DOWN
-                )
+            if (!RunTimeStatus.SEARCH_BOX_SHOW
+               && appData.AppConfig.SearchType != SearchType.KEY_DOWN
+               )
             {
                 SearchBox.TextChanged -= SearchBox_TextChanged;
                 SearchBox.Clear();
@@ -105,6 +106,11 @@ namespace GeekDesk
             }
 
             if (!RunTimeStatus.SEARCH_BOX_SHOW) ShowSearchBox();
+
+            //刷新搜索后 鼠标移动次数置为0
+            RunTimeStatus.MOUSE_MOVE_COUNT = 0;
+            //隐藏popup
+            RightCard.MyPoptip.IsOpen = false;
 
             string inputText = SearchBox.Text.ToLower();
             RightCard.VerticalUFG.Visibility = Visibility.Collapsed;
@@ -168,7 +174,6 @@ namespace GeekDesk
             this.Height = appData.AppConfig.WindowHeight;
         }
 
-
         /// <summary>
         /// 窗口加载完毕 执行方法
         /// </summary>
@@ -176,6 +181,8 @@ namespace GeekDesk
         /// <param name="e"></param>
         void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            //SecondsWindow.ShowWindow();
+
             BGSettingUtil.BGSetting();
             if (!appData.AppConfig.StartedShowPanel)
             {
@@ -185,7 +192,6 @@ namespace GeekDesk
             {
                 ShowApp();
             }
-            //ShowSecondTask.SHowSecond();
             //给任务栏图标一个名字
             BarIcon.Text = Constants.MY_NAME;
 
@@ -210,11 +216,12 @@ namespace GeekDesk
                 RegisterUtil.SetSelfStarting(appData.AppConfig.SelfStartUp, Constants.MY_NAME);
             }
 
-            //注册鼠标中键监听事件
-            if (appData.AppConfig.MouseMiddleShow)
+            //注册鼠标监听事件
+            if (appData.AppConfig.MouseMiddleShow || appData.AppConfig.SecondsWindow == true)
             {
-                MouseHookThread.MiddleHook();
+                MouseHookThread.Hook();
             }
+
 
             //更新线程开启  检测更新
             UpdateThread.Update();
@@ -224,6 +231,8 @@ namespace GeekDesk
 
             //毛玻璃  暂时未解决阴影问题
             //BlurGlassUtil.EnableBlur(this);
+
+            MessageUtil.ChangeWindowMessageFilter(MessageUtil.WM_COPYDATA, 1);
         }
 
         /// <summary>
@@ -253,7 +262,8 @@ namespace GeekDesk
                     {
                         HandyControl.Controls.Growl.Success("GeekDesk快捷键注册成功(" + appData.AppConfig.HotkeyStr + ")!", "HotKeyGrowl");
                     }
-                } else
+                }
+                else
                 {
                 }
             }
@@ -296,7 +306,7 @@ namespace GeekDesk
                         HandyControl.Controls.Growl.Success("新建待办任务快捷键注册成功(" + appData.AppConfig.ToDoHotkeyStr + ")!", "HotKeyGrowl");
                     }
                 }
-                
+
             }
             catch (Exception)
             {
@@ -452,6 +462,11 @@ namespace GeekDesk
             else
             {
                 appData.AppConfig.IsShow = null;
+                //防止永远不显示界面
+                if (mainWindow.Opacity < 1)
+                {
+                    mainWindow.Opacity = 1;
+                }
             }
 
 
@@ -461,7 +476,8 @@ namespace GeekDesk
             if (RunTimeStatus.SHOW_MENU_PASSWORDBOX)
             {
                 mainWindow.RightCard.PDDialog.SetFocus();
-            } else
+            }
+            else
             {
                 Keyboard.Focus(mainWindow.SearchBox);
             }
@@ -478,7 +494,7 @@ namespace GeekDesk
                 appData.AppConfig.IsShow = null;
                 HideAppVis();
             }
-            
+
         }
 
         private static void HideAppVis()
@@ -492,7 +508,7 @@ namespace GeekDesk
             mainWindow.Visibility = Visibility.Collapsed;
             //if (!MarginHide.IS_HIDE)
             //{
-               
+
             //}
             //else
             //{
@@ -663,7 +679,7 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void ExitApp(object sender, RoutedEventArgs e)
         {
-            if (appData.AppConfig.MouseMiddleShow)
+            if (appData.AppConfig.MouseMiddleShow || appData.AppConfig.SecondsWindow == true)
             {
                 MouseHookThread.Dispose();
             }
@@ -676,7 +692,7 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void ReStartApp(object sender, RoutedEventArgs e)
         {
-            if (appData.AppConfig.MouseMiddleShow)
+            if (appData.AppConfig.MouseMiddleShow || appData.AppConfig.SecondsWindow == true)
             {
                 MouseHookThread.Dispose();
             }
@@ -709,8 +725,8 @@ namespace GeekDesk
                 HideApp();
             }
 
-            if (RunTimeStatus.SEARCH_BOX_SHOW && (e.Key == Key.Up 
-                || e.Key == Key.Down 
+            if (RunTimeStatus.SEARCH_BOX_SHOW && (e.Key == Key.Up
+                || e.Key == Key.Down
                 || e.Key == Key.Tab
                 || e.Key == Key.Enter
                 ))
@@ -718,14 +734,16 @@ namespace GeekDesk
                 if (e.Key == Key.Down || e.Key == Key.Tab)
                 {
                     RightCard.SearchListBoxIndexAdd();
-                } else if (e.Key == Key.Up)
+                }
+                else if (e.Key == Key.Up)
                 {
                     RightCard.SearchListBoxIndexSub();
-                } else if (e.Key == Key.Enter)
+                }
+                else if (e.Key == Key.Enter)
                 {
                     RightCard.StartupSelectionItem();
                 }
-            } 
+            }
         }
 
 
@@ -779,9 +797,9 @@ namespace GeekDesk
                     //必须在其它文本框没有工作的时候才给搜索框焦点
                     Keyboard.Focus(SearchBox);
                 }
-                
+
             }
-            
+
         }
 
         private void AppWindow_Deactivated(object sender, EventArgs e)
@@ -836,6 +854,30 @@ namespace GeekDesk
                 }
                 return _hideCommand;
             }
+        }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            HwndSource hwndSource = PresentationSource.FromVisual(this) as HwndSource;
+            if (hwndSource != null)
+            {
+                IntPtr handle = hwndSource.Handle;
+                hwndSource.AddHook(new HwndSourceHook(WndProc));
+            }
+        }
+
+        IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            if (msg == MessageUtil.WM_COPYDATA)
+            {
+                MessageUtil.CopyDataStruct cds = (MessageUtil.CopyDataStruct)System.Runtime.InteropServices.Marshal.PtrToStructure(lParam, typeof(MessageUtil.CopyDataStruct));
+                if ("ShowApp".Equals(cds.msg))
+                {
+                    ShowApp();
+                }
+            }
+            return hwnd;
         }
 
 

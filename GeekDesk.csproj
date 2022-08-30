@@ -170,6 +170,7 @@
     <Compile Include="Constant\TodoTaskExecType.cs" />
     <Compile Include="Constant\BGStyle.cs" />
     <Compile Include="Constant\UpdateType.cs" />
+    <Compile Include="Constant\WidthTypeEnum.cs" />
     <Compile Include="Control\Other\GlobalMsgNotification.xaml.cs">
       <DependentUpon>GlobalMsgNotification.xaml</DependentUpon>
     </Compile>
@@ -247,6 +248,7 @@
     </Compile>
     <Compile Include="Converts\CountGreZero2BoolConvert.cs" />
     <Compile Include="Converts\Count2VisibleConvert.cs" />
+    <Compile Include="Converts\GetWidthByWWConvert.cs" />
     <Compile Include="Converts\SearchTypeConvert.cs" />
     <Compile Include="Converts\StringAppendConvert.cs" />
     <Compile Include="Converts\DoubleToGridLength.cs" />
@@ -274,11 +276,15 @@
     <Compile Include="Util\BGSettingUtil.cs" />
     <Compile Include="Util\BlurGlassUtil.cs" />
     <Compile Include="Util\ColorUtil.cs" />
+    <Compile Include="Util\DefaultIcons.cs" />
     <Compile Include="Util\DragAdorner.cs" />
     <Compile Include="Util\GlobalHotKey.cs" />
     <Compile Include="Util\CommonCode.cs" />
     <Compile Include="Util\FileIcon.cs" />
     <Compile Include="Util\FileUtil.cs" />
+    <Compile Include="Util\HideWindowUtil.cs" />
+    <Compile Include="Util\IconHelper.cs" />
+    <Compile Include="Util\IconUtil.cs" />
     <Compile Include="Util\KeyUtil.cs" />
     <Compile Include="Util\ListBoxDragDropManager.cs" />
     <Compile Include="Util\LogUtil.cs" />
@@ -287,13 +293,20 @@
     <Compile Include="Util\ImageUtil.cs" />
     <Compile Include="Converts\MenuWidthConvert.cs" />
     <Compile Include="Util\MD5Util.cs" />
+    <Compile Include="Util\MessageUtil.cs" />
+    <Compile Include="Util\MouseHook.cs" />
     <Compile Include="Util\MouseUtil.cs" />
+    <Compile Include="Util\NativeMethods.cs" />
     <Compile Include="Util\RegisterUtil.cs" />
     <Compile Include="Util\RelayCommand.cs" />
+    <Compile Include="Util\ScreenUtil.cs" />
+    <Compile Include="Util\ScrollUtil.cs" />
     <Compile Include="Util\ShellContextMenu.cs" />
     <Compile Include="Util\ShowWindowFollowMouse.cs" />
     <Compile Include="Util\StringUtil.cs" />
     <Compile Include="Util\SvgToGeometry.cs" />
+    <Compile Include="Util\UserActivityHook.cs" />
+    <Compile Include="Util\WindowsThumbnailProvider.cs" />
     <Compile Include="ViewModel\AppConfig.cs" />
     <Compile Include="ViewModel\AppData.cs" />
     <Compile Include="ViewModel\GradientBGParam.cs" />

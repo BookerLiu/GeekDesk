@@ -7,10 +7,14 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Cursors = System.Windows.Input.Cursors;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
 namespace GeekDesk.Control.Windows
 {
@@ -28,10 +32,18 @@ namespace GeekDesk.Control.Windows
 
         private readonly ColorPicker colorPicker;
 
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool SetProcessDPIAware();
+
         public PixelColorPickerWindow(ColorPicker colorPicker)
         {
             InitializeComponent();
             this.colorPicker = colorPicker;
+            //try
+            //{
+            //    SetProcessDPIAware();
+            //}
+            //catch (Exception e) { }
             ColorPickerWindow_Init();
         }
 
@@ -50,9 +62,12 @@ namespace GeekDesk.Control.Windows
             DesktopBG.Height = this.Height;
             this.Topmost = true;
 
+            //获取缩放比例
+            double scale = ScreenUtil.GetScreenScalingFactor();
+
             bgBitmap = new System.Drawing.Bitmap(
-                    (int)SystemParameters.VirtualScreenWidth,
-                    (int)SystemParameters.VirtualScreenHeight,
+                    (int)(Width * scale),
+                    (int)(Height * scale),
                     System.Drawing.Imaging.PixelFormat.Format32bppArgb
                 );
 
@@ -114,7 +129,7 @@ namespace GeekDesk.Control.Windows
                 mi.Invoke(colorPicker, new object[] { null, null });
             }
         }
-   
+
         private void Window_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             SetPixelAbout(e);
@@ -191,5 +206,16 @@ namespace GeekDesk.Control.Windows
             SetPixelAbout(e);
         }
 
+        /// <summary>
+        /// 右键按下
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            GlobalColorPickerWindow.ShowOrHide();
+            //关闭
+            this.Close();
+        }
     }
 }

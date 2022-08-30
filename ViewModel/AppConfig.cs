@@ -103,7 +103,24 @@ namespace GeekDesk.ViewModel
 
         private bool itemSpradeAnimation; //列表展开动画
 
+        private bool? secondsWindow; //秒数窗口 默认打开
+
         #region GetSet
+
+        public bool? SecondsWindow
+        {
+            get
+            {
+                if (secondsWindow == null) secondsWindow = true;
+                return secondsWindow;
+            }
+            set
+            {
+                secondsWindow = value;
+                OnPropertyChanged("SecondsWindow");
+            }
+        }
+
         public bool ItemSpradeAnimation
         {
             get

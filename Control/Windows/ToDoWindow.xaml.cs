@@ -19,6 +19,7 @@ namespace GeekDesk.Control.Windows
             InitializeComponent();
             RightCard.Content = backlog;
             backlog.BacklogList.ItemsSource = appData.ToDoList;
+            backlog.type = ToDoType.NEW;
             this.Topmost = true;
             if (backlog.BacklogList.Items.Count > 0)
             {
@@ -68,7 +69,8 @@ namespace GeekDesk.Control.Windows
                     {
                         backlog.NoData.Visibility = Visibility.Collapsed;
                         backlog.BacklogList.Visibility = Visibility.Visible;
-                    } else
+                    }
+                    else
                     {
                         backlog.NoData.Visibility = Visibility.Visible;
                         backlog.BacklogList.Visibility = Visibility.Collapsed;

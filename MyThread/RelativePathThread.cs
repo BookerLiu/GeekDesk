@@ -2,13 +2,9 @@
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace GeekDesk.MyThread
 {
@@ -18,24 +14,33 @@ namespace GeekDesk.MyThread
         {
             new Thread(() =>
             {
-                ObservableCollection<MenuInfo> menuList = MainWindow.appData.MenuList;
-
-                string myExePath = Constants.APP_DIR + "GeekDesk.exe";
-                foreach (MenuInfo mi in menuList)
+                try
                 {
-                    ObservableCollection<IconInfo> iconList = mi.IconList;
-                    foreach (IconInfo icon in iconList)
+                    ObservableCollection<MenuInfo> menuList = MainWindow.appData.MenuList;
+
+                    string myExePath = Constants.APP_DIR + "GeekDesk.exe";
+                    foreach (MenuInfo mi in menuList)
                     {
-                        string relativePath = FileUtil.MakeRelativePath(myExePath, icon.Path);
-                        if (File.Exists(icon.Path) 
-                            && !string.IsNullOrEmpty(relativePath) 
-                            && !relativePath.Equals(icon.Path)) {
-                            icon.RelativePath_NoWrite = relativePath;
+                        ObservableCollection<IconInfo> iconList = mi.IconList;
+                        foreach (IconInfo icon in iconList)
+                        {
+                            if (icon == null) continue;
+                            string relativePath = FileUtil.MakeRelativePath(myExePath, icon.Path);
+                            if (File.Exists(icon.Path)
+                                && !string.IsNullOrEmpty(relativePath)
+                                && !relativePath.Equals(icon.Path))
+                            {
+                                icon.RelativePath_NoWrite = relativePath;
+                            }
                         }
                     }
+                    CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
+                    CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_BAK_PATH);
                 }
-                CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
-                CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_BAK_PATH);
+                catch (Exception ex)
+                {
+                    LogUtil.WriteErrorLog(ex, "init相对路径出错!");
+                }
             }).Start();
         }
     }

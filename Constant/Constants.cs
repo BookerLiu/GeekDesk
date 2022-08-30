@@ -13,7 +13,7 @@ namespace GeekDesk.Constant
 
         public static string MY_NAME = DEV ? "GeekDesk-D" : "GeekDesk";
 
-
+        public static string MY_UUID = "8400A17AEEF7C029";
         /// <summary>
         /// app数据文件路径
         /// </summary>
@@ -29,6 +29,12 @@ namespace GeekDesk.Constant
         public static string LOG_FILE_PATH = APP_DIR + "logs\\log.log"; //日志文件
 
         public static string ERROR_FILE_PATH = APP_DIR + "logs\\error.log"; // 错误日志
+
+        /// <summary>
+        /// 插件文件夹
+        /// </summary>
+        public static string PLUGINS_PATH = APP_DIR + "plugins\\";
+
 
         public static int SHADOW_WIDTH = 20;
 

@@ -44,7 +44,7 @@ namespace GeekDesk.Util
                         BinaryFormatter bf = new BinaryFormatter();
                         appData = bf.Deserialize(fs) as AppData;
                     }
-                } 
+                }
                 catch
                 {
                     if (File.Exists(Constants.DATA_FILE_BAK_PATH))
@@ -69,20 +69,22 @@ namespace GeekDesk.Util
                             GlobalMsgNotification gm = new GlobalMsgNotification(msg);
                             HandyControl.Controls.Notification ntf = HandyControl.Controls.Notification.Show(gm, ShowAnimation.Fade, true);
                             gm.ntf = ntf;
-                        } catch 
+                        }
+                        catch
                         {
                             MessageBox.Show("不幸的是, GeekDesk当前的数据文件已经损坏\n如果你有备份, 请将备份文件重命名为:Data 然后将Data覆盖到GeekDesk的根目录即可!");
                             Application.Current.Shutdown();
                             return null;
                         }
-                        
-                    } else
+
+                    }
+                    else
                     {
                         MessageBox.Show("不幸的是, GeekDesk当前的数据文件已经损坏\n如果你有备份, 请将备份文件重命名为:Data 然后将Data覆盖到GeekDesk的根目录即可!");
                         Application.Current.Shutdown();
                         return null;
                     }
-                    
+
                 }
             }
             return appData;
@@ -143,25 +145,6 @@ namespace GeekDesk.Util
         }
 
 
-
-        /// <summary>
-        /// 判断当前屏幕(鼠标最后活动屏幕)是否有全屏化应用
-        /// </summary>
-        /// <returns></returns>
-        public static bool IsPrimaryFullScreen()
-        {
-            RECT rect = new RECT();
-            GetWindowRect(new HandleRef(null, GetForegroundWindow()), ref rect);
-
-            int windowHeight = rect.bottom - rect.top;
-            int screenHeight = (int)SystemParameters.PrimaryScreenHeight;
-
-            if (windowHeight >= screenHeight)
-            {
-                return true;
-            }
-            return false;
-        }
 
         /// <summary>
         /// 根据路径获取文件图标等信息
@@ -263,20 +246,6 @@ namespace GeekDesk.Util
         }
 
 
-        [StructLayout(LayoutKind.Sequential)]
-        private struct RECT
-        {
-            public int left;
-            public int top;
-            public int right;
-            public int bottom;
-        }
-
-        [DllImport("user32.dll")]
-        private static extern bool GetWindowRect(HandleRef hWnd, [In, Out] ref RECT rect);
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr GetForegroundWindow();
 
 
 

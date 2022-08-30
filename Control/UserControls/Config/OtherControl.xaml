@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cvt="clr-namespace:GeekDesk.Converts"
              xmlns:local="clr-namespace:GeekDesk.Control.UserControls.PannelCard"
-             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:hc="https://handyorg.github.io/handycontrol" xmlns:viewmodel="clr-namespace:GeekDesk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AppConfig}"
              mc:Ignorable="d" 
              Background="Transparent"
              d:DesignHeight="400" d:DesignWidth="500"
@@ -33,6 +33,20 @@
                            hc:Poptip.HitMode="None" 
                            hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
                            hc:Poptip.Content="开启性能模式将取消图标动画效果" 
+                           hc:Poptip.Placement="TopLeft">
+                        <CheckBox.Background>
+                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                                <GradientStop Color="#FF9EA3A6"/>
+                            </LinearGradientBrush>
+                        </CheckBox.Background>
+                    </CheckBox>
+                </hc:UniformSpacingPanel>
+                <TextBlock Text="插件"  Margin="0,20,0,0"/>
+                <hc:UniformSpacingPanel Spacing="10" Margin="20,6,0,0">
+                    <CheckBox  Content="时钟显秒" Click="ShowSeconds_Click" IsChecked="{Binding SecondsWindow}" 
+                           hc:Poptip.HitMode="None"
+                           hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
+                           hc:Poptip.Content="仅Win11有效" 
                            hc:Poptip.Placement="TopLeft">
                         <CheckBox.Background>
                             <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
@@ -93,7 +107,7 @@
                              Foreground="Black"
                              IsChecked="{Binding UpdateType, Mode=TwoWay, Converter={StaticResource UpdateTypeConvert}, ConverterParameter=2}"/>
                 </hc:UniformSpacingPanel>
-                
+
                 <TextBlock Text="其它"  Margin="0,25,0,0"/>
                 <hc:UniformSpacingPanel Spacing="10" Margin="20,8,0,0">
                     <Button Content="备份数据" 
