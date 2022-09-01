@@ -10,7 +10,7 @@ using GeekDesk.ViewModel;
 using GeekDesk.ViewModel.Temp;
 using Microsoft.Win32;
 using NPinyin;
-//using ShowSeconds;
+using ShowSeconds;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -181,8 +181,6 @@ namespace GeekDesk
         /// <param name="e"></param>
         void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //SecondsWindow.ShowWindow();
-
             BGSettingUtil.BGSetting();
             if (!appData.AppConfig.StartedShowPanel)
             {
@@ -217,9 +215,15 @@ namespace GeekDesk
             }
 
             //注册鼠标监听事件
-            if (appData.AppConfig.MouseMiddleShow || appData.AppConfig.SecondsWindow == true)
+            if (appData.AppConfig.MouseMiddleShow)
             {
                 MouseHookThread.Hook();
+            }
+
+            //显秒插件
+            if (appData.AppConfig.SecondsWindow == true)
+            {
+                SecondsWindow.ShowWindow();
             }
 
 

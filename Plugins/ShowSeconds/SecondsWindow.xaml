@@ -1,0 +1,32 @@
+﻿<Window x:Class="ShowSeconds.SecondsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           xmlns:hc="https://handyorg.github.io/handycontrol"
+            xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
+           Height="90" 
+           Width="160" 
+           WindowStyle="None"
+           Title=""
+           AllowsTransparency="True"
+           Background="Transparent" ShowInTaskbar="False"
+           Focusable="True"
+        Loaded="Window_Loaded"
+            >
+
+    <Grid Margin="20">
+        <Grid.Effect>
+            <DropShadowEffect BlurRadius="20" Direction="-90" Color="Gray"
+                              RenderingBias="Quality" ShadowDepth="2"/>
+        </Grid.Effect>
+        <Border x:Name="BGBorder" CornerRadius="8" xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndSlideFromRight}, Event=Visibility, Delay=0}">
+            <TextBlock x:Name="SecondsText" HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="25"
+                       FontWeight="Bold"
+                       Foreground="White"
+                       Text="{Binding Seconds}"/>
+        </Border>
+    </Grid>
+</Window>

@@ -154,6 +154,7 @@
                     <StackPanel Panel.ZIndex="1" Margin="0,-10,-0,0"/>
 
                     <WrapPanel Orientation="Horizontal" 
+                               Margin="10"
                             VirtualizingPanel.VirtualizationMode="Recycling"  
                             VirtualizingPanel.IsVirtualizing="True" 
                             VirtualizingPanel.IsContainerVirtualizable="True"
@@ -281,9 +282,10 @@
             </hc:Card.BorderBrush>
             <Grid>
                 <WrapPanel Orientation="Horizontal" VirtualizingPanel.VirtualizationMode="Recycling"  
-                   VirtualizingPanel.IsVirtualizing="True"  
-                   VirtualizingPanel.IsContainerVirtualizable="True"
-                   >
+                           VirtualizingPanel.IsVirtualizing="True"  
+                           VirtualizingPanel.IsContainerVirtualizable="True"
+                           Margin="10"
+                           >
                     <UniformGrid x:Name="VerticalUFG" xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeIn}, OffsetY= -10, Event=Visibility}">
                         <!--<hc:TransitioningContentControl TransitionMode="Left2RightWithFade">-->
                         <ListBox ItemsSource="{Binding Source={StaticResource SearchIconList},Path=IconList}" 

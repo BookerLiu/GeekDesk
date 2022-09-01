@@ -39,11 +39,11 @@ namespace GeekDesk.Control.Windows
         {
             InitializeComponent();
             this.colorPicker = colorPicker;
-            //try
-            //{
-            //    SetProcessDPIAware();
-            //}
-            //catch (Exception e) { }
+            try
+            {
+                SetProcessDPIAware();
+            }
+            catch (Exception e) { }
             ColorPickerWindow_Init();
         }
 
@@ -87,6 +87,7 @@ namespace GeekDesk.Control.Windows
                                         Int32Rect.Empty,
                                         BitmapSizeOptions.FromEmptyOptions()
                                     );
+
             DesktopBG.Source = bs;
             VisualBrush b = (VisualBrush)PixelBG.Fill;
             b.Visual = DesktopBG;
@@ -213,6 +214,7 @@ namespace GeekDesk.Control.Windows
         /// <param name="e"></param>
         private void Window_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
+            Mouse.OverrideCursor = null;
             GlobalColorPickerWindow.ShowOrHide();
             //关闭
             this.Close();

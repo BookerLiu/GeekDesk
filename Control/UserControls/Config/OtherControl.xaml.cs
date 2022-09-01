@@ -2,7 +2,7 @@
 using GeekDesk.MyThread;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
-//using ShowSeconds;
+using ShowSeconds;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -121,21 +121,16 @@ namespace GeekDesk.Control.UserControls.Config
 
         private void ShowSeconds_Click(object sender, RoutedEventArgs e)
         {
-            //if (MainWindow.appData.AppConfig.SecondsWindow == true)
-            //{
-            //    //StartSecondsWindow();
-            //    //SecondsWindow.ShowWindow();
-            //    MouseHookThread.Dispose();
-            //    MouseHookThread.Hook();
-            //}
-            //else
-            //{
-            //    MouseHookThread.Dispose();
-            //    MouseHookThread.Hook();
-            //}
-
-            MouseHookThread.Dispose();
-            MouseHookThread.Hook();
+            if (MainWindow.appData.AppConfig.SecondsWindow == true)
+            {
+                //StartSecondsWindow();
+                SecondsWindow.ShowWindow();
+            }
+            else
+            {
+                SecondsWindow.CloseWindow();
+                //StopSecondsWindow();
+            }
         }
 
         public static void StopSecondsWindow()
@@ -149,47 +144,47 @@ namespace GeekDesk.Control.UserControls.Config
             }
         }
 
-        //public static void StartSecondsWindow()
-        //{
-        //    try
-        //    {
-        //        using (var objOS = new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem"))
-        //        {
-        //            foreach (ManagementObject objMgmt in objOS.Get())
-        //            {
-        //                if (objMgmt.Properties["Caption"].Value != null)
-        //                {
-        //                    string caption = objMgmt.Properties["Caption"].Value.ToString(); ;
-        //                    LogUtil.WriteLog("获取的系统版本号为:" + caption);
-        //                    if (caption.Contains("Windows 11"))
-        //                    {
-        //                        //找到ShowSeconds插件
-        //                        FileInfo fi = FileUtil.GetFileByNameWithDir("ShowSeconds.exe", Constants.PLUGINS_PATH);
-        //                        if (fi == null)
-        //                        {
-        //                            HandyControl.Controls.MessageBox.Show("未安装程序插件:ShowSeconds");
-        //                        }
-        //                        else
-        //                        {
-        //                            //检查是否在运行
-        //                            if (!MessageUtil.CheckWindowIsRuning("ShowSeconds_Main_" + Constants.MY_UUID))
-        //                            {
-        //                                using (Process p = new Process())
-        //                                {
-        //                                    p.StartInfo.FileName = fi.FullName;
-        //                                    p.StartInfo.WorkingDirectory = fi.FullName.Substring(0, fi.FullName.LastIndexOf("\\"));
-        //                                    p.Start();
-        //                                }
-        //                            }
-        //                        }
+        public static void StartSecondsWindow()
+        {
+            try
+            {
+                using (var objOS = new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem"))
+                {
+                    foreach (ManagementObject objMgmt in objOS.Get())
+                    {
+                        if (objMgmt.Properties["Caption"].Value != null)
+                        {
+                            string caption = objMgmt.Properties["Caption"].Value.ToString(); ;
+                            LogUtil.WriteLog("获取的系统版本号为:" + caption);
+                            if (caption.Contains("Windows 11"))
+                            {
+                                //找到ShowSeconds插件
+                                FileInfo fi = FileUtil.GetFileByNameWithDir("ShowSeconds.exe", Constants.PLUGINS_PATH);
+                                if (fi == null)
+                                {
+                                    HandyControl.Controls.MessageBox.Show("未安装程序插件:ShowSeconds");
+                                }
+                                else
+                                {
+                                    //检查是否在运行
+                                    if (!MessageUtil.CheckWindowIsRuning("ShowSeconds_Main_" + Constants.MY_UUID))
+                                    {
+                                        using (Process p = new Process())
+                                        {
+                                            p.StartInfo.FileName = fi.FullName;
+                                            p.StartInfo.WorkingDirectory = fi.FullName.Substring(0, fi.FullName.LastIndexOf("\\"));
+                                            p.Start();
+                                        }
+                                    }
+                                }
 
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex) { }
-        //}
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex) { }
+        }
 
 
 

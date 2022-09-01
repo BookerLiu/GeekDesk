@@ -3,7 +3,6 @@ using GeekDesk.Control.Windows;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using Gma.System.MouseKeyHook;
-//using ShowSeconds;
 using System;
 using System.Drawing;
 using System.Threading;
@@ -31,24 +30,16 @@ namespace GeekDesk.MyThread
                     hook.OnMouseWheelUp += OnMouseWheelUp;
                 }
 
-                //if (appConfig.SecondsWindow == true)
-                //{
-                //    hook.OnMouseLeftDown += OnMouseLeftDown;
-                //    hook.OnMouseLeftUp += OnMouseLeftUp;
-                //}
-
                 hook.Start(true, false);
             }));
         }
 
         private static void OnMouseLeftDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            //SecondsWindow.SecondsBakColorFun(sender, e);
         }
 
         private static void OnMouseLeftUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            //SecondsWindow.SecondsHookSetFuc(sender, e);
         }
 
         private static void OnMouseWheelUp(object sender, System.Windows.Forms.MouseEventArgs e)
