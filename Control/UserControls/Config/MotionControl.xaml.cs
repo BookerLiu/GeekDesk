@@ -47,7 +47,7 @@ namespace GeekDesk.Control.UserControls.Config
 
                 if (!CheckIsEnable(hkType)) return;
 
-                
+
                 if (prevKeyTemp == Key.None || prevKeyTemp != downKey)
                 {
                     if (hotkeyFinished)
@@ -315,14 +315,17 @@ namespace GeekDesk.Control.UserControls.Config
         /// <param name="e"></param>
         private void MouseMiddle_Changed(object sender, RoutedEventArgs e)
         {
-            if (appConfig.MouseMiddleShow)
-            {
-                MouseHookThread.MiddleHook();
-            }
-            else
-            {
-                MouseHookThread.Dispose();
-            }
+            //if (appConfig.MouseMiddleShow)
+            //{
+            //    MouseHookThread.MiddleHook();
+            //}
+            //else
+            //{
+            //    MouseHookThread.DisposeMiddle();
+            //}
+
+            MouseHookThread.Dispose();
+            MouseHookThread.Hook();
         }
 
         /// <summary>
@@ -339,7 +342,8 @@ namespace GeekDesk.Control.UserControls.Config
                     if (true == appConfig.EnableAppHotKey)
                     {
                         MainWindow.RegisterHotKey(false);
-                    } else
+                    }
+                    else
                     {
                         if (MainWindow.hotKeyId != -1)
                         {

@@ -161,13 +161,18 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
         private void Lbi_Selected(object sender, RoutedEventArgs e)
         {
-            ListBoxItem lbi = sender as ListBoxItem;
+            try
+            {
+                ListBoxItem lbi = sender as ListBoxItem;
 
-            SolidColorBrush fontColor = new SolidColorBrush(Colors.Black);
+                SolidColorBrush fontColor = new SolidColorBrush(Colors.Black);
 
-            lbi.MouseLeave -= Lbi_MouseLeave;
-            lbi.Background = bac;
-            lbi.Foreground = fontColor;
+                lbi.MouseLeave -= Lbi_MouseLeave;
+                lbi.Background = bac;
+                lbi.Foreground = fontColor;
+            }
+            catch { }
+
         }
 
         private void Lbi_MouseLeave(object sender, MouseEventArgs e)
@@ -339,6 +344,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 }
             }
             MainWindow.mainWindow.RightCard.WrapUFG.Visibility = Visibility.Visible;
+            //App.DoEvents();
         }
 
 
@@ -421,32 +427,47 @@ namespace GeekDesk.Control.UserControls.PannelCard
         private void Menu_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (RunTimeStatus.IS_MENU_EDIT) return;
+
+            ScrollViewer scrollViewer = ScrollUtil.FindSimpleVisualChild<ScrollViewer>(MenuListBox);
             if (e.Delta < 0)
             {
-                int index = MenuListBox.SelectedIndex;
-                if (index < MenuListBox.Items.Count - 1)
+                //判断是否到了最底部
+                if (ScrollUtil.IsBootomScrollView(scrollViewer))
                 {
-                    index ++;
-                } else
-                {
-                    index = 0;
+                    int index = MenuListBox.SelectedIndex;
+                    if (index < MenuListBox.Items.Count - 1)
+                    {
+                        index++;
+                    }
+                    else
+                    {
+                        index = 0;
+                    }
+                    MenuListBox.SelectedIndex = index;
                 }
-                MenuListBox.SelectedIndex = index;
-            } else if (e.Delta > 0)
-            {
-                int index = MenuListBox.SelectedIndex;
-                if (index > 0)
-                {
-                    index --;
-                }
-                else
-                {
-                    index = MenuListBox.Items.Count - 1;
-                }
-                MenuListBox.SelectedIndex = index;
             }
+            else if (e.Delta > 0)
+            {
+                if (ScrollUtil.IsTopScrollView(scrollViewer))
+                {
+                    int index = MenuListBox.SelectedIndex;
+                    if (index > 0)
+                    {
+                        index--;
+                    }
+                    else
+                    {
+                        index = MenuListBox.Items.Count - 1;
+                    }
+                    MenuListBox.SelectedIndex = index;
+                }
+            }
+
+            //滚动到选中项
+            MenuListBox.ScrollIntoView(MenuListBox.SelectedItem);
+
         }
-       
+
 
         private void Menu_PreviewDragLeave(object sender, DragEventArgs e)
         {
@@ -489,14 +510,15 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 MainWindow.mainWindow.RightCard.PDDialog.Visibility = Visibility.Visible;
                 //单独设置焦点
                 MainWindow.mainWindow.RightCard.PDDialog.SetFocus();
-            } else
+            }
+            else
             {
                 if (string.IsNullOrEmpty(appData.AppConfig.MenuPassword))
                 {
                     MainWindow.mainWindow.RightCard.PDDialog.menuInfo = menuInfo;
                     MainWindow.mainWindow.RightCard.PDDialog.Title.Text = "设置新密码";
                     MainWindow.mainWindow.RightCard.PDDialog.type = PasswordType.CREATE;
-                    RunTimeStatus.SHOW_MENU_PASSWORDBOX = true;                    
+                    RunTimeStatus.SHOW_MENU_PASSWORDBOX = true;
                     MainWindow.mainWindow.RightCard.PDDialog.Visibility = Visibility.Visible;
                 }
                 else
@@ -534,7 +556,8 @@ namespace GeekDesk.Control.UserControls.PannelCard
             if (string.IsNullOrEmpty(appData.AppConfig.MenuPassword))
             {
                 AlterPW1.Visibility = Visibility.Collapsed;
-            } else
+            }
+            else
             {
                 AlterPW1.Visibility = Visibility.Visible;
             }
@@ -545,7 +568,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
             ListBoxItem lbi = sender as ListBoxItem;
             MenuInfo info = lbi.DataContext as MenuInfo;
 
-            ItemCollection ics =  lbi.ContextMenu.Items;
+            ItemCollection ics = lbi.ContextMenu.Items;
 
             foreach (object obj in ics)
             {
@@ -567,7 +590,8 @@ namespace GeekDesk.Control.UserControls.PannelCard
                     if (info.IsEncrypt)
                     {
                         mi.Header = "取消加密此列表";
-                    } else
+                    }
+                    else
                     {
                         mi.Header = "加密此列表";
                     }

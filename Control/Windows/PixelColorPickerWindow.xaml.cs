@@ -39,7 +39,12 @@ namespace GeekDesk.Control.Windows
         {
             InitializeComponent();
             this.colorPicker = colorPicker;
-            SetProcessDPIAware();
+
+            try
+            {
+                SetProcessDPIAware();
+            }
+            catch (Exception e) { }
             ColorPickerWindow_Init();
         }
 
@@ -58,9 +63,12 @@ namespace GeekDesk.Control.Windows
             DesktopBG.Height = this.Height;
             this.Topmost = true;
 
+            //获取缩放比例
+            double scale = ScreenUtil.GetScreenScalingFactor();
+
             bgBitmap = new System.Drawing.Bitmap(
-                    Screen.AllScreens[0].Bounds.Width,
-                    Screen.AllScreens[0].Bounds.Height,
+                    (int)(Width * scale),
+                    (int)(Height * scale),
                     System.Drawing.Imaging.PixelFormat.Format32bppArgb
                 );
 
@@ -80,6 +88,7 @@ namespace GeekDesk.Control.Windows
                                         Int32Rect.Empty,
                                         BitmapSizeOptions.FromEmptyOptions()
                                     );
+
             DesktopBG.Source = bs;
             VisualBrush b = (VisualBrush)PixelBG.Fill;
             b.Visual = DesktopBG;
@@ -122,7 +131,7 @@ namespace GeekDesk.Control.Windows
                 mi.Invoke(colorPicker, new object[] { null, null });
             }
         }
-   
+
         private void Window_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             SetPixelAbout(e);
@@ -199,5 +208,17 @@ namespace GeekDesk.Control.Windows
             SetPixelAbout(e);
         }
 
+        /// <summary>
+        /// 右键按下
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Mouse.OverrideCursor = null;
+            GlobalColorPickerWindow.ShowOrHide();
+            //关闭
+            this.Close();
+        }
     }
 }

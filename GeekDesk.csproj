@@ -18,6 +18,9 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -30,11 +33,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -49,7 +49,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -67,13 +67,16 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Taskbar.ico</ApplicationIcon>
+    <ApplicationIcon>Logo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonServiceLocator, Version=2.0.6.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
@@ -113,6 +116,7 @@
     <Reference Include="System.Drawing.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Drawing.Common.6.0.0-preview.6.21352.12\lib\net461\System.Drawing.Common.dll</HintPath>
     </Reference>
+    <Reference Include="System.Management" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -170,6 +174,7 @@
     <Compile Include="Constant\TodoTaskExecType.cs" />
     <Compile Include="Constant\BGStyle.cs" />
     <Compile Include="Constant\UpdateType.cs" />
+    <Compile Include="Constant\WidthTypeEnum.cs" />
     <Compile Include="Control\Other\GlobalMsgNotification.xaml.cs">
       <DependentUpon>GlobalMsgNotification.xaml</DependentUpon>
     </Compile>
@@ -247,6 +252,7 @@
     </Compile>
     <Compile Include="Converts\CountGreZero2BoolConvert.cs" />
     <Compile Include="Converts\Count2VisibleConvert.cs" />
+    <Compile Include="Converts\GetWidthByWWConvert.cs" />
     <Compile Include="Converts\SearchTypeConvert.cs" />
     <Compile Include="Converts\StringAppendConvert.cs" />
     <Compile Include="Converts\DoubleToGridLength.cs" />
@@ -265,6 +271,11 @@
     <Compile Include="Converts\HideTypeConvert.cs" />
     <Compile Include="Interface\IWindowCommon.cs" />
     <Compile Include="MyThread\RelativePathThread.cs" />
+    <Compile Include="Plugins\ShowSeconds\Common\Constants.cs" />
+    <Compile Include="Plugins\ShowSeconds\SecondsWindow.xaml.cs">
+      <DependentUpon>SecondsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\ShowSeconds\ViewModel\SecondsDataContext.cs" />
     <Compile Include="Task\ShowSecondTask.cs" />
     <Compile Include="Task\ToDoTask.cs" />
     <Compile Include="MyThread\MouseHookThread.cs" />
@@ -274,11 +285,15 @@
     <Compile Include="Util\BGSettingUtil.cs" />
     <Compile Include="Util\BlurGlassUtil.cs" />
     <Compile Include="Util\ColorUtil.cs" />
+    <Compile Include="Util\DefaultIcons.cs" />
     <Compile Include="Util\DragAdorner.cs" />
     <Compile Include="Util\GlobalHotKey.cs" />
     <Compile Include="Util\CommonCode.cs" />
     <Compile Include="Util\FileIcon.cs" />
     <Compile Include="Util\FileUtil.cs" />
+    <Compile Include="Util\HideWindowUtil.cs" />
+    <Compile Include="Util\IconHelper.cs" />
+    <Compile Include="Util\IconUtil.cs" />
     <Compile Include="Util\KeyUtil.cs" />
     <Compile Include="Util\ListBoxDragDropManager.cs" />
     <Compile Include="Util\LogUtil.cs" />
@@ -287,13 +302,20 @@
     <Compile Include="Util\ImageUtil.cs" />
     <Compile Include="Converts\MenuWidthConvert.cs" />
     <Compile Include="Util\MD5Util.cs" />
+    <Compile Include="Util\MessageUtil.cs" />
+    <Compile Include="Util\MouseHook.cs" />
     <Compile Include="Util\MouseUtil.cs" />
+    <Compile Include="Util\NativeMethods.cs" />
     <Compile Include="Util\RegisterUtil.cs" />
     <Compile Include="Util\RelayCommand.cs" />
+    <Compile Include="Util\ScreenUtil.cs" />
+    <Compile Include="Util\ScrollUtil.cs" />
     <Compile Include="Util\ShellContextMenu.cs" />
     <Compile Include="Util\ShowWindowFollowMouse.cs" />
     <Compile Include="Util\StringUtil.cs" />
     <Compile Include="Util\SvgToGeometry.cs" />
+    <Compile Include="Util\UserActivityHook.cs" />
+    <Compile Include="Util\WindowsThumbnailProvider.cs" />
     <Compile Include="ViewModel\AppConfig.cs" />
     <Compile Include="ViewModel\AppData.cs" />
     <Compile Include="ViewModel\GradientBGParam.cs" />
@@ -416,6 +438,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Plugins\ShowSeconds\SecondsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Resource\Dictionary\Geometry.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -449,6 +475,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="Resource\Iconfont\iconfont.json" />
+    <None Include="app.manifest" />
     <None Include="Properties\app.manifest" />
     <None Include="Update.json" />
     <None Include="packages.config" />
@@ -516,6 +543,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Logo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

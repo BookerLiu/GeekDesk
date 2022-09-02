@@ -9,6 +9,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,7 +35,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
         {
             InitializeComponent();
             this.Loaded += RightCardControl_Loaded;
-            
+
         }
 
         private void RightCardControl_Loaded(object sender, RoutedEventArgs e)
@@ -174,123 +175,130 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
         private void StartIconApp(IconInfo icon, IconStartType type, bool useRelativePath = false)
         {
-            
+
             try
             {
-                using (Process p = new Process())
+                Process p = new Process();
+                //using ()
+                //{
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.RedirectStandardInput = true;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.RedirectStandardError = true;
+                p.StartInfo.CreateNoWindow = true;
+
+                string startArg = icon.StartArg;
+
+                if (startArg != null && Constants.SYSTEM_ICONS.ContainsKey(startArg))
                 {
-                    string startArg = icon.StartArg;
-                    
-                    if (startArg != null && Constants.SYSTEM_ICONS.ContainsKey(startArg))
+                    StartSystemApp(startArg, type);
+                }
+                else
+                {
+                    string path;
+                    if (useRelativePath)
                     {
-                        StartSystemApp(startArg, type);
+                        string fullPath = Path.Combine(Constants.APP_DIR, icon.RelativePath);
+                        path = Path.GetFullPath(fullPath);
                     }
                     else
                     {
-                        string path;
-                        if (useRelativePath)
+                        path = icon.Path;
+                    }
+                    p.StartInfo.FileName = path;
+                    if (!StringUtil.IsEmpty(startArg))
+                    {
+                        p.StartInfo.Arguments = startArg;
+                    }
+                    if (icon.IconType == IconType.OTHER)
+                    {
+                        if (!File.Exists(path) && !Directory.Exists(path))
                         {
-                            string fullPath = Path.Combine(Constants.APP_DIR, icon.RelativePath);
-                            path = Path.GetFullPath(fullPath);
-                        } else
-                        {
-                            path = icon.Path;
-                        }
-                        p.StartInfo.FileName = path;
-                        if (!StringUtil.IsEmpty(startArg))
-                        {
-                            p.StartInfo.Arguments = startArg;
-                        }
-                        if (icon.IconType == IconType.OTHER)
-                        {
-                            if (!File.Exists(path) && !Directory.Exists(path))
+                            //如果没有使用相对路径  那么使用相对路径启动一次
+                            if (!useRelativePath)
                             {
-                                //如果没有使用相对路径  那么使用相对路径启动一次
-                                if (!useRelativePath)
-                                {
-                                    StartIconApp(icon, type, true);
-                                    return;
-                                } else
-                                {
-                                    HandyControl.Controls.Growl.WarningGlobal("程序启动失败(文件路径不存在或已删除)!");
-                                    return;
-                                }
+                                StartIconApp(icon, type, true);
+                                return;
                             }
-                            p.StartInfo.WorkingDirectory = path.Substring(0, path.LastIndexOf("\\"));
-                            switch (type)
+                            else
                             {
-                                case IconStartType.ADMIN_STARTUP:
-                                    //p.StartInfo.Arguments = "1";//启动参数
-                                    p.StartInfo.Verb = "runas";
-                                    //p.StartInfo.CreateNoWindow = false; //设置显示窗口
-                                    p.StartInfo.UseShellExecute = true;//不使用操作系统外壳程序启动进程
-                                    //p.StartInfo.ErrorDialog = false;
-                                    if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
+                                HandyControl.Controls.Growl.WarningGlobal("程序启动失败(文件路径不存在或已删除)!");
+                                return;
+                            }
+                        }
+                        p.StartInfo.WorkingDirectory = path.Substring(0, path.LastIndexOf("\\"));
+                        switch (type)
+                        {
+                            case IconStartType.ADMIN_STARTUP:
+                                p.StartInfo.Verb = "runas";
+                                if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
+                                {
+                                    //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
+                                    if (appData.AppConfig.MarginHide)
                                     {
-                                        //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
-                                        if (appData.AppConfig.MarginHide)
-                                        {
-                                            if (!MarginHide.IsMargin())
-                                            {
-                                                MainWindow.HideApp();
-                                            }
-                                        }
-                                        else
+                                        if (!MarginHide.IsMargin())
                                         {
                                             MainWindow.HideApp();
                                         }
+                                    }
+                                    else
+                                    {
+                                        MainWindow.HideApp();
+                                    }
 
-                                    }
-                                    break;// c#好像不能case穿透
-                                case IconStartType.DEFAULT_STARTUP:
-                                    if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
+                                }
+                                break;// c#好像不能case穿透
+                            case IconStartType.DEFAULT_STARTUP:
+                                if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
+                                {
+                                    //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
+                                    if (appData.AppConfig.MarginHide)
                                     {
-                                        //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
-                                        if (appData.AppConfig.MarginHide)
-                                        {
-                                            if (!MarginHide.IsMargin())
-                                            {
-                                                MainWindow.HideApp();
-                                            }
-                                        }
-                                        else
+                                        if (!MarginHide.IsMargin())
                                         {
                                             MainWindow.HideApp();
                                         }
                                     }
-                                    break;
-                                case IconStartType.SHOW_IN_EXPLORE:
-                                    p.StartInfo.FileName = "Explorer.exe";
-                                    p.StartInfo.Arguments = "/e,/select," + icon.Path;
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
-                            {
-                                //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
-                                if (appData.AppConfig.MarginHide)
-                                {
-                                    if (!MarginHide.IS_HIDE)
+                                    else
                                     {
                                         MainWindow.HideApp();
                                     }
                                 }
-                                else
+                                break;
+                            case IconStartType.SHOW_IN_EXPLORE:
+                                p.StartInfo.FileName = "Explorer.exe";
+                                p.StartInfo.Arguments = "/e,/select," + icon.Path;
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
+                        {
+                            //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
+                            if (appData.AppConfig.MarginHide)
+                            {
+                                if (!MarginHide.IS_HIDE)
                                 {
                                     MainWindow.HideApp();
                                 }
                             }
-                        }
-                        p.Start();
-                        if (useRelativePath)
-                        {
-                            //如果使用相对路径启动成功 那么重新设置程序绝对路径
-                            icon.Path = path;
+                            else
+                            {
+                                MainWindow.HideApp();
+                            }
                         }
                     }
+                    p.Start();
+                    p.Close();
+                    p.Dispose();
+                    if (useRelativePath)
+                    {
+                        //如果使用相对路径启动成功 那么重新设置程序绝对路径
+                        icon.Path = path;
+                    }
                 }
+                //}
                 icon.Count++;
 
                 //隐藏搜索框
@@ -453,38 +461,55 @@ namespace GeekDesk.Control.UserControls.PannelCard
             }
         }
 
-        private void StackPanel_MouseEnter(object sender, MouseEventArgs e)
+        private void MenuIcon_MouseEnter(object sender, MouseEventArgs e)
         {
+            RunTimeStatus.MOUSE_ENTER_ICON = true;
+            if (!RunTimeStatus.ICONLIST_MOUSE_WHEEL)
+            {
+                ThreadPool.QueueUserWorkItem(state =>
+                {
+                    this.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        IconInfo info = (sender as Panel).Tag as IconInfo;
+                        MyPoptipContent.Text = info.Content;
+                        MyPoptip.VerticalOffset = 30;
+                        Thread.Sleep(50);
+                        if (!RunTimeStatus.ICONLIST_MOUSE_WHEEL)
+                        {
+                            MyPoptip.IsOpen = true;
+                        }
+                    }));
+                });
+            }
+
+
 
             double width = appData.AppConfig.ImageWidth;
             double height = appData.AppConfig.ImageHeight;
             width += width * 0.15;
             height += height * 0.15;
-            Thread t = new Thread(() =>
+
+            ThreadPool.QueueUserWorkItem(state =>
             {
                 this.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     ImgStoryBoard(sender, (int)width, (int)height, 1, true);
                 }));
             });
-            t.IsBackground = true;
-            t.Start();
-
         }
 
-        private void StackPanel_MouseLeave(object sender, MouseEventArgs e)
+        private void MenuIcon_MouseLeave(object sender, MouseEventArgs e)
         {
+            RunTimeStatus.MOUSE_ENTER_ICON = false;
+            MyPoptip.IsOpen = false;
 
-            Thread t = new Thread(() =>
+            ThreadPool.QueueUserWorkItem(state =>
             {
-            this.Dispatcher.BeginInvoke(new Action(() =>
-            {
-                ImgStoryBoard(sender, appData.AppConfig.ImageWidth, appData.AppConfig.ImageHeight, 260);
-            }));
+                this.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    ImgStoryBoard(sender, appData.AppConfig.ImageWidth, appData.AppConfig.ImageHeight, 260);
+                }));
             });
-            t.IsBackground = true;
-            t.Start();
-
         }
 
 
@@ -750,7 +775,8 @@ namespace GeekDesk.Control.UserControls.PannelCard
             if (RunTimeStatus.LOCK_APP_PANEL)
             {
                 CardLockCM.Header = "解锁主面板";
-            } else
+            }
+            else
             {
                 CardLockCM.Header = "锁定主面板";
             }
@@ -758,6 +784,10 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
         public void SearchListBoxIndexAdd()
         {
+            //控制移动后 鼠标即使在图标上也不显示popup
+            RunTimeStatus.MOUSE_MOVE_COUNT = 0;
+            MyPoptip.IsOpen = false;
+
             if (SearchListBox.Items.Count > 0)
             {
                 if (SearchListBox.SelectedIndex < SearchListBox.Items.Count - 1)
@@ -769,6 +799,10 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
         public void SearchListBoxIndexSub()
         {
+            //控制移动后 鼠标即使在图标上也不显示popup
+            RunTimeStatus.MOUSE_MOVE_COUNT = 0;
+            MyPoptip.IsOpen = false;
+
             if (SearchListBox.Items.Count > 0)
             {
                 if (SearchListBox.SelectedIndex > 0)
@@ -817,6 +851,206 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 PDDialog.ClearVal();
                 MainWindow.mainWindow.Focus();
             }
+        }
+
+        /// <summary>
+        /// 菜单结果icon 列表鼠标滚轮预处理时间  
+        /// 主要使用自定义popup解决卡顿问题解决卡顿问题
+        /// 以及滚动条收尾切换菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void IconListBox_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+
+            //控制在滚动时不显示popup 否则会在低GPU性能机器上造成卡顿
+            MyPoptip.IsOpen = false;
+            if (RunTimeStatus.ICONLIST_MOUSE_WHEEL)
+            {
+                RunTimeStatus.MOUSE_WHEEL_WAIT_MS = 500;
+            }
+            else
+            {
+                RunTimeStatus.ICONLIST_MOUSE_WHEEL = true;
+
+                new Thread(() =>
+                {
+                    while (RunTimeStatus.MOUSE_WHEEL_WAIT_MS > 0)
+                    {
+                        Thread.Sleep(1);
+                        RunTimeStatus.MOUSE_WHEEL_WAIT_MS -= 1;
+                    }
+                    if (RunTimeStatus.MOUSE_ENTER_ICON)
+                    {
+                        this.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            MyPoptip.IsOpen = true;
+                        }));
+                    }
+                    RunTimeStatus.MOUSE_WHEEL_WAIT_MS = 100;
+                    RunTimeStatus.ICONLIST_MOUSE_WHEEL = false;
+                }).Start();
+            }
+
+            //修改菜单时不切换菜单
+            if (RunTimeStatus.IS_MENU_EDIT) return;
+
+
+            //切换菜单
+            System.Windows.Controls.ScrollViewer scrollViewer = sender as System.Windows.Controls.ScrollViewer;
+            if (scrollViewer == null)
+            {
+                //在card 上获取的事件
+                scrollViewer = ScrollUtil.FindSimpleVisualChild<System.Windows.Controls.ScrollViewer>(IconListBox);
+            }
+            if (e.Delta < 0)
+            {
+                int index = MainWindow.mainWindow.LeftCard.MenuListBox.SelectedIndex;
+                if (ScrollUtil.IsBootomScrollView(scrollViewer))
+                {
+                    if (index < MainWindow.mainWindow.LeftCard.MenuListBox.Items.Count - 1)
+                    {
+                        index++;
+                    }
+                    else
+                    {
+                        index = 0;
+                    }
+                    MainWindow.mainWindow.LeftCard.MenuListBox.SelectedIndex = index;
+                    scrollViewer.ScrollToVerticalOffset(0);
+                }
+            }
+            else if (e.Delta > 0)
+            {
+                if (ScrollUtil.IsTopScrollView(scrollViewer))
+                {
+                    int index = MainWindow.mainWindow.LeftCard.MenuListBox.SelectedIndex;
+                    if (index > 0)
+                    {
+                        index--;
+                    }
+                    else
+                    {
+                        index = MainWindow.mainWindow.LeftCard.MenuListBox.Items.Count - 1;
+                    }
+                    MainWindow.mainWindow.LeftCard.MenuListBox.SelectedIndex = index;
+                    scrollViewer.ScrollToVerticalOffset(0);
+                }
+            }
+
+
+        }
+
+        /// <summary>
+        /// 搜索结果icon 列表鼠标滚轮预处理时间  
+        /// 主要使用自定义popup解决卡顿问题解决卡顿问题
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void VerticalIconList_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            //控制在滚动时不显示popup 否则会在低GPU性能机器上造成卡顿
+            MyPoptip.IsOpen = false;
+            if (RunTimeStatus.ICONLIST_MOUSE_WHEEL)
+            {
+                RunTimeStatus.MOUSE_WHEEL_WAIT_MS = 500;
+            }
+            else
+            {
+                RunTimeStatus.ICONLIST_MOUSE_WHEEL = true;
+
+                new Thread(() =>
+                {
+                    while (RunTimeStatus.MOUSE_WHEEL_WAIT_MS > 0)
+                    {
+                        Thread.Sleep(1);
+                        RunTimeStatus.MOUSE_WHEEL_WAIT_MS -= 1;
+                    }
+                    if (RunTimeStatus.MOUSE_ENTER_ICON)
+                    {
+                        this.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            MyPoptip.IsOpen = true;
+                        }));
+                    }
+                    RunTimeStatus.MOUSE_WHEEL_WAIT_MS = 100;
+                    RunTimeStatus.ICONLIST_MOUSE_WHEEL = false;
+                }).Start();
+            }
+        }
+
+        /// <summary>
+        /// 查询结果 ICON 鼠标进入事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SearchIcon_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+            //显示popup
+            RunTimeStatus.MOUSE_ENTER_ICON = true;
+            if (!RunTimeStatus.ICONLIST_MOUSE_WHEEL)
+            {
+                new Thread(() =>
+                {
+                    this.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        IconInfo info = (sender as Panel).Tag as IconInfo;
+                        MyPoptipContent.Text = info.Content;
+                        MyPoptip.VerticalOffset = 30;
+                        Thread.Sleep(100);
+                        if (!RunTimeStatus.ICONLIST_MOUSE_WHEEL && RunTimeStatus.MOUSE_MOVE_COUNT > 1)
+                        {
+                            MyPoptip.IsOpen = true;
+                        }
+                    }));
+                }).Start();
+            }
+        }
+
+        /// <summary>
+        /// 查询结果ICON鼠标离开事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SearchIcon_MouseLeave(object sender, MouseEventArgs e)
+        {
+            RunTimeStatus.MOUSE_ENTER_ICON = false;
+            MyPoptip.IsOpen = false;
+        }
+
+        /// <summary>
+        /// 查询结果ICON鼠标移动事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SearchIcon_MouseMove(object sender, MouseEventArgs e)
+        {
+            //控制首次刷新搜索结果后, 鼠标首次移动后显示popup
+            RunTimeStatus.MOUSE_MOVE_COUNT++;
+
+            //防止移动后不刷新popup content
+            IconInfo info = (sender as Panel).Tag as IconInfo;
+            MyPoptipContent.Text = info.Content;
+            MyPoptip.VerticalOffset = 30;
+
+            if (RunTimeStatus.MOUSE_MOVE_COUNT > 1 && !RunTimeStatus.ICONLIST_MOUSE_WHEEL)
+            {
+                MyPoptip.IsOpen = true;
+            }
+        }
+
+        /// <summary>
+        /// menu结果ICON鼠标移动事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MenuIcon_MouseMove(object sender, MouseEventArgs e)
+        {
+            //防止移动后不刷新popup content
+            IconInfo info = (sender as Panel).Tag as IconInfo;
+            MyPoptipContent.Text = info.Content;
+            MyPoptip.VerticalOffset = 30;
         }
     }
 }

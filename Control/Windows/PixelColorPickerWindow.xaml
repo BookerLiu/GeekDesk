@@ -8,6 +8,7 @@
     Background="Black"
     PreviewMouseMove="Window_PreviewMouseMove"
     MouseLeftButtonDown="Window_MouseLeftButtonDown"
+    MouseRightButtonDown="Window_MouseRightButtonDown"
     MouseWheel="Window_MouseWheel"
     >
     <Window.Resources>
@@ -21,7 +22,7 @@
     </Window.Resources>
     <Grid>
         <Image x:Name="DesktopBG" RenderOptions.BitmapScalingMode="HighQuality"/>
-        
+
         <Canvas HorizontalAlignment="Left" VerticalAlignment="Top" Background="Transparent">
             <Canvas x:Name="ColorCanvas" 
                         Width="185"

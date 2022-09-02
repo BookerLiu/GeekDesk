@@ -24,7 +24,6 @@ namespace GeekDesk
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
-
             mutex = new System.Threading.Mutex(true, Constants.MY_NAME, out bool ret);
             if (!ret)
             {
@@ -32,6 +31,10 @@ namespace GeekDesk
                 mutex = new System.Threading.Mutex(true, Constants.MY_NAME, out ret);
                 if (!ret)
                 {
+                    MessageUtil.SendMsgByWName(
+                        "GeekDesk_Main_" + Constants.MY_UUID,
+                        "ShowApp"
+                        );
                     Environment.Exit(0);
                 }
             }
