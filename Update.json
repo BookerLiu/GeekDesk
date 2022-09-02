@@ -2,7 +2,7 @@
 	"title": "GeekDesk版本更新",
 	"subTitle": "V2.5.13",
 	"msgTitle": "本次更新内容如下",
-	"msg": "['求Star,求Star', '集成Win11显秒插件', '崩溃问题修复', '现在在右侧栏(快捷图标区域)也可以鼠标滚轮切换菜单了', '缩放屏幕截图问题修复(感谢@1062406901提的PR)', '其它已知问题修复']",
+	"msg": "['求Star,求Star', '集成Win11显秒插件', '崩溃问题修复', '现在在右侧栏(快捷图标区域)也可以鼠标滚轮切换菜单了', '缩放屏幕截图问题修复(感谢@1062406901提的PR)', '更改一下Logo', '其它已知问题修复']",
 	"githubUrl": "https://github.com/BookerLiu/GeekDesk/releases",
 	"giteeUrl": "https://gitee.com/BookerLiu/GeekDesk/releases",
 	"version": "2.5.13"
