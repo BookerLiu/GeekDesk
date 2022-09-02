@@ -175,130 +175,124 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
         private void StartIconApp(IconInfo icon, IconStartType type, bool useRelativePath = false)
         {
-
             try
             {
-                Process p = new Process();
-                //using ()
-                //{
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.RedirectStandardInput = true;
-                p.StartInfo.RedirectStandardOutput = true;
-                p.StartInfo.RedirectStandardError = true;
-                p.StartInfo.CreateNoWindow = true;
-
-                string startArg = icon.StartArg;
-
-                if (startArg != null && Constants.SYSTEM_ICONS.ContainsKey(startArg))
+                using (Process p = new Process())
                 {
-                    StartSystemApp(startArg, type);
-                }
-                else
-                {
-                    string path;
-                    if (useRelativePath)
+                    string startArg = icon.StartArg;
+
+                    if (startArg != null && Constants.SYSTEM_ICONS.ContainsKey(startArg))
                     {
-                        string fullPath = Path.Combine(Constants.APP_DIR, icon.RelativePath);
-                        path = Path.GetFullPath(fullPath);
+                        StartSystemApp(startArg, type);
                     }
                     else
                     {
-                        path = icon.Path;
-                    }
-                    p.StartInfo.FileName = path;
-                    if (!StringUtil.IsEmpty(startArg))
-                    {
-                        p.StartInfo.Arguments = startArg;
-                    }
-                    if (icon.IconType == IconType.OTHER)
-                    {
-                        if (!File.Exists(path) && !Directory.Exists(path))
+                        string path;
+                        if (useRelativePath)
                         {
-                            //如果没有使用相对路径  那么使用相对路径启动一次
-                            if (!useRelativePath)
-                            {
-                                StartIconApp(icon, type, true);
-                                return;
-                            }
-                            else
-                            {
-                                HandyControl.Controls.Growl.WarningGlobal("程序启动失败(文件路径不存在或已删除)!");
-                                return;
-                            }
+                            string fullPath = Path.Combine(Constants.APP_DIR, icon.RelativePath);
+                            path = Path.GetFullPath(fullPath);
                         }
-                        p.StartInfo.WorkingDirectory = path.Substring(0, path.LastIndexOf("\\"));
-                        switch (type)
+                        else
                         {
-                            case IconStartType.ADMIN_STARTUP:
-                                p.StartInfo.Verb = "runas";
-                                if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
+                            path = icon.Path;
+                        }
+                        p.StartInfo.FileName = path;
+                        if (!StringUtil.IsEmpty(startArg))
+                        {
+                            p.StartInfo.Arguments = startArg;
+                        }
+                        if (icon.IconType == IconType.OTHER)
+                        {
+                            if (!File.Exists(path) && !Directory.Exists(path))
+                            {
+                                //如果没有使用相对路径  那么使用相对路径启动一次
+                                if (!useRelativePath)
                                 {
-                                    //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
-                                    if (appData.AppConfig.MarginHide)
+                                    StartIconApp(icon, type, true);
+                                    return;
+                                }
+                                else
+                                {
+                                    HandyControl.Controls.Growl.WarningGlobal("程序启动失败(文件路径不存在或已删除)!");
+                                    return;
+                                }
+                            }
+                            p.StartInfo.WorkingDirectory = path.Substring(0, path.LastIndexOf("\\"));
+                            switch (type)
+                            {
+                                case IconStartType.ADMIN_STARTUP:
+                                    //p.StartInfo.Arguments = "1";//启动参数
+                                    p.StartInfo.Verb = "runas";
+                                    //p.StartInfo.CreateNoWindow = false; //设置显示窗口
+                                    p.StartInfo.UseShellExecute = true;//不使用操作系统外壳程序启动进程
+                                    //p.StartInfo.ErrorDialog = false;
+                                    if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
                                     {
-                                        if (!MarginHide.IsMargin())
+                                        //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
+                                        if (appData.AppConfig.MarginHide)
+                                        {
+                                            if (!MarginHide.IsMargin())
+                                            {
+                                                MainWindow.HideApp();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            MainWindow.HideApp();
+                                        }
+
+                                    }
+                                    break;// c#好像不能case穿透
+                                case IconStartType.DEFAULT_STARTUP:
+                                    if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
+                                    {
+                                        //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
+                                        if (appData.AppConfig.MarginHide)
+                                        {
+                                            if (!MarginHide.IsMargin())
+                                            {
+                                                MainWindow.HideApp();
+                                            }
+                                        }
+                                        else
                                         {
                                             MainWindow.HideApp();
                                         }
                                     }
-                                    else
-                                    {
-                                        MainWindow.HideApp();
-                                    }
-
-                                }
-                                break;// c#好像不能case穿透
-                            case IconStartType.DEFAULT_STARTUP:
-                                if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
-                                {
-                                    //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
-                                    if (appData.AppConfig.MarginHide)
-                                    {
-                                        if (!MarginHide.IsMargin())
-                                        {
-                                            MainWindow.HideApp();
-                                        }
-                                    }
-                                    else
-                                    {
-                                        MainWindow.HideApp();
-                                    }
-                                }
-                                break;
-                            case IconStartType.SHOW_IN_EXPLORE:
-                                p.StartInfo.FileName = "Explorer.exe";
-                                p.StartInfo.Arguments = "/e,/select," + icon.Path;
-                                break;
+                                    break;
+                                case IconStartType.SHOW_IN_EXPLORE:
+                                    p.StartInfo.FileName = "Explorer.exe";
+                                    p.StartInfo.Arguments = "/e,/select," + icon.Path;
+                                    break;
+                            }
                         }
-                    }
-                    else
-                    {
-                        if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
+                        else
                         {
-                            //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
-                            if (appData.AppConfig.MarginHide)
+                            if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
                             {
-                                if (!MarginHide.IS_HIDE)
+                                //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
+                                if (appData.AppConfig.MarginHide)
+                                {
+                                    if (!MarginHide.IS_HIDE)
+                                    {
+                                        MainWindow.HideApp();
+                                    }
+                                }
+                                else
                                 {
                                     MainWindow.HideApp();
                                 }
                             }
-                            else
-                            {
-                                MainWindow.HideApp();
-                            }
+                        }
+                        p.Start();
+                        if (useRelativePath)
+                        {
+                            //如果使用相对路径启动成功 那么重新设置程序绝对路径
+                            icon.Path = path;
                         }
                     }
-                    p.Start();
-                    p.Close();
-                    p.Dispose();
-                    if (useRelativePath)
-                    {
-                        //如果使用相对路径启动成功 那么重新设置程序绝对路径
-                        icon.Path = path;
-                    }
                 }
-                //}
                 icon.Count++;
 
                 //隐藏搜索框
