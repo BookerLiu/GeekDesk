@@ -39,6 +39,7 @@ namespace GeekDesk.Control.Windows
         {
             InitializeComponent();
             this.colorPicker = colorPicker;
+
             try
             {
                 SetProcessDPIAware();

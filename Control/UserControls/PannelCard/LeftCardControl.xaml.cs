@@ -334,6 +334,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
                     appData.AppConfig.SelectedMenuIcons = null;
                     RunTimeStatus.SHOW_MENU_PASSWORDBOX = true;
                     MainWindow.mainWindow.RightCard.PDDialog.Title.Text = "输入密码";
+                    MainWindow.mainWindow.RightCard.PDDialog.type = PasswordType.INPUT;
                     MainWindow.mainWindow.RightCard.PDDialog.Visibility = Visibility.Visible;
                 }
                 else
