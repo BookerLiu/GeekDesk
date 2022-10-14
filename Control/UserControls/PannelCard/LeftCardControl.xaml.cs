@@ -487,15 +487,44 @@ namespace GeekDesk.Control.UserControls.PannelCard
             MyPoptip.IsOpen = false;
         }
 
+        /// <summary>
+        /// 拖动移动图标到指定菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Menu_Drop(object sender, DragEventArgs e)
         {
             MyPoptip.IsOpen = false;
 
             MenuInfo mi = (sender as ListBoxItem).DataContext as MenuInfo;
             IconInfo iconInfo = (IconInfo)e.Data.GetData(typeof(IconInfo));
+            if (iconInfo != null)
+            {
+                // 将已有图标移动到该菜单
+                appData.MenuList[MenuListBox.SelectedIndex].IconList.Remove(iconInfo);
+                appData.MenuList[MenuListBox.Items.IndexOf(mi)].IconList.Add(iconInfo);
 
-            appData.MenuList[MenuListBox.SelectedIndex].IconList.Remove(iconInfo);
-            appData.MenuList[MenuListBox.Items.IndexOf(mi)].IconList.Add(iconInfo);
+            }
+            else
+            {
+                // 直接将新图标移动到该菜单
+                Array dropObject = (System.Array)e.Data.GetData(DataFormats.FileDrop);
+                if (dropObject == null) return;
+                foreach (object obj in dropObject)
+                {
+                    string path = (string)obj;
+                    iconInfo = CommonCode.GetIconInfoByPath(path);
+                    if (iconInfo == null)
+                    {
+                        LogUtil.WriteErrorLog("添加项目失败，未能获取到项目图标:" + path);
+                        break;
+
+                    }
+                    appData.MenuList[MenuListBox.Items.IndexOf(mi)].IconList.Add(iconInfo);
+                }
+                CommonCode.SortIconList();
+                CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
+            }
         }
 
         private void EncryptMenu(object sender, RoutedEventArgs e)
