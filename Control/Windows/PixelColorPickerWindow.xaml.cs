@@ -3,7 +3,6 @@ using GeekDesk.Util;
 using HandyControl.Controls;
 using System;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -53,18 +52,38 @@ namespace GeekDesk.Control.Windows
 
             this.WindowState = WindowState.Normal;//还原窗口（非最小化和最大化）
 
-            this.Width = SystemParameters.VirtualScreenWidth;
-            this.Height = SystemParameters.VirtualScreenHeight;
+            var screens = Screen.AllScreens;
+            int allWidth = 0;
+            int allHeight = 0;
+            int x = 0;
+            int y = 0;
 
-            this.Left = SystemParameters.VirtualScreenLeft;
-            this.Top = SystemParameters.VirtualScreenTop;
+            //获取缩放比例
+            double scale = ScreenUtil.GetScreenScalingFactor();
+
+            foreach (var screen in screens)
+            {
+                var rect = screen.Bounds;
+                allWidth += rect.Width;
+                allHeight += rect.Height;
+                x = Math.Min(x, rect.X);
+                y = Math.Min(y, rect.Y);
+            }
+            //如果主显示器是最左边和最上边，则显示主显示器的缩放比例，反之则缩放比例不添加缩放比例
+            if (Screen.PrimaryScreen.Bounds.X != x || Screen.PrimaryScreen.Bounds.Y != y)
+            {
+                scale = 1;
+            }
+
+            this.Width = allWidth;
+            this.Height = allHeight;
+
+            this.Left = x;
+            this.Top = y;
 
             DesktopBG.Width = this.Width;
             DesktopBG.Height = this.Height;
             this.Topmost = true;
-
-            //获取缩放比例
-            double scale = ScreenUtil.GetScreenScalingFactor();
 
             bgBitmap = new System.Drawing.Bitmap(
                     (int)(Width * scale),
@@ -75,8 +94,8 @@ namespace GeekDesk.Control.Windows
             using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bgBitmap))
             {
                 g.CopyFromScreen(
-                    0,
-                    0,
+                    (int)this.Left,
+                    (int)this.Top,
                     0,
                     0,
                     bgBitmap.Size
@@ -88,7 +107,6 @@ namespace GeekDesk.Control.Windows
                                         Int32Rect.Empty,
                                         BitmapSizeOptions.FromEmptyOptions()
                                     );
-
             DesktopBG.Source = bs;
             VisualBrush b = (VisualBrush)PixelBG.Fill;
             b.Visual = DesktopBG;
