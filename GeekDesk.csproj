@@ -167,6 +167,7 @@
     <Compile Include="Constant\IconType.cs" />
     <Compile Include="Constant\CommonEnum.cs" />
     <Compile Include="Constant\IconStartType.cs" />
+    <Compile Include="Constant\MenuTypeEnum.cs" />
     <Compile Include="Constant\PasswordType.cs" />
     <Compile Include="Constant\RunTimeStatus.cs" />
     <Compile Include="Constant\SearchType.cs" />
