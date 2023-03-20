@@ -83,6 +83,7 @@
                 <CheckBox x:Name="HideBox" Visibility="Hidden" Panel.ZIndex="2"/>
 
                 <StackPanel HorizontalAlignment="Right" Panel.ZIndex="99" hc:Growl.GrowlParent="False" hc:Growl.Token="MainWindowGrowl" Grid.Column="1" Grid.Row="1"/>
+                <StackPanel HorizontalAlignment="Center" Panel.ZIndex="99" hc:Growl.GrowlParent="False" hc:Growl.Token="MainWindowAskGrowl" Grid.Column="1" Grid.Row="1"/>
 
                 <DockPanel Grid.Row="0" Grid.Column="0" MouseMove="DragMove">
                     <DockPanel.Background>

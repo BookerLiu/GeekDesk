@@ -220,27 +220,34 @@ namespace GeekDesk.Control.UserControls.PannelCard
         /// <param name="e"></param>
         private void DeleteMenu(object sender, RoutedEventArgs e)
         {
-            MenuInfo menuInfo = ((MenuItem)sender).Tag as MenuInfo;
-            if (appData.MenuList.Count == 1)
+            HandyControl.Controls.Growl.Ask("确认删除此菜单吗?", isConfirmed =>
             {
-                //如果删除以后没有菜单的话 先创建一个
-                CreateMenu(null, null);
-            }
-            int index = appData.MenuList.IndexOf(menuInfo);
-            if (index == 0)
-            {
-                index = 0;
-            }
-            else
-            {
-                index--;
-            }
+                if (isConfirmed)
+                {
+                    MenuInfo menuInfo = ((MenuItem)sender).Tag as MenuInfo;
+                    if (appData.MenuList.Count == 1)
+                    {
+                        //如果删除以后没有菜单的话 先创建一个
+                        CreateMenu(null, null);
+                    }
+                    int index = appData.MenuList.IndexOf(menuInfo);
+                    if (index == 0)
+                    {
+                        index = 0;
+                    }
+                    else
+                    {
+                        index--;
+                    }
 
-            appData.MenuList.Remove(menuInfo);
-            // 选中下一个菜单
-            MenuListBox.SelectedIndex = index;
-            appData.AppConfig.SelectedMenuIndex = MenuListBox.SelectedIndex;
-            appData.AppConfig.SelectedMenuIcons = appData.MenuList[index].IconList;
+                    appData.MenuList.Remove(menuInfo);
+                    // 选中下一个菜单
+                    MenuListBox.SelectedIndex = index;
+                    appData.AppConfig.SelectedMenuIndex = MenuListBox.SelectedIndex;
+                    appData.AppConfig.SelectedMenuIcons = appData.MenuList[index].IconList;
+                }
+                return true;
+            }, "MainWindowAskGrowl");
         }
 
         /// <summary>
