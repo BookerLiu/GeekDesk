@@ -100,7 +100,9 @@
                                     hc:Poptip.HitMode="None" 
                                     hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
                                     hc:Poptip.Content="{Binding GradientBGParam.Name, Converter={StaticResource StringAppendConvert}, ConverterParameter=当前设置: \{\}}" 
-                                    hc:Poptip.Placement="Top"
+                                    hc:Poptip.Placement="LeftTop"
+                                    hc:Poptip.VerticalOffset="-35"
+                                    hc:Poptip.HorizontalOffset="-15"
                                     Click="SysBG_Click"
                                     />
                         </StackPanel>

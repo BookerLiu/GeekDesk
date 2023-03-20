@@ -170,7 +170,6 @@
                                 <ListBox.Template>
                                     <ControlTemplate TargetType="ListBox">
                                         <hc:ScrollViewer x:Name="WrapScroll"
-                                                         Orientation="Vertical" 
                                                          HorizontalScrollBarVisibility="Hidden" 
                                                          VerticalScrollBarVisibility="Auto" 
                                                          IsInertiaEnabled="True"
@@ -296,7 +295,7 @@
                                      >
                             <ListBox.Template>
                                 <ControlTemplate TargetType="ListBox">
-                                    <hc:ScrollViewer Orientation="Vertical" 
+                                    <hc:ScrollViewer  
                                                      HorizontalScrollBarVisibility="Hidden" 
                                                      VerticalScrollBarVisibility="Auto" 
                                                      IsInertiaEnabled="True"

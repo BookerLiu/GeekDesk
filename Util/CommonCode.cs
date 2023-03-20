@@ -43,6 +43,12 @@ namespace GeekDesk.Util
                     {
                         BinaryFormatter bf = new BinaryFormatter();
                         appData = bf.Deserialize(fs) as AppData;
+
+                        //将菜单密码写入文件
+                        if (!string.IsNullOrEmpty(appData.AppConfig.MenuPassword))
+                        {
+                            SavePassword(appData.AppConfig.MenuPassword);
+                        }
                     }
                 }
                 catch
