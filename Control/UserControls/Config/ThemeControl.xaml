@@ -234,20 +234,6 @@
                     <TextBlock VerticalAlignment="Center" Text="{Binding TextColor}" Foreground="{Binding TextColor}" Width="100"/>
                     <Button Content="选择" Margin="0,-10,0,0" Tag="Text"  Click="ColorButton_Click"/>
                 </hc:UniformSpacingPanel>
-
-                <hc:Divider LineStrokeDashArray="3,3" LineStroke="Black" Grid.ColumnSpan="4"/>
-                <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4">
-                    <TextBlock VerticalAlignment="Center" Text="关联文件夹筛选后缀（以“|”分割）:" />
-                </hc:UniformSpacingPanel>
-                <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4">
-                    <hc:TextBox HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                IsReadOnlyCaretVisible="True"
-                                Width="300"
-                                Text="{Binding FilterExt}"
-                                InputMethod.IsInputMethodEnabled="False"
-                    />
-                </hc:UniformSpacingPanel>
             </StackPanel>
         </Grid>
 

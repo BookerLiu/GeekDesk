@@ -90,7 +90,6 @@ namespace GeekDesk.Control.Other
                             = appData.MenuList[
                                 MainWindow.mainWindow.LeftCard.MenuListBox.SelectedIndex
                                 ].IconList;
-                        MainWindow.mainWindow.LeftCard.BuildWatcher();
                         //显示数据托盘
                         MainWindow.mainWindow.RightCard.WrapUFG.Visibility = Visibility.Visible;
                         //取消加密操作

@@ -7,19 +7,11 @@ using GeekDesk.ViewModel;
 using System;
 
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
-using DragEventArgs = System.Windows.DragEventArgs;
-using KeyEventArgs = System.Windows.Input.KeyEventArgs;
-using MenuItem = System.Windows.Controls.MenuItem;
-using MouseEventArgs = System.Windows.Input.MouseEventArgs;
-using TextBox = System.Windows.Controls.TextBox;
-using UserControl = System.Windows.Controls.UserControl;
 
 namespace GeekDesk.Control.UserControls.PannelCard
 {
@@ -31,7 +23,6 @@ namespace GeekDesk.Control.UserControls.PannelCard
         private int menuSelectIndexTemp = -1;
         private AppData appData = MainWindow.appData;
         private SolidColorBrush bac = new SolidColorBrush(Color.FromRgb(236, 236, 236));
-        private FileSystemWatcher Watcher = new FileSystemWatcher();
 
 
         public LeftCardControl()
@@ -43,33 +34,9 @@ namespace GeekDesk.Control.UserControls.PannelCard
             {
                 SelectLastMenu();
                 SetMenuListBoxItemEvent();
-                BindWatcherEvent();
-                BuildWatcher();
             };
         }
 
-        private void BindWatcherEvent()
-        {
-            Watcher.Created += WatcherEvent;
-            Watcher.Renamed += WatcherEvent;
-            Watcher.Deleted += WatcherEvent;
-        }
-
-        public void BuildWatcher()
-        {
-            MenuInfo menuInfo = appData.MenuList[appData.AppConfig.SelectedMenuIndex];
-            if (menuInfo.MenuType == MenuTypeEnum.RELATION_FOLDER)
-            {
-                Watcher.Path = menuInfo.RelationPath;
-            }
-            Watcher.EnableRaisingEvents = menuInfo.MenuType == MenuTypeEnum.RELATION_FOLDER;
-        }
-
-        private void WatcherEvent(object sender, EventArgs e)
-        {
-            MenuInfo menuInfo = appData.MenuList[appData.AppConfig.SelectedMenuIndex];
-            appData.AppConfig.SelectedMenuIcons = menuInfo.IconList;
-        }
 
         private void SetMenuListBoxItemEvent()
         {
@@ -222,7 +189,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
         /// <param name="e"></param>
         private void CreateMenu(object sender, RoutedEventArgs e)
         {
-            MenuInfo info = new MenuInfo() { MenuEdit = Visibility.Collapsed, MenuId = System.Guid.NewGuid().ToString(), MenuName = "NewMenu", MenuType = MenuTypeEnum.NORMAL};
+            MenuInfo info = new MenuInfo() { MenuEdit = Visibility.Collapsed, MenuId = System.Guid.NewGuid().ToString(), MenuName = "NewMenu" };
             appData.MenuList.Add(info);
             MenuListBox.SelectedIndex = appData.MenuList.Count - 1;
             appData.AppConfig.SelectedMenuIndex = MenuListBox.SelectedIndex;
@@ -374,7 +341,6 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 {
                     MainWindow.mainWindow.RightCard.PDDialog.Visibility = Visibility.Collapsed;
                     appData.AppConfig.SelectedMenuIcons = appData.MenuList[MenuListBox.SelectedIndex].IconList;
-                    BuildWatcher();
                 }
             }
             MainWindow.mainWindow.RightCard.WrapUFG.Visibility = Visibility.Visible;
@@ -661,35 +627,6 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 }
             }
 
-        }
-
-        /// <summary>
-        /// 创建关联文件夹的菜单
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CreateFolderMenu(object sender, RoutedEventArgs e)
-        {
-            FolderBrowserDialog dialog = new FolderBrowserDialog();
-            dialog.RootFolder = Environment.SpecialFolder.Desktop;
-            if (dialog.ShowDialog() == DialogResult.OK && !string.IsNullOrEmpty(dialog.SelectedPath))
-            {
-                MenuInfo info = new MenuInfo()
-                {
-                    MenuEdit = Visibility.Collapsed, MenuId = System.Guid.NewGuid().ToString(), MenuName = new DirectoryInfo(dialog.SelectedPath).Name,
-
-                    MenuType = MenuTypeEnum.RELATION_FOLDER, RelationPath = dialog.SelectedPath
-                };
-
-                appData.MenuList.Add(info);
-                MenuListBox.SelectedIndex = appData.MenuList.Count - 1;
-                appData.AppConfig.SelectedMenuIndex = MenuListBox.SelectedIndex;
-                appData.AppConfig.SelectedMenuIcons = info.IconList;
-                //首次触发不了Selected事件
-                object obj = MenuListBox.ItemContainerGenerator.ContainerFromIndex(MenuListBox.SelectedIndex);
-                SetListBoxItemEvent((ListBoxItem)obj);
-                Lbi_Selected(obj, null);
-            }
         }
     }
 }

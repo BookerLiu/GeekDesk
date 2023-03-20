@@ -105,26 +105,7 @@ namespace GeekDesk.ViewModel
 
         private bool? secondsWindow; //秒数窗口 默认打开
 
-        private string filterExt = "lnk|exe|cmd|vbs|bat|xls|xlsx|doc|docx|txt|pdf";
-
         #region GetSet
-
-        public string FilterExt
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(filterExt))
-                {
-                    FilterExt = "lnk|exe|cmd|vbs|bat|xls|xlsx|doc|docx|txt|pdf";
-                }
-                return filterExt;
-            }
-            set
-            {
-                filterExt = value;
-                OnPropertyChanged("FilterExt");
-            }
-        }
 
         public bool? SecondsWindow
         {
