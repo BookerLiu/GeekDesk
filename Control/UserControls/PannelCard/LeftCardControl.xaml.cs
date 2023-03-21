@@ -222,59 +222,48 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
                     string menuId = System.Guid.NewGuid().ToString();
-                    new Thread(() =>
+                       
+                    string path = dialog.FileName;
+
+                    MenuInfo menuInfo = new MenuInfo
                     {
-                        this.Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            string path = dialog.FileName;
-                            
-                            MenuInfo menuInfo = new MenuInfo
-                            {
-                                MenuName = Path.GetFileNameWithoutExtension(path),
-                                MenuId = menuId,
-                                MenuType = MenuType.LINK,
-                                LinkPath = path,
-                                IsEncrypt = false,
-                            };
+                        MenuName = Path.GetFileNameWithoutExtension(path),
+                        MenuId = menuId,
+                        MenuType = MenuType.LINK,
+                        LinkPath = path,
+                        IsEncrypt = false,
+                    };
 
-                            appData.MenuList.Add(menuInfo);
+                    appData.MenuList.Add(menuInfo);
 
-                            MenuListBox.SelectedIndex = appData.MenuList.Count - 1;
-                            appData.AppConfig.SelectedMenuIndex = MenuListBox.SelectedIndex;
-                            appData.AppConfig.SelectedMenuIcons = menuInfo.IconList;
-                            //首次触发不了Selected事件
-                            object obj = MenuListBox.ItemContainerGenerator.ContainerFromIndex(MenuListBox.SelectedIndex);
-                            SetListBoxItemEvent((ListBoxItem)obj);
-                            Lbi_Selected(obj, null);
-
-                            HandyControl.Controls.Growl.Success("菜单关联成功, 后台加载列表!", "MainWindowGrowl");
-
-                            FileWatcher.LinkMenuWatcher(menuInfo);
-                        }));
-                    }).Start();
+                    MenuListBox.SelectedIndex = appData.MenuList.Count - 1;
+                    appData.AppConfig.SelectedMenuIndex = MenuListBox.SelectedIndex;
+                    appData.AppConfig.SelectedMenuIcons = menuInfo.IconList;
+                    //首次触发不了Selected事件
+                    object obj = MenuListBox.ItemContainerGenerator.ContainerFromIndex(MenuListBox.SelectedIndex);
+                    SetListBoxItemEvent((ListBoxItem)obj);
+                    Lbi_Selected(obj, null);
+                    HandyControl.Controls.Growl.Success("菜单关联成功, 后台加载列表!", "MainWindowGrowl");
+                    FileWatcher.LinkMenuWatcher(menuInfo);
 
                     new Thread(() =>
                     {
-                        Thread.Sleep(1000);
-                        this.Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            MenuInfo info = null;
-                            foreach (MenuInfo menuInfo in appData.MenuList)
-                            {
-                                if (menuInfo.MenuId.Equals(menuId))
-                                {
-                                    info = menuInfo;
-                                }
-                            }
+                        DirectoryInfo dirInfo = new DirectoryInfo(menuInfo.LinkPath);
+                        FileSystemInfo[] fileInfos = dirInfo.GetFileSystemInfos();
 
-                            DirectoryInfo dirInfo = new DirectoryInfo(info.LinkPath);
-                            FileSystemInfo[] fileInfos = dirInfo.GetFileSystemInfos();
-                            foreach (FileSystemInfo fileInfo in fileInfos)
+                        ObservableCollection<IconInfo> iconList = new ObservableCollection<IconInfo>();
+                        foreach (FileSystemInfo fileInfo in fileInfos)
+                        {
+                            IconInfo iconInfo = CommonCode.GetIconInfoByPath_NoWrite(fileInfo.FullName);
+                            iconList.Add(iconInfo);
+                        }
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            foreach (IconInfo iconInfo in iconList)
                             {
-                                IconInfo iconInfo = CommonCode.GetIconInfoByPath_NoWrite(fileInfo.FullName);
-                                info.IconList.Add(iconInfo);
+                                menuInfo.IconList.Add(iconInfo);
                             }
-                        }));
+                        });
                     }).Start();
 
                 }
