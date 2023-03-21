@@ -4,14 +4,19 @@ using GeekDesk.Control.Other;
 using GeekDesk.Control.Windows;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
+using Microsoft.Win32;
 using System;
 
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
+using WindowsAPICodePack.Dialogs;
 
 namespace GeekDesk.Control.UserControls.PannelCard
 {
@@ -198,6 +203,87 @@ namespace GeekDesk.Control.UserControls.PannelCard
             object obj = MenuListBox.ItemContainerGenerator.ContainerFromIndex(MenuListBox.SelectedIndex);
             SetListBoxItemEvent((ListBoxItem)obj);
             Lbi_Selected(obj, null);
+        }
+
+        /// <summary>
+        /// 创建实时文件菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CreateLinkMenu(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                CommonOpenFileDialog dialog = new CommonOpenFileDialog
+                {
+                    IsFolderPicker = true,
+                    Title = "选择关联文件夹"
+                };
+                if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                {
+                    string menuId = System.Guid.NewGuid().ToString();
+                    new Thread(() =>
+                    {
+                        this.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            string path = dialog.FileName;
+                            
+                            MenuInfo menuInfo = new MenuInfo
+                            {
+                                MenuName = Path.GetFileNameWithoutExtension(path),
+                                MenuId = menuId,
+                                MenuType = MenuType.LINK,
+                                LinkPath = path,
+                                IsEncrypt = false,
+                            };
+
+                            appData.MenuList.Add(menuInfo);
+
+                            MenuListBox.SelectedIndex = appData.MenuList.Count - 1;
+                            appData.AppConfig.SelectedMenuIndex = MenuListBox.SelectedIndex;
+                            appData.AppConfig.SelectedMenuIcons = menuInfo.IconList;
+                            //首次触发不了Selected事件
+                            object obj = MenuListBox.ItemContainerGenerator.ContainerFromIndex(MenuListBox.SelectedIndex);
+                            SetListBoxItemEvent((ListBoxItem)obj);
+                            Lbi_Selected(obj, null);
+
+                            HandyControl.Controls.Growl.Success("菜单关联成功, 后台加载列表!", "MainWindowGrowl");
+
+                            FileWatcher.LinkMenuWatcher(menuInfo);
+                        }));
+                    }).Start();
+
+                    new Thread(() =>
+                    {
+                        Thread.Sleep(1000);
+                        this.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            MenuInfo info = null;
+                            foreach (MenuInfo menuInfo in appData.MenuList)
+                            {
+                                if (menuInfo.MenuId.Equals(menuId))
+                                {
+                                    info = menuInfo;
+                                }
+                            }
+
+                            DirectoryInfo dirInfo = new DirectoryInfo(info.LinkPath);
+                            FileSystemInfo[] fileInfos = dirInfo.GetFileSystemInfos();
+                            foreach (FileSystemInfo fileInfo in fileInfos)
+                            {
+                                IconInfo iconInfo = CommonCode.GetIconInfoByPath_NoWrite(fileInfo.FullName);
+                                info.IconList.Add(iconInfo);
+                            }
+                        }));
+                    }).Start();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                LogUtil.WriteErrorLog(ex, "新建关联菜单失败!");
+                HandyControl.Controls.Growl.WarningGlobal("新建关联菜单失败!");
+            }
         }
 
 
@@ -635,5 +721,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
             }
 
         }
+
+        
     }
 }

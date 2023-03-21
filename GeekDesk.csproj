@@ -147,6 +147,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="WindowsAPICodePack.Shell.CommonFileDialogs, Version=1.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\WindowsAPICodePack.Shell.CommonFileDialogs.1.1.5\lib\net452\WindowsAPICodePack.Shell.CommonFileDialogs.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -167,6 +170,7 @@
     <Compile Include="Constant\IconType.cs" />
     <Compile Include="Constant\CommonEnum.cs" />
     <Compile Include="Constant\IconStartType.cs" />
+    <Compile Include="Constant\MenuType.cs" />
     <Compile Include="Constant\PasswordType.cs" />
     <Compile Include="Constant\RunTimeStatus.cs" />
     <Compile Include="Constant\SearchType.cs" />
@@ -287,6 +291,7 @@
     <Compile Include="Util\ColorUtil.cs" />
     <Compile Include="Util\DefaultIcons.cs" />
     <Compile Include="Util\DragAdorner.cs" />
+    <Compile Include="Util\FileWatcher.cs" />
     <Compile Include="Util\GlobalHotKey.cs" />
     <Compile Include="Util\CommonCode.cs" />
     <Compile Include="Util\FileIcon.cs" />

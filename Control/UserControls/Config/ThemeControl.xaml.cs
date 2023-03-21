@@ -49,7 +49,7 @@ namespace GeekDesk.Control.UserControls.Config
                 OpenFileDialog ofd = new OpenFileDialog
                 {
                     Multiselect = false, //只允许选中单个文件
-                    Filter = "图像文件(*.png, *.jpg)|*.png;*.jpg;*.gif"
+                    Filter = "图像文件(*.png, *.jpg, *.gif)|*.png;*.jpg;*.gif"
                 };
                 if (ofd.ShowDialog() == true)
                 {

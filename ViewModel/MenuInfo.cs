@@ -21,7 +21,35 @@ namespace GeekDesk.ViewModel
         private string geometryColor; //几何图标颜色
         private ObservableCollection<IconInfo> iconList = new ObservableCollection<IconInfo>();
         private bool isEncrypt;  //是否加密
+        private MenuType menuType; //菜单类型 普通,  关联
+        private string linkPath; //关联路径
 
+
+        public string LinkPath
+        {
+            get
+            {
+                return linkPath;
+            }
+            set
+            {
+                linkPath = value;
+                OnPropertyChanged("LinkPath");
+            }
+        }
+
+        public MenuType MenuType
+        {
+            get
+            {
+                return menuType;
+            }
+            set
+            {
+                menuType = value;
+                OnPropertyChanged("MenuType");
+            }
+        }
 
         public bool IsEncrypt
         {

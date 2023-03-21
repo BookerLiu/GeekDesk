@@ -226,6 +226,9 @@ namespace GeekDesk
                 SecondsWindow.ShowWindow();
             }
 
+            //监听实时文件夹菜单
+            FileWatcher.StartLinkMenuWatcher(appData);
+
 
             //更新线程开启  检测更新
             UpdateThread.Update();

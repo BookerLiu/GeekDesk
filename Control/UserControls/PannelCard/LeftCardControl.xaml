@@ -139,6 +139,7 @@
             <hc:Card.ContextMenu>
                 <ContextMenu Width="200">
                     <MenuItem Header="新建菜单" Click="CreateMenu"/>
+                    <MenuItem Header="新建关联菜单" Click="CreateLinkMenu"/>
                     <MenuItem x:Name="AlterPW1" Header="修改密码" Click="AlterPassword"/>
                 </ContextMenu>
             </hc:Card.ContextMenu>
@@ -158,6 +159,7 @@
                     <ListBox.Resources>
                         <ContextMenu x:Key="MenuDialog" Width="200">
                             <MenuItem Header="新建菜单" Click="CreateMenu"/>
+                            <MenuItem Header="新建关联菜单" Click="CreateLinkMenu"/>
                             <MenuItem Header="重命名"  Click="RenameMenu" Tag="{Binding}"/>
                             <MenuItem Header="加密此列表"  Click="EncryptMenu" Tag="{Binding}"/>
                             <MenuItem x:Name="AlterPW2" Header="修改密码" Click="AlterPassword"/>
