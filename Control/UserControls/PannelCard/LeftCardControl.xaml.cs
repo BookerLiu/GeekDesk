@@ -295,34 +295,46 @@ namespace GeekDesk.Control.UserControls.PannelCard
         /// <param name="e"></param>
         private void DeleteMenu(object sender, RoutedEventArgs e)
         {
-            HandyControl.Controls.Growl.Ask("确认删除此菜单吗?", isConfirmed =>
-            {
-                if (isConfirmed)
-                {
-                    MenuInfo menuInfo = ((MenuItem)sender).Tag as MenuInfo;
-                    if (appData.MenuList.Count == 1)
-                    {
-                        //如果删除以后没有菜单的话 先创建一个
-                        CreateMenu(null, null);
-                    }
-                    int index = appData.MenuList.IndexOf(menuInfo);
-                    if (index == 0)
-                    {
-                        index = 0;
-                    }
-                    else
-                    {
-                        index--;
-                    }
 
-                    appData.MenuList.Remove(menuInfo);
-                    // 选中下一个菜单
-                    MenuListBox.SelectedIndex = index;
-                    appData.AppConfig.SelectedMenuIndex = MenuListBox.SelectedIndex;
-                    appData.AppConfig.SelectedMenuIcons = appData.MenuList[index].IconList;
-                }
-                return true;
-            }, "MainWindowAskGrowl");
+            MenuInfo menuInfo = ((MenuItem)sender).Tag as MenuInfo;
+            if (menuInfo.IconList != null && menuInfo.IconList.Count > 0)
+            {
+                HandyControl.Controls.Growl.Ask("确认删除此菜单吗?", isConfirmed =>
+                {
+                    if (isConfirmed)
+                    {
+                        DeleteMenu(menuInfo);
+                    }
+                    return true;
+                }, "MainWindowAskGrowl");
+            } else
+            {
+                DeleteMenu(menuInfo);
+            }
+        }
+
+        private void DeleteMenu(MenuInfo menuInfo)
+        {
+            if (appData.MenuList.Count == 1)
+            {
+                //如果删除以后没有菜单的话 先创建一个
+                CreateMenu(null, null);
+            }
+            int index = appData.MenuList.IndexOf(menuInfo);
+            if (index == 0)
+            {
+                index = 0;
+            }
+            else
+            {
+                index--;
+            }
+
+            appData.MenuList.Remove(menuInfo);
+            // 选中下一个菜单
+            MenuListBox.SelectedIndex = index;
+            appData.AppConfig.SelectedMenuIndex = MenuListBox.SelectedIndex;
+            appData.AppConfig.SelectedMenuIcons = appData.MenuList[index].IconList;
         }
 
         /// <summary>
