@@ -148,6 +148,7 @@
                 <Grid>
                     <ot:PasswordDialog xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndGrowHorizontally}, Event=Visibility, Duration=50, Delay=0}"
                                        x:Name="PDDialog"
+                                       Visibility="Collapsed"
                                        Panel.ZIndex="99"
                                        IsVisibleChanged="PDDialog_IsVisibleChanged"
                                        Margin="0,-100,0,0"/>

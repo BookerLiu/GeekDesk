@@ -144,7 +144,11 @@
                              FontSize="16"
                              BorderThickness="0"
                              TextChanged="SearchBox_TextChanged"
-                             />
+                             >
+                    <TextBox.Background>
+                        <SolidColorBrush Color="White" Opacity="0.5" />
+                    </TextBox.Background>
+                </TextBox>
 
 
                 <hc:NotifyIcon Icon="/Logo.ico" Click="NotifyIcon_Click" x:Name="BarIcon"

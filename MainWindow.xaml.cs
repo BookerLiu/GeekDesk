@@ -4,6 +4,8 @@ using GeekDesk.Control.UserControls.PannelCard;
 using GeekDesk.Control.Windows;
 using GeekDesk.Interface;
 using GeekDesk.MyThread;
+using GeekDesk.Plugins.EveryThing;
+using GeekDesk.Plugins.EveryThing.Constant;
 using GeekDesk.Task;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
@@ -14,12 +16,15 @@ using ShowSeconds;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Animation;
+using System.Windows.Shell;
 using System.Windows.Threading;
 using static GeekDesk.Util.ShowWindowFollowMouse;
 
@@ -38,6 +43,7 @@ namespace GeekDesk
         public static int toDoHotKeyId = -1;
         public static int colorPickerHotKeyId = -1;
         public static MainWindow mainWindow;
+        DelayHelper searchDelayHelper = new DelayHelper(300);
         public MainWindow()
         {
             //加载数据
@@ -63,6 +69,8 @@ namespace GeekDesk
         }
 
 
+
+    
 
 
         /// <summary>
@@ -116,7 +124,25 @@ namespace GeekDesk
             RightCard.VerticalUFG.Visibility = Visibility.Collapsed;
             if (!string.IsNullOrEmpty(inputText))
             {
+                searchDelayHelper.DelayExecute(inputText);
+            }
+            else
+            {
                 SearchIconList.IconList.Clear();
+            }
+            
+        }
+
+        private void SearchDelay(object sender, EventArgs args)
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+               SearchIconList.IconList.Clear();
+
+                DelayHelper dh = sender as DelayHelper;
+                string inpuText = dh.Source as string;
+
+                //GeekDesk数据搜索
                 ObservableCollection<MenuInfo> menuList = appData.MenuList;
                 foreach (MenuInfo menu in menuList)
                 {
@@ -124,22 +150,83 @@ namespace GeekDesk
                     foreach (IconInfo icon in iconList)
                     {
                         string pyName = Pinyin.GetInitials(icon.Name).ToLower();
-                        if (icon.Name.Contains(inputText) || pyName.Contains(inputText))
+                        if (icon.Name.Contains(inpuText) || pyName.Contains(inpuText))
                         {
                             SearchIconList.IconList.Add(icon);
                         }
                     }
                 }
-            }
-            else
-            {
-                SearchIconList.IconList.Clear();
-            }
-            if (RightCard.SearchListBox.Items.Count > 0)
-            {
-                RightCard.SearchListBox.SelectedIndex = 0;
-            }
-            RightCard.VerticalUFG.Visibility = Visibility.Visible;
+
+
+                new Thread(() =>
+                {
+                    //EveryThing全盘搜索
+                    
+
+                    EveryThing64.Everything_SetSearchW(inpuText);
+                    EveryThing64.Everything_SetRequestFlags(
+                        EveryThingConst.EVERYTHING_REQUEST_FILE_NAME
+                        | EveryThingConst.EVERYTHING_REQUEST_PATH
+                        | EveryThingConst.EVERYTHING_REQUEST_DATE_MODIFIED
+                        | EveryThingConst.EVERYTHING_REQUEST_SIZE);
+                    EveryThing64.Everything_SetSort(13);
+
+                    EveryThing64.Everything_QueryW(true);
+
+                    UInt32 ui = 0;
+                    string filePath;
+                    const int bufsize = 260;
+                    StringBuilder buf = new StringBuilder(bufsize);
+                    for (int i = 0; ui < EveryThing64.Everything_GetNumResults() && i < 10; i++, ui++)
+                    {
+                        buf.Clear();
+                        EveryThing64.Everything_GetResultFullPathName(ui, buf, bufsize);
+                        filePath = buf.ToString();
+
+                        string tempPath = filePath;
+
+                        //string base64 = ImageUtil.FileImageToBase64(path, System.Drawing.Imaging.ImageFormat.Png);
+                        string ext = "";
+                        if (!ImageUtil.IsSystemItem(filePath))
+                        {
+                            ext = System.IO.Path.GetExtension(filePath).ToLower();
+                        }
+
+                        string iconPath = null;
+                        if (".lnk".Equals(ext))
+                        {
+
+                            string targetPath = FileUtil.GetTargetPathByLnk(filePath);
+                            iconPath = FileUtil.GetIconPathByLnk(filePath);
+                            if (targetPath != null)
+                            {
+                                filePath = targetPath;
+                            }
+                        }
+
+                        IconInfo iconInfo = new IconInfo
+                        {
+                            Path_NoWrite = filePath,
+                            LnkPath_NoWrite = tempPath,
+                            BitmapImage_NoWrite = null,
+                            StartArg_NoWrite = FileUtil.GetArgByLnk(tempPath),
+                            Name_NoWrite = System.IO.Path.GetFileNameWithoutExtension(tempPath),
+                        };
+                        //IconInfo iconInfo = CommonCode.GetIconInfoByPath_NoWrite(filePath);
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            SearchIconList.IconList.Add(iconInfo);
+                        });
+                    }
+                }).Start();
+
+
+                if (RightCard.SearchListBox.Items.Count > 0)
+                {
+                    RightCard.SearchListBox.SelectedIndex = 0;
+                }
+                RightCard.VerticalUFG.Visibility = Visibility.Visible;
+            });
         }
 
         /// <summary>
@@ -238,6 +325,13 @@ namespace GeekDesk
 
             //毛玻璃  暂时未解决阴影问题
             //BlurGlassUtil.EnableBlur(this);
+
+            //开启延迟搜索  优化搜索功能
+            searchDelayHelper.Idled += SearchDelay;
+
+            //开启EveryThing插件
+            EveryThingUtil.StartEveryThing(Constants.PLUGINS_PATH);
+
 
             MessageUtil.ChangeWindowMessageFilter(MessageUtil.WM_COPYDATA, 1);
         }

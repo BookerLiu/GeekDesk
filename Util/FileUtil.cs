@@ -53,7 +53,7 @@ namespace GeekDesk.Util
             }
             catch (Exception e)
             {
-                LogUtil.WriteErrorLog(e, "获取启动参数失败! filePath=" + filePath);
+                //LogUtil.WriteErrorLog(e, "获取启动参数失败! filePath=" + filePath);
                 return "";
             }
         }

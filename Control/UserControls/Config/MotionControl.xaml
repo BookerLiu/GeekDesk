@@ -27,7 +27,7 @@
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0"  Grid.ColumnSpan="4">
                 <CheckBox x:Name="IconIsAdmin" Content="启动时显示主面板" IsChecked="{Binding StartedShowPanel}">
                     <CheckBox.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.7">
                             <GradientStop Color="#FF9EA3A6"/>
                         </LinearGradientBrush>
                     </CheckBox.Background>
@@ -37,7 +37,7 @@
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
                 <CheckBox  Content="显示时追随鼠标位置" IsChecked="{Binding FollowMouse}">
                     <CheckBox.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.7">
                             <GradientStop Color="#FF9EA3A6"/>
                         </LinearGradientBrush>
                     </CheckBox.Background>
@@ -47,7 +47,7 @@
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
                 <CheckBox  Content="鼠标中键呼出" Click="MouseMiddle_Changed" IsChecked="{Binding MouseMiddleShow}">
                     <CheckBox.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.7">
                             <GradientStop Color="#FF9EA3A6"/>
                         </LinearGradientBrush>
                     </CheckBox.Background>
@@ -57,7 +57,7 @@
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0"  Grid.ColumnSpan="4">
                 <CheckBox  Content="双击启动" IsChecked="{Binding DoubleOpen}">
                     <CheckBox.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.7">
                             <GradientStop Color="#FF9EA3A6"/>
                         </LinearGradientBrush>
                     </CheckBox.Background>
@@ -67,7 +67,7 @@
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0"  Grid.ColumnSpan="4">
                 <CheckBox  Content="悬停切换菜单" IsChecked="{Binding HoverMenu}">
                     <CheckBox.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.7">
                             <GradientStop Color="#FF9EA3A6"/>
                         </LinearGradientBrush>
                     </CheckBox.Background>
@@ -77,7 +77,7 @@
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
                 <CheckBox  Content="贴边隐藏" IsChecked="{Binding MarginHide}" Click="MarginHide_Changed">
                     <CheckBox.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.7">
                             <GradientStop Color="#FF9EA3A6"/>
                         </LinearGradientBrush>
                     </CheckBox.Background>
@@ -128,13 +128,17 @@
                             KeyDown="HotKeyDown"
                             KeyUp="HotKeyUp"
                             InputMethod.IsInputMethodEnabled="False"
-                            />
+                            >
+                    <hc:TextBox.Background>
+                        <SolidColorBrush Color="White" Opacity="0.7" />
+                    </hc:TextBox.Background>
+                </hc:TextBox>
                 <CheckBox Content="启用" 
                           Click="EnableHotKey_Click" 
                           Tag="{x:Static cst:HotKeyType.Main}" 
                           IsChecked="{Binding EnableAppHotKey}">
                     <CheckBox.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.7">
                             <GradientStop Color="#FF9EA3A6"/>
                         </LinearGradientBrush>
                     </CheckBox.Background>
@@ -152,13 +156,17 @@
                             KeyDown="HotKeyDown"
                             KeyUp="HotKeyUp"
                             InputMethod.IsInputMethodEnabled="False"
-                            />
+                            >
+                    <hc:TextBox.Background>
+                        <SolidColorBrush Color="White" Opacity="0.7" />
+                    </hc:TextBox.Background>
+                </hc:TextBox>
                 <CheckBox Content="启用" 
                           Click="EnableHotKey_Click" 
                           Tag="{x:Static cst:HotKeyType.ToDo}" 
                           IsChecked="{Binding EnableTodoHotKey}">
                     <CheckBox.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.7">
                             <GradientStop Color="#FF9EA3A6"/>
                         </LinearGradientBrush>
                     </CheckBox.Background>
@@ -177,13 +185,17 @@
                             KeyDown="HotKeyDown"
                             KeyUp="HotKeyUp"
                             InputMethod.IsInputMethodEnabled="False"
-                            />
+                            >
+                    <hc:TextBox.Background>
+                        <SolidColorBrush Color="White" Opacity="0.7" />
+                    </hc:TextBox.Background>
+                </hc:TextBox>
                 <CheckBox Content="启用" 
                           Tag="{x:Static cst:HotKeyType.ColorPicker}"
                           Click="EnableHotKey_Click"
                           IsChecked="{Binding EnableColorPickerHotKey}">
                     <CheckBox.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.7">
                             <GradientStop Color="#FF9EA3A6"/>
                         </LinearGradientBrush>
                     </CheckBox.Background>

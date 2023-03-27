@@ -275,6 +275,10 @@
     <Compile Include="Converts\HideTypeConvert.cs" />
     <Compile Include="Interface\IWindowCommon.cs" />
     <Compile Include="MyThread\RelativePathThread.cs" />
+    <Compile Include="Plugins\EveryThing\Constant\EveryThingConst.cs" />
+    <Compile Include="Plugins\EveryThing\EveryThing32.cs" />
+    <Compile Include="Plugins\EveryThing\EveryThing64.cs" />
+    <Compile Include="Plugins\EveryThing\EveryThingUtil.cs" />
     <Compile Include="Plugins\ShowSeconds\Common\Constants.cs" />
     <Compile Include="Plugins\ShowSeconds\SecondsWindow.xaml.cs">
       <DependentUpon>SecondsWindow.xaml</DependentUpon>
@@ -290,6 +294,8 @@
     <Compile Include="Util\BlurGlassUtil.cs" />
     <Compile Include="Util\ColorUtil.cs" />
     <Compile Include="Util\DefaultIcons.cs" />
+    <Compile Include="Util\DelayHelper.cs" />
+    <Compile Include="Util\DelayHelperFlyoutMenuItem.cs" />
     <Compile Include="Util\DragAdorner.cs" />
     <Compile Include="Util\FileWatcher.cs" />
     <Compile Include="Util\GlobalHotKey.cs" />
@@ -481,6 +487,18 @@
     </EmbeddedResource>
     <Resource Include="Resource\Iconfont\iconfont.json" />
     <None Include="app.manifest" />
+    <None Include="Plugins\EveryThing\32\Everything.ini">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Plugins\EveryThing\32\Everything.lng">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Plugins\EveryThing\64\Everything.ini">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Plugins\EveryThing\64\Everything.lng">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\app.manifest" />
     <None Include="Update.json" />
     <None Include="packages.config" />
@@ -552,6 +570,26 @@
   <ItemGroup>
     <Resource Include="Logo.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Plugins\EveryThing\lib\Everything32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Plugins\EveryThing\lib\Everything64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Plugins\EveryThing\32\Everything.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Plugins\EveryThing\64\Everything.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
@@ -578,7 +616,8 @@
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>; Move all assemblies and related files to lib folder
-ROBOCOPY "$(TargetDir) " "$(TargetDir)lib\ " /XF Data *.exe *.config *.manifest /XD lib logs bak /E /IS /MOVE
+ROBOCOPY "$(TargetDir) " "$(TargetDir)lib\ " /XF Data *.exe *.config *.manifest /XD "$(TargetDir)lib" plugins logs bak /E /IS /MOVE
+ROBOCOPY "$(TargetDir) " "$(TargetDir)lib\ " *.dll /XD "$(TargetDir)lib"  /E /S /MOVE
 if %25errorlevel%25 leq 4 exit 0 else exit %25errorlevel%25</PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -58,5 +58,7 @@
         /// 控制每次刷新搜索结果 鼠标移动后显示popup
         /// </summary>
         public static int MOUSE_MOVE_COUNT = 0;
+
+
     }
 }

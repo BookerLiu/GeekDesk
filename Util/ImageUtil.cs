@@ -20,6 +20,7 @@ namespace GeekDesk.Util
         /// <returns></returns>
         public static BitmapImage ByteArrToImage(byte[] array)
         {
+            if (array == null) return null;
             using (var ms = new System.IO.MemoryStream(array))
             {
                 BitmapImage image = new BitmapImage();
@@ -39,6 +40,7 @@ namespace GeekDesk.Util
         /// <returns></returns>
         public static byte[] BitmapImageToByte(BitmapImage bi)
         {
+            if (bi == null) return null;
             using (MemoryStream memStream = new MemoryStream())
             {
                 PngBitmapEncoder encoder = new PngBitmapEncoder();

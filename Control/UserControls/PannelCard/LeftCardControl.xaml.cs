@@ -27,13 +27,14 @@ namespace GeekDesk.Control.UserControls.PannelCard
     {
         private int menuSelectIndexTemp = -1;
         private AppData appData = MainWindow.appData;
-        private SolidColorBrush bac = new SolidColorBrush(Color.FromRgb(236, 236, 236));
+        private SolidColorBrush bac = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+        
 
 
         public LeftCardControl()
         {
             InitializeComponent();
-
+            bac.Opacity = 0.6;
 
             this.Loaded += (s, e) =>
             {

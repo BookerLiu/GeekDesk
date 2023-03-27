@@ -199,7 +199,11 @@
                                 Padding="2"
                                 BorderThickness="0"
                                 IsVisibleChanged="MenuEditWhenVisibilityChanged"
-                                Visibility="{Binding MenuEdit}"/>
+                                Visibility="{Binding MenuEdit}">
+                                    <TextBox.Background>
+                                        <SolidColorBrush Color="White" Opacity="0.6" />
+                                    </TextBox.Background>
+                                </TextBox>
                                 <StackPanel Orientation="Horizontal"
                                 IsVisibleChanged="MenuWhenVisibilityChanged"
                                 Visibility="{Binding NotMenuEdit}">
