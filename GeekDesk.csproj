@@ -294,8 +294,6 @@
     <Compile Include="Util\BlurGlassUtil.cs" />
     <Compile Include="Util\ColorUtil.cs" />
     <Compile Include="Util\DefaultIcons.cs" />
-    <Compile Include="Util\DelayHelper.cs" />
-    <Compile Include="Util\DelayHelperFlyoutMenuItem.cs" />
     <Compile Include="Util\DragAdorner.cs" />
     <Compile Include="Util\FileWatcher.cs" />
     <Compile Include="Util\GlobalHotKey.cs" />
@@ -327,6 +325,7 @@
     <Compile Include="Util\SvgToGeometry.cs" />
     <Compile Include="Util\UserActivityHook.cs" />
     <Compile Include="Util\WindowsThumbnailProvider.cs" />
+    <Compile Include="Util\WindowUtil.cs" />
     <Compile Include="ViewModel\AppConfig.cs" />
     <Compile Include="ViewModel\AppData.cs" />
     <Compile Include="ViewModel\GradientBGParam.cs" />

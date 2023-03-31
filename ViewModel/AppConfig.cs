@@ -107,6 +107,22 @@ namespace GeekDesk.ViewModel
 
         private bool? enableEveryThing;
 
+        private bool? alwaysTopmost;
+
+
+        public bool? AlwaysTopmost
+        {
+            get
+            {
+                if (alwaysTopmost == null) alwaysTopmost = false;
+                return alwaysTopmost;
+            }
+            set
+            {
+                alwaysTopmost = value;
+                OnPropertyChanged("AlwaysTopmost");
+            }
+        }
 
         public bool? EnableEveryThing
         {

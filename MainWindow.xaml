@@ -27,7 +27,8 @@
         MouseDown="MainWindow_MouseDown"
         MouseEnter="MainWindow_MouseEnter"
         GotFocus="Window_GotFocus"
-        Loaded="Window_Loaded"          
+        Loaded="Window_Loaded"   
+        Topmost="{Binding AppConfig.AlwaysTopmost}"
         >
 
     <Window.Resources>

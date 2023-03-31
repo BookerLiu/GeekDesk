@@ -1051,10 +1051,10 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
         private void VerticalCard_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (appData.AppConfig.EnableEveryThing == true && EveryThingUtil.hasNext())
+            if (appData.AppConfig.EnableEveryThing == true && EveryThingUtil.HasNext())
             {
                 HandyControl.Controls.ScrollViewer sv = sender as HandyControl.Controls.ScrollViewer;
-                if (sv.ExtentHeight - (sv.ActualHeight + sv.VerticalOffset) < 200 && EveryThingUtil.hasNext())
+                if (sv.ExtentHeight - (sv.ActualHeight + sv.VerticalOffset) < 200 && EveryThingUtil.HasNext())
                 {
                     string[] split = MainWindow.mainWindow.TotalMsgBtn.Content.ToString().Split(' ');
                     long count = Convert.ToInt64(split[0]);

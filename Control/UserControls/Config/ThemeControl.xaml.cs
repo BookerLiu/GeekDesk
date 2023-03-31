@@ -167,6 +167,6 @@ namespace GeekDesk.Control.UserControls.Config
             }
             appConfig.IsShow = null;
         }
-
+  
     }
 }

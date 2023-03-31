@@ -32,53 +32,58 @@ namespace GeekDesk.Plugins.EveryThing
 
             new Thread(() =>
             {
-
-                Thread.Sleep(2000);
-
-                //判断EveryThing服务是否已启动
-                bool enabled = false;
-                Process[] processList = Process.GetProcesses();
-                foreach (System.Diagnostics.Process process in processList)
+                try
                 {
-                    if (process.ProcessName.ToUpper().Equals("EVERYTHING"))
+                    Thread.Sleep(2000);
+
+                    //判断EveryThing服务是否已启动
+                    bool enabled = false;
+                    Process[] processList = Process.GetProcesses();
+                    foreach (System.Diagnostics.Process process in processList)
                     {
-                        enabled = true;
-                        IsByGeekDesk = false;
-                        break;
+                        if (process.ProcessName.ToUpper().Equals("EVERYTHING"))
+                        {
+                            enabled = true;
+                            IsByGeekDesk = false;
+                            break;
+                        }
                     }
-                }
 
-                if (!enabled)
-                {
-                    //启动服务
+                    if (!enabled)
+                    {
+                        //启动服务
+                        using (Process p = new Process())
+                        {
+                            p.StartInfo.FileName = everyThingPath;
+                            p.StartInfo.UseShellExecute = true;
+                            p.StartInfo.Verb = "runas";
+                            p.StartInfo.Arguments = " -svc";
+                            p.Start();
+                        }
+                    }
+
+                    Thread.Sleep(2000);
+                    processList = Process.GetProcesses();
+
+                    //启动程序
                     using (Process p = new Process())
                     {
                         p.StartInfo.FileName = everyThingPath;
-                        p.StartInfo.UseShellExecute = true;
-                        p.StartInfo.Verb = "runas";
-                        p.StartInfo.Arguments = " -svc";
                         p.Start();
+                        int waitTime = 3000;
+                        while (true && waitTime > 0)
+                        {
+                            Thread.Sleep(100);
+                            waitTime -= 100;
+                            p.CloseMainWindow();
+                        }
+
                     }
-                }
-              
-                Thread.Sleep(2000);
-                processList = Process.GetProcesses();
-
-
-                //启动程序
-                using (Process p = new Process())
+                } catch (Exception e)
                 {
-                    p.StartInfo.FileName = everyThingPath;
-                    p.Start();
-                    int waitTime = 3000;
-                    while (true && waitTime > 0)
-                    {
-                        Thread.Sleep(100);
-                        waitTime -= 100;
-                        p.CloseMainWindow();
-                    }
 
                 }
+                
             }).Start();
 
         }
@@ -101,7 +106,7 @@ namespace GeekDesk.Plugins.EveryThing
         }
 
 
-        public static bool hasNext()
+        public static bool HasNext()
         {
             return ui < Everything_GetNumResults();
         }

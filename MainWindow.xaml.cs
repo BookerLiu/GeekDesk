@@ -44,7 +44,6 @@ namespace GeekDesk
         public static int toDoHotKeyId = -1;
         public static int colorPickerHotKeyId = -1;
         public static MainWindow mainWindow;
-        DelayHelper searchDelayHelper = new DelayHelper(300);
         public MainWindow()
         {
             //加载数据
@@ -53,9 +52,6 @@ namespace GeekDesk
 
             //用于其他类访问
             mainWindow = this;
-
-            //置于顶层
-            this.Topmost = true;
 
             //执行待办提醒
             ToDoTask.BackLogCheck();
@@ -354,16 +350,13 @@ namespace GeekDesk
             //毛玻璃  暂时未解决阴影问题
             //BlurGlassUtil.EnableBlur(this);
 
-            //开启延迟搜索  优化搜索功能
-            searchDelayHelper.Idled += SearchDelay;
-
+            WindowUtil.SetOwner(this, WindowUtil.GetDesktopHandle(this, DesktopLayer.Progman));
 
             if (appData.AppConfig.EnableEveryThing == true)
             {
                 //开启EveryThing插件
                 EveryThingUtil.EnableEveryThing();
             }
-
 
             Keyboard.Focus(SearchBox);
 
@@ -383,7 +376,7 @@ namespace GeekDesk
                     {
                         if (MotionControl.hotkeyFinished)
                         {
-                            if (mainWindow.Visibility == Visibility.Collapsed || mainWindow.Opacity == 0 || MarginHide.IS_HIDE)
+                            if (CheckSholeShowApp())
                             {
                                 ShowApp();
                             }
@@ -587,6 +580,7 @@ namespace GeekDesk
                 ShowWindowFollowMouse.Show(mainWindow, MousePosition.CENTER, 0, 0);
             }
 
+
             MainWindow.mainWindow.Activate();
             mainWindow.Show();
             //mainWindow.Visibility = Visibility.Visible;
@@ -705,7 +699,7 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void NotifyIcon_Click(object sender, RoutedEventArgs e)
         {
-            if (this.Visibility == Visibility.Collapsed || this.Opacity == 0)
+            if (CheckSholeShowApp())
             {
                 ShowApp();
             }
@@ -713,6 +707,14 @@ namespace GeekDesk
             {
                 HideApp();
             }
+        }
+
+        private static bool CheckSholeShowApp()
+        {
+            return mainWindow.Visibility == Visibility.Collapsed
+                || mainWindow.Opacity == 0
+                || MarginHide.IS_HIDE
+                || !WindowUtil.WindowIsTop(mainWindow);
         }
 
         /// <summary>
