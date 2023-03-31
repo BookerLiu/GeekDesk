@@ -283,6 +283,7 @@ namespace GeekDesk.ViewModel
             {
                 bitmapImage = value;
                 ImageByteArr_NoWrite = ImageUtil.BitmapImageToByte(bitmapImage);
+                OnPropertyChanged("BitmapImage_NoWrite");
             }
         }
 
@@ -346,7 +347,10 @@ namespace GeekDesk.ViewModel
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
+            if (propertyName!=null && propertyName.Contains("NoWrite"))
+            {
+                CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
+            }
         }
 
 

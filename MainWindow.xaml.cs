@@ -24,6 +24,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 using System.Windows.Shell;
 using System.Windows.Threading;
 using static GeekDesk.Util.ShowWindowFollowMouse;
@@ -95,6 +96,9 @@ namespace GeekDesk
             RightCard.VisibilitySearchCard(Visibility.Visible);
             SearchBox.Width = 400;
             SearchBox.Focus();
+
+            //执行一遍a查询
+            SearchBox_TextChanged(null, null);
         }
         /// <summary>
         /// 搜索开始
@@ -124,109 +128,114 @@ namespace GeekDesk
             RightCard.VerticalUFG.Visibility = Visibility.Collapsed;
             if (!string.IsNullOrEmpty(inputText))
             {
-                searchDelayHelper.DelayExecute(inputText);
-            }
-            else
+                RunTimeStatus.EVERYTHING_SEARCH_DELAY_TIME = 300;
+                if (!RunTimeStatus.EVERYTHING_NEW_SEARCH)
+                {                    
+                    RunTimeStatus.EVERYTHING_NEW_SEARCH = true;
+                    SearchDelay(null, null);
+                }
+            } else
             {
-                SearchIconList.IconList.Clear();
+                new Thread(() =>
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        SearchIconList.RemoveAll();
+                    });
+                }).Start();
             }
             
         }
 
         private void SearchDelay(object sender, EventArgs args)
         {
-            this.Dispatcher.Invoke(() =>
+
+            new Thread(() =>
             {
-               SearchIconList.IconList.Clear();
 
-                DelayHelper dh = sender as DelayHelper;
-                string inpuText = dh.Source as string;
-
-                //GeekDesk数据搜索
-                ObservableCollection<MenuInfo> menuList = appData.MenuList;
-                foreach (MenuInfo menu in menuList)
+                while (RunTimeStatus.EVERYTHING_SEARCH_DELAY_TIME > 0)
                 {
-                    ObservableCollection<IconInfo> iconList = menu.IconList;
-                    foreach (IconInfo icon in iconList)
-                    {
-                        string pyName = Pinyin.GetInitials(icon.Name).ToLower();
-                        if (icon.Name.Contains(inpuText) || pyName.Contains(inpuText))
-                        {
-                            SearchIconList.IconList.Add(icon);
-                        }
-                    }
+                    Thread.Sleep(10);
+                    RunTimeStatus.EVERYTHING_SEARCH_DELAY_TIME -= 10;
                 }
+                RunTimeStatus.EVERYTHING_NEW_SEARCH = false;
 
 
-                new Thread(() =>
+                this.Dispatcher.Invoke(() =>
                 {
-                    //EveryThing全盘搜索
-                    
-
-                    EveryThing64.Everything_SetSearchW(inpuText);
-                    EveryThing64.Everything_SetRequestFlags(
-                        EveryThingConst.EVERYTHING_REQUEST_FILE_NAME
-                        | EveryThingConst.EVERYTHING_REQUEST_PATH
-                        | EveryThingConst.EVERYTHING_REQUEST_DATE_MODIFIED
-                        | EveryThingConst.EVERYTHING_REQUEST_SIZE);
-                    EveryThing64.Everything_SetSort(13);
-
-                    EveryThing64.Everything_QueryW(true);
-
-                    UInt32 ui = 0;
-                    string filePath;
-                    const int bufsize = 260;
-                    StringBuilder buf = new StringBuilder(bufsize);
-                    for (int i = 0; ui < EveryThing64.Everything_GetNumResults() && i < 10; i++, ui++)
+                    if (SearchIconList.IconList.Count > 0)
                     {
-                        buf.Clear();
-                        EveryThing64.Everything_GetResultFullPathName(ui, buf, bufsize);
-                        filePath = buf.ToString();
+                        SearchIconList.RemoveAll();
+                    }
+                    //DelayHelper dh = sender as DelayHelper;
+                    //string inpuText = dh.Source as string;
+                    string inputText = SearchBox.Text.ToLower().Trim();
 
-                        string tempPath = filePath;
-
-                        //string base64 = ImageUtil.FileImageToBase64(path, System.Drawing.Imaging.ImageFormat.Png);
-                        string ext = "";
-                        if (!ImageUtil.IsSystemItem(filePath))
+                    int count = 0;
+                    //GeekDesk数据搜索
+                    ObservableCollection<MenuInfo> menuList = appData.MenuList;
+                    foreach (MenuInfo menu in menuList)
+                    {
+                        ObservableCollection<IconInfo> iconList = menu.IconList;
+                        foreach (IconInfo icon in iconList)
                         {
-                            ext = System.IO.Path.GetExtension(filePath).ToLower();
-                        }
-
-                        string iconPath = null;
-                        if (".lnk".Equals(ext))
-                        {
-
-                            string targetPath = FileUtil.GetTargetPathByLnk(filePath);
-                            iconPath = FileUtil.GetIconPathByLnk(filePath);
-                            if (targetPath != null)
+                            if (RunTimeStatus.EVERYTHING_NEW_SEARCH) return;
+                            string pyName = Pinyin.GetInitials(icon.Name).ToLower();
+                            if (icon.Name.Contains(inputText) || pyName.Contains(inputText))
                             {
-                                filePath = targetPath;
+                                SearchIconList.IconList.Add(icon);
+                                count++;
                             }
                         }
-
-                        IconInfo iconInfo = new IconInfo
-                        {
-                            Path_NoWrite = filePath,
-                            LnkPath_NoWrite = tempPath,
-                            BitmapImage_NoWrite = null,
-                            StartArg_NoWrite = FileUtil.GetArgByLnk(tempPath),
-                            Name_NoWrite = System.IO.Path.GetFileNameWithoutExtension(tempPath),
-                        };
-                        //IconInfo iconInfo = CommonCode.GetIconInfoByPath_NoWrite(filePath);
-                        this.Dispatcher.Invoke(() =>
-                        {
-                            SearchIconList.IconList.Add(iconInfo);
-                        });
                     }
-                }).Start();
 
 
-                if (RightCard.SearchListBox.Items.Count > 0)
-                {
-                    RightCard.SearchListBox.SelectedIndex = 0;
-                }
-                RightCard.VerticalUFG.Visibility = Visibility.Visible;
-            });
+                    if (appData.AppConfig.EnableEveryThing == true)
+                    {
+                        new Thread(() =>
+                        {
+                            //EveryThing全盘搜索
+                            ObservableCollection<IconInfo> iconBakList = EveryThingUtil.Search(inputText);
+                            count += iconBakList.Count;
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                TotalMsgBtn.Visibility = Visibility.Visible;
+                                TotalMsgBtn.Content = count + " of " + Convert.ToInt64(EveryThingUtil.Everything_GetNumResults());
+                                foreach (IconInfo icon in iconBakList)
+                                {
+                                    if (RunTimeStatus.EVERYTHING_NEW_SEARCH) return;
+                                    SearchIconList.IconList.Add(icon);
+                                }
+                            });
+
+                            //异步加载图标
+                            if (iconBakList != null && iconBakList.Count > 0)
+                            {
+                                new Thread(() =>
+                                {
+                                    foreach (IconInfo icon in iconBakList)
+                                    {
+                                        if (RunTimeStatus.EVERYTHING_NEW_SEARCH) return;
+                                        this.Dispatcher.Invoke(() =>
+                                        {
+                                            icon.BitmapImage_NoWrite = ImageUtil.GetBitmapIconByUnknownPath(icon.Path);
+                                        });
+                                    }
+                                }).Start();
+                            }
+                        }).Start();
+                    }
+
+
+
+                    if (RightCard.SearchListBox.Items.Count > 0)
+                    {
+                        RightCard.SearchListBox.SelectedIndex = 0;
+                    }
+                    RightCard.VerticalUFG.Visibility = Visibility.Visible;
+                });
+
+            }).Start();
         }
 
         /// <summary>
@@ -234,15 +243,34 @@ namespace GeekDesk
         /// </summary>
         public void HidedSearchBox()
         {
+            RunTimeStatus.EVERYTHING_NEW_SEARCH = true;
+            new Thread(() =>
+            {
+                Thread.Sleep(1000);
+                RunTimeStatus.EVERYTHING_NEW_SEARCH = false;
+            }).Start();
+
+            Keyboard.Focus(SearchBox);
             RunTimeStatus.SEARCH_BOX_SHOW = false;
             SearchBox.TextChanged -= SearchBox_TextChanged;
             SearchBox.Clear();
             SearchBox.TextChanged += SearchBox_TextChanged;
             SearchBox.Width = 0;
-            SearchIconList.IconList.Clear();
+            TotalMsgBtn.Content = "0 of 0";
+            TotalMsgBtn.Visibility = Visibility.Hidden;
             RightCard.VisibilitySearchCard(Visibility.Collapsed);
-            Keyboard.Focus(SearchBox);
-            App.DoEvents();
+
+            SearchIconList.RemoveAll();
+
+            //App.DoEvents();
+            //new Thread(() =>
+            //{
+            //    this.Dispatcher.Invoke(() =>
+            //    {
+                    
+            //    });
+            //}).Start();
+
         }
 
 
@@ -329,9 +357,15 @@ namespace GeekDesk
             //开启延迟搜索  优化搜索功能
             searchDelayHelper.Idled += SearchDelay;
 
-            //开启EveryThing插件
-            EveryThingUtil.StartEveryThing(Constants.PLUGINS_PATH);
 
+            if (appData.AppConfig.EnableEveryThing == true)
+            {
+                //开启EveryThing插件
+                EveryThingUtil.EnableEveryThing();
+            }
+
+
+            Keyboard.Focus(SearchBox);
 
             MessageUtil.ChangeWindowMessageFilter(MessageUtil.WM_COPYDATA, 1);
         }
@@ -783,6 +817,10 @@ namespace GeekDesk
             if (appData.AppConfig.MouseMiddleShow || appData.AppConfig.SecondsWindow == true)
             {
                 MouseHookThread.Dispose();
+            }
+            if (appData.AppConfig.EnableEveryThing == true)
+            {
+                EveryThingUtil.DisableEveryThing();
             }
             Application.Current.Shutdown();
         }

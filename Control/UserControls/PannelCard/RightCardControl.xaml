@@ -28,6 +28,11 @@
             <Setter Property="Height"  Value="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImageHeight, Mode=OneWay}"/>
             <Setter Property="Source"  Value="{Binding BitmapImage}"/>
         </Style>
+        <Style x:Key="ImageStyleNoWrite" TargetType="Image">
+            <Setter Property="Width"   Value="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImageWidth, Mode=OneWay}"/>
+            <Setter Property="Height"  Value="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImageHeight, Mode=OneWay}"/>
+            <Setter Property="Source"  Value="{Binding BitmapImage_NoWrite}"/>
+        </Style>
         <Style x:Key="MyListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
             <Setter Property="Template">
@@ -281,19 +286,23 @@
                 <SolidColorBrush Color="#FFFFFFFF" Opacity="0"/>
             </hc:Card.BorderBrush>
             <Grid>
-                <WrapPanel Orientation="Horizontal" VirtualizingPanel.VirtualizationMode="Recycling"  
-                           VirtualizingPanel.IsVirtualizing="True"  
-                           VirtualizingPanel.IsContainerVirtualizable="True"
+                
+
+                <WrapPanel Orientation="Horizontal" 
                            Margin="10"
                            >
-                    <UniformGrid x:Name="VerticalUFG" xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeIn}, OffsetY= -10, Event=Visibility}">
+                    <UniformGrid x:Name="VerticalUFG" 
+                                 xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeIn}, OffsetY= -10, Event=Visibility}"
+                                 >
                         <!--<hc:TransitioningContentControl TransitionMode="Left2RightWithFade">-->
-                        <ListBox ItemsSource="{Binding Source={StaticResource SearchIconList},Path=IconList}" 
-                                     BorderThickness="0"
+                        <ListBox ItemsSource="{Binding Source={StaticResource SearchIconList},Path=IconList, Mode=OneWay}" 
+                                 VirtualizingStackPanel.VirtualizationMode="Recycling"  VirtualizingStackPanel.IsVirtualizing="True"    
+                                 BorderThickness="0"
                                      Padding="0,10,0,0"
                                      x:Name="SearchListBox"
                                      SelectionChanged="SearchListBox_SelectionChanged"
                                      >
+                   
                             <ListBox.Template>
                                 <ControlTemplate TargetType="ListBox">
                                     <hc:ScrollViewer  
@@ -302,6 +311,7 @@
                                                      IsInertiaEnabled="True"
                                                      CanContentScroll="True"
                                                      PreviewMouseWheel="VerticalIconList_PreviewMouseWheel"
+                                                     ScrollChanged="VerticalCard_ScrollChanged"
                                                      >
                                         <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderBrush}">
                                             <ItemsPresenter/>
@@ -333,7 +343,7 @@
 
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <StackPanel Background="#00FFFFFF"
+                                    <VirtualizingStackPanel  Orientation="Vertical"   Background="#00FFFFFF"
                                            Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.WindowWidth, Mode=OneWay, 
                                                 Converter={StaticResource GetWidthByWWConvert}, 
                                                 ConverterParameter={x:Static cst:WidthTypeEnum.RIGHT_CARD}}"
@@ -360,7 +370,6 @@
                                             </Style>
                                         </Border.Style>
                                         <WrapPanel Tag="{Binding}"
-                                                   Height="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImageHeight, Mode=OneWay}" 
                                                    Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.WindowWidth, Mode=OneWay, 
                                                         Converter={StaticResource GetWidthByWWConvert}, 
                                                         ConverterParameter={x:Static cst:WidthTypeEnum.RIGHT_CARD_HALF}}" 
@@ -376,17 +385,29 @@
                                                    MouseMove="SearchIcon_MouseMove"
                                                    Margin="25,10,0,10"
                                                    >
-                                            <Image Style="{StaticResource ImageStyle}"  RenderOptions.BitmapScalingMode="HighQuality"/>
-                                            <TextBlock
-                                               Margin="10,5,0,0"
-                                               MaxHeight="40"
-                                               FontSize="13"
-                                               TextWrapping="Wrap" 
-                                               TextTrimming="WordEllipsis"
-                                               TextAlignment="Left" 
-                                               VerticalAlignment="Center" 
-                                               Foreground="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.TextColor}"
-                                               Text="{Binding Name}"/>
+                                            <Image Style="{StaticResource ImageStyleNoWrite}"  RenderOptions.BitmapScalingMode="HighQuality"/>
+                                            <StackPanel Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.WindowWidth, Mode=OneWay, 
+                                                        Converter={StaticResource GetWidthByWWConvert}, 
+                                                        ConverterParameter={x:Static cst:WidthTypeEnum.RIGHT_CARD_HALF_TEXT}}" >
+                                                <TextBlock
+                                                   Margin="10,5,0,0"
+                                                   MaxHeight="40"
+                                                   FontSize="13"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   TextAlignment="Left" 
+                                                   VerticalAlignment="Center" 
+                                                   Foreground="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.TextColor}"
+                                                   Text="{Binding Name}"/>
+                                                <TextBlock
+                                                   Margin="10,10,0,0"
+                                                   MaxHeight="40"
+                                                   FontSize="11"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   TextAlignment="Left" 
+                                                   VerticalAlignment="Center" 
+                                                   Foreground="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.TextColor}"
+                                                   Text="{Binding Path}"/>
+                                            </StackPanel>
                                         </WrapPanel>
                                     </Border>
                                 </DataTemplate>

@@ -119,5 +119,8 @@ namespace GeekDesk.Plugins.EveryThing
         public static extern bool Everything_SetRunCountFromFileName(string lpFileName, UInt32 dwRunCount);
         [DllImport(@"lib\Plugins\EveryThing\lib\Everything64.dll")]
         public static extern UInt32 Everything_IncRunCountFromFileName(string lpFileName);
+
+        [DllImport(@"lib\Plugins\EveryThing\lib\Everything64.dll")]
+        public static extern bool Everything_Exit();
     }
 }

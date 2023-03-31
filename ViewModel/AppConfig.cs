@@ -105,6 +105,23 @@ namespace GeekDesk.ViewModel
 
         private bool? secondsWindow; //秒数窗口 默认打开
 
+        private bool? enableEveryThing;
+
+
+        public bool? EnableEveryThing
+        {
+            get
+            {
+                if (enableEveryThing == null) enableEveryThing = false;
+                return enableEveryThing;
+            }
+            set
+            {
+                enableEveryThing = value;
+                OnPropertyChanged("EnableEveryThing");
+            }
+        }
+
         #region GetSet
 
         public bool? SecondsWindow

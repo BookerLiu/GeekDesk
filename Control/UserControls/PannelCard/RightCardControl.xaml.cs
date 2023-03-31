@@ -2,8 +2,10 @@
 using GeekDesk.Constant;
 using GeekDesk.Control.Other;
 using GeekDesk.Control.Windows;
+using GeekDesk.Plugins.EveryThing;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
+using GeekDesk.ViewModel.Temp;
 using HandyControl.Controls;
 using System;
 using System.Collections.ObjectModel;
@@ -850,7 +852,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
         /// <summary>
         /// 菜单结果icon 列表鼠标滚轮预处理时间  
         /// 主要使用自定义popup解决卡顿问题解决卡顿问题
-        /// 以及滚动条收尾切换菜单
+        /// 以及滚动条首尾切换菜单
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1046,5 +1048,49 @@ namespace GeekDesk.Control.UserControls.PannelCard
             MyPoptipContent.Text = info.Content;
             MyPoptip.VerticalOffset = 30;
         }
+
+        private void VerticalCard_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (appData.AppConfig.EnableEveryThing == true && EveryThingUtil.hasNext())
+            {
+                HandyControl.Controls.ScrollViewer sv = sender as HandyControl.Controls.ScrollViewer;
+                if (sv.ExtentHeight - (sv.ActualHeight + sv.VerticalOffset) < 200 && EveryThingUtil.hasNext())
+                {
+                    string[] split = MainWindow.mainWindow.TotalMsgBtn.Content.ToString().Split(' ');
+                    long count = Convert.ToInt64(split[0]);
+                    ObservableCollection<IconInfo> iconBakList = EveryThingUtil.NextPage();
+                    count += iconBakList.Count;
+
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        MainWindow.mainWindow.TotalMsgBtn.Content = count + " of " + split[split.Length - 1];
+                        foreach (IconInfo icon in iconBakList)
+                        {
+                            if (RunTimeStatus.EVERYTHING_NEW_SEARCH) return;
+                            SearchIconList.IconList.Add(icon);
+                        }
+                    });
+                    //异步加载图标
+                    if (iconBakList != null && iconBakList.Count > 0)
+                    {
+                        ThreadPool.QueueUserWorkItem(state =>
+                        {
+                            foreach (IconInfo icon in iconBakList)
+                            {
+                                if (RunTimeStatus.EVERYTHING_NEW_SEARCH) return;
+                                this.Dispatcher.Invoke(() =>
+                                {
+                                    icon.BitmapImage_NoWrite = ImageUtil.GetBitmapIconByUnknownPath(icon.Path);
+                                });
+                            }
+                        });
+                    }
+
+                }
+            }
+        }
+
+
+
     }
 }

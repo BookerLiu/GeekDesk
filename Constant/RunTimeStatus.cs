@@ -60,5 +60,15 @@
         public static int MOUSE_MOVE_COUNT = 0;
 
 
+        /// <summary>
+        /// everything 新的键入搜索
+        /// </summary>
+        public static bool EVERYTHING_NEW_SEARCH = false;
+
+        /// <summary>
+        /// 键入多少毫秒后  没有新的键入开启搜索
+        /// </summary>
+        public static int EVERYTHING_SEARCH_DELAY_TIME = 300;
+
     }
 }

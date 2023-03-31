@@ -21,8 +21,15 @@ namespace GeekDesk.ViewModel.Temp
             }
         }
 
+        public static void RemoveAll()
+        {
+            while (IconList.Count > 0)
+            {
+                IconList.RemoveAt(IconList.Count - 1);
+            }
+        }
 
-        public static event PropertyChangedEventHandler PropertyChanged;
+        private static event PropertyChangedEventHandler PropertyChanged;
         private static void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(null, new PropertyChangedEventArgs(propertyName));

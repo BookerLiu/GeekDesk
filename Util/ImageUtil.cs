@@ -121,6 +121,34 @@ namespace GeekDesk.Util
         }
 
 
+        public static BitmapImage GetBitmapIconByUnknownPath(string path)
+        {
+            //string base64 = ImageUtil.FileImageToBase64(path, System.Drawing.Imaging.ImageFormat.Png);
+            string ext = "";
+            if (!ImageUtil.IsSystemItem(path))
+            {
+                ext = System.IO.Path.GetExtension(path).ToLower();
+            }
+
+            string iconPath = null;
+            if (".lnk".Equals(ext))
+            {
+
+                string targetPath = FileUtil.GetTargetPathByLnk(path);
+                iconPath = FileUtil.GetIconPathByLnk(path);
+                if (targetPath != null)
+                {
+                    path = targetPath;
+                }
+            }
+            if (StringUtil.IsEmpty(iconPath))
+            {
+                iconPath = path;
+            }
+
+            return ImageUtil.GetBitmapIconByPath(iconPath);
+        }
+
         /// <summary>
         ///
         /// </summary>

@@ -48,10 +48,11 @@
                 <hc:UniformSpacingPanel Spacing="10" HorizontalAlignment="Center" Margin="0,5,0,0">
                     <hc:Shield x:Name="PublicWeChatPanel" Subject="公众号" Visibility="Visible" Status="抓几个娃" Margin="0,0,5,0"  Color="#04913B">
                         <hc:Poptip.Instance>
-                            <hc:Poptip PlacementType="Top">
+                            <hc:Poptip PlacementType="Top" >
                                 <hc:Poptip.Content>
                                     <Image x:Name="PublicWeChat" Width="150" Height="150" />
                                 </hc:Poptip.Content>
+                                
                             </hc:Poptip>
                         </hc:Poptip.Instance>
                     </hc:Shield>
