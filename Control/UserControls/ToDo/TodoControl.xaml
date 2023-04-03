@@ -82,10 +82,15 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type DataGridRow}">
-                                        <Border CornerRadius="8" MouseRightButtonDown="DataGridRow_MouseRightButtonDown" Margin="0,0,0,5" BorderBrush="Black" BorderThickness="0" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                        <Border CornerRadius="8" MouseRightButtonDown="DataGridRow_MouseRightButtonDown" Margin="0,0,0,5" BorderBrush="Black" BorderThickness="0" SnapsToDevicePixels="True">
                                             <Border.Style>
                                                 <Style TargetType="Border">
                                                     <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                                    <Setter Property="Background">
+                                                        <Setter.Value>
+                                                            <SolidColorBrush Color="White" Opacity="0.6"/>
+                                                        </Setter.Value>
+                                                    </Setter>
                                                 </Style>
                                             </Border.Style>
                                             <SelectiveScrollingGrid>

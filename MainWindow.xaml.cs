@@ -374,6 +374,14 @@ namespace GeekDesk
                 {
                     hotKeyId = GlobalHotKey.RegisterHotKey(appData.AppConfig.HotkeyModifiers, appData.AppConfig.Hotkey, () =>
                     {
+                        if (RunTimeStatus.MAIN_HOT_KEY_DOWN) return;
+                        RunTimeStatus.MAIN_HOT_KEY_DOWN = true;
+                        new Thread(() =>
+                        {
+                            Thread.Sleep(RunTimeStatus.MAIN_HOT_KEY_TIME);
+                            RunTimeStatus.MAIN_HOT_KEY_DOWN = false;
+                        }).Start();
+
                         if (MotionControl.hotkeyFinished)
                         {
                             if (CheckSholeShowApp())

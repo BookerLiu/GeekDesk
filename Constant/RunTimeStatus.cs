@@ -70,5 +70,13 @@
         /// </summary>
         public static int EVERYTHING_SEARCH_DELAY_TIME = 300;
 
+        /// <summary>
+        /// 控制主界面热键按下规定时间内只执行一次show hide
+        /// </summary>
+        public static bool MAIN_HOT_KEY_DOWN = false;
+        /// <summary>
+        /// 控制主界面热键按下规定时间内只执行一次show hide
+        /// </summary>
+        public static int MAIN_HOT_KEY_TIME = 500;
     }
 }
