@@ -182,9 +182,13 @@
                                                          CanContentScroll="True"
                                                          PreviewMouseWheel="IconListBox_MouseWheel"
                                                          >
-                                            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderBrush}">
+                                            <Border BorderBrush="{TemplateBinding BorderBrush}" 
+                                                    BorderThickness="{TemplateBinding BorderBrush}"
+                                                    Width="{Binding AppConfig.WindowWidth, Mode=OneWay, 
+                                                Converter={StaticResource GetWidthByWWConvert}, 
+                                                ConverterParameter={x:Static cst:WidthTypeEnum.RIGHT_CARD}}"
+                                                    >
                                                 <ItemsPresenter/>
-
                                             </Border>
                                         </hc:ScrollViewer>
                                     </ControlTemplate>

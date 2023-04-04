@@ -26,10 +26,10 @@ namespace GeekDesk.Converts
                 return config.WindowWidth - config.MenuCardWidth;
             } else if (WidthTypeEnum.RIGHT_CARD_HALF == type)
             {
-                return (config.WindowWidth - config.MenuCardWidth) * 0.8;
+                return (config.WindowWidth - config.MenuCardWidth) * 0.618;
             } else if (WidthTypeEnum.RIGHT_CARD_HALF_TEXT == type)
             {
-                return (config.WindowWidth - config.MenuCardWidth) * 0.8 - config.ImageWidth - 20;
+                return (config.WindowWidth - config.MenuCardWidth) * 0.618 - config.ImageWidth - 20;
             }
 
             return config.WindowWidth;
