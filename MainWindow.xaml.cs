@@ -257,16 +257,6 @@ namespace GeekDesk
             RightCard.VisibilitySearchCard(Visibility.Collapsed);
 
             SearchIconList.RemoveAll();
-
-            //App.DoEvents();
-            //new Thread(() =>
-            //{
-            //    this.Dispatcher.Invoke(() =>
-            //    {
-                    
-            //    });
-            //}).Start();
-
         }
 
 
@@ -350,6 +340,7 @@ namespace GeekDesk
             //毛玻璃  暂时未解决阴影问题
             //BlurGlassUtil.EnableBlur(this);
 
+            //设置归属桌面  解决桌面覆盖程序界面的bug
             WindowUtil.SetOwner(this, WindowUtil.GetDesktopHandle(this, DesktopLayer.Progman));
 
             if (appData.AppConfig.EnableEveryThing == true)
@@ -384,7 +375,7 @@ namespace GeekDesk
 
                         if (MotionControl.hotkeyFinished)
                         {
-                            if (CheckSholeShowApp())
+                            if (CheckShouldShowApp())
                             {
                                 ShowApp();
                             }
@@ -707,7 +698,7 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void NotifyIcon_Click(object sender, RoutedEventArgs e)
         {
-            if (CheckSholeShowApp())
+            if (CheckShouldShowApp())
             {
                 ShowApp();
             }
@@ -717,7 +708,7 @@ namespace GeekDesk
             }
         }
 
-        private static bool CheckSholeShowApp()
+        private static bool CheckShouldShowApp()
         {
             return mainWindow.Visibility == Visibility.Collapsed
                 || mainWindow.Opacity == 0

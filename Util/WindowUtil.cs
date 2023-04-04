@@ -60,12 +60,18 @@ namespace GeekDesk.Util
         private static extern bool SetWindowPos(HandleRef hWnd, HandleRef hWndInsertAfter, int x, int y, int cx, int cy, int flags);
         [DllImport("user32.dll")]
         private static extern int ReleaseDC(IntPtr window, IntPtr handle);
+        [DllImport("user32.dll")]
+        static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
 
 
-
-        public static void SetOwner(Window source, IntPtr parentHandle)
+        public static void SetOwner(Window window, Window parentWindow)
         {
-            WindowInteropHelper helper = new WindowInteropHelper(source);
+            SetOwner(window, new WindowInteropHelper(parentWindow).Handle);
+        }
+
+        public static void SetOwner(Window window, IntPtr parentHandle)
+        {
+            WindowInteropHelper helper = new WindowInteropHelper(window);
             helper.Owner = parentHandle;
         }
 
@@ -79,10 +85,21 @@ namespace GeekDesk.Util
         {
             IntPtr handle = new WindowInteropHelper(window).Handle;
             IntPtr deskHandle = GetDesktopHandle(window, DesktopLayer.Progman);
-            IntPtr deskHandle2 = GetDesktopHandle(window, DesktopLayer.FolderView);
-            IntPtr deskHandle3 = GetDesktopHandle(window, DesktopLayer.SHELLDLL);
             IntPtr topHandle = GetForegroundWindow();
-            return (topHandle.Equals(handle) || topHandle.Equals(deskHandle));
+            //暂时不能正确获取桌面handle  但发现焦点在桌面时 window title为空
+            string windowTitle = GetWindowTitle(topHandle);
+            return topHandle.Equals(handle) || topHandle.Equals(deskHandle) || string.IsNullOrEmpty(windowTitle);
+        }
+
+        private static string GetWindowTitle(IntPtr handle)
+        {
+            const int nChars = 256;
+            StringBuilder Buff = new StringBuilder(nChars);
+            if (GetWindowText(handle, Buff, nChars) > 0)
+            {
+                return Buff.ToString();
+            }
+            return null;
         }
 
 
@@ -110,19 +127,13 @@ namespace GeekDesk.Util
                     hDesktop = GetWindow(hWnd, GW_CHILD);//第2层桌面      
                     hWnd = new HandleRef(window, hDesktop);
                     hDesktop = GetWindow(hWnd, GW_CHILD);//第3层桌面    
+                    hWnd = new HandleRef(window, hDesktop);
+                    hDesktop = GetWindow(hWnd, GW_CHILD);//第4层桌面    
                     break;
             }
             return hDesktop;
         }
 
-        public void EmbedDesktop(Object embeddedWindow, IntPtr childWindow, IntPtr parentWindow)
-        {
-            Form window = (Form)embeddedWindow;
-            HandleRef HWND_BOTTOM = new HandleRef(embeddedWindow, new IntPtr(1));
-            const int SWP_FRAMECHANGED = 0x0020;//发送窗口大小改变消息
-            SetParent(childWindow, parentWindow);
-            SetWindowPos(new HandleRef(window, childWindow), HWND_BOTTOM, 300, 300, window.Width, window.Height, SWP_FRAMECHANGED);
-        }
     }
 
     public enum DesktopLayer
