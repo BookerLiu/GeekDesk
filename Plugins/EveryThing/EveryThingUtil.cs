@@ -23,6 +23,10 @@ namespace GeekDesk.Plugins.EveryThing
         private static long pageCount = 20;
         private static UInt32 ui = 0;
 
+        private static Process serviceProcess = null;
+        private static Process exeProcess = null;
+
+
         public static void EnableEveryThing()
         {
             string pluginsPath = Constants.PLUGINS_PATH;
@@ -52,33 +56,29 @@ namespace GeekDesk.Plugins.EveryThing
                     if (!enabled)
                     {
                         //启动服务
-                        using (Process p = new Process())
-                        {
-                            p.StartInfo.FileName = everyThingPath;
-                            p.StartInfo.UseShellExecute = true;
-                            p.StartInfo.Verb = "runas";
-                            p.StartInfo.Arguments = " -svc";
-                            p.Start();
-                        }
+                        serviceProcess = new Process();
+                        serviceProcess.StartInfo.FileName = everyThingPath;
+                        serviceProcess.StartInfo.UseShellExecute = true;
+                        serviceProcess.StartInfo.Verb = "runas";
+                        serviceProcess.StartInfo.Arguments = " -svc";
+                        serviceProcess.Start();
                     }
 
                     Thread.Sleep(2000);
                     processList = Process.GetProcesses();
 
                     //启动程序
-                    using (Process p = new Process())
+                    exeProcess = new Process();
+                    exeProcess.StartInfo.FileName = everyThingPath;
+                    exeProcess.Start();
+                    int waitTime = 5000;
+                    while (true && waitTime > 0)
                     {
-                        p.StartInfo.FileName = everyThingPath;
-                        p.Start();
-                        int waitTime = 5000;
-                        while (true && waitTime > 0)
-                        {
-                            Thread.Sleep(100);
-                            waitTime -= 100;
-                            p.CloseMainWindow();
-                        }
-
+                        Thread.Sleep(100);
+                        waitTime -= 100;
+                        exeProcess.CloseMainWindow();
                     }
+
                 } catch (Exception e)
                 {
 
@@ -102,6 +102,8 @@ namespace GeekDesk.Plugins.EveryThing
                     EveryThing32.Everything_Exit();
                 }
             }
+            if (exeProcess != null) exeProcess.Kill();
+            if (serviceProcess != null) serviceProcess.Kill();
 
         }
 
