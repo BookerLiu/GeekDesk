@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using File = System.IO.File;
 
 namespace GeekDesk.Util
 {
@@ -45,17 +46,22 @@ namespace GeekDesk.Util
         /// <returns></returns>
         public static string GetArgByLnk(string filePath)
         {
+            //return "";
             try
             {
                 WshShell shell = new WshShell();
-                IWshRuntimeLibrary.IWshShortcut shortcut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(filePath);
-                return shortcut.Arguments;
+                if (File.Exists(filePath))
+                {
+                    object shortcutObj = shell.CreateShortcut(filePath);
+                    IWshRuntimeLibrary.IWshShortcut shortcut = (IWshRuntimeLibrary.IWshShortcut)shortcutObj;
+                    return shortcut.Arguments;
+                }
             }
             catch (Exception e)
             {
                 //LogUtil.WriteErrorLog(e, "获取启动参数失败! filePath=" + filePath);
-                return "";
             }
+            return "";
         }
 
         /// <summary>

@@ -70,7 +70,7 @@ namespace GeekDesk.Plugins.EveryThing
                     {
                         p.StartInfo.FileName = everyThingPath;
                         p.Start();
-                        int waitTime = 3000;
+                        int waitTime = 5000;
                         while (true && waitTime > 0)
                         {
                             Thread.Sleep(100);

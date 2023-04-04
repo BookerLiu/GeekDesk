@@ -128,7 +128,7 @@ namespace GeekDesk
                 if (!RunTimeStatus.EVERYTHING_NEW_SEARCH)
                 {                    
                     RunTimeStatus.EVERYTHING_NEW_SEARCH = true;
-                    SearchDelay(null, null);
+                    SearchDelay();
                 }
             } else
             {
@@ -143,7 +143,7 @@ namespace GeekDesk
             
         }
 
-        private void SearchDelay(object sender, EventArgs args)
+        private void SearchDelay()
         {
 
             new Thread(() =>
@@ -163,8 +163,7 @@ namespace GeekDesk
                     {
                         SearchIconList.RemoveAll();
                     }
-                    //DelayHelper dh = sender as DelayHelper;
-                    //string inpuText = dh.Source as string;
+           
                     string inputText = SearchBox.Text.ToLower().Trim();
 
                     int count = 0;
@@ -215,7 +214,7 @@ namespace GeekDesk
                                         this.Dispatcher.Invoke(() =>
                                         {
                                             icon.BitmapImage_NoWrite = ImageUtil.GetBitmapIconByUnknownPath(icon.Path);
-                                        });
+                                        }, DispatcherPriority.SystemIdle);
                                     }
                                 }).Start();
                             }
@@ -245,18 +244,23 @@ namespace GeekDesk
                 Thread.Sleep(1000);
                 RunTimeStatus.EVERYTHING_NEW_SEARCH = false;
             }).Start();
+            new Thread(() =>
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    Keyboard.Focus(SearchBox);
+                    RunTimeStatus.SEARCH_BOX_SHOW = false;
+                    SearchBox.TextChanged -= SearchBox_TextChanged;
+                    SearchBox.Clear();
+                    SearchBox.TextChanged += SearchBox_TextChanged;
+                    SearchBox.Width = 0;
+                    TotalMsgBtn.Content = "0 of 0";
+                    TotalMsgBtn.Visibility = Visibility.Hidden;
+                    RightCard.VisibilitySearchCard(Visibility.Collapsed);
 
-            Keyboard.Focus(SearchBox);
-            RunTimeStatus.SEARCH_BOX_SHOW = false;
-            SearchBox.TextChanged -= SearchBox_TextChanged;
-            SearchBox.Clear();
-            SearchBox.TextChanged += SearchBox_TextChanged;
-            SearchBox.Width = 0;
-            TotalMsgBtn.Content = "0 of 0";
-            TotalMsgBtn.Visibility = Visibility.Hidden;
-            RightCard.VisibilitySearchCard(Visibility.Collapsed);
-
-            SearchIconList.RemoveAll();
+                    SearchIconList.RemoveAll();
+                });
+            }).Start();
         }
 
 

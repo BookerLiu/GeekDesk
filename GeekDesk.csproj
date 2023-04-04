@@ -486,7 +486,13 @@
     </EmbeddedResource>
     <Resource Include="Resource\Iconfont\iconfont.json" />
     <None Include="app.manifest" />
+    <None Include="Plugins\EveryThing\32\Everything.ini">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Plugins\EveryThing\32\Everything.lng">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Plugins\EveryThing\64\Everything.ini">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Plugins\EveryThing\64\Everything.lng">
