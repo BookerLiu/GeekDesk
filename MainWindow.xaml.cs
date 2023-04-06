@@ -77,9 +77,12 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void SearchHotKeyDown(object sender, CanExecuteRoutedEventArgs e)
         {
-            if (appData.AppConfig.SearchType == SearchType.HOT_KEY)
+            if (appData.AppConfig.SearchType == SearchType.HOT_KEY && !RunTimeStatus.SEARCH_BOX_SHOW)
             {
                 ShowSearchBox();
+            } else if (RunTimeStatus.SEARCH_BOX_SHOW)
+            {
+                HidedSearchBox();
             }
         }
 
@@ -94,7 +97,7 @@ namespace GeekDesk
             SearchBox.Focus();
 
             //执行一遍a查询
-            SearchBox_TextChanged(null, null);
+            //SearchBox_TextChanged(null, null);
         }
         /// <summary>
         /// 搜索开始

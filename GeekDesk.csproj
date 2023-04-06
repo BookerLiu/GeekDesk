@@ -324,8 +324,13 @@
     <Compile Include="Util\StringUtil.cs" />
     <Compile Include="Util\SvgToGeometry.cs" />
     <Compile Include="Util\UserActivityHook.cs" />
+    <Compile Include="Util\WrpaPanel\ItemRange.cs" />
+    <Compile Include="Util\WrpaPanel\SpacingMode.cs" />
+    <Compile Include="Util\WrpaPanel\VirtualizingPanelBase.cs" />
+    <Compile Include="Util\WrpaPanel\VirtualizingWrapPanel.cs" />
     <Compile Include="Util\WindowsThumbnailProvider.cs" />
     <Compile Include="Util\WindowUtil.cs" />
+    <Compile Include="Util\WrpaPanel\ScrollDirection.cs" />
     <Compile Include="ViewModel\AppConfig.cs" />
     <Compile Include="ViewModel\AppData.cs" />
     <Compile Include="ViewModel\GradientBGParam.cs" />

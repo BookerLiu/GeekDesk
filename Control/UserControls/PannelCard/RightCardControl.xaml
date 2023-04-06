@@ -8,6 +8,7 @@
              xmlns:cvt="clr-namespace:GeekDesk.Converts"
               xmlns:cst="clr-namespace:GeekDesk.Constant"
              xmlns:DraggAnimatedPanel="clr-namespace:DraggAnimatedPanel"
+             xmlns:util="clr-namespace:GeekDesk.Util"
              xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
              xmlns:ot="clr-namespace:GeekDesk.Control.Other" 
              xmlns:viewmodel="clr-namespace:GeekDesk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AppData}"
@@ -204,7 +205,7 @@
                                                         HorizontalAlignment="Center" 
                                                         SwapCommand="{Binding SwapCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>-->
 
-                                        <WrapPanel Background="#00FFFFFF"
+                                        <util:VirtualizingWrapPanel 
                                                 Width="{Binding AppConfig.WindowWidth, Mode=OneWay, 
                                                 Converter={StaticResource GetWidthByWWConvert}, 
                                                 ConverterParameter={x:Static cst:WidthTypeEnum.RIGHT_CARD}}"
@@ -347,7 +348,13 @@
 
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <VirtualizingStackPanel  Orientation="Vertical"   Background="#00FFFFFF"
+                                    <VirtualizingStackPanel  
+                                        Orientation="Vertical"   
+                                        Background="#00FFFFFF"
+                                        IsVirtualizing="True" 
+                                        IsVirtualizingWhenGrouping="True" 
+                                        ScrollUnit="Pixel" 
+                                        VirtualizationMode="Recycling"
                                            Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.WindowWidth, Mode=OneWay, 
                                                 Converter={StaticResource GetWidthByWWConvert}, 
                                                 ConverterParameter={x:Static cst:WidthTypeEnum.RIGHT_CARD}}"

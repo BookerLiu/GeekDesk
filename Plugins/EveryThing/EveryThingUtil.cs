@@ -132,6 +132,14 @@ namespace GeekDesk.Plugins.EveryThing
 
         public static ObservableCollection<IconInfo> NextPage()
         {
+            if (ui == 0)
+            {
+                pageCount = 40;
+            } else
+            {
+                pageCount = 20;
+            }
+
             string filePath;
             const int bufsize = 260;
             StringBuilder buf = new StringBuilder(bufsize);
