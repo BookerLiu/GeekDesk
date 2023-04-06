@@ -27,7 +27,7 @@ namespace GeekDesk.Plugins.EveryThing
         private static Process exeProcess = null;
 
 
-        public static void EnableEveryThing()
+        public static void EnableEveryThing(int delayTime = 2000)
         {
             string pluginsPath = Constants.PLUGINS_PATH;
 
@@ -38,7 +38,7 @@ namespace GeekDesk.Plugins.EveryThing
             {
                 try
                 {
-                    Thread.Sleep(2000);
+                    Thread.Sleep(delayTime);
 
                     //判断EveryThing服务是否已启动
                     bool enabled = false;

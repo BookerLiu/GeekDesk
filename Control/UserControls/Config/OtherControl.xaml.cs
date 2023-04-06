@@ -196,7 +196,7 @@ namespace GeekDesk.Control.UserControls.Config
         {
             if (MainWindow.appData.AppConfig.EnableEveryThing == true)
             {
-                EveryThingUtil.EnableEveryThing();
+                EveryThingUtil.EnableEveryThing(0);
             } else
             {
                 EveryThingUtil.DisableEveryThing();
