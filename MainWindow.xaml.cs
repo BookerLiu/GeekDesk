@@ -332,7 +332,7 @@ namespace GeekDesk
             }
 
             //监听实时文件夹菜单
-            FileWatcher.StartLinkMenuWatcher(appData);
+            FileWatcher.EnableLinkMenuWatcher(appData);
 
 
             //更新线程开启  检测更新

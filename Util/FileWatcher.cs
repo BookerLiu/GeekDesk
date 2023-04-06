@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GeekDesk.Util
@@ -88,7 +89,7 @@ namespace GeekDesk.Util
         /// 开启所有菜单监听
         /// </summary>
         /// <param name="appData"></param>
-        public static void StartLinkMenuWatcher(AppData appData)
+        public static void EnableLinkMenuWatcher(AppData appData)
         {
             foreach (MenuInfo menuInfo in appData.MenuList)
             {
@@ -97,6 +98,37 @@ namespace GeekDesk.Util
                     LinkMenuWatcher(menuInfo);
                 }
             }
+            RefreshLinkMenuIcon(appData);
+        }
+
+        private static void RefreshLinkMenuIcon(AppData appData)
+        {
+            new Thread(() =>
+            {
+                foreach (MenuInfo menuInfo in appData.MenuList)
+                {
+                    if (menuInfo.MenuType == Constant.MenuType.LINK)
+                    {
+                        DirectoryInfo dirInfo = new DirectoryInfo(menuInfo.LinkPath);
+                        FileSystemInfo[] fileInfos = dirInfo.GetFileSystemInfos();
+
+                        ObservableCollection<IconInfo> iconList = new ObservableCollection<IconInfo>();
+                        foreach (FileSystemInfo fileInfo in fileInfos)
+                        {
+                            IconInfo iconInfo = CommonCode.GetIconInfoByPath_NoWrite(fileInfo.FullName);
+                            iconList.Add(iconInfo);
+                        }
+                        App.Current.Dispatcher.Invoke(() =>
+                        {
+                            foreach (IconInfo iconInfo in iconList)
+                            {
+                                menuInfo.IconList = null;
+                                menuInfo.IconList = iconList;
+                            }
+                        });
+                    }
+                }
+            }).Start();
         }
 
         /// <summary>
