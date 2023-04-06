@@ -73,5 +73,6 @@
 - .net 4.7.2
 - [HandyControl](https://github.com/HandyOrg/HandyControl)  
 
-## Stargazers over time
-[![Stargazers over time](https://starchart.cc/Demo-Liu/GeekDesk.svg)](https://starchart.cc/Demo-Liu/GeekDesk)
+## Star History
+[![Star History Chart](https://api.star-history.com/svg?repos=BookerLiu/GeekDesk&type=Date)](https://star-history.com/#BookerLiu/GeekDesk&Date)
+
