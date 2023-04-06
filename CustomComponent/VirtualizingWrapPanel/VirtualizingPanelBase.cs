@@ -11,7 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
 
-namespace GeekDesk.Util.WrpaPanel
+namespace GeekDesk.CustomComponent.VirtualizingWrapPanel
 {
     public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     {
@@ -19,8 +19,17 @@ namespace GeekDesk.Util.WrpaPanel
         public static readonly DependencyProperty MouseWheelDeltaProperty = DependencyProperty.Register(nameof(MouseWheelDelta), typeof(double), typeof(VirtualizingPanelBase), new FrameworkPropertyMetadata(48.0));
         public static readonly DependencyProperty ScrollLineDeltaItemProperty = DependencyProperty.Register(nameof(ScrollLineDeltaItem), typeof(int), typeof(VirtualizingPanelBase), new FrameworkPropertyMetadata(1));
         public static readonly DependencyProperty MouseWheelDeltaItemProperty = DependencyProperty.Register(nameof(MouseWheelDeltaItem), typeof(int), typeof(VirtualizingPanelBase), new FrameworkPropertyMetadata(3));
+        private ScrollViewer scrollOwner;
 
-        public ScrollViewer? ScrollOwner { get; set; }
+        public ScrollViewer GetScrollOwner()
+        {
+            return scrollOwner;
+        }
+
+        public void SetScrollOwner(ScrollViewer value)
+        {
+            scrollOwner = value;
+        }
 
         public bool CanVerticallyScroll { get; set; }
         public bool CanHorizontallyScroll { get; set; }
@@ -88,7 +97,7 @@ namespace GeekDesk.Util.WrpaPanel
         {
             get
             {
-                if (_itemsOwner is null)
+                if (ItemsOwner1 is null)
                 {
                     /* Use reflection to access internal method because the public 
                      * GetItemsOwner method does always return the itmes control instead 
@@ -99,15 +108,15 @@ namespace GeekDesk.Util.WrpaPanel
                         null,
                         new Type[] { typeof(DependencyObject) },
                         null
-                    )!;
-                    _itemsOwner = (DependencyObject)getItemsOwnerInternalMethod.Invoke(null, new object[] { this })!;
+                    );
+                    ItemsOwner1 = (DependencyObject)getItemsOwnerInternalMethod.Invoke(null, new object[] { this });
                 }
-                return _itemsOwner;
+                return ItemsOwner1;
             }
         }
-        private DependencyObject? _itemsOwner;
+        private DependencyObject _itemsOwner;
 
-        protected ReadOnlyCollection<object?> Items => ((ItemContainerGenerator)ItemContainerGenerator).Items;
+        protected ReadOnlyCollection<object> Items => ((ItemContainerGenerator)ItemContainerGenerator).Items;
 
         protected new IRecyclingItemContainerGenerator ItemContainerGenerator
         {
@@ -123,7 +132,7 @@ namespace GeekDesk.Util.WrpaPanel
                 return _itemContainerGenerator;
             }
         }
-        private IRecyclingItemContainerGenerator? _itemContainerGenerator;
+        private IRecyclingItemContainerGenerator _itemContainerGenerator;
 
         public double ExtentWidth => Extent.Width;
         public double ExtentHeight => Extent.Height;
@@ -141,6 +150,8 @@ namespace GeekDesk.Util.WrpaPanel
         /// The range of items that a realized in viewport or cache.
         /// </summary>
         protected ItemRange ItemRange { get; set; }
+        public ScrollViewer ScrollOwner { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public DependencyObject ItemsOwner1 { get => _itemsOwner; set => _itemsOwner = value; }
 
         private Visibility previousVerticalScrollBarVisibility = Visibility.Collapsed;
         private Visibility previousHorizontalScrollBarVisibility = Visibility.Collapsed;
@@ -174,7 +185,7 @@ namespace GeekDesk.Util.WrpaPanel
 
             if (invalidateScrollInfo)
             {
-                ScrollOwner?.InvalidateScrollInfo();
+                GetScrollOwner()?.InvalidateScrollInfo();
             }
         }
 
@@ -245,20 +256,20 @@ namespace GeekDesk.Util.WrpaPanel
         {
             /* Sometimes when scrolling the scrollbar gets hidden without any reason. In this case the "IsMeasureValid" 
              * property of the ScrollOwner is false. To prevent a infinite circle the mesasure call is ignored. */
-            if (ScrollOwner != null)
+            if (GetScrollOwner() != null)
             {
-                bool verticalScrollBarGotHidden = ScrollOwner.VerticalScrollBarVisibility == ScrollBarVisibility.Auto
-                    && ScrollOwner.ComputedVerticalScrollBarVisibility != Visibility.Visible
-                    && ScrollOwner.ComputedVerticalScrollBarVisibility != previousVerticalScrollBarVisibility;
+                bool verticalScrollBarGotHidden = GetScrollOwner().VerticalScrollBarVisibility == ScrollBarVisibility.Auto
+                    && GetScrollOwner().ComputedVerticalScrollBarVisibility != Visibility.Visible
+                    && GetScrollOwner().ComputedVerticalScrollBarVisibility != previousVerticalScrollBarVisibility;
 
-                bool horizontalScrollBarGotHidden = ScrollOwner.HorizontalScrollBarVisibility == ScrollBarVisibility.Auto
-                   && ScrollOwner.ComputedHorizontalScrollBarVisibility != Visibility.Visible
-                   && ScrollOwner.ComputedHorizontalScrollBarVisibility != previousHorizontalScrollBarVisibility;
+                bool horizontalScrollBarGotHidden = GetScrollOwner().HorizontalScrollBarVisibility == ScrollBarVisibility.Auto
+                   && GetScrollOwner().ComputedHorizontalScrollBarVisibility != Visibility.Visible
+                   && GetScrollOwner().ComputedHorizontalScrollBarVisibility != previousHorizontalScrollBarVisibility;
 
-                previousVerticalScrollBarVisibility = ScrollOwner.ComputedVerticalScrollBarVisibility;
-                previousHorizontalScrollBarVisibility = ScrollOwner.ComputedHorizontalScrollBarVisibility;
+                previousVerticalScrollBarVisibility = GetScrollOwner().ComputedVerticalScrollBarVisibility;
+                previousHorizontalScrollBarVisibility = GetScrollOwner().ComputedHorizontalScrollBarVisibility;
 
-                if (!ScrollOwner.IsMeasureValid && verticalScrollBarGotHidden || horizontalScrollBarGotHidden)
+                if (!GetScrollOwner().IsMeasureValid && verticalScrollBarGotHidden || horizontalScrollBarGotHidden)
                 {
                     return availableSize;
                 }
@@ -397,7 +408,7 @@ namespace GeekDesk.Util.WrpaPanel
                 offset = Extent.Height - Viewport.Height;
             }
             Offset = new Point(Offset.X, offset);
-            ScrollOwner?.InvalidateScrollInfo();
+            GetScrollOwner()?.InvalidateScrollInfo();
             InvalidateMeasure();
         }
 
@@ -412,7 +423,7 @@ namespace GeekDesk.Util.WrpaPanel
                 offset = Extent.Width - Viewport.Width;
             }
             Offset = new Point(offset, Offset.Y);
-            ScrollOwner?.InvalidateScrollInfo();
+            GetScrollOwner()?.InvalidateScrollInfo();
             InvalidateMeasure();
         }
 

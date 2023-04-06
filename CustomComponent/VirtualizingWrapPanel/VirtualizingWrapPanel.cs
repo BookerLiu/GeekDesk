@@ -11,9 +11,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows;
-using GeekDesk.Util.WrpaPanel;
+using GeekDesk.CustomComponent.VirtualizingWrapPanel;
 
-namespace GeekDesk.Util.WrpaPanel
+namespace GeekDesk.CustomComponent.VirtualizingWrapPanel
 {
     public class VirtualizingWrapPanel : VirtualizingPanelBase
     {
@@ -272,7 +272,7 @@ namespace GeekDesk.Util.WrpaPanel
             }
         }
 
-        private T ReadItemContainerStyle<T>(DependencyProperty property, T fallbackValue) where T : notnull
+        private T ReadItemContainerStyle<T>(DependencyProperty property, T fallbackValue) 
         {
             var value = ItemsControl.ItemContainerStyle?.Setters.OfType<Setter>()
                 .FirstOrDefault(setter => setter.Property == property)?.Value;

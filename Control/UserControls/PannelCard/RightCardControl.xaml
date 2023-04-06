@@ -8,7 +8,7 @@
              xmlns:cvt="clr-namespace:GeekDesk.Converts"
               xmlns:cst="clr-namespace:GeekDesk.Constant"
              xmlns:DraggAnimatedPanel="clr-namespace:DraggAnimatedPanel"
-             xmlns:util="clr-namespace:GeekDesk.Util"
+             xmlns:component="clr-namespace:GeekDesk.CustomComponent.VirtualizingWrapPanel"
              xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
              xmlns:ot="clr-namespace:GeekDesk.Control.Other" 
              xmlns:viewmodel="clr-namespace:GeekDesk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AppData}"
@@ -162,18 +162,20 @@
 
                     <WrapPanel Orientation="Horizontal" 
                                Margin="10"
-                            VirtualizingPanel.VirtualizationMode="Recycling"  
-                            VirtualizingPanel.IsVirtualizing="True" 
-                            VirtualizingPanel.IsContainerVirtualizable="True"
+                            
                             >
                         <UniformGrid x:Name="WrapUFG" xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndGrowHorizontally}, Event=Visibility}">
                             <!--<hc:TransitioningContentControl TransitionStoryboard="{StaticResource Custom3Transition3}">-->
                             <ListBox x:Name="IconListBox" 
-                                         ItemsSource="{Binding AppConfig.SelectedMenuIcons, Mode=OneWay}" 
-                                         BorderThickness="0"
-                                         Padding="0,10,0,0"
-                                         ScrollViewer.CanContentScroll ="False"
-                                         >
+                                     ItemsSource="{Binding AppConfig.SelectedMenuIcons, Mode=OneWay}" 
+                                     BorderThickness="0"
+                                     Padding="0,10,0,0"
+                                     ScrollViewer.CanContentScroll ="True"
+                                     VirtualizingPanel.VirtualizationMode="Recycling"  
+                                     VirtualizingPanel.IsVirtualizing="True" 
+                                     VirtualizingPanel.IsContainerVirtualizable="True"
+                                     VirtualizingPanel.ScrollUnit="Pixel"
+                                     >
                                 <ListBox.Template>
                                     <ControlTemplate TargetType="ListBox">
                                         <hc:ScrollViewer x:Name="WrapScroll"
@@ -187,7 +189,7 @@
                                                     BorderThickness="{TemplateBinding BorderBrush}"
                                                     Width="{Binding AppConfig.WindowWidth, Mode=OneWay, 
                                                 Converter={StaticResource GetWidthByWWConvert}, 
-                                                ConverterParameter={x:Static cst:WidthTypeEnum.RIGHT_CARD}}"
+                                                ConverterParameter={x:Static cst:WidthTypeEnum.RIGHT_CARD_40}}"
                                                     >
                                                 <ItemsPresenter/>
                                             </Border>
@@ -205,10 +207,13 @@
                                                         HorizontalAlignment="Center" 
                                                         SwapCommand="{Binding SwapCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>-->
 
-                                        <util:VirtualizingWrapPanel 
+                                        <component:VirtualizingWrapPanel VirtualizationMode="Recycling"  
+                                                                    IsVirtualizing="True" 
+                                                                    IsContainerVirtualizable="True"
+                                                                    VirtualizingPanel.ScrollUnit="Pixel"
                                                 Width="{Binding AppConfig.WindowWidth, Mode=OneWay, 
                                                 Converter={StaticResource GetWidthByWWConvert}, 
-                                                ConverterParameter={x:Static cst:WidthTypeEnum.RIGHT_CARD}}"
+                                                ConverterParameter={x:Static cst:WidthTypeEnum.RIGHT_CARD_40}}"
                                                 />
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
@@ -291,7 +296,7 @@
                 <SolidColorBrush Color="#FFFFFFFF" Opacity="0"/>
             </hc:Card.BorderBrush>
             <Grid>
-                
+
 
                 <WrapPanel Orientation="Horizontal" 
                            Margin="10"
@@ -301,13 +306,16 @@
                                  >
                         <!--<hc:TransitioningContentControl TransitionMode="Left2RightWithFade">-->
                         <ListBox ItemsSource="{Binding Source={StaticResource SearchIconList},Path=IconList, Mode=OneWay}" 
-                                 VirtualizingStackPanel.VirtualizationMode="Recycling"  VirtualizingStackPanel.IsVirtualizing="True"    
+                                 VirtualizingPanel.VirtualizationMode="Recycling"  
+                                 VirtualizingPanel.IsVirtualizing="True" 
+                                 VirtualizingPanel.IsContainerVirtualizable="True"
+                                 VirtualizingPanel.ScrollUnit="Pixel"  
                                  BorderThickness="0"
-                                     Padding="0,10,0,0"
-                                     x:Name="SearchListBox"
-                                     SelectionChanged="SearchListBox_SelectionChanged"
-                                     >
-                   
+                                 Padding="0,10,0,0"
+                                 x:Name="SearchListBox"
+                                 SelectionChanged="SearchListBox_SelectionChanged"
+                                 >
+
                             <ListBox.Template>
                                 <ControlTemplate TargetType="ListBox">
                                     <hc:ScrollViewer  
@@ -351,10 +359,10 @@
                                     <VirtualizingStackPanel  
                                         Orientation="Vertical"   
                                         Background="#00FFFFFF"
+                                        VirtualizationMode="Recycling"  
                                         IsVirtualizing="True" 
-                                        IsVirtualizingWhenGrouping="True" 
-                                        ScrollUnit="Pixel" 
-                                        VirtualizationMode="Recycling"
+                                        IsContainerVirtualizable="True"
+                                        VirtualizingPanel.ScrollUnit="Pixel"
                                            Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.WindowWidth, Mode=OneWay, 
                                                 Converter={StaticResource GetWidthByWWConvert}, 
                                                 ConverterParameter={x:Static cst:WidthTypeEnum.RIGHT_CARD}}"

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeekDesk.Util.WrpaPanel
+namespace GeekDesk.CustomComponent.VirtualizingWrapPanel
 {
     public struct ItemRange
     {

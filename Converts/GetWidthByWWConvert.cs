@@ -30,6 +30,9 @@ namespace GeekDesk.Converts
             } else if (WidthTypeEnum.RIGHT_CARD_HALF_TEXT == type)
             {
                 return (config.WindowWidth - config.MenuCardWidth) * 0.618 - config.ImageWidth - 20;
+            } else if (WidthTypeEnum.RIGHT_CARD_20 == type)
+            {
+                return (config.WindowWidth - config.MenuCardWidth) - 20;
             }
 
             return config.WindowWidth;
