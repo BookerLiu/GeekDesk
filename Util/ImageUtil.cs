@@ -204,48 +204,55 @@ namespace GeekDesk.Util
 
             try
             {
-                Image img = Image.FromFile(filePath);
-                if (img.Width <= tWidth && img.Height <= tHeight)
+                FileInfo file = new FileInfo(filePath);
+                if (file.Exists && file.Length > 0)
                 {
-                    return GetBitmapImageByFile(filePath);
-                }
-                else
-                {
-                    Bitmap loBMP = new Bitmap(filePath);
-                    ImageFormat loFormat = loBMP.RawFormat;
-
-                    decimal lnRatio;
-                    int lnNewWidth;
-                    int lnNewHeight;
-                    if (loBMP.Width > loBMP.Height)
+                    Image img = Image.FromFile(filePath);
+                    if (img.Width <= tWidth && img.Height <= tHeight)
                     {
-                        lnRatio = (decimal)tWidth / loBMP.Width;
-                        lnNewWidth = tWidth;
-                        decimal lnTemp = loBMP.Height * lnRatio;
-                        lnNewHeight = (int)lnTemp;
+                        return GetBitmapImageByFile(filePath);
                     }
                     else
                     {
-                        lnRatio = (decimal)tHeight / loBMP.Height;
-                        lnNewHeight = tHeight;
-                        decimal lnTemp = loBMP.Width * lnRatio;
-                        lnNewWidth = (int)lnTemp;
-                    }
-                    Bitmap bmpOut = new Bitmap(lnNewWidth, lnNewHeight);
-                    Graphics g = Graphics.FromImage(bmpOut);
-                    g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                    g.FillRectangle(System.Drawing.Brushes.White, 0, 0, lnNewWidth, lnNewHeight);
-                    g.DrawImage(loBMP, 0, 0, lnNewWidth, lnNewHeight);
-                    loBMP.Dispose();
-                    string tempPath = Constants.APP_DIR + "\\temp";
-                    if (File.Exists(tempPath))
-                    {
+                        Bitmap loBMP = new Bitmap(filePath);
+                        ImageFormat loFormat = loBMP.RawFormat;
+
+                        decimal lnRatio;
+                        int lnNewWidth;
+                        int lnNewHeight;
+                        if (loBMP.Width > loBMP.Height)
+                        {
+                            lnRatio = (decimal)tWidth / loBMP.Width;
+                            lnNewWidth = tWidth;
+                            decimal lnTemp = loBMP.Height * lnRatio;
+                            lnNewHeight = (int)lnTemp;
+                        }
+                        else
+                        {
+                            lnRatio = (decimal)tHeight / loBMP.Height;
+                            lnNewHeight = tHeight;
+                            decimal lnTemp = loBMP.Width * lnRatio;
+                            lnNewWidth = (int)lnTemp;
+                        }
+                        Bitmap bmpOut = new Bitmap(lnNewWidth, lnNewHeight);
+                        Graphics g = Graphics.FromImage(bmpOut);
+                        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                        g.FillRectangle(System.Drawing.Brushes.White, 0, 0, lnNewWidth, lnNewHeight);
+                        g.DrawImage(loBMP, 0, 0, lnNewWidth, lnNewHeight);
+                        loBMP.Dispose();
+                        string tempPath = Constants.APP_DIR + "\\temp";
+                        if (File.Exists(tempPath))
+                        {
+                            File.Delete(tempPath);
+                        }
+                        bmpOut.Save(tempPath, loFormat);
+                        BitmapImage bm = GetBitmapImageByFile(tempPath);
                         File.Delete(tempPath);
+                        return bm;
                     }
-                    bmpOut.Save(tempPath, loFormat);
-                    BitmapImage bm = GetBitmapImageByFile(tempPath);
-                    File.Delete(tempPath);
-                    return bm;
+                } else
+                {
+                    return Base64ToBitmapImage(Constants.DEFAULT_IMG_IMAGE_BASE64);
                 }
             }
             catch (Exception e)
@@ -365,14 +372,18 @@ namespace GeekDesk.Util
         {
             try
             {
-                string strExt = Path.GetExtension(path).Substring(1);
-                string suffixs = "bmp,jpg,png,tif,gif,pcx,tga,exif,fpx,svg,psd,cdr,pcd,dxf,ufo,eps,ai,raw,WMF,webp,avif";
-                string[] suffixArr = suffixs.Split(',');
-                foreach (string suffix in suffixArr)
+                string ext = Path.GetExtension(path);
+                if (!string.IsNullOrEmpty(ext))
                 {
-                    if (suffix.Equals(strExt, StringComparison.InvariantCultureIgnoreCase))
+                    string strExt = Path.GetExtension(path).Substring(1);
+                    string suffixs = "bmp,jpg,png,tif,gif,pcx,tga,exif,fpx,svg,psd,cdr,pcd,dxf,ufo,eps,ai,raw,WMF,webp,avif";
+                    string[] suffixArr = suffixs.Split(',');
+                    foreach (string suffix in suffixArr)
                     {
-                        return true;
+                        if (suffix.Equals(strExt, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            return true;
+                        }
                     }
                 }
                 return false;
