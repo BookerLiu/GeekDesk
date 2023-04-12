@@ -205,7 +205,8 @@ namespace GeekDesk.Util
             try
             {
                 FileInfo file = new FileInfo(filePath);
-                if (file.Exists && file.Length > 0)
+                if (file.Exists && file.Length > 0 
+                    && !System.IO.Path.GetExtension(filePath).Contains("psd"))
                 {
                     Image img = Image.FromFile(filePath);
                     if (img.Width <= tWidth && img.Height <= tHeight)
