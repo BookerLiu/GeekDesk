@@ -11,6 +11,7 @@
         xmlns:cvt="clr-namespace:GeekDesk.Converts"
         x:Name="AppWindow"
         xmlns:hc="https://handyorg.github.io/handycontrol" xmlns:viewmodel="clr-namespace:GeekDesk.ViewModel" 
+        xmlns:my="clr-namespace:GeekDesk.Util"
         d:DataContext="{d:DesignInstance Type=viewmodel:AppData}"
         Title="GeekDesk_Main_8400A17AEEF7C029" 
         MinWidth="600"
@@ -195,6 +196,7 @@
                 </hc:NotifyIcon>
 
                 <uc:RightCardControl x:Name="RightCard" Grid.Row="1" Grid.Column="1"/>
+
 
                 <StackPanel hc:Growl.GrowlParent="True" VerticalAlignment="Top" Margin="0,10,10,0"/>
             </Grid>

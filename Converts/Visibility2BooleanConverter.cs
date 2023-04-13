@@ -9,14 +9,14 @@ namespace GeekDesk.Converts
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if ((Visibility)value == Visibility.Visible)
+            if (parameter == null)
             {
-                return true;
-            }
-            else
+                return (Visibility)value == Visibility.Visible;
+            } else
             {
-                return false;
+                return !((Visibility)value == Visibility.Visible);
             }
+            
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

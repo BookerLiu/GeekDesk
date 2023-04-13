@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -92,19 +93,25 @@ namespace GeekDesk.Plugins.EveryThing
 
         public static void DisableEveryThing()
         {
-            if (IsByGeekDesk)
+            try
             {
-                if (Environment.Is64BitOperatingSystem)
+                if (IsByGeekDesk)
                 {
-                    EveryThing64.Everything_Exit();
-                } else
-                {
-                    EveryThing32.Everything_Exit();
+                    if (Environment.Is64BitOperatingSystem)
+                    {
+                        EveryThing64.Everything_Exit();
+                    }
+                    else
+                    {
+                        EveryThing32.Everything_Exit();
+                    }
                 }
+                if (exeProcess != null) exeProcess.Kill();
+                if (serviceProcess != null) serviceProcess.Kill();
+            } catch (Exception e)
+            {
+                LogUtil.WriteErrorLog(e);
             }
-            if (exeProcess != null) exeProcess.Kill();
-            if (serviceProcess != null) serviceProcess.Kill();
-
         }
 
 
@@ -179,7 +186,7 @@ namespace GeekDesk.Plugins.EveryThing
                 {
                     Path_NoWrite = filePath,
                     LnkPath_NoWrite = tempPath,
-                    BitmapImage_NoWrite = null,
+                    BitmapImage_NoWrite = ImageUtil.GetBitmapIconByUnknownPath(filePath),
                     StartArg_NoWrite = FileUtil.GetArgByLnk(tempPath),
                     Name_NoWrite = name,
                 };

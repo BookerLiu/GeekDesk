@@ -131,11 +131,11 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 IconInfo icon = (IconInfo)((Panel)sender).Tag;
                 if (icon.AdminStartUp)
                 {
-                    StartIconApp(icon, IconStartType.ADMIN_STARTUP);
+                    ProcessUtil.StartIconApp(icon, IconStartType.ADMIN_STARTUP);
                 }
                 else
                 {
-                    StartIconApp(icon, IconStartType.DEFAULT_STARTUP);
+                    ProcessUtil.StartIconApp(icon, IconStartType.DEFAULT_STARTUP);
                 }
             }
             else if (!appData.AppConfig.DoubleOpen && e.ClickCount == 1)
@@ -143,11 +143,11 @@ namespace GeekDesk.Control.UserControls.PannelCard
                 IconInfo icon = (IconInfo)((Panel)sender).Tag;
                 if (icon.AdminStartUp)
                 {
-                    StartIconApp(icon, IconStartType.ADMIN_STARTUP);
+                    ProcessUtil.StartIconApp(icon, IconStartType.ADMIN_STARTUP);
                 }
                 else
                 {
-                    StartIconApp(icon, IconStartType.DEFAULT_STARTUP);
+                    ProcessUtil.StartIconApp(icon, IconStartType.DEFAULT_STARTUP);
                 }
             }
 
@@ -161,7 +161,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
         private void IconAdminStart(object sender, RoutedEventArgs e)
         {
             IconInfo icon = (IconInfo)((MenuItem)sender).Tag;
-            StartIconApp(icon, IconStartType.ADMIN_STARTUP);
+            ProcessUtil.StartIconApp(icon, IconStartType.ADMIN_STARTUP);
         }
 
         /// <summary>
@@ -172,227 +172,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
         private void ShowInExplore(object sender, RoutedEventArgs e)
         {
             IconInfo icon = (IconInfo)((MenuItem)sender).Tag;
-            StartIconApp(icon, IconStartType.SHOW_IN_EXPLORE);
-        }
-
-        private void StartIconApp(IconInfo icon, IconStartType type, bool useRelativePath = false)
-        {
-            try
-            {
-                using (Process p = new Process())
-                {
-                    string startArg = icon.StartArg;
-
-                    if (startArg != null && Constants.SYSTEM_ICONS.ContainsKey(startArg))
-                    {
-                        StartSystemApp(startArg, type);
-                    }
-                    else
-                    {
-                        string path;
-                        if (useRelativePath)
-                        {
-                            string fullPath = Path.Combine(Constants.APP_DIR, icon.RelativePath);
-                            path = Path.GetFullPath(fullPath);
-                        }
-                        else
-                        {
-                            path = icon.Path;
-                        }
-                        p.StartInfo.FileName = path;
-                        if (!StringUtil.IsEmpty(startArg))
-                        {
-                            p.StartInfo.Arguments = startArg;
-                        }
-                        if (icon.IconType == IconType.OTHER)
-                        {
-                            if (!File.Exists(path) && !Directory.Exists(path))
-                            {
-                                //如果没有使用相对路径  那么使用相对路径启动一次
-                                if (!useRelativePath)
-                                {
-                                    StartIconApp(icon, type, true);
-                                    return;
-                                }
-                                else
-                                {
-                                    HandyControl.Controls.Growl.WarningGlobal("程序启动失败(文件路径不存在或已删除)!");
-                                    return;
-                                }
-                            }
-                            p.StartInfo.WorkingDirectory = path.Substring(0, path.LastIndexOf("\\"));
-                            switch (type)
-                            {
-                                case IconStartType.ADMIN_STARTUP:
-                                    //p.StartInfo.Arguments = "1";//启动参数
-                                    p.StartInfo.Verb = "runas";
-                                    //p.StartInfo.CreateNoWindow = false; //设置显示窗口
-                                    p.StartInfo.UseShellExecute = true;//不使用操作系统外壳程序启动进程
-                                    //p.StartInfo.ErrorDialog = false;
-                                    if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
-                                    {
-                                        //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
-                                        if (appData.AppConfig.MarginHide)
-                                        {
-                                            if (!MarginHide.IsMargin())
-                                            {
-                                                MainWindow.HideApp();
-                                            }
-                                        }
-                                        else
-                                        {
-                                            MainWindow.HideApp();
-                                        }
-
-                                    }
-                                    break;// c#好像不能case穿透
-                                case IconStartType.DEFAULT_STARTUP:
-                                    if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
-                                    {
-                                        //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
-                                        if (appData.AppConfig.MarginHide)
-                                        {
-                                            if (!MarginHide.IsMargin())
-                                            {
-                                                MainWindow.HideApp();
-                                            }
-                                        }
-                                        else
-                                        {
-                                            MainWindow.HideApp();
-                                        }
-                                    }
-                                    break;
-                                case IconStartType.SHOW_IN_EXPLORE:
-                                    p.StartInfo.FileName = "Explorer.exe";
-                                    p.StartInfo.Arguments = "/e,/select," + icon.Path;
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            if (appData.AppConfig.AppHideType == AppHideType.START_EXE && !RunTimeStatus.LOCK_APP_PANEL)
-                            {
-                                //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
-                                if (appData.AppConfig.MarginHide)
-                                {
-                                    if (!MarginHide.IS_HIDE)
-                                    {
-                                        MainWindow.HideApp();
-                                    }
-                                }
-                                else
-                                {
-                                    MainWindow.HideApp();
-                                }
-                            }
-                        }
-                        p.Start();
-                        if (useRelativePath)
-                        {
-                            //如果使用相对路径启动成功 那么重新设置程序绝对路径
-                            icon.Path = path;
-                        }
-                    }
-                }
-                icon.Count++;
-
-                //隐藏搜索框
-                if (RunTimeStatus.SEARCH_BOX_SHOW)
-                {
-                    MainWindow.mainWindow.HidedSearchBox();
-                }
-            }
-            catch (Exception e)
-            {
-                if (!useRelativePath)
-                {
-                    StartIconApp(icon, type, true);
-                }
-                else
-                {
-                    HandyControl.Controls.Growl.WarningGlobal("程序启动失败(可能为不支持的启动方式)!");
-                    LogUtil.WriteErrorLog(e, "程序启动失败:path=" + icon.Path + ",type=" + type);
-                }
-            }
-        }
-
-
-
-        private void StartSystemApp(string startArg, IconStartType type)
-        {
-            if (type == IconStartType.SHOW_IN_EXPLORE)
-            {
-                Growl.WarningGlobal("系统项目不支持打开文件位置操作!");
-                return;
-            }
-            switch (startArg)
-            {
-                case "Calculator":
-                    Process.Start("calc.exe");
-                    break;
-                case "Computer":
-                    Process.Start("explorer.exe");
-                    break;
-                case "GroupPolicy":
-                    Process.Start("gpedit.msc");
-                    break;
-                case "Notepad":
-                    Process.Start("notepad");
-                    break;
-                case "Network":
-                    Process.Start("ncpa.cpl");
-                    break;
-                case "RecycleBin":
-                    Process.Start("shell:RecycleBinFolder");
-                    break;
-                case "Registry":
-                    Process.Start("regedit.exe");
-                    break;
-                case "Mstsc":
-                    if (type == IconStartType.ADMIN_STARTUP)
-                    {
-                        Process.Start("mstsc", "-admin");
-                    }
-                    else
-                    {
-                        Process.Start("mstsc");
-                    }
-                    break;
-                case "Control":
-                    Process.Start("Control");
-                    break;
-                case "CMD":
-                    if (type == IconStartType.ADMIN_STARTUP)
-                    {
-                        using (Process process = new Process())
-                        {
-                            process.StartInfo.FileName = "cmd.exe";
-                            process.StartInfo.Verb = "runas";
-                            process.Start();
-                        }
-                    }
-                    else
-                    {
-                        Process.Start("cmd");
-                    }
-                    break;
-                case "Services":
-                    Process.Start("services.msc");
-                    break;
-            }
-            //如果开启了贴边隐藏 则窗体不贴边才隐藏窗口
-            if (appData.AppConfig.MarginHide)
-            {
-                if (!MarginHide.IS_HIDE)
-                {
-                    MainWindow.HideApp();
-                }
-            }
-            else
-            {
-                MainWindow.HideApp();
-            }
+            ProcessUtil.StartIconApp(icon, IconStartType.SHOW_IN_EXPLORE);
         }
 
         /// <summary>
@@ -778,56 +558,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
             }
         }
 
-        public void SearchListBoxIndexAdd()
-        {
-            //控制移动后 鼠标即使在图标上也不显示popup
-            RunTimeStatus.MOUSE_MOVE_COUNT = 0;
-            MyPoptip.IsOpen = false;
-
-            if (SearchListBox.Items.Count > 0)
-            {
-                if (SearchListBox.SelectedIndex < SearchListBox.Items.Count - 1)
-                {
-                    SearchListBox.SelectedIndex += 1;
-                }
-            }
-        }
-
-        public void SearchListBoxIndexSub()
-        {
-            //控制移动后 鼠标即使在图标上也不显示popup
-            RunTimeStatus.MOUSE_MOVE_COUNT = 0;
-            MyPoptip.IsOpen = false;
-
-            if (SearchListBox.Items.Count > 0)
-            {
-                if (SearchListBox.SelectedIndex > 0)
-                {
-                    SearchListBox.SelectedIndex -= 1;
-                }
-            }
-        }
-
-        public void StartupSelectionItem()
-        {
-            if (SearchListBox.SelectedItem != null)
-            {
-                IconInfo icon = SearchListBox.SelectedItem as IconInfo;
-                if (icon.AdminStartUp)
-                {
-                    StartIconApp(icon, IconStartType.ADMIN_STARTUP);
-                }
-                else
-                {
-                    StartIconApp(icon, IconStartType.DEFAULT_STARTUP);
-                }
-            }
-        }
-
-        private void SearchListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SearchListBox.ScrollIntoView(SearchListBox.SelectedItem);
-        }
+        
 
         private void PDDialog_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -938,105 +669,6 @@ namespace GeekDesk.Control.UserControls.PannelCard
         }
 
         /// <summary>
-        /// 搜索结果icon 列表鼠标滚轮预处理时间  
-        /// 主要使用自定义popup解决卡顿问题解决卡顿问题
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void VerticalIconList_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            //控制在滚动时不显示popup 否则会在低GPU性能机器上造成卡顿
-            MyPoptip.IsOpen = false;
-            if (RunTimeStatus.ICONLIST_MOUSE_WHEEL)
-            {
-                RunTimeStatus.MOUSE_WHEEL_WAIT_MS = 500;
-            }
-            else
-            {
-                RunTimeStatus.ICONLIST_MOUSE_WHEEL = true;
-
-                new Thread(() =>
-                {
-                    while (RunTimeStatus.MOUSE_WHEEL_WAIT_MS > 0)
-                    {
-                        Thread.Sleep(1);
-                        RunTimeStatus.MOUSE_WHEEL_WAIT_MS -= 1;
-                    }
-                    if (RunTimeStatus.MOUSE_ENTER_ICON)
-                    {
-                        this.Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            MyPoptip.IsOpen = true;
-                        }));
-                    }
-                    RunTimeStatus.MOUSE_WHEEL_WAIT_MS = 100;
-                    RunTimeStatus.ICONLIST_MOUSE_WHEEL = false;
-                }).Start();
-            }
-        }
-
-        /// <summary>
-        /// 查询结果 ICON 鼠标进入事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SearchIcon_MouseEnter(object sender, MouseEventArgs e)
-        {
-
-            //显示popup
-            RunTimeStatus.MOUSE_ENTER_ICON = true;
-            if (!RunTimeStatus.ICONLIST_MOUSE_WHEEL)
-            {
-                new Thread(() =>
-                {
-                    this.Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        IconInfo info = (sender as Panel).Tag as IconInfo;
-                        MyPoptipContent.Text = info.Content;
-                        MyPoptip.VerticalOffset = 30;
-                        Thread.Sleep(100);
-                        if (!RunTimeStatus.ICONLIST_MOUSE_WHEEL && RunTimeStatus.MOUSE_MOVE_COUNT > 1)
-                        {
-                            MyPoptip.IsOpen = true;
-                        }
-                    }));
-                }).Start();
-            }
-        }
-
-        /// <summary>
-        /// 查询结果ICON鼠标离开事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SearchIcon_MouseLeave(object sender, MouseEventArgs e)
-        {
-            RunTimeStatus.MOUSE_ENTER_ICON = false;
-            MyPoptip.IsOpen = false;
-        }
-
-        /// <summary>
-        /// 查询结果ICON鼠标移动事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SearchIcon_MouseMove(object sender, MouseEventArgs e)
-        {
-            //控制首次刷新搜索结果后, 鼠标首次移动后显示popup
-            RunTimeStatus.MOUSE_MOVE_COUNT++;
-
-            //防止移动后不刷新popup content
-            IconInfo info = (sender as Panel).Tag as IconInfo;
-            MyPoptipContent.Text = info.Content;
-            MyPoptip.VerticalOffset = 30;
-
-            if (RunTimeStatus.MOUSE_MOVE_COUNT > 1 && !RunTimeStatus.ICONLIST_MOUSE_WHEEL)
-            {
-                MyPoptip.IsOpen = true;
-            }
-        }
-
-        /// <summary>
         /// menu结果ICON鼠标移动事件
         /// </summary>
         /// <param name="sender"></param>
@@ -1048,48 +680,6 @@ namespace GeekDesk.Control.UserControls.PannelCard
             MyPoptipContent.Text = info.Content;
             MyPoptip.VerticalOffset = 30;
         }
-
-        private void VerticalCard_ScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            if (appData.AppConfig.EnableEveryThing == true && EveryThingUtil.HasNext())
-            {
-                HandyControl.Controls.ScrollViewer sv = sender as HandyControl.Controls.ScrollViewer;
-                if (sv.ExtentHeight - (sv.ActualHeight + sv.VerticalOffset) < 200 && EveryThingUtil.HasNext())
-                {
-                    string[] split = MainWindow.mainWindow.TotalMsgBtn.Content.ToString().Split(' ');
-                    long count = Convert.ToInt64(split[0]);
-                    ObservableCollection<IconInfo> iconBakList = EveryThingUtil.NextPage();
-                    count += iconBakList.Count;
-
-                    this.Dispatcher.Invoke(() =>
-                    {
-                        MainWindow.mainWindow.TotalMsgBtn.Content = count + " of " + split[split.Length - 1];
-                        foreach (IconInfo icon in iconBakList)
-                        {
-                            if (RunTimeStatus.EVERYTHING_NEW_SEARCH) return;
-                            SearchIconList.IconList.Add(icon);
-                        }
-                    });
-                    //异步加载图标
-                    if (iconBakList != null && iconBakList.Count > 0)
-                    {
-                        ThreadPool.QueueUserWorkItem(state =>
-                        {
-                            foreach (IconInfo icon in iconBakList)
-                            {
-                                if (RunTimeStatus.EVERYTHING_NEW_SEARCH) return;
-                                this.Dispatcher.Invoke(() =>
-                                {
-                                    icon.BitmapImage_NoWrite = ImageUtil.GetBitmapIconByUnknownPath(icon.Path);
-                                });
-                            }
-                        });
-                    }
-
-                }
-            }
-        }
-
 
 
     }

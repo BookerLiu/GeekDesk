@@ -200,6 +200,9 @@
     <Compile Include="Control\Other\IconInfoUrlDialog.xaml.cs">
       <DependentUpon>IconInfoUrlDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\Other\SearchResControl.xaml.cs">
+      <DependentUpon>SearchResControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Control\UserControls\Config\OtherControl.xaml.cs">
       <DependentUpon>OtherControl.xaml</DependentUpon>
     </Compile>
@@ -315,6 +318,7 @@
     <Compile Include="Util\MouseHook.cs" />
     <Compile Include="Util\MouseUtil.cs" />
     <Compile Include="Util\NativeMethods.cs" />
+    <Compile Include="Util\ProcessUtil.cs" />
     <Compile Include="Util\RegisterUtil.cs" />
     <Compile Include="Util\RelayCommand.cs" />
     <Compile Include="Util\ScreenUtil.cs" />
@@ -366,6 +370,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Control\Other\IconInfoUrlDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\Other\SearchResControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
