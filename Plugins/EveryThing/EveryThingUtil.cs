@@ -3,11 +3,14 @@ using GeekDesk.Plugins.EveryThing.Constant;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration.Install;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.ServiceProcess;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,16 +20,10 @@ namespace GeekDesk.Plugins.EveryThing
 
     public class EveryThingUtil
     {
-        //检查是否是由GeekDesk启动的EveryThing
-        private static bool IsByGeekDesk = true;
 
         //每次加载20条
         private static long pageCount = 20;
         private static UInt32 ui = 0;
-
-        private static Process serviceProcess = null;
-        private static Process exeProcess = null;
-
 
         public static void EnableEveryThing(int delayTime = 2000)
         {
@@ -34,52 +31,47 @@ namespace GeekDesk.Plugins.EveryThing
 
             bool Is64Bit = Environment.Is64BitOperatingSystem;
             string everyThingPath = pluginsPath + "/EveryThing/" + (Is64Bit ? 64 : 32) + "/EveryThing.exe";
-
+            string installUtilPath = "C:\\Windows\\Microsoft.NET\\Framework"+ (Is64Bit ? "64" : "") + "\\v4.0.30319\\InstallUtil.exe";
             new Thread(() =>
             {
                 try
                 {
                     Thread.Sleep(delayTime);
 
-                    //判断EveryThing服务是否已启动
-                    bool enabled = false;
-                    Process[] processList = Process.GetProcesses();
-                    foreach (System.Diagnostics.Process process in processList)
+                    //判断EveryThing服务是否存在
+                    ServiceController sc = GetService("Everything");
+                    if (sc != null)
                     {
-                        if (process.ProcessName.ToUpper().Equals("EVERYTHING"))
+                        //判断是否启动
+                        if (sc.Status != ServiceControllerStatus.StartPending 
+                            && sc.Status != ServiceControllerStatus.Running)
                         {
-                            enabled = true;
-                            IsByGeekDesk = false;
-                            break;
+                            //启动服务
+                            EveryThingService(ServiceType.START);
                         }
-                    }
 
-                    if (!enabled)
+                    } else
                     {
-                        //启动服务
-                        serviceProcess = new Process();
-                        serviceProcess.StartInfo.FileName = everyThingPath;
-                        serviceProcess.StartInfo.UseShellExecute = true;
-                        serviceProcess.StartInfo.Verb = "runas";
-                        serviceProcess.StartInfo.Arguments = " -svc";
-                        serviceProcess.Start();
+                        //安装服务
+                        EveryThingService(ServiceType.INSTALL);
                     }
 
                     Thread.Sleep(2000);
-                    processList = Process.GetProcesses();
 
-                    //启动程序
-                    exeProcess = new Process();
-                    exeProcess.StartInfo.FileName = everyThingPath;
-                    exeProcess.Start();
-                    int waitTime = 5000;
-                    while (true && waitTime > 0)
+                    if (GetService("Everything") != null)
                     {
-                        Thread.Sleep(100);
-                        waitTime -= 100;
-                        exeProcess.CloseMainWindow();
+                        //启动程序
+                        Process exeProcess = new Process();
+                        exeProcess.StartInfo.FileName = everyThingPath;
+                        exeProcess.Start();
+                        int waitTime = 5000;
+                        while (true && waitTime > 0)
+                        {
+                            Thread.Sleep(100);
+                            waitTime -= 100;
+                            exeProcess.CloseMainWindow();
+                        }
                     }
-
                 } catch (Exception e)
                 {
 
@@ -89,29 +81,84 @@ namespace GeekDesk.Plugins.EveryThing
 
         }
 
+        enum ServiceType
+        {
+            START,
+            STOP,
+            INSTALL,
+            UNINSTALL
+        }
+        private static void EveryThingService(ServiceType type)
+        {
+            string pluginsPath = Constants.PLUGINS_PATH;
+            bool Is64Bit = Environment.Is64BitOperatingSystem;
+            string everyThingPath = pluginsPath + "/EveryThing/" + (Is64Bit ? 64 : 32) + "/EveryThing.exe";
+            string installUtilPath = "C:\\Windows\\Microsoft.NET\\Framework" + (Is64Bit ? "64" : "") + "\\v4.0.30319\\InstallUtil.exe";
+
+            Process p = new Process();
+            p.StartInfo.FileName = everyThingPath;
+            string arg;
+            switch(type)
+            {
+                default:
+                    arg = "-start-service";
+                    break;
+                case ServiceType.STOP:
+                    arg = "-stop-service";
+                    break;
+                case ServiceType.INSTALL:
+                    arg = "-install-service";
+                    break;
+                case ServiceType.UNINSTALL:
+                    arg = "-uninstall-service";
+                    break;
+            }
+            p.StartInfo.Arguments = arg;
+            p.Start();
+        }
 
 
-        public static void DisableEveryThing()
+        public static ServiceController GetService(string serviceName)
+        {
+            ServiceController[] services = ServiceController.GetServices();
+            foreach (ServiceController s in services)
+            {
+                if (s.ServiceName.ToLower().Equals(serviceName.ToLower()))
+                {
+                    return s;
+                }
+            }
+            return null;
+        }
+
+
+
+
+        public static void DisableEveryThing(bool uninstall = false)
         {
             try
             {
-                if (IsByGeekDesk)
+                if (Environment.Is64BitOperatingSystem)
                 {
-                    if (Environment.Is64BitOperatingSystem)
-                    {
-                        EveryThing64.Everything_Exit();
-                    }
-                    else
-                    {
-                        EveryThing32.Everything_Exit();
-                    }
+                    EveryThing64.Everything_Exit();
                 }
-                if (exeProcess != null) exeProcess.Kill();
-                if (serviceProcess != null) serviceProcess.Kill();
-            } catch (Exception e)
-            {
-                LogUtil.WriteErrorLog(e);
+                else
+                {
+                    EveryThing32.Everything_Exit();
+                }
             }
+            catch (Exception e) { }
+            try
+            {
+                if (uninstall)
+                {
+                    EveryThingService(ServiceType.UNINSTALL);
+                } else
+                {
+                    EveryThingService(ServiceType.STOP);
+                }
+            }
+            catch (Exception e) { }
         }
 
 

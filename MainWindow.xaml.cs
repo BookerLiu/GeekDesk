@@ -131,6 +131,8 @@ namespace GeekDesk
                 if (!RunTimeStatus.EVERYTHING_NEW_SEARCH)
                 {                    
                     RunTimeStatus.EVERYTHING_NEW_SEARCH = true;
+                    //显示搜索结果列表
+                    RightCard.VisibilitySearchCard(Visibility.Visible);
                     object obj = RightCard.VerticalCard.Content;
                     if (obj != null)
                     {
@@ -175,15 +177,14 @@ namespace GeekDesk
                     {
                         ObservableCollection<IconInfo> resList = new ObservableCollection<IconInfo>();
 
-                        DateTime bf = DateTime.Now;
-                        ObservableCollection<IconInfo> iconBakList = EveryThingUtil.Search(inputText);
-
-                        foreach (IconInfo icon in iconBakList)
+                        if (appData.AppConfig.EnableEveryThing == true)
                         {
-                            resList.Add(icon);
+                            ObservableCollection<IconInfo> iconBakList = EveryThingUtil.Search(inputText);
+                            foreach (IconInfo icon in iconBakList)
+                            {
+                                resList.Add(icon);
+                            }
                         }
-
-                        DateTime af = DateTime.Now;
 
                         //GeekDesk数据搜索
                         ObservableCollection<MenuInfo> menuList = appData.MenuList;
@@ -200,17 +201,17 @@ namespace GeekDesk
                                 }
                             }
                         }
-                        Console.WriteLine("查询耗时：{0}ms.", af.Subtract(bf).TotalMilliseconds);
 
                         this.Dispatcher.Invoke(() =>
                         {
+                            if (appData.AppConfig.EnableEveryThing == true)
+                            {
+                                TotalMsgBtn.Visibility = Visibility.Visible;
+                            }
                             SearchResControl control = new SearchResControl(resList);
-                            bf = DateTime.Now;
                             RightCard.VerticalCard.Content = control;
                             //显示加载效果
                             RightCard.Loading_RightCard.Visibility = Visibility.Collapsed;
-                            af = DateTime.Now;
-                            Console.WriteLine("渲染耗时：{0}ms.", af.Subtract(bf).TotalMilliseconds);
                         });
                     }).Start();
                     
@@ -338,9 +339,8 @@ namespace GeekDesk
                     SearchBox.Width = 0;
                     TotalMsgBtn.Content = "0 of 0";
                     TotalMsgBtn.Visibility = Visibility.Hidden;
+                    RightCard.VerticalCard.Content = null;
                     RightCard.VisibilitySearchCard(Visibility.Collapsed);
-
-                    SearchIconList.RemoveAll();
                 });
             }).Start();
         }

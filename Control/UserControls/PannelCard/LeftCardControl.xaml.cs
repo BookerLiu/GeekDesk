@@ -244,7 +244,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
                     object obj = MenuListBox.ItemContainerGenerator.ContainerFromIndex(MenuListBox.SelectedIndex);
                     SetListBoxItemEvent((ListBoxItem)obj);
                     Lbi_Selected(obj, null);
-                    HandyControl.Controls.Growl.Success("菜单关联成功, 后台加载列表!", "MainWindowGrowl");
+                    HandyControl.Controls.Growl.Success("菜单关联成功, 加载列表中, 稍后重新进入此菜单可查看列表!", "MainWindowGrowl");
                     FileWatcher.LinkMenuWatcher(menuInfo);
 
                     new Thread(() =>
@@ -260,10 +260,11 @@ namespace GeekDesk.Control.UserControls.PannelCard
                         }
                         this.Dispatcher.Invoke(() =>
                         {
-                            foreach (IconInfo iconInfo in iconList)
-                            {
-                                menuInfo.IconList.Add(iconInfo);
-                            }
+                            menuInfo.IconList = iconList;
+                            //foreach (IconInfo iconInfo in iconList)
+                            //{
+                            //    menuInfo.IconList = iconList;
+                            //}
                         });
                     }).Start();
 

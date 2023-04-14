@@ -199,7 +199,7 @@ namespace GeekDesk.Control.UserControls.Config
                 EveryThingUtil.EnableEveryThing(0);
             } else
             {
-                EveryThingUtil.DisableEveryThing();
+                EveryThingUtil.DisableEveryThing(true);
             }
         }
     }
