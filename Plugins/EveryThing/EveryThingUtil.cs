@@ -93,7 +93,6 @@ namespace GeekDesk.Plugins.EveryThing
             string pluginsPath = Constants.PLUGINS_PATH;
             bool Is64Bit = Environment.Is64BitOperatingSystem;
             string everyThingPath = pluginsPath + "/EveryThing/" + (Is64Bit ? 64 : 32) + "/EveryThing.exe";
-            string installUtilPath = "C:\\Windows\\Microsoft.NET\\Framework" + (Is64Bit ? "64" : "") + "\\v4.0.30319\\InstallUtil.exe";
 
             Process p = new Process();
             p.StartInfo.FileName = everyThingPath;
@@ -101,12 +100,14 @@ namespace GeekDesk.Plugins.EveryThing
             switch(type)
             {
                 default:
+                    p.StartInfo.Verb = "runas";
                     arg = "-start-service";
                     break;
                 case ServiceType.STOP:
                     arg = "-stop-service";
                     break;
                 case ServiceType.INSTALL:
+                    p.StartInfo.Verb = "runas";
                     arg = "-install-service";
                     break;
                 case ServiceType.UNINSTALL:
@@ -150,12 +151,16 @@ namespace GeekDesk.Plugins.EveryThing
             catch (Exception e) { }
             try
             {
-                if (uninstall)
+                if (GetService("Everything") != null)
                 {
-                    EveryThingService(ServiceType.UNINSTALL);
-                } else
-                {
-                    EveryThingService(ServiceType.STOP);
+                    if (uninstall)
+                    {
+                        EveryThingService(ServiceType.UNINSTALL);
+                    }
+                    else
+                    {
+                        EveryThingService(ServiceType.STOP);
+                    }
                 }
             }
             catch (Exception e) { }

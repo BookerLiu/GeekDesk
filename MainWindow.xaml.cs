@@ -150,7 +150,6 @@ namespace GeekDesk
                 {
                     SearchResControl control = obj as SearchResControl;
                     control.VerticalUFG.Visibility = Visibility.Collapsed;
-                    control.SearchListBox.Items.Clear();
                 }
             }
             
