@@ -253,7 +253,7 @@ namespace GeekDesk.Control.Other
                 {
                     EveryThingRuning = true;
                     MainWindow.mainWindow.RightCard.Loading_RightCard.Visibility = Visibility.Visible;
-                    string[] split = MainWindow.mainWindow.TotalMsgBtn.Content.ToString().Split(' ');
+                    string[] split = MainWindow.mainWindow.SearchResText.Text.Split(' ');
                     long count = Convert.ToInt64(split[0]);
 
                     ObservableCollection<IconInfo> resList = this.DataContext as ObservableCollection<IconInfo>;
@@ -264,7 +264,7 @@ namespace GeekDesk.Control.Other
                         this.Dispatcher.Invoke(() =>
                         {
                             count += searchRes.Count;
-                            MainWindow.mainWindow.TotalMsgBtn.Content = count + " of " + split[split.Length - 1];
+                            MainWindow.mainWindow.SearchResText.Text = count + " of " + split[split.Length - 1];
                             foreach (IconInfo info in searchRes)
                             {
                                 resList.Add(info);

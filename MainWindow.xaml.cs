@@ -133,6 +133,7 @@ namespace GeekDesk
                     RunTimeStatus.EVERYTHING_NEW_SEARCH = true;
                     //显示搜索结果列表
                     RightCard.VisibilitySearchCard(Visibility.Visible);
+                    SearchResContainer.Visibility = Visibility.Collapsed;
                     object obj = RightCard.VerticalCard.Content;
                     if (obj != null)
                     {
@@ -168,7 +169,6 @@ namespace GeekDesk
                 }
                 RunTimeStatus.EVERYTHING_NEW_SEARCH = false;
 
-
                 this.Dispatcher.Invoke(() =>
                 {
                     string inputText = SearchBox.Text.ToLower().Trim();
@@ -179,7 +179,7 @@ namespace GeekDesk
 
                         if (appData.AppConfig.EnableEveryThing == true)
                         {
-                            ObservableCollection<IconInfo> iconBakList = EveryThingUtil.Search(inputText);
+                            ObservableCollection<IconInfo> iconBakList = EveryThingUtil.Search(inputText);                            
                             foreach (IconInfo icon in iconBakList)
                             {
                                 resList.Add(icon);
@@ -206,7 +206,8 @@ namespace GeekDesk
                         {
                             if (appData.AppConfig.EnableEveryThing == true)
                             {
-                                TotalMsgBtn.Visibility = Visibility.Visible;
+                                SearchResText.Text = resList.Count + " of " + Convert.ToInt32(EveryThingUtil.Everything_GetNumResults());
+                                SearchResContainer.Visibility = Visibility.Visible;
                             }
                             SearchResControl control = new SearchResControl(resList);
                             RightCard.VerticalCard.Content = control;
@@ -337,8 +338,8 @@ namespace GeekDesk
                     SearchBox.Clear();
                     SearchBox.TextChanged += SearchBox_TextChanged;
                     SearchBox.Width = 0;
-                    TotalMsgBtn.Content = "0 of 0";
-                    TotalMsgBtn.Visibility = Visibility.Hidden;
+                    SearchResText.Text = "0 of 0";
+                    SearchResContainer.Visibility = Visibility.Collapsed;
                     RightCard.VerticalCard.Content = null;
                     RightCard.VisibilitySearchCard(Visibility.Collapsed);
                 });
