@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GeekDesk.Control.Windows"
         xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
@@ -14,15 +15,59 @@
             Background="White"
             Height="385"
             Width="228">
-        <StackPanel>
-
-            <Border MouseDown="DragMove" 
+        <Grid>
+            <TextBlock Panel.ZIndex="1000" Text="❤❤❤"
+                       x:Name="CopySuccess"
+                       Visibility="Collapsed"
+                       xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndSlideFromBottom}, Duration=400, Event=None}" 
+                       xf:Animations.PrimaryBinding="{Binding CopyAnimation}"
+                       Margin="138,300,0,0"
+                       />
+            <Button Height="32" 
+                    BorderThickness="0" Content="复 制" 
+                    Panel.ZIndex="999" 
+                    Margin="122,329,0,0" 
+                    HorizontalAlignment="Left" 
+                    Background="#BF8EF6"
+                    Click="MyColorPicker_Confirmed"
+                    VerticalAlignment="Top" Width="80"
+                    >
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource Btn1}">
+                        <Style.Triggers>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Opacity" Value="1"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Height="32"  
+                    BorderThickness="0" Content="关 闭" 
+                    Panel.ZIndex="999" Margin="26,329,0,0" 
+                    Background="#EEEEEE"
+                    Click="MyColorPicker_Canceled"
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Top" Width="80"
+                    >
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource Btn1}">
+                        <Style.Triggers>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Opacity" Value="1"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <StackPanel>
+                <Border MouseDown="DragMove" 
                     VerticalAlignment="Top" 
                     CornerRadius="8,8,0,0"
                     Height="20" 
                     Background="White"
                     >
-                <Button Width="18"  Height="18" 
+                    <Button Width="18"  Height="18" 
                         hc:IconElement.Geometry="{StaticResource ErrorGeometry}" 
                         Padding="0" 
                         Background="Transparent"
@@ -33,17 +78,15 @@
                         MouseEnter="Button_MouseEnter"
                         MouseLeave="Button_MouseLeave"
                         VerticalAlignment="Center">
-                    
-                </Button>
-            </Border>
 
-            <hc:ColorPicker HorizontalAlignment="Center" 
+                    </Button>
+                </Border>
+                <hc:ColorPicker HorizontalAlignment="Center" 
                             VerticalAlignment="Bottom" 
                             SelectedColorChanged="MyColorPicker_SelectedColorChanged"
                             x:Name="MyColorPicker" 
-                            Confirmed="MyColorPicker_Confirmed"
-                            Canceled="MyColorPicker_Canceled"
                             ToggleButton.Checked="MyColorPicker_Checked"/>
-        </StackPanel>
+            </StackPanel>
+        </Grid>
     </Border>
 </Window>
