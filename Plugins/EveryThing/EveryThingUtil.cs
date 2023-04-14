@@ -184,8 +184,11 @@ namespace GeekDesk.Plugins.EveryThing
                 | EveryThingConst.EVERYTHING_REQUEST_PATH
                 | EveryThingConst.EVERYTHING_REQUEST_DATE_MODIFIED
                 | EveryThingConst.EVERYTHING_REQUEST_SIZE);
-            EveryThingUtil.Everything_SetSort(13);
-            EveryThingUtil.Everything_QueryW(true);
+            EveryThingUtil.Everything_SetSort(
+                EveryThingConst.EVERYTHING_SORT_DATE_MODIFIED_DESCENDING 
+                | EveryThingConst.EVERYTHING_SORT_TYPE_NAME_DESCENDING 
+                | EveryThingConst.EVERYTHING_SORT_RUN_COUNT_DESCENDING);
+            EveryThingUtil.Everything_Query(true);
             return NextPage();
         }
 
@@ -227,9 +230,8 @@ namespace GeekDesk.Plugins.EveryThing
                     }
                 }
 
-
                 string name = System.IO.Path.GetFileNameWithoutExtension(tempPath);
-                if (String.IsNullOrEmpty(name))
+                if (string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(tempPath))
                 {
                     name = tempPath.Substring(tempPath.LastIndexOf("\\"));
                 }
@@ -289,15 +291,15 @@ namespace GeekDesk.Plugins.EveryThing
             }
         }
 
-        public static bool Everything_QueryW(bool bWait)
+        public static bool Everything_Query(bool bWait)
         {
             if (Environment.Is64BitOperatingSystem)
             {
-                return EveryThing64.Everything_QueryW(bWait);
+                return EveryThing64.Everything_Query(bWait);
             }
             else
             {
-                return EveryThing32.Everything_QueryW(bWait);
+                return EveryThing32.Everything_Query(bWait);
             }
         }
 

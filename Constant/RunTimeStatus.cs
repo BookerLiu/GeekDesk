@@ -77,6 +77,6 @@
         /// <summary>
         /// 控制主界面热键按下规定时间内只执行一次show hide
         /// </summary>
-        public static volatile int MAIN_HOT_KEY_TIME = 500;
+        public static volatile int MAIN_HOT_KEY_TIME = 300;
     }
 }

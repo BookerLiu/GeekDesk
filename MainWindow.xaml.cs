@@ -133,7 +133,10 @@ namespace GeekDesk
                     RunTimeStatus.EVERYTHING_NEW_SEARCH = true;
                     //显示搜索结果列表
                     RightCard.VisibilitySearchCard(Visibility.Visible);
+                    //暂时隐藏条目信息
                     SearchResContainer.Visibility = Visibility.Collapsed;
+                    //显示加载条
+                    RightCard.Loading_RightCard.Visibility = Visibility.Visible;
                     object obj = RightCard.VerticalCard.Content;
                     if (obj != null)
                     {
@@ -144,6 +147,8 @@ namespace GeekDesk
                 }
             } else
             {
+                //隐藏条目信息
+                SearchResContainer.Visibility = Visibility.Collapsed;
                 //清空查询结果
                 object obj = RightCard.VerticalCard.Content;
                 if (obj != null)
@@ -210,108 +215,12 @@ namespace GeekDesk
                             }
                             SearchResControl control = new SearchResControl(resList);
                             RightCard.VerticalCard.Content = control;
-                            //显示加载效果
+                            //关闭加载效果
                             RightCard.Loading_RightCard.Visibility = Visibility.Collapsed;
                         });
                     }).Start();
-                    
-
-
-
-                    ////异步加载图标
-                    //if (iconBakList != null && iconBakList.Count > 0)
-                    //{
-                    //    new Thread(() =>
-                    //    {
-                           
-                    //    }).Start();
-                    //}
-
 
                 });
-
-
-                //EveryThing全盘搜索
-               
-
-               
-
-
-
-
-
-                //this.Dispatcher.Invoke(() =>
-                //{
-                //    if (SearchIconList.IconList.Count > 0)
-                //    {
-                //        SearchIconList.RemoveAll();
-                //    }
-           
-                //    string inputText = SearchBox.Text.ToLower().Trim();
-
-                //    int count = 0;
-                //    //GeekDesk数据搜索
-                //    ObservableCollection<MenuInfo> menuList = appData.MenuList;
-                //    foreach (MenuInfo menu in menuList)
-                //    {
-                //        ObservableCollection<IconInfo> iconList = menu.IconList;
-                //        foreach (IconInfo icon in iconList)
-                //        {
-                //            if (RunTimeStatus.EVERYTHING_NEW_SEARCH) return;
-                //            string pyName = Pinyin.GetInitials(icon.Name).ToLower();
-                //            if (icon.Name.Contains(inputText) || pyName.Contains(inputText))
-                //            {
-                //                SearchIconList.IconList.Add(icon);
-                //                count++;
-                //            }
-                //        }
-                //    }
-
-
-                //    if (appData.AppConfig.EnableEveryThing == true)
-                //    {
-                //        new Thread(() =>
-                //        {
-                //            //EveryThing全盘搜索
-                //            ObservableCollection<IconInfo> iconBakList = EveryThingUtil.Search(inputText);
-                //            count += iconBakList.Count;
-                //            this.Dispatcher.Invoke(() =>
-                //            {
-                //                TotalMsgBtn.Visibility = Visibility.Visible;
-                //                TotalMsgBtn.Content = count + " of " + Convert.ToInt64(EveryThingUtil.Everything_GetNumResults());
-                //                foreach (IconInfo icon in iconBakList)
-                //                {
-                //                    if (RunTimeStatus.EVERYTHING_NEW_SEARCH) return;
-                //                    SearchIconList.IconList.Add(icon);
-                //                }
-                //            });
-
-                //            //异步加载图标
-                //            if (iconBakList != null && iconBakList.Count > 0)
-                //            {
-                //                new Thread(() =>
-                //                {
-                //                    foreach (IconInfo icon in iconBakList)
-                //                    {
-                //                        if (RunTimeStatus.EVERYTHING_NEW_SEARCH) return;
-                //                        this.Dispatcher.Invoke(() =>
-                //                        {
-                //                            icon.BitmapImage_NoWrite = ImageUtil.GetBitmapIconByUnknownPath(icon.Path);
-                //                        }, DispatcherPriority.SystemIdle);
-                //                    }
-                //                }).Start();
-                //            }
-                //        }).Start();
-                //    }
-
-
-
-                //    //if (RightCard.SearchListBox.Items.Count > 0)
-                //    //{
-                //    //    RightCard.SearchListBox.SelectedIndex = 0;
-                //    //}
-                //    //RightCard.VerticalUFG.Visibility = Visibility.Visible;
-                //});
 
             }).Start();
         }

@@ -1,4 +1,5 @@
 ﻿using GeekDesk.Constant;
+using GeekDesk.Control.Windows;
 using GeekDesk.Plugins.EveryThing;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
@@ -277,6 +278,55 @@ namespace GeekDesk.Control.Other
                 }
             }
         }
+
+
+
+
+
+
+
+        /// <summary>
+        /// 管理员方式启动
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void IconAdminStart(object sender, RoutedEventArgs e)
+        {
+            IconInfo icon = (IconInfo)((MenuItem)sender).Tag;
+            ProcessUtil.StartIconApp(icon, IconStartType.ADMIN_STARTUP);
+        }
+
+        /// <summary>
+        /// 打开文件所在位置
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowInExplore(object sender, RoutedEventArgs e)
+        {
+            IconInfo icon = (IconInfo)((MenuItem)sender).Tag;
+            ProcessUtil.StartIconApp(icon, IconStartType.SHOW_IN_EXPLORE);
+        }
+
+
+        private void SystemContextMenu(object sender, RoutedEventArgs e)
+        {
+            IconInfo icon = (IconInfo)((MenuItem)sender).Tag;
+            DirectoryInfo[] folders = new DirectoryInfo[1];
+            folders[0] = new DirectoryInfo(icon.Path);
+            ShellContextMenu scm = new ShellContextMenu();
+            System.Drawing.Point p = System.Windows.Forms.Cursor.Position;
+            p.X -= 80;
+            p.Y -= 80;
+            scm.ShowContextMenu(folders, p);
+        }
+
+
+
+
+
+
+
+
 
     }
 }

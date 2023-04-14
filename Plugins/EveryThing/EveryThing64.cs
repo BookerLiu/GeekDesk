@@ -43,7 +43,7 @@ namespace GeekDesk.Plugins.EveryThing
         public static extern UInt32 Everything_GetLastError();
 
         [DllImport(@"lib\Plugins\EveryThing\lib\Everything64.dll")]
-        public static extern bool Everything_QueryW(bool bWait);
+        public static extern bool Everything_Query(bool bWait);
 
         [DllImport(@"lib\Plugins\EveryThing\lib\Everything64.dll")]
         public static extern void Everything_SortResultsByPath();
