@@ -34,6 +34,14 @@ namespace GeekDesk.Converts
             {
                 return (config.WindowWidth - config.MenuCardWidth) - 20;
             }
+            else if (WidthTypeEnum.RIGHT_CARD_40 == type)
+            {
+                return (config.WindowWidth - config.MenuCardWidth) - 40;
+            }
+            else if (WidthTypeEnum.RIGHT_CARD_70 == type)
+            {
+                return (config.WindowWidth - config.MenuCardWidth) - 70;
+            }
 
             return config.WindowWidth;
         }

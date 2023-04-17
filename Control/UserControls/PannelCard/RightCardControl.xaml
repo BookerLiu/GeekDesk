@@ -186,9 +186,7 @@
                                                          >
                                             <Border BorderBrush="{TemplateBinding BorderBrush}" 
                                                     BorderThickness="{TemplateBinding BorderBrush}"
-                                                    Width="{Binding AppConfig.WindowWidth, Mode=OneWay, 
-                                                Converter={StaticResource GetWidthByWWConvert}, 
-                                                ConverterParameter={x:Static cst:WidthTypeEnum.RIGHT_CARD_40}}"
+                                                    
                                                     >
                                                 <ItemsPresenter/>
                                             </Border>
@@ -212,7 +210,7 @@
                                                                     VirtualizingPanel.ScrollUnit="Pixel"
                                                 Width="{Binding AppConfig.WindowWidth, Mode=OneWay, 
                                                 Converter={StaticResource GetWidthByWWConvert}, 
-                                                ConverterParameter={x:Static cst:WidthTypeEnum.RIGHT_CARD_40}}"
+                                                ConverterParameter={x:Static cst:WidthTypeEnum.RIGHT_CARD_70}}"
                                                 />
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
