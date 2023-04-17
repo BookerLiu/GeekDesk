@@ -105,6 +105,7 @@ namespace GeekDesk.Control.Other
                         if (!string.IsNullOrEmpty(appData.AppConfig.PasswordHint))
                         {
                             //显示提示信息
+                            HintMsg.Text = "提示: " + appData.AppConfig.PasswordHint;
                             HintMsg.Visibility = Visibility.Visible;
                         }
                     }
