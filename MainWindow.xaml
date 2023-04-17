@@ -160,7 +160,15 @@
                             <Setter Property="MaxWidth" Value="300"/>
                         </Style>
                     </Border.Style>
-                    <TextBlock Margin="8" FontSize="13" x:Name="SearchResText" Text="0 of 0" Opacity="0.6"/>
+                    <WrapPanel Margin="8">
+                        <TextBlock Opacity="0.6" Text="g:"/>
+                        <TextBlock x:Name="GeekDeskSearchTotal" Opacity="0.6" Text="0"/>
+                        <TextBlock Opacity="0.6" Text="+"/>
+                        <TextBlock Opacity="0.6" Text="e:"/>
+                        <TextBlock x:Name="EverythingSearchCount" Opacity="0.6" Text="0"/>
+                        <TextBlock Opacity="0.6" Text=" of "/>
+                        <TextBlock x:Name="EverythingSearchTotal" Opacity="0.6" Text="0"/>
+                    </WrapPanel>
                 </Border>
                 
                 <!--搜索输入框-->

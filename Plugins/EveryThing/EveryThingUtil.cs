@@ -185,9 +185,10 @@ namespace GeekDesk.Plugins.EveryThing
                 | EveryThingConst.EVERYTHING_REQUEST_DATE_MODIFIED
                 | EveryThingConst.EVERYTHING_REQUEST_SIZE);
             EveryThingUtil.Everything_SetSort(
-                EveryThingConst.EVERYTHING_SORT_DATE_MODIFIED_DESCENDING 
-                | EveryThingConst.EVERYTHING_SORT_TYPE_NAME_DESCENDING 
-                | EveryThingConst.EVERYTHING_SORT_RUN_COUNT_DESCENDING);
+                EveryThingConst.EVERYTHING_SORT_TYPE_NAME_DESCENDING
+                | EveryThingConst.EVERYTHING_SORT_RUN_COUNT_DESCENDING
+                | EveryThingConst.EVERYTHING_SORT_DATE_MODIFIED_DESCENDING 
+                );
             EveryThingUtil.Everything_Query(true);
             return NextPage();
         }
@@ -220,15 +221,15 @@ namespace GeekDesk.Plugins.EveryThing
                     ext = System.IO.Path.GetExtension(filePath).ToLower();
                 }
 
-                if (".lnk".Equals(ext))
-                {
+                //if (".lnk".Equals(ext))
+                //{
 
-                    string targetPath = FileUtil.GetTargetPathByLnk(filePath);
-                    if (targetPath != null)
-                    {
-                        filePath = targetPath;
-                    }
-                }
+                //    string targetPath = FileUtil.GetTargetPathByLnk(filePath);
+                //    if (targetPath != null)
+                //    {
+                //        filePath = targetPath;
+                //    }
+                //}
 
                 string name = System.IO.Path.GetFileNameWithoutExtension(tempPath);
                 if (string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(tempPath))

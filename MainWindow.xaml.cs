@@ -176,7 +176,11 @@ namespace GeekDesk
                 this.Dispatcher.Invoke(() =>
                 {
                     string inputText = SearchBox.Text.ToLower().Trim();
-
+                    if (string.IsNullOrEmpty(inputText))
+                    {
+                        RightCard.Loading_RightCard.Visibility = Visibility.Collapsed;
+                        return;
+                    }
                     new Thread(() =>
                     {
                         ObservableCollection<IconInfo> resList = new ObservableCollection<IconInfo>();
@@ -190,6 +194,7 @@ namespace GeekDesk
                             }
                         }
 
+                        int geekDeskCount = 0;
                         //GeekDesk数据搜索
                         ObservableCollection<MenuInfo> menuList = appData.MenuList;
                         foreach (MenuInfo menu in menuList)
@@ -201,6 +206,7 @@ namespace GeekDesk
                                 string pyName = Pinyin.GetInitials(icon.Name).ToLower();
                                 if (icon.Name.Contains(inputText) || pyName.Contains(inputText))
                                 {
+                                    geekDeskCount++;
                                     resList.Add(icon);
                                 }
                             }
@@ -210,7 +216,10 @@ namespace GeekDesk
                         {
                             if (appData.AppConfig.EnableEveryThing == true)
                             {
-                                SearchResText.Text = resList.Count + " of " + Convert.ToInt32(EveryThingUtil.Everything_GetNumResults());
+                                int everythingTotal = Convert.ToInt32(EveryThingUtil.Everything_GetNumResults());
+                                GeekDeskSearchTotal.Text = Convert.ToString(geekDeskCount);
+                                EverythingSearchCount.Text = Convert.ToString(resList.Count - geekDeskCount);
+                                EverythingSearchTotal.Text = Convert.ToString(everythingTotal + geekDeskCount);
                                 SearchResContainer.Visibility = Visibility.Visible;
                             }
                             SearchResControl control = new SearchResControl(resList);
@@ -246,7 +255,6 @@ namespace GeekDesk
                     SearchBox.Clear();
                     SearchBox.TextChanged += SearchBox_TextChanged;
                     SearchBox.Width = 0;
-                    SearchResText.Text = "0 of 0";
                     SearchResContainer.Visibility = Visibility.Collapsed;
                     RightCard.VerticalCard.Content = null;
                     RightCard.VisibilitySearchCard(Visibility.Collapsed);
