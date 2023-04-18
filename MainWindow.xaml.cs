@@ -17,6 +17,7 @@ using ShowSeconds;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -24,8 +25,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Shell;
 using System.Windows.Threading;
 using static GeekDesk.Util.ShowWindowFollowMouse;
@@ -50,7 +53,6 @@ namespace GeekDesk
             //加载数据
             LoadData();
             InitializeComponent();
-
             //用于其他类访问
             mainWindow = this;
 
@@ -355,7 +357,12 @@ namespace GeekDesk
             Keyboard.Focus(SearchBox);
 
             MessageUtil.ChangeWindowMessageFilter(MessageUtil.WM_COPYDATA, 1);
+
+
+            Guide();
         }
+
+
 
         /// <summary>
         /// 注册当前窗口的热键
@@ -497,28 +504,9 @@ namespace GeekDesk
         /// <param name="e"></param>
         private void DragMove(object sender, MouseEventArgs e)
         {
-
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                var windowMode = this.ResizeMode;
-                if (this.ResizeMode != ResizeMode.NoResize)
-                {
-                    this.ResizeMode = ResizeMode.NoResize;
-                }
-
-                this.UpdateLayout();
-
-
-                /* 当点击拖拽区域的时候，让窗口跟着移动
-                (When clicking the drag area, make the window follow) */
                 DragMove();
-
-                if (this.ResizeMode != windowMode)
-                {
-                    this.ResizeMode = windowMode;
-                }
-
-                this.UpdateLayout();
             }
         }
 
@@ -1028,5 +1016,133 @@ namespace GeekDesk
 
 
 
+        class GuideInfo
+        {
+            private string title1;
+            private string title2;
+            private string guideText;
+
+            public string Title1 { get; set; }
+            public string Title2 { get; set; }
+            public string GuideText { get; set; }
+        }
+        enum GuidePopOffect
+        {
+            TOP,
+            INNER_TOP,
+            LEFT,
+            INNER_LEFT,
+            CENTER,
+            RIGHT,
+            INNER_RIGHT,
+            BOTTOM,
+            INNER_BOTTOM
+        }
+
+        private ObservableCollection<GuideInfo> list = new ObservableCollection<GuideInfo>();
+
+        private void Guide()
+        {
+
+            GuideInfo guideInfo = new GuideInfo
+            {
+                Title1 = "提示1",
+                Title2 = "快捷方式创建",
+                GuideText = "将文件拖动到这里自动创建快捷方式, 或者鼠标右键单击添加系统项目"
+            };
+            list.Add(guideInfo);
+
+            guideInfo = new GuideInfo
+            {
+                Title1 = "提示2",
+                Title2 = "快捷方式创建",
+                GuideText = "将文件拖动到这里自动创建快捷方式, 或者鼠标右键单击添加系统项目"
+            };
+            list.Add(guideInfo);
+
+            guideInfo = new GuideInfo
+            {
+                Title1 = "提示3",
+                Title2 = "快捷方式创建",
+                GuideText = "将文件拖动到这里自动创建快捷方式, 或者鼠标右键单击添加系统项目"
+            };
+            list.Add(guideInfo);
+
+            GrayBorder.Visibility = Visibility.Visible;
+            GuideSwitch(0);
+            GuideCard.Visibility = Visibility.Visible;
+        }
+
+        private void GuideSwitch(int num)
+        {
+            switch (num)
+            {
+                default: //0  //右侧列表区域
+                    PreviewGuideBtn.Visibility = Visibility.Collapsed;
+                    NextGuideBtn.Content = "下一步";
+                    Point point = RightCard.TransformToAncestor(this).Transform(new Point(0, 0));
+                    //内部中上
+                    GrayBoderClip(point.X, point.Y, RightCard.ActualWidth, RightCard.ActualHeight,
+                        new Thickness(point.X + RightCard.ActualWidth / 2 - GuideCard.ActualWidth / 2, point.Y, 0, 0));
+                    break;
+                case 1:  //左侧菜单
+                    PreviewGuideBtn.Visibility = Visibility.Visible;
+                    NextGuideBtn.Content = "下一步";
+                    Point leftCardPoint = LeftCard.TransformToAncestor(this).Transform(new Point(0, 0));
+                    GrayBoderClip(leftCardPoint.X , leftCardPoint.Y , LeftCard.ActualWidth, LeftCard.ActualHeight,
+                        // 外部中下侧
+                        new Thickness(leftCardPoint.X + LeftCard.ActualWidth,
+                        leftCardPoint.Y + LeftCard.ActualHeight / 2 - GuideCard.ActualHeight / 2, 0, 0));
+                    break;
+                case 2: //头部拖拽栏
+                    NextGuideBtn.Content = "完成";
+                    GrayBoderClip(0, 0, this.Width, 50,
+                        // 外部中下侧
+                        new Thickness(this.Width / 2 - GuideCard.ActualWidth / 2, 50, 0, 0));
+                    break;
+            }
+        }
+
+
+        private void GrayBoderClip(double x, double y, double w, double h, Thickness margin)
+        {
+            PathGeometry borGeometry = new PathGeometry();
+
+            RectangleGeometry rg = new RectangleGeometry();
+            rg.Rect = new Rect(0, 0, this.Width, this.Height);
+            borGeometry = Geometry.Combine(borGeometry, rg, GeometryCombineMode.Union, null);
+            GrayBorder.Clip = borGeometry;
+
+            RectangleGeometry rg1 = new RectangleGeometry();
+            rg1.Rect = new Rect(x - 20, y - 20, w, h);
+            borGeometry = Geometry.Combine(borGeometry, rg1, GeometryCombineMode.Exclude, null);
+            GuideCard.Margin = margin;
+            GrayBorder.Clip = borGeometry;
+        }
+
+        private void PreviewGuideBtn_Click(object sender, RoutedEventArgs e)
+        {
+            int index = Convert.ToInt32(GuideTitle1.Text.ToString().Substring(2)) - 1;
+            int previewIndex = index - 1;
+            GuideTitle1.Text = list[previewIndex].Title1;
+            GuideTitle2.Text = list[previewIndex].Title2;
+            GuideText.Text = list[previewIndex].GuideText;
+            GuideSwitch(previewIndex);
+        }
+
+        private void NextGuideBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if ("完成".Equals(NextGuideBtn.Content.ToString())) {
+                GrayBorder.Visibility = Visibility.Collapsed;
+                GuideCard.Visibility = Visibility.Collapsed;
+                return;
+            }
+            int index = Convert.ToInt32(GuideTitle1.Text.ToString().Substring(2)) - 1;
+            int nextIndex = index + 1;
+            GuideTitle1.Text = list[nextIndex].Title1;
+            GuideTitle2.Text = list[nextIndex].Title2;
+            GuideText.Text = list[nextIndex].GuideText;
+            GuideSwitch(nextIndex);
+        }
     }
 }

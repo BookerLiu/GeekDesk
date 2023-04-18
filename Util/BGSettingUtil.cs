@@ -45,7 +45,6 @@ namespace GeekDesk.Util
             else
             {
                 LinearGradientBrush lgb = new LinearGradientBrush();
-                lgb.Opacity = (double)(Math.Round((decimal)(appConfig.BgOpacity / 100.00), 2));
                 GradientStop gs = new GradientStop
                 {
                     Color = (Color)ColorConverter.ConvertFromString(appConfig.GradientBGParam.Color1),
@@ -60,6 +59,7 @@ namespace GeekDesk.Util
                     Offset = 1
                 };
                 lgb.GradientStops.Add(gs2);
+                lgb.Opacity = (double)(Math.Round((decimal)(appConfig.BgOpacity / 100.00), 2));
                 MainWindow.mainWindow.BGBorder.Background = lgb;
             }
 
