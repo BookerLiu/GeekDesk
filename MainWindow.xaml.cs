@@ -43,7 +43,7 @@ namespace GeekDesk
     public partial class MainWindow : Window, IWindowCommon
     {
 
-        public static AppData appData = CommonCode.GetAppDataByFile();
+        public static AppData appData;
         public static ToDoInfoWindow toDoInfoWindow;
         public static int hotKeyId = -1;
         public static int toDoHotKeyId = -1;
@@ -53,9 +53,7 @@ namespace GeekDesk
         private static bool dataFileExist = true;
         public MainWindow()
         {
-            //判断数据文件是否存在 如果不存在那么是第一次打开程序
-            dataFileExist = File.Exists(Constants.DATA_FILE_PATH);
-
+            
             //加载数据
             LoadData();
             InitializeComponent();
@@ -276,6 +274,11 @@ namespace GeekDesk
         /// </summary>
         private void LoadData()
         {
+            //判断数据文件是否存在 如果不存在那么是第一次打开程序
+            dataFileExist = File.Exists(Constants.DATA_FILE_PATH);
+
+            appData = CommonCode.GetAppDataByFile();
+
             this.DataContext = appData;
             if (appData.MenuList.Count == 0)
             {
