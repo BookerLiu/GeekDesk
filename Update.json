@@ -5,5 +5,6 @@
 	"msg": "['好久不见, 别来无恙, 辞职回老家了, 突然换了新环境有点不适应, 目前还处于工作中的迷茫期, 祝我们大家都前程似锦吧', '另外GeekDesk准备冲击一下Gitee GVP, 希望大家能给我点一下码云(Gitee)和GitHub的star❤❤❤', '之后我会抽时间编写一下开发者文档, 方便大家更清楚的了解项目结构, 从而有更多的人参与进来开发(一直没有编写是因为太懒了), 不多说了, 看下这次更新内容吧', '集成Everything搜索,设置-->其它-->勾选Everything插件开启', '增加了关联文件夹功能, 右键点击左侧栏-->新建关联菜单', '增加强制置顶开关,设置-->显示设置-->勾选/取消 置于顶层', '右侧栏图标列表增加了自适应列宽, 不会出现图标显示一半的情况了', '简单添加了新手引导提示', '加密菜单bug修复 By @1062406901', '多显示器拾色器bug修复 By @1062406901', '拖动图标到菜单的异常修复 By @Hsxxxxxx', '优化部分UI', '其它bug修复及功能优化']",
 	"githubUrl": "https://github.com/BookerLiu/GeekDesk/releases",
 	"giteeUrl": "https://gitee.com/BookerLiu/GeekDesk/releases",
+	"statisticUrl": "",
 	"version": "2.5.14"
 }

@@ -50,6 +50,16 @@ namespace GeekDesk.MyThread
                 if (!StringUtil.IsEmpty(updateInfo))
                 {
                     JObject jo = JObject.Parse(updateInfo);
+
+
+                    string statisticUrl = jo["statisticUrl"].ToString();
+                    if (!string.IsNullOrEmpty(statisticUrl))
+                    {
+                        //用户统计  只通过uuid统计用户数量  不收集任何信息
+                        statisticUrl += "?uuid=" + CommonCode.GetUniqueUUID();
+                        HttpUtil.Get(statisticUrl);
+                    }
+
                     string onlineVersion = jo["version"].ToString();
                     if (onlineVersion.CompareTo(nowVersion) > 0)
                     {

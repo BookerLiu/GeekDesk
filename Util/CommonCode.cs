@@ -130,6 +130,41 @@ namespace GeekDesk.Util
             }
         }
 
+        private static string GeneraterUUID()
+        {
+            try
+            {
+                if (!File.Exists(Constants.UUID_FILE_BAK_PATH) || string.IsNullOrEmpty(GetUniqueUUID()))
+                {
+                    using (StreamWriter sw = new StreamWriter(Constants.UUID_FILE_BAK_PATH))
+                    {
+                        string uuid = Guid.NewGuid().ToString() + "-" + Constants.MY_UUID;
+                        sw.Write(uuid);
+                        return uuid;
+                    }
+                }
+            } catch (Exception) { }
+            return "ERROR_UUID_GeneraterUUID_" + Constants.MY_UUID;
+        }
+
+        public static string GetUniqueUUID()
+        {
+            try
+            {
+                if (File.Exists(Constants.UUID_FILE_BAK_PATH))
+                {
+                    using (StreamReader reader = new StreamReader(Constants.UUID_FILE_BAK_PATH))
+                    {
+                        return reader.ReadToEnd().Trim();
+                    }
+                } else
+                {
+                    return GeneraterUUID();
+                }
+            } catch(Exception) { }
+            return "ERROR_UUID_GetUniqueUUID_" + Constants.MY_UUID;
+        }
+
 
         public static void BakAppData()
         {
