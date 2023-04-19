@@ -1028,13 +1028,18 @@ namespace GeekDesk
         #region 新手引导
         private void Guide()
         {
-            if (CheckShouldShowApp())
+            try
             {
-                ShowApp();
+                //防止影响主程序进程
+                if (CheckShouldShowApp())
+                {
+                    ShowApp();
+                }
+                GrayBorder.Visibility = Visibility.Visible;
+                GuideSwitch(0);
+                GuideCard.Visibility = Visibility.Visible;
             }
-            GrayBorder.Visibility = Visibility.Visible;
-            GuideSwitch(0);
-            GuideCard.Visibility = Visibility.Visible;
+            catch (Exception) { }
         }
 
         private void GuideSwitch(int index)
