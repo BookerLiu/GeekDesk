@@ -305,6 +305,7 @@
     <Compile Include="Util\CommonCode.cs" />
     <Compile Include="Util\FileIcon.cs" />
     <Compile Include="Util\FileUtil.cs" />
+    <Compile Include="ViewModel\Temp\GuideInfoList.cs" />
     <Compile Include="Util\HideWindowUtil.cs" />
     <Compile Include="Util\IconHelper.cs" />
     <Compile Include="Util\IconUtil.cs" />

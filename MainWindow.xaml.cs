@@ -17,6 +17,7 @@ using ShowSeconds;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -48,8 +49,13 @@ namespace GeekDesk
         public static int toDoHotKeyId = -1;
         public static int colorPickerHotKeyId = -1;
         public static MainWindow mainWindow;
+
+        private static bool dataFileExist = true;
         public MainWindow()
         {
+            //判断数据文件是否存在 如果不存在那么是第一次打开程序
+            dataFileExist = File.Exists(Constants.DATA_FILE_PATH);
+
             //加载数据
             LoadData();
             InitializeComponent();
@@ -359,7 +365,10 @@ namespace GeekDesk
             MessageUtil.ChangeWindowMessageFilter(MessageUtil.WM_COPYDATA, 1);
 
 
-            Guide();
+            if (!dataFileExist)
+            {
+                Guide();
+            }
         }
 
 
@@ -1016,78 +1025,48 @@ namespace GeekDesk
 
 
 
-        class GuideInfo
-        {
-            private string title1;
-            private string title2;
-            private string guideText;
-
-            public string Title1 { get; set; }
-            public string Title2 { get; set; }
-            public string GuideText { get; set; }
-        }
-        enum GuidePopOffect
-        {
-            TOP,
-            INNER_TOP,
-            LEFT,
-            INNER_LEFT,
-            CENTER,
-            RIGHT,
-            INNER_RIGHT,
-            BOTTOM,
-            INNER_BOTTOM
-        }
-
-        private ObservableCollection<GuideInfo> list = new ObservableCollection<GuideInfo>();
-
+        #region 新手引导
         private void Guide()
         {
-
-            GuideInfo guideInfo = new GuideInfo
+            if (CheckShouldShowApp())
             {
-                Title1 = "提示1",
-                Title2 = "快捷方式创建",
-                GuideText = "将文件拖动到这里自动创建快捷方式, 或者鼠标右键单击添加系统项目"
-            };
-            list.Add(guideInfo);
-
-            guideInfo = new GuideInfo
-            {
-                Title1 = "提示2",
-                Title2 = "快捷方式创建",
-                GuideText = "将文件拖动到这里自动创建快捷方式, 或者鼠标右键单击添加系统项目"
-            };
-            list.Add(guideInfo);
-
-            guideInfo = new GuideInfo
-            {
-                Title1 = "提示3",
-                Title2 = "快捷方式创建",
-                GuideText = "将文件拖动到这里自动创建快捷方式, 或者鼠标右键单击添加系统项目"
-            };
-            list.Add(guideInfo);
-
+                ShowApp();
+            }
             GrayBorder.Visibility = Visibility.Visible;
             GuideSwitch(0);
             GuideCard.Visibility = Visibility.Visible;
         }
 
-        private void GuideSwitch(int num)
+        private void GuideSwitch(int index)
         {
-            switch (num)
+            GuideNum.Text = Convert.ToString(index + 1);
+            GuideTitle1.Text = GuideInfoList.mainWindowGuideList[index].Title1;
+            GuideTitle2.Text = GuideInfoList.mainWindowGuideList[index].Title2;
+            GuideText.Text = GuideInfoList.mainWindowGuideList[index].GuideText;
+
+            if (index == 0)
+            {
+                PreviewGuideBtn.Visibility = Visibility.Collapsed;
+                NextGuideBtn.Content = "下一步";
+            } else if (index > 0 && index < GuideInfoList.mainWindowGuideList.Count - 1)
+            {
+                PreviewGuideBtn.Visibility = Visibility.Visible;
+                NextGuideBtn.Content = "下一步";
+            } else
+            {
+                NextGuideBtn.Content = "完成";
+            }
+
+            switch (index)
             {
                 default: //0  //右侧列表区域
-                    PreviewGuideBtn.Visibility = Visibility.Collapsed;
-                    NextGuideBtn.Content = "下一步";
+                    
                     Point point = RightCard.TransformToAncestor(this).Transform(new Point(0, 0));
                     //内部中上
                     GrayBoderClip(point.X, point.Y, RightCard.ActualWidth, RightCard.ActualHeight,
                         new Thickness(point.X + RightCard.ActualWidth / 2 - GuideCard.ActualWidth / 2, point.Y, 0, 0));
                     break;
                 case 1:  //左侧菜单
-                    PreviewGuideBtn.Visibility = Visibility.Visible;
-                    NextGuideBtn.Content = "下一步";
                     Point leftCardPoint = LeftCard.TransformToAncestor(this).Transform(new Point(0, 0));
                     GrayBoderClip(leftCardPoint.X , leftCardPoint.Y , LeftCard.ActualWidth, LeftCard.ActualHeight,
                         // 外部中下侧
@@ -1095,10 +1074,16 @@ namespace GeekDesk
                         leftCardPoint.Y + LeftCard.ActualHeight / 2 - GuideCard.ActualHeight / 2, 0, 0));
                     break;
                 case 2: //头部拖拽栏
-                    NextGuideBtn.Content = "完成";
                     GrayBoderClip(0, 0, this.Width, 50,
                         // 外部中下侧
                         new Thickness(this.Width / 2 - GuideCard.ActualWidth / 2, 50, 0, 0));
+                    break;
+                case 3:
+                    Point mainBtnPoint = MainBtnPanel.TransformToAncestor(this).Transform(new Point(0, 0));
+                    GrayBoderClip(mainBtnPoint.X, mainBtnPoint.Y, MainBtnPanel.ActualWidth, MainBtnPanel.ActualHeight,
+                        // 外部左下侧
+                        new Thickness(mainBtnPoint.X - GuideCard.Width,
+                        mainBtnPoint.Y, 0, 0));
                     break;
             }
         }
@@ -1122,11 +1107,8 @@ namespace GeekDesk
 
         private void PreviewGuideBtn_Click(object sender, RoutedEventArgs e)
         {
-            int index = Convert.ToInt32(GuideTitle1.Text.ToString().Substring(2)) - 1;
+            int index = Convert.ToInt32(GuideNum.Text.ToString()) - 1;
             int previewIndex = index - 1;
-            GuideTitle1.Text = list[previewIndex].Title1;
-            GuideTitle2.Text = list[previewIndex].Title2;
-            GuideText.Text = list[previewIndex].GuideText;
             GuideSwitch(previewIndex);
         }
 
@@ -1137,12 +1119,17 @@ namespace GeekDesk
                 GuideCard.Visibility = Visibility.Collapsed;
                 return;
             }
-            int index = Convert.ToInt32(GuideTitle1.Text.ToString().Substring(2)) - 1;
+            int index = Convert.ToInt32(GuideNum.Text.ToString()) - 1;
             int nextIndex = index + 1;
-            GuideTitle1.Text = list[nextIndex].Title1;
-            GuideTitle2.Text = list[nextIndex].Title2;
-            GuideText.Text = list[nextIndex].GuideText;
             GuideSwitch(nextIndex);
+        }
+
+
+        #endregion
+
+        private void Guide_Click(object sender, RoutedEventArgs e)
+        {
+            Guide();
         }
     }
 }
