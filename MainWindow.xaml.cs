@@ -246,6 +246,12 @@ namespace GeekDesk
         public void HidedSearchBox()
         {
             RunTimeStatus.EVERYTHING_NEW_SEARCH = true;
+            RunTimeStatus.SEARCH_BOX_HIDED_300 = false;
+            new Thread(() =>
+            {
+                Thread.Sleep(300);
+                RunTimeStatus.SEARCH_BOX_HIDED_300 = true;
+            }).Start();
             new Thread(() =>
             {
                 Thread.Sleep(1000);

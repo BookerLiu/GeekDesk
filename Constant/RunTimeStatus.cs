@@ -1,4 +1,6 @@
-﻿namespace GeekDesk.Constant
+﻿using System;
+
+namespace GeekDesk.Constant
 {
     internal class RunTimeStatus
     {
@@ -7,6 +9,11 @@
         /// 查询框是否在工作
         /// </summary>
         public static volatile bool SEARCH_BOX_SHOW = false;
+
+        /// <summary>
+        /// 查询框是否已经关闭了300毫秒   防止点击右侧区域关闭查询框时误打开列表
+        /// </summary>
+        public static volatile bool SEARCH_BOX_HIDED_300 = true;
 
         /// <summary>
         /// 贴边隐藏后  以非鼠标经过方式触发显示
@@ -78,5 +85,6 @@
         /// 控制主界面热键按下规定时间内只执行一次show hide
         /// </summary>
         public static volatile int MAIN_HOT_KEY_TIME = 300;
+
     }
 }

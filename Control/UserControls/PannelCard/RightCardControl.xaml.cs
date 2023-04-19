@@ -126,6 +126,8 @@ namespace GeekDesk.Control.UserControls.PannelCard
         /// <param name="e"></param>
         private void IconClick(object sender, MouseButtonEventArgs e)
         {
+            if (!RunTimeStatus.SEARCH_BOX_HIDED_300) return;
+
             if (appData.AppConfig.DoubleOpen && e.ClickCount >= 2)
             {
                 IconInfo icon = (IconInfo)((Panel)sender).Tag;
