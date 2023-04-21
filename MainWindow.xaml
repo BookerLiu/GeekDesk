@@ -129,8 +129,8 @@
                                HorizontalAlignment="Left"/>
                     </StackPanel>
                     <hc:UniformSpacingPanel HorizontalAlignment="Right">
-                        <Button x:Name="PreviewGuideBtn" Click="PreviewGuideBtn_Click" Margin="0,0,20,0" Content="上一步"/>
-                        <Button x:Name="NextGuideBtn" Click="NextGuideBtn_Click" Margin="0,0,20,0" Content="下一步"/>
+                        <Button Style="{StaticResource MyBtnStyle}" x:Name="PreviewGuideBtn" Click="PreviewGuideBtn_Click" Margin="0,0,20,0" Content="上一步"/>
+                        <Button Style="{StaticResource MyBtnStyle}" x:Name="NextGuideBtn" Click="NextGuideBtn_Click" Margin="0,0,20,0" Content="下一步"/>
                     </hc:UniformSpacingPanel>
                 </Grid>
             </hc:Card.Footer>
@@ -171,8 +171,8 @@
 
 
 
-                    <CheckBox x:Name="ShowBox" Visibility="Hidden" Panel.ZIndex="2"/>
-                    <CheckBox x:Name="HideBox" Visibility="Hidden" Panel.ZIndex="2"/>
+                    <CheckBox Style="{StaticResource MyCheckBoxStyle}" x:Name="ShowBox" Visibility="Hidden" Panel.ZIndex="2"/>
+                    <CheckBox Style="{StaticResource MyCheckBoxStyle}" x:Name="HideBox" Visibility="Hidden" Panel.ZIndex="2"/>
 
                     <StackPanel HorizontalAlignment="Right" Panel.ZIndex="99" hc:Growl.GrowlParent="False" hc:Growl.Token="MainWindowGrowl" Grid.Column="1" Grid.Row="1"/>
                     <StackPanel HorizontalAlignment="Center" Panel.ZIndex="99" hc:Growl.GrowlParent="False" hc:Growl.Token="MainWindowAskGrowl" Grid.Column="1" Grid.Row="1"/>

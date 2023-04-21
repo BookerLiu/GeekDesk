@@ -49,6 +49,6 @@
         </hc:Card>
         </StackPanel>
 
-        <Button Click="Close_Click" Content="朕已阅" Margin="10,0,10,20" Width="298" VerticalAlignment="Bottom"/>
+        <Button Style="{StaticResource MyBtnStyle}" Click="Close_Click" Content="朕已阅" Margin="10,0,10,20" Width="298" VerticalAlignment="Bottom"/>
     </Grid>
 </Border>

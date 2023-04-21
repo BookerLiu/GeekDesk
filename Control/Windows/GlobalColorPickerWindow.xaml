@@ -33,12 +33,7 @@
                     VerticalAlignment="Top" Width="80"
                     >
                 <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource Btn1}">
-                        <Style.Triggers>
-                            <Trigger Property="IsPressed" Value="true">
-                                <Setter Property="Opacity" Value="1"/>
-                            </Trigger>
-                        </Style.Triggers>
+                    <Style TargetType="Button" BasedOn="{StaticResource MyBtnStyle}">
                     </Style>
                 </Button.Style>
             </Button>
@@ -51,12 +46,7 @@
                     VerticalAlignment="Top" Width="80"
                     >
                 <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource Btn1}">
-                        <Style.Triggers>
-                            <Trigger Property="IsPressed" Value="true">
-                                <Setter Property="Opacity" Value="1"/>
-                            </Trigger>
-                        </Style.Triggers>
+                    <Style TargetType="Button" BasedOn="{StaticResource MyBtnStyle}">
                     </Style>
                 </Button.Style>
             </Button>

@@ -44,10 +44,10 @@
                     <ComboBoxItem Content="时"/>
                 </ComboBox.Items>
             </ComboBox>
-            <Button Content="推迟提醒" Click="DelayButton_Click"/>
+            <Button Style="{StaticResource MyBtnStyle}" Content="推迟提醒" Click="DelayButton_Click"/>
         </hc:UniformSpacingPanel>
 
 
-        <Button Click="BacklogDone_Click" Content="朕已阅" Margin="10,0,10,20" Width="298" VerticalAlignment="Bottom"/>
+        <Button Style="{StaticResource MyBtnStyle}" Click="BacklogDone_Click" Content="朕已阅" Margin="10,0,10,20" Width="298" VerticalAlignment="Bottom"/>
     </Grid>
 </Border>

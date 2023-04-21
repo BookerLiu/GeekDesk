@@ -53,12 +53,15 @@ namespace GeekDesk.MyThread
 
                     try
                     {
-                        string statisticUrl = jo["statisticUrl"].ToString();
-                        if (!string.IsNullOrEmpty(statisticUrl))
+                        if (jo["statisticUrl"] != null)
                         {
-                            //用户统计  只通过uuid统计用户数量  不收集任何信息
-                            statisticUrl += "?uuid=" + CommonCode.GetUniqueUUID();
-                            HttpUtil.Get(statisticUrl);
+                            string statisticUrl = jo["statisticUrl"].ToString();
+                            if (!string.IsNullOrEmpty(statisticUrl))
+                            {
+                                //用户统计  只通过uuid统计用户数量  不收集任何信息
+                                statisticUrl += "?uuid=" + CommonCode.GetUniqueUUID();
+                                HttpUtil.Get(statisticUrl);
+                            }
                         }
                     } catch (Exception){}
 

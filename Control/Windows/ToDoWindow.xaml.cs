@@ -2,6 +2,11 @@
 using GeekDesk.Interface;
 using GeekDesk.ViewModel;
 using HandyControl.Controls;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -64,6 +69,14 @@ namespace GeekDesk.Control.Windows
             {
                 case "History":
                     UFG.Visibility = Visibility.Collapsed;
+                    //排序历史待办 倒序
+
+                    List<ToDoInfo> list = appData.HiToDoList.OrderByDescending(v=>v.DoneTime).ToList();
+                    appData.HiToDoList.Clear();
+                    foreach (var item in list)
+                    {
+                        appData.HiToDoList.Add(item);
+                    }
                     backlog.BacklogList.ItemsSource = appData.HiToDoList;
                     if (backlog.BacklogList.Items.Count > 0)
                     {

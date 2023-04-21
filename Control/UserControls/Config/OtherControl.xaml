@@ -20,54 +20,36 @@
             <StackPanel >
                 <TextBlock Text="程序设置" />
                 <hc:UniformSpacingPanel Spacing="10" Margin="20,8,0,0">
-                    <CheckBox x:Name="SelfStartUpBox" Content="开机自启动" IsChecked="{Binding SelfStartUp}" Click="SelfStartUpBox_Click">
-                        <CheckBox.Background>
-                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                                <GradientStop Color="#FF9EA3A6"/>
-                            </LinearGradientBrush>
-                        </CheckBox.Background>
-                    </CheckBox>
+                    <CheckBox Style="{StaticResource MyCheckBoxStyle}" x:Name="SelfStartUpBox" Content="开机自启动" IsChecked="{Binding SelfStartUp}" Click="SelfStartUpBox_Click"/>
                 </hc:UniformSpacingPanel>
                 <hc:UniformSpacingPanel Spacing="10" Margin="20,6,0,0">
-                    <CheckBox Content="性能模式" IsChecked="{Binding PMModel}" 
+                    <CheckBox Content="性能模式"
+                              Style="{StaticResource MyCheckBoxStyle}"
+                              IsChecked="{Binding PMModel}" 
                               hc:Poptip.HitMode="None" 
                               hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
                               hc:Poptip.Content="开启性能模式将取消图标动画效果" 
                               hc:Poptip.Placement="Top"
-                              >
-                        <CheckBox.Background>
-                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                                <GradientStop Color="#FF9EA3A6"/>
-                            </LinearGradientBrush>
-                        </CheckBox.Background>
-                    </CheckBox>
+                              />
                 </hc:UniformSpacingPanel>
                 <TextBlock Text="插件"  Margin="0,20,0,0"/>
                 <hc:UniformSpacingPanel Spacing="10" Margin="20,6,0,0">
-                    <CheckBox  Content="时钟显秒" Click="ShowSeconds_Click" IsChecked="{Binding SecondsWindow}" 
-                           hc:Poptip.HitMode="None"
-                           hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
-                           hc:Poptip.Content="仅Win11有效" 
-                           hc:Poptip.Placement="Top"
-                           >
-                        <CheckBox.Background>
-                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                                <GradientStop Color="#FF9EA3A6"/>
-                            </LinearGradientBrush>
-                        </CheckBox.Background>
-                    </CheckBox>
-                    <CheckBox  Content="EveryThing搜索" Click="EveryThing_Changed" IsChecked="{Binding EnableEveryThing}" 
-                           hc:Poptip.HitMode="None"
-                           hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
-                           hc:Poptip.Content="勾选后若弹出用户帐户控制请选择是" 
-                           hc:Poptip.Placement="Top"
-                           >
-                        <CheckBox.Background>
-                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                                <GradientStop Color="#FF9EA3A6"/>
-                            </LinearGradientBrush>
-                        </CheckBox.Background>
-                    </CheckBox>
+                    <CheckBox  Content="时钟显秒" 
+                               Style="{StaticResource MyCheckBoxStyle}"
+                               Click="ShowSeconds_Click" IsChecked="{Binding SecondsWindow}" 
+                               hc:Poptip.HitMode="None"
+                               hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
+                               hc:Poptip.Content="仅Win11有效" 
+                               hc:Poptip.Placement="Top"
+                               />
+                    <CheckBox  Content="EveryThing搜索" 
+                               Style="{StaticResource MyCheckBoxStyle}"
+                               Click="EveryThing_Changed" IsChecked="{Binding EnableEveryThing}" 
+                               hc:Poptip.HitMode="None"
+                               hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
+                               hc:Poptip.Content="勾选后若弹出用户帐户控制请选择是" 
+                               hc:Poptip.Placement="Top"
+                               />
                 </hc:UniformSpacingPanel>
                 <TextBlock Text="排序方式"  Margin="0,25,0,0"/>
 
@@ -128,7 +110,7 @@
                             hc:Poptip.Content="当数据文件损坏时, 以便能够恢复部分数据 (损坏时将有操作提示)"
                             hc:Poptip.Placement="Top"
                             hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
-                            Style="{StaticResource Btn1}" 
+                            Style="{StaticResource MyBtnStyle}" 
                             Click="BakDataFile"/>
                 </hc:UniformSpacingPanel>
             </StackPanel>

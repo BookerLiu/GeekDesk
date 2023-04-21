@@ -36,13 +36,13 @@
             <TextBlock Text="注: 需配置正确的url方可加载远程图标!" Foreground="Red" Margin="10,95,-10,-92" />
 
             <hc:UniformSpacingPanel Spacing="10" Margin="203,125,-203,-125">
-                <Button Content="取消" Command="hc:ControlCommands.Close" HorizontalAlignment="Stretch" Margin="-1,1,1,1" VerticalAlignment="Stretch" 
+                <Button Style="{StaticResource MyBtnStyle}" Content="取消" Command="hc:ControlCommands.Close" HorizontalAlignment="Stretch" Margin="-1,1,1,1" VerticalAlignment="Stretch" 
                             />
                 <Button Content="教程" Click="Teach_Click" 
-                        Style="{StaticResource Btn1}"/>
+                        Style="{StaticResource MyBtnStyle}"/>
                 <Button Content="保存" Click="Confirm_Click" 
                         Command="hc:ControlCommands.Close"
-                        Style="{StaticResource Btn1}"/>
+                        Style="{StaticResource MyBtnStyle}"/>
             </hc:UniformSpacingPanel>
         </Grid>
         <!--<Button Width="22" Height="22" Command="hc:ControlCommands.Close" Style="{StaticResource ButtonIcon}" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,4,4,0"/>-->

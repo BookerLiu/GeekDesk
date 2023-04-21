@@ -49,18 +49,12 @@
                                            hc:Poptip.Content="{Binding BacImgName}" 
                                            hc:Poptip.Placement="TopLeft"
                                            />
-                                <Button Content="修改" Click="BGButton_Click"/>
-                                <Button Content="默认" Click="DefaultButton_Click"/>
+                                <Button Content="修改" Style="{StaticResource MyBtnStyle}" Click="BGButton_Click"/>
+                                <Button Content="默认" Style="{StaticResource MyBtnStyle}" Click="DefaultButton_Click"/>
                             </hc:UniformSpacingPanel>
 
                             <hc:UniformSpacingPanel Spacing="10" Margin="20,10,0,0"  Grid.ColumnSpan="4">
-                                <CheckBox x:Name="IconIsAdmin" Content="毛玻璃效果" Click="BGStyle_Changed" IsChecked="{Binding BlurEffect}">
-                                    <CheckBox.Background>
-                                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                                            <GradientStop Color="#FF9EA3A6"/>
-                                        </LinearGradientBrush>
-                                    </CheckBox.Background>
-                                </CheckBox>
+                                <CheckBox Style="{StaticResource MyCheckBoxStyle}" x:Name="IconIsAdmin" Content="毛玻璃效果" Click="BGStyle_Changed" IsChecked="{Binding BlurEffect}"/>
                             </hc:UniformSpacingPanel>
                         </StackPanel>
                     </hc:TransitioningContentControl>
@@ -82,7 +76,10 @@
                                            Margin="0,5,0,0"
                                            VerticalAlignment="Center"
                                            />
-                                <Button Content="设置" Tag="Color1" Click="ColorButton_Click"/>
+                                <Button Style="{StaticResource MyBtnStyle}" 
+                                        Content="设置" 
+                                        Tag="Color1" 
+                                        Click="ColorButton_Click"/>
                             </hc:UniformSpacingPanel>
                             <hc:UniformSpacingPanel Spacing="10" Margin="20,5,0,0" Grid.ColumnSpan="4">
                                 <TextBlock Text="色彩2:" VerticalAlignment="Center" Margin="0,5,0,0"/>
@@ -92,10 +89,15 @@
                                            Margin="0,5,0,0"
                                            VerticalAlignment="Center"
                                            />
-                                <Button Content="设置" Tag="Color2" Click="ColorButton_Click"/>
+                                <Button Style="{StaticResource MyBtnStyle}" 
+                                        Content="设置" Tag="Color2" 
+                                        Click="ColorButton_Click" 
+                                        />
+
                             </hc:UniformSpacingPanel>
 
                             <Button Content="系统预设"
+                                    Style="{StaticResource MyBtnStyle}"
                                     Margin="0,5,0,0"
                                     hc:Poptip.HitMode="None" 
                                     hc:Poptip.IsOpen="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
@@ -111,51 +113,24 @@
                 <hc:Divider LineStrokeDashArray="3,3" Margin="0,0,0,0" Height="20" LineStroke="Black" Grid.ColumnSpan="1"/>
                 
                 <hc:UniformSpacingPanel Spacing="10" Margin="5,-10,0,0" Grid.ColumnSpan="4">
-                    <CheckBox  Content="置于顶层" IsChecked="{Binding AlwaysTopmost}">
-                        <CheckBox.Background>
-                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                                <GradientStop Color="#FF9EA3A6"/>
-                            </LinearGradientBrush>
-                        </CheckBox.Background>
-                    </CheckBox>
+                    <CheckBox Style="{StaticResource MyCheckBoxStyle}"  Content="置于顶层" IsChecked="{Binding AlwaysTopmost}"/>
                 </hc:UniformSpacingPanel>
 
                 <hc:UniformSpacingPanel Spacing="10" Margin="5,10,0,0" Grid.ColumnSpan="4">
-                    <CheckBox  Content="主窗口动画" IsChecked="{Binding AppAnimation}" Click="Animation_Checked">
-                        <CheckBox.Background>
-                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                                <GradientStop Color="#FF9EA3A6"/>
-                            </LinearGradientBrush>
-                        </CheckBox.Background>
-                    </CheckBox>
+                    <CheckBox Style="{StaticResource MyCheckBoxStyle}"  Content="主窗口动画" IsChecked="{Binding AppAnimation}" Click="Animation_Checked"/>
+
                 </hc:UniformSpacingPanel>
                 <hc:UniformSpacingPanel Spacing="10" Margin="5,10,0,0" Grid.ColumnSpan="4">
-                    <CheckBox  Content="列表展开动画" IsChecked="{Binding ItemSpradeAnimation}">
-                        <CheckBox.Background>
-                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                                <GradientStop Color="#FF9EA3A6"/>
-                            </LinearGradientBrush>
-                        </CheckBox.Background>
-                    </CheckBox>
+                    <CheckBox Style="{StaticResource MyCheckBoxStyle}"  Content="列表展开动画" IsChecked="{Binding ItemSpradeAnimation}"/>
+
+
                 </hc:UniformSpacingPanel>
                 <hc:UniformSpacingPanel Spacing="10" Margin="5,10,0,0"  Grid.ColumnSpan="4">
-                    <CheckBox x:Name="BarIcon" Content="显示托盘图标" IsChecked="{Binding ShowBarIcon}">
-                        <CheckBox.Background>
-                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                                <GradientStop Color="#FF9EA3A6"/>
-                            </LinearGradientBrush>
-                        </CheckBox.Background>
-                    </CheckBox>
+                    <CheckBox Style="{StaticResource MyCheckBoxStyle}" x:Name="BarIcon" Content="显示托盘图标" IsChecked="{Binding ShowBarIcon}"/>
                 </hc:UniformSpacingPanel>
 
                 <hc:UniformSpacingPanel Spacing="10" Margin="5,10,0,0"  Grid.ColumnSpan="4">
-                    <CheckBox  Content="显示主面板Logo" IsChecked="{Binding TitleLogoVisible, Mode=TwoWay, Converter={StaticResource Visibility2BooleanConverter}}">
-                        <CheckBox.Background>
-                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                                <GradientStop Color="#FF9EA3A6"/>
-                            </LinearGradientBrush>
-                        </CheckBox.Background>
-                    </CheckBox>
+                    <CheckBox Style="{StaticResource MyCheckBoxStyle}"  Content="显示主面板Logo" IsChecked="{Binding TitleLogoVisible, Mode=TwoWay, Converter={StaticResource Visibility2BooleanConverter}}"/>
                 </hc:UniformSpacingPanel>
 
 
@@ -242,7 +217,7 @@
                 <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4">
                     <TextBlock VerticalAlignment="Center" Text="图标字体颜色:" />
                     <TextBlock VerticalAlignment="Center" Text="{Binding TextColor}" Foreground="{Binding TextColor}" Width="100"/>
-                    <Button Content="选择" Margin="0,-10,0,0" Tag="Text"  Click="ColorButton_Click"/>
+                    <Button Style="{StaticResource MyBtnStyle}" Content="选择" Margin="0,-10,0,0" Tag="Text"  Click="ColorButton_Click"/>
                 </hc:UniformSpacingPanel>
             </StackPanel>
         </Grid>

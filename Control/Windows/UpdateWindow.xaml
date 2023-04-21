@@ -28,7 +28,7 @@
                                 <TextBlock Margin="10" x:Name="MsgTitle" TextWrapping="Wrap" FontSize="16" HorizontalAlignment="Left" Style="{DynamicResource TextBlockLargeBold}" Text="测试"/>
                                 <Button HorizontalAlignment="Right" Margin="0,0,10,0" 
                                         Content="去点个Star" Click="StarBtnClick" 
-                                        Style="{StaticResource Btn1}"
+                                        Style="{StaticResource MyBtnStyle}"
                                         hc:IconElement.Geometry="M718.565517 863.126069c-7.344552 0-15.077517-2.189241-22.987034-6.285241L512 760.337655l-183.613793 96.503173c-18.785103 9.851586-37.499586 7.521103-48.16331-5.12-5.12-6.10869-10.557793-17.125517-7.485794-35.345656l35.063173-204.411586L159.249655 467.155862c-12.747034-12.393931-17.584552-27.153655-13.241379-40.430345 4.343172-13.312 16.913655-22.386759 34.568827-24.929103l205.223725-29.837242 91.806896-185.979586c7.874207-15.995586 20.409379-25.140966 34.392276-25.140965 13.947586 0 26.482759 9.145379 34.392276 25.140965l91.771586 185.979586 205.259035 29.837242c17.619862 2.577655 30.190345 11.652414 34.498206 24.964414 4.378483 13.27669-0.529655 28.001103-13.241379 40.430344l-148.51531 144.807725 35.063172 204.411586c3.10731 18.149517-2.365793 29.272276-7.485793 35.345655a32.273655 32.273655 0 0 1-25.176276 11.369931z"
                                         />
                             </hc:SimplePanel>
@@ -55,8 +55,8 @@
                     </hc:Card.Footer>
                 </hc:Card>
                 <hc:UniformSpacingPanel Spacing="100" HorizontalAlignment="Center" Margin="0,10,0,0">
-                    <Button Content="暂不更新" Click="Close_Click" Style="{StaticResource Btn1}"/>
-                    <Button Content="前往更新" Click="Confirm_Click" Style="{StaticResource Btn1}"/>
+                    <Button Style="{StaticResource MyBtnStyle}" Content="暂不更新" Click="Close_Click"/>
+                    <Button Style="{StaticResource MyBtnStyle}" Content="前往更新" Click="Confirm_Click"/>
                 </hc:UniformSpacingPanel>
             </StackPanel>
 
