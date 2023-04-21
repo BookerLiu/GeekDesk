@@ -37,7 +37,7 @@
         </hc:Card>
 
         <hc:UniformSpacingPanel Spacing="20" HorizontalAlignment="Center" Margin="45.5,310,42.5,36">
-            <hc:TextBox x:Name="DelayTime" Height="20" Width="60" Text="10" PreviewTextInput="DelayTime_PreviewTextInput" PreviewLostKeyboardFocus="DelayTime_PreviewLostKeyboardFocus" />
+            <hc:TextBox x:Name="DelayTime" Style="{StaticResource MyTextBoxStyle}" Height="20" Width="60" Text="10" PreviewTextInput="DelayTime_PreviewTextInput" PreviewLostKeyboardFocus="DelayTime_PreviewLostKeyboardFocus" />
             <ComboBox x:Name="DelayType" hc:DropDownElement.ConsistentWidth="False" SelectedIndex="0" Height="20" Width="60">
                 <ComboBox.Items>
                     <ComboBoxItem Content="分"/>

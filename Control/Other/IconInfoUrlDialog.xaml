@@ -23,23 +23,23 @@
             
             <hc:UniformSpacingPanel Spacing="10" VerticalAlignment="Center">
                 <TextBlock Text="名称:"  Style="{StaticResource LeftTB}"/>
-                <TextBox x:Name="IconName" Text="{Binding Name, Mode=OneWay}" Width="180" FontSize="14"/>
+                <TextBox x:Name="IconName" Style="{StaticResource MyTextBoxStyle}" Text="{Binding Name, Mode=OneWay}" Width="180" FontSize="14"/>
             </hc:UniformSpacingPanel>
             <hc:Divider LineStrokeDashArray="3,3"  LineStroke="Black"/>
             <hc:UniformSpacingPanel Spacing="10"  VerticalAlignment="Center">
                 <TextBlock  Text="Url:"  Style="{StaticResource LeftTB}"/>
-                <TextBox x:Name="IconUrl" Text="{Binding Path, Mode=OneWay}"  Width="180" FontSize="14"/>
+                <TextBox x:Name="IconUrl" Style="{StaticResource MyTextBoxStyle}" Text="{Binding Path, Mode=OneWay}"  Width="180" FontSize="14"/>
             </hc:UniformSpacingPanel>
             <hc:Divider LineStrokeDashArray="3,3" LineStroke="Black"/>
             <hc:UniformSpacingPanel Spacing="10"  VerticalAlignment="Center">
                 <TextBlock  Text="图标:"  Style="{StaticResource LeftTB}"/>
                 <Image x:Name="IconImg" Source="{Binding BitmapImage, Mode=OneWay}" RenderOptions.BitmapScalingMode="HighQuality" Width="60" Height="60"/>
-                <Button Content="修改" Click="EditImage"/>
-                <Button Content="重置" Click="ReStoreImage"/>
+                <Button Style="{StaticResource MyBtnStyle}" Content="修改" Click="EditImage"/>
+                <Button Style="{StaticResource MyBtnStyle}" Content="重置" Click="ReStoreImage"/>
             </hc:UniformSpacingPanel>
             <hc:Divider LineStrokeDashArray="3,3" LineStroke="Black"/>
             <hc:UniformSpacingPanel Spacing="10">
-                <Button Content="保存" Click="SaveProperty" Style="{StaticResource Btn1}" Margin="224,-10,-224,0" />
+                <Button Content="保存" Click="SaveProperty" Style="{StaticResource MyBtnStyle}" Margin="224,-10,-224,0" />
             </hc:UniformSpacingPanel>
         </StackPanel>
     </hc:SimplePanel>

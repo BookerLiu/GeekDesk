@@ -120,4 +120,20 @@
     </Style>
 
 
+    <!--text box style-->
+    <Style x:Key="MyTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource TextBoxBaseStyle}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="White" Opacity="0.7"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="BorderThickness" Value="0" />
+        <Style.Triggers>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter Property="BorderThickness" Value="0" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
 </ResourceDictionary>

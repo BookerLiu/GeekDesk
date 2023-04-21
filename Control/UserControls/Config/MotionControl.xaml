@@ -100,6 +100,7 @@
             <hc:UniformSpacingPanel Spacing="10"  Margin="10,5,0,0" Grid.ColumnSpan="4">
                 <TextBlock Text="主面板:" VerticalAlignment="Center" Margin="0,5,0,0" Width="55"/>
                 <hc:TextBox HorizontalAlignment="Left" 
+                            Style="{StaticResource MyTextBoxStyle}"
                             Tag="{x:Static cst:HotKeyType.Main}"
                             VerticalAlignment="Top" 
                             IsReadOnly="True" 
@@ -109,11 +110,8 @@
                             KeyDown="HotKeyDown"
                             KeyUp="HotKeyUp"
                             InputMethod.IsInputMethodEnabled="False"
-                            >
-                    <hc:TextBox.Background>
-                        <SolidColorBrush Color="White" Opacity="0.7" />
-                    </hc:TextBox.Background>
-                </hc:TextBox>
+                            />
+
                 <CheckBox Content="启用" 
                           Style="{StaticResource MyCheckBoxStyle}"
                           Click="EnableHotKey_Click" 
@@ -123,6 +121,7 @@
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
                 <TextBlock Text="待办任务:" Margin="0,5,0,0"  Width="55"/>
                 <hc:TextBox HorizontalAlignment="Left" 
+                            Style="{StaticResource MyTextBoxStyle}"
                             Tag="{x:Static cst:HotKeyType.ToDo}"
                             VerticalAlignment="Top" 
                             IsReadOnly="True" 
@@ -132,11 +131,8 @@
                             KeyDown="HotKeyDown"
                             KeyUp="HotKeyUp"
                             InputMethod.IsInputMethodEnabled="False"
-                            >
-                    <hc:TextBox.Background>
-                        <SolidColorBrush Color="White" Opacity="0.7" />
-                    </hc:TextBox.Background>
-                </hc:TextBox>
+                            />
+
                 <CheckBox Content="启用" 
                           Style="{StaticResource MyCheckBoxStyle}"
                           Click="EnableHotKey_Click" 
@@ -147,6 +143,7 @@
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
                 <TextBlock Text="拾色器:" Margin="0,5,0,0"  Width="55"/>
                 <hc:TextBox HorizontalAlignment="Left" 
+                            Style="{StaticResource MyTextBoxStyle}"
                             Tag="{x:Static cst:HotKeyType.ColorPicker}"
                             VerticalAlignment="Top" 
                             IsReadOnly="True" 
@@ -156,11 +153,7 @@
                             KeyDown="HotKeyDown"
                             KeyUp="HotKeyUp"
                             InputMethod.IsInputMethodEnabled="False"
-                            >
-                    <hc:TextBox.Background>
-                        <SolidColorBrush Color="White" Opacity="0.7" />
-                    </hc:TextBox.Background>
-                </hc:TextBox>
+                            />
                 <CheckBox Content="启用" 
                           Style="{StaticResource MyCheckBoxStyle}"
                           Tag="{x:Static cst:HotKeyType.ColorPicker}"

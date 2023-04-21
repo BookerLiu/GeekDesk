@@ -186,7 +186,7 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Tag="{Binding}">
-                                <TextBox Text="{Binding Path=MenuName, Mode=TwoWay}"
+                                <TextBox Style="{StaticResource MyTextBoxStyle}" Text="{Binding Path=MenuName, Mode=TwoWay}"
                                 HorizontalAlignment="Left"
                                 Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox},AncestorLevel=1},Path=Tag, Mode=TwoWay, Converter={StaticResource MenuWidthConvert}, ConverterParameter=35}"
                                 FontSize="16"

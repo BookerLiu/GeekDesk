@@ -44,12 +44,13 @@
                             <TextBlock Text="待办任务:"  Style="{StaticResource LeftTB}"/>
                             <TextBlock Text="*" Foreground="Red" />
                         </WrapPanel>
-                        <TextBox x:Name="Title" Width="290" Text="{Binding Title, Mode=OneWay}" FontSize="14" />
+                        <TextBox x:Name="Title" Style="{StaticResource MyTextBoxStyle}" Width="290" Text="{Binding Title, Mode=OneWay}" FontSize="14" />
                     </hc:UniformSpacingPanel>
 
                     <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4" Margin="0,10,0,0">
                         <TextBlock Text="待办详情:"  Style="{StaticResource LeftTB}"/>
                         <TextBox x:Name="Msg" TextWrapping="Wrap"
+                                 Style="{StaticResource MyTextBoxStyle}"
                              Margin="5,0,0,0"
                              Text="{Binding Msg, Mode=OneWay}"
                              AcceptsReturn="True"
@@ -73,7 +74,11 @@
                             <TextBlock Text="指定时间:"  Style="{StaticResource LeftTB}"/>
                             <TextBlock Text="*" Foreground="Red"/>
                         </WrapPanel>
-                        <hc:DateTimePicker x:Name="ExeTime" Text="{Binding ExeTime, Mode=OneWay}" ErrorStr="Error!"  Width="200" Margin="1.6,0,0,0"/>
+                        <hc:DateTimePicker x:Name="ExeTime" Text="{Binding ExeTime, Mode=OneWay}" ErrorStr="Error!"  Width="200" Margin="1.6,0,0,0">
+                            <hc:DateTimePicker.Background>
+                                <SolidColorBrush Color="White" Opacity="0.7"/>
+                            </hc:DateTimePicker.Background>
+                        </hc:DateTimePicker>
                     </hc:UniformSpacingPanel>
 
                     <hc:UniformSpacingPanel x:Name="CronPanel" Height="30" Visibility="Collapsed" Spacing="10" Grid.ColumnSpan="4" Margin="0,10,0,0">
@@ -81,7 +86,7 @@
                             <TextBlock Text="CRON:"  Style="{StaticResource LeftTB}"/>
                             <TextBlock Text="*" Foreground="Red" />
                         </WrapPanel>
-                        <TextBox x:Name="Cron" Width="290" Text="{Binding Cron, Mode=OneWay}" FontSize="14" />
+                        <TextBox x:Name="Cron" Style="{StaticResource MyTextBoxStyle}" Width="290" Text="{Binding Cron, Mode=OneWay}" FontSize="14" />
                     </hc:UniformSpacingPanel>
 
 
@@ -95,7 +100,7 @@
 
 
                     <hc:UniformSpacingPanel Spacing="10" Margin="0,10,0,0" Grid.ColumnSpan="4">
-                        <Button Content="保存" Style="{StaticResource Btn1}" Margin="320,6,-208,-10"
+                        <Button Content="保存" Style="{StaticResource MyBtnStyle}" Margin="320,6,-208,-10"
                             Click="Save_Button_Click"/>
                     </hc:UniformSpacingPanel>
                 </StackPanel>

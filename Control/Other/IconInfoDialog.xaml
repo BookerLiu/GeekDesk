@@ -24,7 +24,7 @@
             <Button Width="22"  Height="22" Command="hc:ControlCommands.Close" Style="{StaticResource ButtonIcon}" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top"/>
             <hc:UniformSpacingPanel Spacing="10" Margin="0,15,0,0">
                 <TextBlock Text="名称:"  Style="{StaticResource LeftTB}"/>
-                <TextBox x:Name="IconName" Text="{Binding Name, Mode=OneWay}" Width="230" FontSize="14"/>
+                <TextBox x:Name="IconName" Style="{StaticResource MyTextBoxStyle}" Text="{Binding Name, Mode=OneWay}" Width="230" FontSize="14"/>
             </hc:UniformSpacingPanel>
             <hc:UniformSpacingPanel Spacing="10" Margin="0,15,0,0">
                 <TextBlock Text="相对路径:"  Style="{StaticResource LeftTB}"/>
@@ -49,7 +49,7 @@
             </hc:UniformSpacingPanel>
             <hc:UniformSpacingPanel Spacing="10" Margin="0,15,0,0">
                 <TextBlock Text="启动参数:"  Style="{StaticResource LeftTB}"/>
-                <TextBox x:Name="StartArg" Text="{Binding StartArg, Mode=OneWay}" Width="230" Height="100" TextWrapping="Wrap" FontSize="14"/>
+                <TextBox x:Name="StartArg" Style="{StaticResource MyTextBoxStyle}" Text="{Binding StartArg, Mode=OneWay}" Width="230" Height="100" TextWrapping="Wrap" FontSize="14"/>
             </hc:UniformSpacingPanel>
             <hc:UniformSpacingPanel Margin="0,25,0,0" Spacing="10"  Grid.ColumnSpan="4">
                 <Button Content="保存" Style="{StaticResource MyBtnStyle}" Click="SaveProperty" Margin="265,10,0,0"/>

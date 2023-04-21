@@ -51,7 +51,7 @@
             </Border.Background>-->
             <hc:DialogContainer>
                 <Grid MouseDown="DragMove">
-                    <TextBox x:Name="CheckSettingUrl" Visibility="Collapsed" Text="{Binding IsSettingUrl}" TextChanged="CheckSettingUrl_TextChanged"/>
+                    <TextBox x:Name="CheckSettingUrl" Style="{StaticResource MyTextBoxStyle}" Visibility="Collapsed" Text="{Binding IsSettingUrl}" TextChanged="CheckSettingUrl_TextChanged"/>
                     <hc:TabControl x:Name="MyTabControl" 
                                IsAnimationEnabled="True" 
                                SelectionChanged="TabControl_SelectionChanged" 
