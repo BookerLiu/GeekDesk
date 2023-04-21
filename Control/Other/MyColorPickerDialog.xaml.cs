@@ -1,4 +1,5 @@
 ﻿using GeekDesk.Control.Windows;
+using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using System;
 using System.Reflection;
@@ -64,14 +65,15 @@ namespace GeekDesk.Control.Other
         private void MyColorPicker_SelectedColorChanged(object sender, HandyControl.Data.FunctionEventArgs<Color> e)
         {
             SolidColorBrush scb = MyColorPicker.SelectedBrush;
+            Color c = scb.Color;
             switch (colorType)
             {
                 case ColorType.COLOR_1:
-                    appConfig.GradientBGParam.Color1 = scb.ToString(); break;
+                    appConfig.GradientBGParam.Color1 = string.Format("#{0:X2}{1:X2}{2:X2}", c.R, c.G, c.B); break;
                 case ColorType.COLOR_2:
-                    appConfig.GradientBGParam.Color2 = scb.ToString(); break;
+                    appConfig.GradientBGParam.Color2 = string.Format("#{0:X2}{1:X2}{2:X2}", c.R, c.G, c.B); break;
                 default:
-                    appConfig.TextColor = scb.ToString(); break;
+                    appConfig.TextColor = string.Format("#{0:X2}{1:X2}{2:X2}", c.R, c.G, c.B); break;
             }
         }
 

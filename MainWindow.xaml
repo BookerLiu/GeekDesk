@@ -181,7 +181,14 @@
                         <DockPanel.Background>
                             <SolidColorBrush Opacity="0.01"/>
                         </DockPanel.Background>
-                        <Image Visibility="{Binding AppConfig.TitleLogoVisible}" Source="/Resource/Image/TitleLogo.png" RenderOptions.BitmapScalingMode="HighQuality" Margin="10,0,0,0" Width="200" Height="30" HorizontalAlignment="Left"/>
+                        <Image Visibility="{Binding AppConfig.TitleLogoVisible}" 
+                               Source="/Resource/Image/TitleLogo.png" 
+                               RenderOptions.BitmapScalingMode="HighQuality" 
+                               Margin="10,0,0,0" 
+                               Width="200" 
+                               Height="30" 
+                               Opacity="0.8"
+                               HorizontalAlignment="Left"/>
                     </DockPanel>
 
                     <DockPanel Grid.Row="0" Grid.Column="2" MouseDown="DragMove">
