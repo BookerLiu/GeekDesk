@@ -60,11 +60,11 @@
 
                     <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4" Margin="0,10,0,0">
                         <TextBlock Text="运行方式:"  Style="{StaticResource LeftTB}"/>
-                        <RadioButton Margin="10,0,0,0" Checked="ExecType_Checked" Tag="1" Background="{DynamicResource SecondaryRegionBrush}" 
-                         Style="{StaticResource RadioButtonIcon}" Content="指定时间"
+                        <RadioButton Margin="10,0,0,0" Checked="ExecType_Checked" Tag="1" 
+                         Style="{StaticResource MyRadioBtnStyle}" Content="指定时间"
                          IsChecked="{Binding ExecType, Mode=OneWay, Converter={StaticResource TodoTaskExecConvert}, ConverterParameter=1}"/>
-                        <RadioButton Margin="10,0,0,0" Checked="ExecType_Checked" Background="{DynamicResource SecondaryRegionBrush}"  Tag="2"
-                         Style="{StaticResource RadioButtonIcon}" Content="CRON表达式"
+                        <RadioButton Margin="10,0,0,0" Checked="ExecType_Checked"  Tag="2"
+                         Style="{StaticResource MyRadioBtnStyle}" Content="CRON表达式"
                          IsChecked="{Binding ExecType, Mode=OneWay, Converter={StaticResource TodoTaskExecConvert}, ConverterParameter=2}"/>
                     </hc:UniformSpacingPanel>
 

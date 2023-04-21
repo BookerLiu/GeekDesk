@@ -813,6 +813,10 @@ namespace GeekDesk
                 appData.AppConfig.WindowWidth = this.Width;
                 appData.AppConfig.WindowHeight = this.Height;
             }
+            if (guideRun)
+            {
+                Guide();
+            }
         }
 
 
@@ -1032,27 +1036,30 @@ namespace GeekDesk
             return hwnd;
         }
 
-
-
         #region 新手引导
+
+        private int guideIndex = 0;
+        private bool guideRun = false;
         private void Guide()
         {
             try
             {
+                guideRun = true;
                 //防止影响主程序进程
                 if (CheckShouldShowApp())
                 {
                     ShowApp();
                 }
                 GrayBorder.Visibility = Visibility.Visible;
-                GuideSwitch(0);
+                GuideSwitch(guideIndex);
                 GuideCard.Visibility = Visibility.Visible;
             }
-            catch (Exception) { }
+            catch (Exception) { guideRun = false; }
         }
 
         private void GuideSwitch(int index)
         {
+            guideIndex = index;
             GuideNum.Text = Convert.ToString(index + 1);
             GuideTitle1.Text = GuideInfoList.mainWindowGuideList[index].Title1;
             GuideTitle2.Text = GuideInfoList.mainWindowGuideList[index].Title2;
@@ -1131,6 +1138,8 @@ namespace GeekDesk
             if ("完成".Equals(NextGuideBtn.Content.ToString())) {
                 GrayBorder.Visibility = Visibility.Collapsed;
                 GuideCard.Visibility = Visibility.Collapsed;
+                guideIndex = 0;
+                guideRun = false;
                 return;
             }
             int index = Convert.ToInt32(GuideNum.Text.ToString()) - 1;

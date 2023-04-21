@@ -34,7 +34,6 @@
 
     <Window.Resources>
         <RoutedUICommand x:Key="SearchHotKeyDown" Text="SearchHotKeyDown"/>
-
         <cvt:MenuWidthConvert x:Key="MenuWidthConvert"/>
         <cvt:OpcityConvert x:Key="OpcityConvert"/>
         <cvt:IntToCornerRadius x:Key="IntToCornerRadius"/>

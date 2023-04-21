@@ -24,11 +24,11 @@
                     <TextBlock Text="背景风格" VerticalAlignment="Center"/>
                 </hc:UniformSpacingPanel>
                 <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
-                    <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}" 
-                         Style="{StaticResource RadioButtonIcon}" Click="BGStyle_Changed" Content="图 片"
+                    <RadioButton Margin="10,0,0,0" 
+                         Style="{StaticResource MyRadioBtnStyle}" Click="BGStyle_Changed" Content="图 片"
                          IsChecked="{Binding BGStyle, Mode=TwoWay, Converter={StaticResource BGStyleConvert}, ConverterParameter=1}"/>
-                    <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}"
-                         Style="{StaticResource RadioButtonIcon}" Click="BGStyle_Changed" Content="纯 色" 
+                    <RadioButton Margin="10,0,0,0" 
+                         Style="{StaticResource MyRadioBtnStyle}" Click="BGStyle_Changed" Content="纯 色" 
                          IsChecked="{Binding BGStyle, Mode=TwoWay, Converter={StaticResource BGStyleConvert}, ConverterParameter=2}"/>
                 </hc:UniformSpacingPanel>
 
