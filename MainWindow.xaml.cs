@@ -50,6 +50,8 @@ namespace GeekDesk
         public static int colorPickerHotKeyId = -1;
         public static MainWindow mainWindow;
 
+       
+
         private static bool dataFileExist = true;
         public MainWindow()
         {
@@ -57,6 +59,7 @@ namespace GeekDesk
             //加载数据
             LoadData();
             InitializeComponent();
+
             //用于其他类访问
             mainWindow = this;
 
@@ -72,9 +75,12 @@ namespace GeekDesk
 
         }
 
+        private void Window_SourceInitialized(object sender, EventArgs e)
+        {
+            //禁用窗口最大化
+            WindowUtil.DisableMaxWindow(this);
+        }
 
-
-    
 
 
         /// <summary>

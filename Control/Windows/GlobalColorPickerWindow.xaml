@@ -7,6 +7,7 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
         WindowStyle="None"
+        ResizeMode="NoResize"
         AllowsTransparency="True"
         Background="Transparent"
         KeyDown="OnKeyDown"

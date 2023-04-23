@@ -6,6 +6,7 @@
     WindowStyle="None" 
     AllowsTransparency="True"
     Background="Black"
+    ResizeMode="NoResize"
     PreviewMouseMove="Window_PreviewMouseMove"
     MouseLeftButtonDown="Window_MouseLeftButtonDown"
     MouseRightButtonDown="Window_MouseRightButtonDown"

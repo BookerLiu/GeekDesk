@@ -12,6 +12,7 @@
            Width="510" 
            WindowStyle="None"
            Title=""
+        ResizeMode="NoResize"
            AllowsTransparency="True"
            Background="Transparent" ShowInTaskbar="False"
            Focusable="True"

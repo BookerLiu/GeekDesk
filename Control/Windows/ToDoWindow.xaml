@@ -10,6 +10,7 @@
            Height="550" 
            Width="1000" 
            Title="Task"
+           ResizeMode="NoResize"
            WindowStyle="None"
            AllowsTransparency="True"
            Background="Transparent" ShowInTaskbar="False"

@@ -10,6 +10,7 @@
         WindowStyle="None"
         AllowsTransparency="True"
         Title=""
+        ResizeMode="NoResize"
         Background="Transparent" ShowInTaskbar="False"
         Focusable="True"
         KeyDown="OnKeyDown">
