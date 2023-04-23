@@ -49,7 +49,7 @@ namespace GeekDesk.Task
                         }
                     }
                 }
-                catch (Exception) { }
+                catch (Exception e1) { }
                 //ClearMemory();
             }));
         }

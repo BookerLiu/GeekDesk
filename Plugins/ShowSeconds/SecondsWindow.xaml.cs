@@ -235,7 +235,7 @@ namespace ShowSeconds
                         }
                     }
                     }
-                    catch (Exception) { }
+                    catch (Exception e1) { }
                 }));
             }
            

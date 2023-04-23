@@ -77,8 +77,12 @@ namespace GeekDesk
 
         private void Window_SourceInitialized(object sender, EventArgs e)
         {
-            //禁用窗口最大化
-            WindowUtil.DisableMaxWindow(this);
+            try
+            {
+                //禁用窗口最大化
+                WindowUtil.DisableMaxWindow(this);
+            }
+            catch (Exception) { }
         }
 
 
