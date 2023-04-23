@@ -105,29 +105,33 @@ namespace GeekDesk.Util
         {
             new Thread(() =>
             {
-                foreach (MenuInfo menuInfo in appData.MenuList)
+                try
                 {
-                    if (menuInfo.MenuType == Constant.MenuType.LINK)
+                    foreach (MenuInfo menuInfo in appData.MenuList)
                     {
-                        DirectoryInfo dirInfo = new DirectoryInfo(menuInfo.LinkPath);
-                        FileSystemInfo[] fileInfos = dirInfo.GetFileSystemInfos();
+                        if (menuInfo.MenuType == Constant.MenuType.LINK)
+                        {
+                            DirectoryInfo dirInfo = new DirectoryInfo(menuInfo.LinkPath);
+                            FileSystemInfo[] fileInfos = dirInfo.GetFileSystemInfos();
 
-                        ObservableCollection<IconInfo> iconList = new ObservableCollection<IconInfo>();
-                        foreach (FileSystemInfo fileInfo in fileInfos)
-                        {
-                            IconInfo iconInfo = CommonCode.GetIconInfoByPath_NoWrite(fileInfo.FullName);
-                            iconList.Add(iconInfo);
-                        }
-                        App.Current.Dispatcher.Invoke(() =>
-                        {
-                            foreach (IconInfo iconInfo in iconList)
+                            ObservableCollection<IconInfo> iconList = new ObservableCollection<IconInfo>();
+                            foreach (FileSystemInfo fileInfo in fileInfos)
                             {
-                                menuInfo.IconList = null;
-                                menuInfo.IconList = iconList;
+                                IconInfo iconInfo = CommonCode.GetIconInfoByPath_NoWrite(fileInfo.FullName);
+                                iconList.Add(iconInfo);
                             }
-                        });
+                            App.Current.Dispatcher.Invoke(() =>
+                            {
+                                foreach (IconInfo iconInfo in iconList)
+                                {
+                                    menuInfo.IconList = null;
+                                    menuInfo.IconList = iconList;
+                                }
+                            });
+                        }
                     }
                 }
+                catch (Exception) { }
             }).Start();
         }
 

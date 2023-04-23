@@ -34,18 +34,22 @@ namespace GeekDesk.Task
         {
             App.Current.Dispatcher.Invoke((Action)(() =>
             {
-                if (MainWindow.appData.ToDoList.Count > 0)
+                try
                 {
-                    string nowTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                    ObservableCollection<ToDoInfo> exeBacklogList = MainWindow.appData.ToDoList;
-                    foreach (ToDoInfo info in exeBacklogList)
+                    if (MainWindow.appData.ToDoList.Count > 0)
                     {
-                        if (info.ExeTime.CompareTo(nowTime) == -1 && !activityBacklog.ContainsKey(info))
+                        string nowTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                        ObservableCollection<ToDoInfo> exeBacklogList = MainWindow.appData.ToDoList;
+                        foreach (ToDoInfo info in exeBacklogList)
                         {
-                            activityBacklog.Add(info, Notification.Show(new BacklogNotificatin(info), ShowAnimation.Fade, true));
+                            if (info.ExeTime.CompareTo(nowTime) == -1 && !activityBacklog.ContainsKey(info))
+                            {
+                                activityBacklog.Add(info, Notification.Show(new BacklogNotificatin(info), ShowAnimation.Fade, true));
+                            }
                         }
                     }
                 }
+                catch (Exception) { }
                 //ClearMemory();
             }));
         }

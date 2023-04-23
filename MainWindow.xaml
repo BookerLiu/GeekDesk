@@ -164,7 +164,7 @@
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition x:Name="LeftColumn" MinWidth="80" Width="{Binding AppConfig.MenuCardWidth, Mode=TwoWay, Converter={StaticResource DoubleToGridLength}}" MaxWidth="200"></ColumnDefinition>
+                        <ColumnDefinition x:Name="LeftColumn" MinWidth="80" Width="{Binding AppConfig.MenuCardWidth, Mode=TwoWay, Converter={StaticResource DoubleToGridLength}}" MaxWidth="280"></ColumnDefinition>
                         <ColumnDefinition x:Name="RightColumn" Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
@@ -233,7 +233,7 @@
                     <uc:LeftCardControl x:Name="LeftCard" Grid.Row="1" Grid.Column="0"/>
 
                     <!--分割线-->
-                    <GridSplitter Opacity="0" Grid.Row="1" Grid.Column="0" Width="1"  VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+                    <GridSplitter Opacity="0" Grid.Row="1" Grid.Column="0" Width="5"  VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
 
                     <Border x:Name="SearchResContainer" Panel.ZIndex="2" 
                         Visibility="Collapsed"

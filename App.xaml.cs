@@ -54,7 +54,7 @@ namespace GeekDesk
         void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             LogUtil.WriteErrorLog(e, "严重异常!");
-            MessageBox.Show("GeekDesk遇到未知问题崩溃!");
+            //MessageBox.Show("GeekDesk遇到未知问题崩溃!");
         }
         public static void DoEvents()
         {
