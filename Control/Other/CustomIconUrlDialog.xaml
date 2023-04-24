@@ -23,7 +23,7 @@
                     <TextBlock Text="SVG 图标地址:"  Style="{StaticResource LeftTB}"/>
                     <TextBlock Text="*" Foreground="Red"/>
                 </WrapPanel>
-                <TextBox x:Name="IconUrl" Text="{Binding CustomIconUrl, Mode=OneWay}" Width="240" FontSize="14"/>
+                <TextBox x:Name="IconUrl" Style="{StaticResource MyTextBoxStyle}" Text="{Binding CustomIconUrl, Mode=OneWay}" Width="240" FontSize="14"/>
             </hc:UniformSpacingPanel>
 
             <hc:UniformSpacingPanel Spacing="10" Margin="0,58.276,0,-58.276">
@@ -31,18 +31,18 @@
                     <TextBlock Text="JSON 配置地址:"  Style="{StaticResource LeftTB}"/>
                     <TextBlock Text="*" Foreground="Red"/>
                 </WrapPanel>
-                <TextBox x:Name="JsonUrl" Text="{Binding CustomIconJsonUrl, Mode=OneWay}" Width="240" FontSize="14"/>
+                <TextBox x:Name="JsonUrl" Style="{StaticResource MyTextBoxStyle}" Text="{Binding CustomIconJsonUrl, Mode=OneWay}" Width="240" FontSize="14"/>
             </hc:UniformSpacingPanel>
             <TextBlock Text="注: 需配置正确的url方可加载远程图标!" Foreground="Red" Margin="10,95,-10,-92" />
 
             <hc:UniformSpacingPanel Spacing="10" Margin="203,125,-203,-125">
-                <Button Content="取消" Command="hc:ControlCommands.Close" HorizontalAlignment="Stretch" Margin="-1,1,1,1" VerticalAlignment="Stretch" 
+                <Button Style="{StaticResource MyBtnStyle}" Content="取消" Command="hc:ControlCommands.Close" HorizontalAlignment="Stretch" Margin="-1,1,1,1" VerticalAlignment="Stretch" 
                             />
                 <Button Content="教程" Click="Teach_Click" 
-                        Style="{StaticResource Btn1}"/>
+                        Style="{StaticResource MyBtnStyle}"/>
                 <Button Content="保存" Click="Confirm_Click" 
                         Command="hc:ControlCommands.Close"
-                        Style="{StaticResource Btn1}"/>
+                        Style="{StaticResource MyBtnStyle}"/>
             </hc:UniformSpacingPanel>
         </Grid>
         <!--<Button Width="22" Height="22" Command="hc:ControlCommands.Close" Style="{StaticResource ButtonIcon}" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,4,4,0"/>-->

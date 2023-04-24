@@ -19,15 +19,15 @@
         </Style.Setters>
     </Style>
 
-    <LinearGradientBrush x:Key="BtnBG" Opacity="0.97">
+    <LinearGradientBrush x:Key="BtnBG" Opacity="0.7">
         <GradientStop Color="White" Offset="0"/>
         <GradientStop Color="White" Offset="1"/>
     </LinearGradientBrush>
 
     <!--按钮样式-->
-    <Style x:Key="Btn1" TargetType="Button" BasedOn="{StaticResource ButtonInfo}">
+    <Style x:Key="MyBtnStyle" TargetType="Button" BasedOn="{StaticResource ButtonInfo}">
         <Setter Property="Background" Value="{StaticResource BtnBG}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="BorderBrush">
             <Setter.Value>
                 <SolidColorBrush Color="#E5E5E2"/>
@@ -36,7 +36,50 @@
         <Setter Property="Foreground" Value="Black"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#E5E5E2"/>
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush Opacity="1">
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="true">
+                <Setter Property="Opacity" Value="1"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+    <!--CheckBox样式-->
+    <Style x:Key="MyCheckBoxStyle" TargetType="CheckBox" BasedOn="{StaticResource CheckBoxBaseStyle}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.6">
+                    <GradientStop Color="#FF9EA3A6"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.6">
+                            <GradientStop Color="#FF9EA3A6"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.7">
+                            <GradientStop Color="#FF9EA3A6"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -52,6 +95,42 @@
             </Trigger>
             <Trigger Property="IsSelected" Value="True">
                 <Setter Property="Background" Value="Transparent"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+    
+    <!--radio btn style-->
+    <Style x:Key="MyRadioBtnStyle" TargetType="RadioButton" BasedOn="{StaticResource RadioButtonIcon}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="White" Opacity="0.7"/>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="White" Opacity="1"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+    <!--text box style-->
+    <Style x:Key="MyTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource TextBoxBaseStyle}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="White" Opacity="0.7"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="BorderThickness" Value="0" />
+        <Style.Triggers>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter Property="BorderThickness" Value="0" />
             </Trigger>
         </Style.Triggers>
     </Style>

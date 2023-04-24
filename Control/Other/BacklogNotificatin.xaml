@@ -37,17 +37,17 @@
         </hc:Card>
 
         <hc:UniformSpacingPanel Spacing="20" HorizontalAlignment="Center" Margin="45.5,310,42.5,36">
-            <hc:TextBox x:Name="DelayTime" Height="20" Width="60" Text="10" PreviewTextInput="DelayTime_PreviewTextInput" PreviewLostKeyboardFocus="DelayTime_PreviewLostKeyboardFocus" />
+            <hc:TextBox x:Name="DelayTime" Style="{StaticResource MyTextBoxStyle}" Height="20" Width="60" Text="10" PreviewTextInput="DelayTime_PreviewTextInput" PreviewLostKeyboardFocus="DelayTime_PreviewLostKeyboardFocus" />
             <ComboBox x:Name="DelayType" hc:DropDownElement.ConsistentWidth="False" SelectedIndex="0" Height="20" Width="60">
                 <ComboBox.Items>
                     <ComboBoxItem Content="分"/>
                     <ComboBoxItem Content="时"/>
                 </ComboBox.Items>
             </ComboBox>
-            <Button Content="推迟提醒" Click="DelayButton_Click"/>
+            <Button Style="{StaticResource MyBtnStyle}" Content="推迟提醒" Click="DelayButton_Click"/>
         </hc:UniformSpacingPanel>
 
 
-        <Button Click="BacklogDone_Click" Content="朕已阅" Margin="10,0,10,20" Width="298" VerticalAlignment="Bottom"/>
+        <Button Style="{StaticResource MyBtnStyle}" Click="BacklogDone_Click" Content="朕已阅" Margin="10,0,10,20" Width="298" VerticalAlignment="Bottom"/>
     </Grid>
 </Border>

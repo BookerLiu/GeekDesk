@@ -26,6 +26,8 @@ namespace GeekDesk.Constant
 
         public static string PW_FILE_BAK_PATH = APP_DIR + "bak\\pw.txt";  //密码文件路径
 
+        public static string UUID_FILE_BAK_PATH = APP_DIR + "bak\\uuid.txt";  //密码文件路径
+
         public static string LOG_FILE_PATH = APP_DIR + "logs\\log.log"; //日志文件
 
         public static string ERROR_FILE_PATH = APP_DIR + "logs\\error.log"; // 错误日志

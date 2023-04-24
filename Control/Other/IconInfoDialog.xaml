@@ -24,7 +24,7 @@
             <Button Width="22"  Height="22" Command="hc:ControlCommands.Close" Style="{StaticResource ButtonIcon}" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top"/>
             <hc:UniformSpacingPanel Spacing="10" Margin="0,15,0,0">
                 <TextBlock Text="名称:"  Style="{StaticResource LeftTB}"/>
-                <TextBox x:Name="IconName" Text="{Binding Name, Mode=OneWay}" Width="230" FontSize="14"/>
+                <TextBox x:Name="IconName" Style="{StaticResource MyTextBoxStyle}" Text="{Binding Name, Mode=OneWay}" Width="230" FontSize="14"/>
             </hc:UniformSpacingPanel>
             <hc:UniformSpacingPanel Spacing="10" Margin="0,15,0,0">
                 <TextBlock Text="相对路径:"  Style="{StaticResource LeftTB}"/>
@@ -40,24 +40,19 @@
             <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4" Margin="0,15,0,0">
                 <TextBlock  Text="图标:"  Style="{StaticResource LeftTB}"/>
                 <Image x:Name="IconImg" Source="{Binding BitmapImage, Mode=OneWay}" RenderOptions.BitmapScalingMode="HighQuality" Width="60" Height="60"/>
-                <Button Content="修改" Click="EditImage"/>
-                <Button Content="重置" Click="ReStoreImage"/>
+                <Button Style="{StaticResource MyBtnStyle}" Content="修改" Click="EditImage"/>
+                <Button Style="{StaticResource MyBtnStyle}" Content="重置" Click="ReStoreImage"/>
             </hc:UniformSpacingPanel>
             <hc:UniformSpacingPanel Spacing="10" Margin="4,15,0,0">
-                <CheckBox x:Name="IconIsAdmin" Content="始终以管理员方式启动" IsChecked="{Binding AdminStartUp, Mode=OneWay}">
-                    <CheckBox.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                            <GradientStop Color="#FF9EA3A6"/>
-                        </LinearGradientBrush>
-                    </CheckBox.Background>
-                </CheckBox>
+                <CheckBox x:Name="IconIsAdmin" Style="{StaticResource MyCheckBoxStyle}"
+                          Content="始终以管理员方式启动" IsChecked="{Binding AdminStartUp, Mode=OneWay}"/>
             </hc:UniformSpacingPanel>
             <hc:UniformSpacingPanel Spacing="10" Margin="0,15,0,0">
                 <TextBlock Text="启动参数:"  Style="{StaticResource LeftTB}"/>
-                <TextBox x:Name="StartArg" Text="{Binding StartArg, Mode=OneWay}" Width="230" Height="100" TextWrapping="Wrap" FontSize="14"/>
+                <TextBox x:Name="StartArg" Style="{StaticResource MyTextBoxStyle}" Text="{Binding StartArg, Mode=OneWay}" Width="230" Height="100" TextWrapping="Wrap" FontSize="14"/>
             </hc:UniformSpacingPanel>
             <hc:UniformSpacingPanel Margin="0,25,0,0" Spacing="10"  Grid.ColumnSpan="4">
-                <Button Content="保存" Style="{StaticResource Btn1}" Click="SaveProperty" Margin="265,10,0,0"/>
+                <Button Content="保存" Style="{StaticResource MyBtnStyle}" Click="SaveProperty" Margin="265,10,0,0"/>
             </hc:UniformSpacingPanel>
         </StackPanel>
     </hc:SimplePanel>

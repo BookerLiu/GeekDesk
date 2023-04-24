@@ -63,7 +63,7 @@
                         </ListBox>
 
                         <hc:UniformSpacingPanel Spacing="10"  Grid.ColumnSpan="4">
-                            <Button Content="关闭" Style="{StaticResource Btn1}" Click="Close_Click" HorizontalAlignment="Stretch" Margin="524,360,-524,10" VerticalAlignment="Stretch"/>
+                            <Button Content="关闭" Style="{StaticResource MyBtnStyle}" Click="Close_Click" HorizontalAlignment="Stretch" Margin="524,360,-524,10" VerticalAlignment="Stretch"/>
                         </hc:UniformSpacingPanel>
                     </Grid>
                 </Border>

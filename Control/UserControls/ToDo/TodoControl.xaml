@@ -82,10 +82,36 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type DataGridRow}">
-                                        <Border CornerRadius="8" MouseRightButtonDown="DataGridRow_MouseRightButtonDown" Margin="0,0,0,5" BorderBrush="Black" BorderThickness="0" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                        <Border CornerRadius="8" MouseRightButtonDown="DataGridRow_MouseRightButtonDown" Margin="0,0,0,5" BorderBrush="Black" BorderThickness="0" SnapsToDevicePixels="True">
                                             <Border.Style>
                                                 <Style TargetType="Border">
                                                     <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                                    <Setter Property="Background">
+                                                        <Setter.Value>
+                                                            <SolidColorBrush Color="White" Opacity="0.6"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Trigger.EnterActions>
+                                                                <BeginStoryboard>
+                                                                    <Storyboard  Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Opacity)">
+                                                                        <DoubleAnimation To="1" Duration="0:0:0"/>
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </Trigger.EnterActions>
+                                                            <Trigger.ExitActions>
+                                                                <BeginStoryboard>
+                                                                    <Storyboard  Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Opacity)">
+                                                                        <DoubleAnimation To="0.6" Duration="0:0:0.5"/>
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </Trigger.ExitActions>
+                                                            
+                                                        </Trigger>
+                                                        <Trigger Property="IsMouseOver" Value="False">
+                                                        </Trigger>
+                                                    </Style.Triggers>
                                                 </Style>
                                             </Border.Style>
                                             <SelectiveScrollingGrid>

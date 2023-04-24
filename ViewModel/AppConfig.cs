@@ -105,6 +105,39 @@ namespace GeekDesk.ViewModel
 
         private bool? secondsWindow; //秒数窗口 默认打开
 
+        private bool? enableEveryThing;
+
+        private bool? alwaysTopmost;
+
+
+        public bool? AlwaysTopmost
+        {
+            get
+            {
+                if (alwaysTopmost == null) alwaysTopmost = false;
+                return alwaysTopmost;
+            }
+            set
+            {
+                alwaysTopmost = value;
+                OnPropertyChanged("AlwaysTopmost");
+            }
+        }
+
+        public bool? EnableEveryThing
+        {
+            get
+            {
+                if (enableEveryThing == null) enableEveryThing = false;
+                return enableEveryThing;
+            }
+            set
+            {
+                enableEveryThing = value;
+                OnPropertyChanged("EnableEveryThing");
+            }
+        }
+
         #region GetSet
 
         public bool? SecondsWindow

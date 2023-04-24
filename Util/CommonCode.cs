@@ -43,6 +43,12 @@ namespace GeekDesk.Util
                     {
                         BinaryFormatter bf = new BinaryFormatter();
                         appData = bf.Deserialize(fs) as AppData;
+
+                        //将菜单密码写入文件
+                        if (!string.IsNullOrEmpty(appData.AppConfig.MenuPassword))
+                        {
+                            SavePassword(appData.AppConfig.MenuPassword);
+                        }
                     }
                 }
                 catch
@@ -122,6 +128,41 @@ namespace GeekDesk.Util
             {
                 sw.Write(password);
             }
+        }
+
+        private static string GeneraterUUID()
+        {
+            try
+            {
+                if (!File.Exists(Constants.UUID_FILE_BAK_PATH) || string.IsNullOrEmpty(GetUniqueUUID()))
+                {
+                    using (StreamWriter sw = new StreamWriter(Constants.UUID_FILE_BAK_PATH))
+                    {
+                        string uuid = Guid.NewGuid().ToString() + "-" + Constants.MY_UUID;
+                        sw.Write(uuid);
+                        return uuid;
+                    }
+                }
+            } catch (Exception) { }
+            return "ERROR_UUID_GeneraterUUID_" + Constants.MY_UUID;
+        }
+
+        public static string GetUniqueUUID()
+        {
+            try
+            {
+                if (File.Exists(Constants.UUID_FILE_BAK_PATH))
+                {
+                    using (StreamReader reader = new StreamReader(Constants.UUID_FILE_BAK_PATH))
+                    {
+                        return reader.ReadToEnd().Trim();
+                    }
+                } else
+                {
+                    return GeneraterUUID();
+                }
+            } catch(Exception) { }
+            return "ERROR_UUID_GetUniqueUUID_" + Constants.MY_UUID;
         }
 
 
@@ -249,38 +290,44 @@ namespace GeekDesk.Util
 
 
 
+
         /// <summary>
         /// 排序图标
         /// </summary>
         public static void SortIconList()
         {
-            if (MainWindow.appData.AppConfig.IconSortType != SortType.CUSTOM)
+            try
             {
-                ObservableCollection<MenuInfo> menuList = MainWindow.appData.MenuList;
-                //List<IconInfo> list = new List<IconInfo>(menuList[MainWindow.appData.AppConfig.SelectedMenuIndex].IconList);
-                List<IconInfo> list;
-                foreach (MenuInfo menuInfo in menuList)
+                if (MainWindow.appData.AppConfig.IconSortType != SortType.CUSTOM)
                 {
-                    list = new List<IconInfo>(menuInfo.IconList);
-                    switch (MainWindow.appData.AppConfig.IconSortType)
+                    ObservableCollection<MenuInfo> menuList = MainWindow.appData.MenuList;
+                    //List<IconInfo> list = new List<IconInfo>(menuList[MainWindow.appData.AppConfig.SelectedMenuIndex].IconList);
+                    List<IconInfo> list;
+                    foreach (MenuInfo menuInfo in menuList)
                     {
-                        case SortType.COUNT_UP:
-                            list.Sort((x, y) => x.Count.CompareTo(y.Count));
-                            break;
-                        case SortType.COUNT_LOW:
-                            list.Sort((x, y) => y.Count.CompareTo(x.Count));
-                            break;
-                        case SortType.NAME_UP:
-                            list.Sort((x, y) => x.Name.CompareTo(y.Name));
-                            break;
-                        case SortType.NAME_LOW:
-                            list.Sort((x, y) => y.Name.CompareTo(x.Name));
-                            break;
+                        list = new List<IconInfo>(menuInfo.IconList);
+                        switch (MainWindow.appData.AppConfig.IconSortType)
+                        {
+                            case SortType.COUNT_UP:
+                                list.Sort((x, y) => x.Count.CompareTo(y.Count));
+                                break;
+                            case SortType.COUNT_LOW:
+                                list.Sort((x, y) => y.Count.CompareTo(x.Count));
+                                break;
+                            case SortType.NAME_UP:
+                                list.Sort((x, y) => x.Name.CompareTo(y.Name));
+                                break;
+                            case SortType.NAME_LOW:
+                                list.Sort((x, y) => y.Name.CompareTo(x.Name));
+                                break;
+                        }
+                        menuInfo.IconList = new ObservableCollection<IconInfo>(list);
                     }
-                    menuInfo.IconList = new ObservableCollection<IconInfo>(list);
+                    MainWindow.appData.AppConfig.SelectedMenuIcons = MainWindow.appData.MenuList[MainWindow.appData.AppConfig.SelectedMenuIndex].IconList;
                 }
-                MainWindow.appData.AppConfig.SelectedMenuIcons = MainWindow.appData.MenuList[MainWindow.appData.AppConfig.SelectedMenuIndex].IconList;
             }
+            catch (Exception) { }
+            
         }
 
 

@@ -108,6 +108,7 @@
       <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Data" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Diagnostics.DiagnosticSource.4.7.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
@@ -131,6 +132,7 @@
       <HintPath>packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
@@ -146,6 +148,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsAPICodePack.Shell.CommonFileDialogs, Version=1.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\WindowsAPICodePack.Shell.CommonFileDialogs.1.1.5\lib\net452\WindowsAPICodePack.Shell.CommonFileDialogs.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -167,6 +172,7 @@
     <Compile Include="Constant\IconType.cs" />
     <Compile Include="Constant\CommonEnum.cs" />
     <Compile Include="Constant\IconStartType.cs" />
+    <Compile Include="Constant\MenuType.cs" />
     <Compile Include="Constant\PasswordType.cs" />
     <Compile Include="Constant\RunTimeStatus.cs" />
     <Compile Include="Constant\SearchType.cs" />
@@ -195,6 +201,9 @@
     </Compile>
     <Compile Include="Control\Other\IconInfoUrlDialog.xaml.cs">
       <DependentUpon>IconInfoUrlDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Other\SearchResControl.xaml.cs">
+      <DependentUpon>SearchResControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\UserControls\Config\OtherControl.xaml.cs">
       <DependentUpon>OtherControl.xaml</DependentUpon>
@@ -266,11 +275,15 @@
     <Compile Include="Converts\UpdateTypeConvert.cs" />
     <Compile Include="Converts\ReverseBoolConvert.cs" />
     <Compile Include="Converts\Visibility2BooleanConverter.cs" />
-    <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.cs" />
-    <Compile Include="DraggAnimatedPanel\DraggAnimatedPanel.Drag.cs" />
+    <Compile Include="CustomComponent\DraggAnimatedPanel\DraggAnimatedPanel.cs" />
+    <Compile Include="CustomComponent\DraggAnimatedPanel\DraggAnimatedPanel.Drag.cs" />
     <Compile Include="Converts\HideTypeConvert.cs" />
     <Compile Include="Interface\IWindowCommon.cs" />
     <Compile Include="MyThread\RelativePathThread.cs" />
+    <Compile Include="Plugins\EveryThing\Constant\EveryThingConst.cs" />
+    <Compile Include="Plugins\EveryThing\EveryThing32.cs" />
+    <Compile Include="Plugins\EveryThing\EveryThing64.cs" />
+    <Compile Include="Plugins\EveryThing\EveryThingUtil.cs" />
     <Compile Include="Plugins\ShowSeconds\Common\Constants.cs" />
     <Compile Include="Plugins\ShowSeconds\SecondsWindow.xaml.cs">
       <DependentUpon>SecondsWindow.xaml</DependentUpon>
@@ -287,10 +300,12 @@
     <Compile Include="Util\ColorUtil.cs" />
     <Compile Include="Util\DefaultIcons.cs" />
     <Compile Include="Util\DragAdorner.cs" />
+    <Compile Include="Util\FileWatcher.cs" />
     <Compile Include="Util\GlobalHotKey.cs" />
     <Compile Include="Util\CommonCode.cs" />
     <Compile Include="Util\FileIcon.cs" />
     <Compile Include="Util\FileUtil.cs" />
+    <Compile Include="ViewModel\Temp\GuideInfoList.cs" />
     <Compile Include="Util\HideWindowUtil.cs" />
     <Compile Include="Util\IconHelper.cs" />
     <Compile Include="Util\IconUtil.cs" />
@@ -306,6 +321,7 @@
     <Compile Include="Util\MouseHook.cs" />
     <Compile Include="Util\MouseUtil.cs" />
     <Compile Include="Util\NativeMethods.cs" />
+    <Compile Include="Util\ProcessUtil.cs" />
     <Compile Include="Util\RegisterUtil.cs" />
     <Compile Include="Util\RelayCommand.cs" />
     <Compile Include="Util\ScreenUtil.cs" />
@@ -315,7 +331,13 @@
     <Compile Include="Util\StringUtil.cs" />
     <Compile Include="Util\SvgToGeometry.cs" />
     <Compile Include="Util\UserActivityHook.cs" />
+    <Compile Include="CustomComponent\VirtualizingWrapPanel\ItemRange.cs" />
+    <Compile Include="CustomComponent\VirtualizingWrapPanel\SpacingMode.cs" />
+    <Compile Include="CustomComponent\VirtualizingWrapPanel\VirtualizingPanelBase.cs" />
+    <Compile Include="CustomComponent\VirtualizingWrapPanel\VirtualizingWrapPanel.cs" />
     <Compile Include="Util\WindowsThumbnailProvider.cs" />
+    <Compile Include="Util\WindowUtil.cs" />
+    <Compile Include="CustomComponent\VirtualizingWrapPanel\ScrollDirection.cs" />
     <Compile Include="ViewModel\AppConfig.cs" />
     <Compile Include="ViewModel\AppData.cs" />
     <Compile Include="ViewModel\GradientBGParam.cs" />
@@ -351,6 +373,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Control\Other\IconInfoUrlDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\Other\SearchResControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -476,6 +502,18 @@
     </EmbeddedResource>
     <Resource Include="Resource\Iconfont\iconfont.json" />
     <None Include="app.manifest" />
+    <None Include="Plugins\EveryThing\32\Everything.ini">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Plugins\EveryThing\32\Everything.lng">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Plugins\EveryThing\64\Everything.ini">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Plugins\EveryThing\64\Everything.lng">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\app.manifest" />
     <None Include="Update.json" />
     <None Include="packages.config" />
@@ -547,6 +585,26 @@
   <ItemGroup>
     <Resource Include="Logo.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Plugins\EveryThing\lib\Everything32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Plugins\EveryThing\lib\Everything64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Plugins\EveryThing\32\Everything.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Plugins\EveryThing\64\Everything.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
@@ -573,7 +631,8 @@
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>; Move all assemblies and related files to lib folder
-ROBOCOPY "$(TargetDir) " "$(TargetDir)lib\ " /XF Data *.exe *.config *.manifest /XD lib logs bak /E /IS /MOVE
+ROBOCOPY "$(TargetDir) " "$(TargetDir)lib\ " /XF Data *.exe *.config *.manifest /XD "$(TargetDir)lib" plugins logs bak /E /IS /MOVE
+ROBOCOPY "$(TargetDir) " "$(TargetDir)lib\ " *.dll /XD "$(TargetDir)lib"  /E /S /MOVE
 if %25errorlevel%25 leq 4 exit 0 else exit %25errorlevel%25</PostBuildEvent>
   </PropertyGroup>
 </Project>

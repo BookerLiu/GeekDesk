@@ -105,6 +105,7 @@ namespace GeekDesk.Control.Other
                         if (!string.IsNullOrEmpty(appData.AppConfig.PasswordHint))
                         {
                             //显示提示信息
+                            HintMsg.Text = "提示: " + appData.AppConfig.PasswordHint;
                             HintMsg.Visibility = Visibility.Visible;
                         }
                     }
@@ -169,25 +170,33 @@ namespace GeekDesk.Control.Other
             new Thread(() =>
             {
                 Thread.Sleep(time);
-                Dispatcher.Invoke(() =>
+                try
                 {
-                    if (string.IsNullOrEmpty(P1.Password))
+                    Dispatcher.Invoke(() =>
                     {
-                        P1.Focus();
-                        return;
-                    }
-                    if (string.IsNullOrEmpty(P2.Password))
-                    {
-                        P2.Focus();
-                        return;
-                    }
-                    if (string.IsNullOrEmpty(P3.Password))
-                    {
-                        P3.Focus();
-                        return;
-                    }
-                    P4.Focus();
-                });
+                        try
+                        {
+                            if (string.IsNullOrEmpty(P1.Password))
+                            {
+                                P1.Focus();
+                                return;
+                            }
+                            if (string.IsNullOrEmpty(P2.Password))
+                            {
+                                P2.Focus();
+                                return;
+                            }
+                            if (string.IsNullOrEmpty(P3.Password))
+                            {
+                                P3.Focus();
+                                return;
+                            }
+                            P4.Focus();
+                        }
+                        catch (Exception ex) { }
+                    });
+                }
+                catch (Exception e2) { }
             }).Start();
         }
 

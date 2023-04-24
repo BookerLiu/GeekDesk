@@ -124,11 +124,14 @@ namespace ShowSeconds
 
         private void SecondsHookSetFuc(object sender, MouseEventExtArgs e)
         {
+           
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
             {
                 if (ScreenUtil.IsPrimaryFullScreen()) return;
 
                 App.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render, new Action(() =>
+                {
+                try
                 {
                     int x = e.X;
                     int y = e.Y;
@@ -197,8 +200,8 @@ namespace ShowSeconds
 
                                 SecondsDataContext dc = this.DataContext as SecondsDataContext;
                                 dc.Seconds = (DateTime.Now.Hour).ToString() + ":" +
-                                   FormatMS(DateTime.Now.Minute) + ":" +
-                                   FormatMS(DateTime.Now.Second);
+                                    FormatMS(DateTime.Now.Minute) + ":" +
+                                    FormatMS(DateTime.Now.Second);
 
                                 int sx = (int)(SystemParameters.PrimaryScreenWidth * lProportion);
                                 int sMarginBottom = (int)(SystemParameters.WorkArea.Height * tProportion);
@@ -209,7 +212,7 @@ namespace ShowSeconds
                             }
                             else
                             {
-                                BGBorder.Visibility= Visibility.Collapsed;
+                                BGBorder.Visibility = Visibility.Collapsed;
                                 timer.Stop();
                             }
                         }
@@ -217,22 +220,25 @@ namespace ShowSeconds
                     else if (true)
                     {
                         if ((expandClock && (x < 1574 / w * width
-                              || x > 1906 / w * width
-                              || y < 598 / h * height
-                              || y > 1020 / h * height)
-                              )
-                              || !expandClock && (x < 1574 / w * width
-                              || x > 1906 / w * width
-                              || y < 950 / h * height
-                              || y > 1020 / h * height)
-                              )
+                                || x > 1906 / w * width
+                                || y < 598 / h * height
+                                || y > 1020 / h * height)
+                                )
+                                || !expandClock && (x < 1574 / w * width
+                                || x > 1906 / w * width
+                                || y < 950 / h * height
+                                || y > 1020 / h * height)
+                                )
                         {
                             BGBorder.Visibility = Visibility.Collapsed;
                             timer.Stop();
                         }
                     }
+                    }
+                    catch (Exception e1) { }
                 }));
             }
+           
         }
 
 

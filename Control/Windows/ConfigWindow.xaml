@@ -5,7 +5,7 @@
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
            xmlns:hc="https://handyorg.github.io/handycontrol"
            xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
-           xmlns:local="clr-namespace:GeekDesk"
+           xmlns:local="clr-namespace:GeekDesk" xmlns:viewmodel="clr-namespace:GeekDesk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AppConfig}"
            Title="Setting"
            mc:Ignorable="d"
            WindowStartupLocation="CenterScreen"

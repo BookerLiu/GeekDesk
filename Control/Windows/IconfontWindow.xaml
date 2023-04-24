@@ -51,7 +51,7 @@
             </Border.Background>-->
             <hc:DialogContainer>
                 <Grid MouseDown="DragMove">
-                    <TextBox x:Name="CheckSettingUrl" Visibility="Collapsed" Text="{Binding IsSettingUrl}" TextChanged="CheckSettingUrl_TextChanged"/>
+                    <TextBox x:Name="CheckSettingUrl" Style="{StaticResource MyTextBoxStyle}" Visibility="Collapsed" Text="{Binding IsSettingUrl}" TextChanged="CheckSettingUrl_TextChanged"/>
                     <hc:TabControl x:Name="MyTabControl" 
                                IsAnimationEnabled="True" 
                                SelectionChanged="TabControl_SelectionChanged" 
@@ -75,9 +75,9 @@
                     </hc:TabControl>
 
 
-                    <Button Content="取消" Click="Close_Click" Margin="391,397.5,163,22.5"/>
-                    <Button Content="自定义设置" Click="CustomButton_Click" IsEnabled="False" Name="CustomButton" Style="{StaticResource Btn1}" Margin="447,397.5,71,22.5"/>
-                    <Button Content="确定" Click="Confirm_Click" Style="{StaticResource Btn1}" Margin="534,397.5,20,22.5" />
+                    <Button Style="{StaticResource MyBtnStyle}" Content="取消" Click="Close_Click" Margin="391,397.5,163,22.5" />
+                    <Button Style="{StaticResource MyBtnStyle}" Content="自定义设置" Click="CustomButton_Click" IsEnabled="False" Name="CustomButton" Margin="447,397.5,71,22.5"/>
+                    <Button Style="{StaticResource MyBtnStyle}" Content="确定" Click="Confirm_Click" Margin="534,397.5,20,22.5" />
                 </Grid>
             </hc:DialogContainer>
         </Border>

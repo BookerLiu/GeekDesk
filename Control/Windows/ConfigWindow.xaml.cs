@@ -1,5 +1,6 @@
 ﻿using GeekDesk.Control.UserControls.Config;
 using GeekDesk.Interface;
+using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using HandyControl.Controls;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace GeekDesk.Control.Windows
             //BG.Source = ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_BAC_IMAGE_BASE64);
             this.DataContext = appConfig;
             RightCard.Content = about;
-            this.Topmost = true;
+            WindowUtil.SetOwner(this, mainWindow);
             this.mainWindow = mainWindow;
             UFG.Visibility = Visibility.Collapsed;
             UFG.Visibility = Visibility.Visible;

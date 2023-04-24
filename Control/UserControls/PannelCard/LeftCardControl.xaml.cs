@@ -4,14 +4,19 @@ using GeekDesk.Control.Other;
 using GeekDesk.Control.Windows;
 using GeekDesk.Util;
 using GeekDesk.ViewModel;
+using Microsoft.Win32;
 using System;
 
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
+using WindowsAPICodePack.Dialogs;
 
 namespace GeekDesk.Control.UserControls.PannelCard
 {
@@ -22,13 +27,14 @@ namespace GeekDesk.Control.UserControls.PannelCard
     {
         private int menuSelectIndexTemp = -1;
         private AppData appData = MainWindow.appData;
-        private SolidColorBrush bac = new SolidColorBrush(Color.FromRgb(236, 236, 236));
+        private SolidColorBrush bac = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+        
 
 
         public LeftCardControl()
         {
             InitializeComponent();
-
+            bac.Opacity = 0.6;
 
             this.Loaded += (s, e) =>
             {
@@ -200,6 +206,77 @@ namespace GeekDesk.Control.UserControls.PannelCard
             Lbi_Selected(obj, null);
         }
 
+        /// <summary>
+        /// 创建实时文件菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CreateLinkMenu(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                CommonOpenFileDialog dialog = new CommonOpenFileDialog
+                {
+                    IsFolderPicker = true,
+                    Title = "选择关联文件夹"
+                };
+                if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                {
+                    string menuId = System.Guid.NewGuid().ToString();
+                       
+                    string path = dialog.FileName;
+
+                    MenuInfo menuInfo = new MenuInfo
+                    {
+                        MenuName = Path.GetFileNameWithoutExtension(path),
+                        MenuId = menuId,
+                        MenuType = MenuType.LINK,
+                        LinkPath = path,
+                        IsEncrypt = false,
+                    };
+
+                    appData.MenuList.Add(menuInfo);
+
+                    MenuListBox.SelectedIndex = appData.MenuList.Count - 1;
+                    appData.AppConfig.SelectedMenuIndex = MenuListBox.SelectedIndex;
+                    appData.AppConfig.SelectedMenuIcons = menuInfo.IconList;
+                    //首次触发不了Selected事件
+                    object obj = MenuListBox.ItemContainerGenerator.ContainerFromIndex(MenuListBox.SelectedIndex);
+                    SetListBoxItemEvent((ListBoxItem)obj);
+                    Lbi_Selected(obj, null);
+                    HandyControl.Controls.Growl.Success("菜单关联成功, 加载列表中, 稍后重新进入此菜单可查看列表!", "MainWindowGrowl");
+                    FileWatcher.LinkMenuWatcher(menuInfo);
+
+                    new Thread(() =>
+                    {
+                        DirectoryInfo dirInfo = new DirectoryInfo(menuInfo.LinkPath);
+                        FileSystemInfo[] fileInfos = dirInfo.GetFileSystemInfos();
+
+                        ObservableCollection<IconInfo> iconList = new ObservableCollection<IconInfo>();
+                        foreach (FileSystemInfo fileInfo in fileInfos)
+                        {
+                            IconInfo iconInfo = CommonCode.GetIconInfoByPath_NoWrite(fileInfo.FullName);
+                            iconList.Add(iconInfo);
+                        }
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            menuInfo.IconList = iconList;
+                            //foreach (IconInfo iconInfo in iconList)
+                            //{
+                            //    menuInfo.IconList = iconList;
+                            //}
+                        });
+                    }).Start();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                LogUtil.WriteErrorLog(ex, "新建关联菜单失败!");
+                HandyControl.Controls.Growl.WarningGlobal("新建关联菜单失败!");
+            }
+        }
+
 
         /// <summary>
         /// 重命名菜单 将textbox 设置为可见
@@ -220,7 +297,26 @@ namespace GeekDesk.Control.UserControls.PannelCard
         /// <param name="e"></param>
         private void DeleteMenu(object sender, RoutedEventArgs e)
         {
+
             MenuInfo menuInfo = ((MenuItem)sender).Tag as MenuInfo;
+            if (menuInfo.IconList != null && menuInfo.IconList.Count > 0)
+            {
+                HandyControl.Controls.Growl.Ask("确认删除此菜单吗?", isConfirmed =>
+                {
+                    if (isConfirmed)
+                    {
+                        DeleteMenu(menuInfo);
+                    }
+                    return true;
+                }, "MainWindowAskGrowl");
+            } else
+            {
+                DeleteMenu(menuInfo);
+            }
+        }
+
+        private void DeleteMenu(MenuInfo menuInfo)
+        {
             if (appData.MenuList.Count == 1)
             {
                 //如果删除以后没有菜单的话 先创建一个
@@ -628,5 +724,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
             }
 
         }
+
+        
     }
 }

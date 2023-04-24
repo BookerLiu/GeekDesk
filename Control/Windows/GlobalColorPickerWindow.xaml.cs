@@ -1,5 +1,8 @@
 ﻿using GeekDesk.Interface;
+using GeekDesk.Util;
 using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,10 +17,33 @@ namespace GeekDesk.Control.Windows
     public partial class GlobalColorPickerWindow : IWindowCommon
     {
         PixelColorPickerWindow colorPickerWindow = null;
+
+        class PrivateDataContext : INotifyPropertyChanged
+        {
+            private bool copyAnimation = false;
+
+            public bool CopyAnimation
+            {
+                set
+                {
+                    copyAnimation = value;
+                    OnPropertyChanged("CopyAnimation");
+
+                }
+                get { return copyAnimation; }
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+            private void OnPropertyChanged(string propertyName)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+        } 
         public GlobalColorPickerWindow()
         {
             this.Topmost = true;
             InitializeComponent();
+            this.DataContext = new PrivateDataContext();
         }
 
         public void OnKeyDown(object sender, KeyEventArgs e)
@@ -35,14 +61,26 @@ namespace GeekDesk.Control.Windows
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MyColorPicker_Canceled(object sender, EventArgs e)
+        private void MyColorPicker_Canceled(object sender, RoutedEventArgs e)
         {
             MyColorPickerClose();
         }
-        private void MyColorPicker_Confirmed(object sender, HandyControl.Data.FunctionEventArgs<Color> e)
+        private void MyColorPicker_Confirmed(object sender, RoutedEventArgs e)
         {
+            CopySuccess.Visibility = Visibility.Visible;
+            PrivateDataContext pdc = this.DataContext as PrivateDataContext;
+            pdc.CopyAnimation = true;
+            new Thread(() =>
+            {
+                Thread.Sleep(400);
+                this.Dispatcher.Invoke(() =>
+                {
+                    pdc.CopyAnimation = false;
+                    CopySuccess.Visibility = Visibility.Collapsed;
+                });
+            }).Start();
             Color c = MyColorPicker.SelectedBrush.Color;
-            Clipboard.SetData(DataFormats.Text, string.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", c.A, c.R, c.G, c.B));
+            Clipboard.SetData(DataFormats.Text, string.Format("#{0:X2}{1:X2}{2:X2}", c.R, c.G, c.B));
         }
 
         /// <summary>
@@ -148,5 +186,28 @@ namespace GeekDesk.Control.Windows
         {
             this.Close();
         }
+
+        private ICommand _hideCommand;
+        public ICommand HideCommand
+        {
+            get
+            {
+                if (_hideCommand == null)
+                {
+                    _hideCommand = new RelayCommand(
+                        p =>
+                        {
+                            return true;
+                        },
+                        p =>
+                        {
+                            //CopySuccess.Visibility = Visibility.Collapsed;
+                        });
+                }
+                return _hideCommand;
+            }
+        }
+
+    
     }
 }

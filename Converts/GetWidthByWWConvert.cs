@@ -26,7 +26,21 @@ namespace GeekDesk.Converts
                 return config.WindowWidth - config.MenuCardWidth;
             } else if (WidthTypeEnum.RIGHT_CARD_HALF == type)
             {
-                return (config.WindowWidth - config.MenuCardWidth) / 2;
+                return (config.WindowWidth - config.MenuCardWidth) * 0.618;
+            } else if (WidthTypeEnum.RIGHT_CARD_HALF_TEXT == type)
+            {
+                return (config.WindowWidth - config.MenuCardWidth) * 0.618 - config.ImageWidth - 20;
+            } else if (WidthTypeEnum.RIGHT_CARD_20 == type)
+            {
+                return (config.WindowWidth - config.MenuCardWidth) - 20;
+            }
+            else if (WidthTypeEnum.RIGHT_CARD_40 == type)
+            {
+                return (config.WindowWidth - config.MenuCardWidth) - 40;
+            }
+            else if (WidthTypeEnum.RIGHT_CARD_70 == type)
+            {
+                return (config.WindowWidth - config.MenuCardWidth) - 70;
             }
 
             return config.WindowWidth;

@@ -25,63 +25,36 @@
                 <TextBlock Text="面板动作设置" VerticalAlignment="Center"/>
             </hc:UniformSpacingPanel>
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0"  Grid.ColumnSpan="4">
-                <CheckBox x:Name="IconIsAdmin" Content="启动时显示主面板" IsChecked="{Binding StartedShowPanel}">
-                    <CheckBox.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                            <GradientStop Color="#FF9EA3A6"/>
-                        </LinearGradientBrush>
-                    </CheckBox.Background>
-                </CheckBox>
+                <CheckBox Style="{StaticResource MyCheckBoxStyle}" 
+                          x:Name="IconIsAdmin" 
+                          Content="启动时显示主面板" IsChecked="{Binding StartedShowPanel}"/>
             </hc:UniformSpacingPanel>
 
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
-                <CheckBox  Content="显示时追随鼠标位置" IsChecked="{Binding FollowMouse}">
-                    <CheckBox.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                            <GradientStop Color="#FF9EA3A6"/>
-                        </LinearGradientBrush>
-                    </CheckBox.Background>
-                </CheckBox>
+                <CheckBox Style="{StaticResource MyCheckBoxStyle}"
+                          Content="显示时追随鼠标位置" IsChecked="{Binding FollowMouse}"/>
             </hc:UniformSpacingPanel>
 
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
-                <CheckBox  Content="鼠标中键呼出" Click="MouseMiddle_Changed" IsChecked="{Binding MouseMiddleShow}">
-                    <CheckBox.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                            <GradientStop Color="#FF9EA3A6"/>
-                        </LinearGradientBrush>
-                    </CheckBox.Background>
-                </CheckBox>
+                <CheckBox Style="{StaticResource MyCheckBoxStyle}"
+                          Content="鼠标中键呼出"
+                          Click="MouseMiddle_Changed" IsChecked="{Binding MouseMiddleShow}"/>
             </hc:UniformSpacingPanel>
 
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0"  Grid.ColumnSpan="4">
-                <CheckBox  Content="双击启动" IsChecked="{Binding DoubleOpen}">
-                    <CheckBox.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                            <GradientStop Color="#FF9EA3A6"/>
-                        </LinearGradientBrush>
-                    </CheckBox.Background>
-                </CheckBox>
+                <CheckBox Style="{StaticResource MyCheckBoxStyle}" 
+                          Content="双击启动" IsChecked="{Binding DoubleOpen}"/>
             </hc:UniformSpacingPanel>
 
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0"  Grid.ColumnSpan="4">
-                <CheckBox  Content="悬停切换菜单" IsChecked="{Binding HoverMenu}">
-                    <CheckBox.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                            <GradientStop Color="#FF9EA3A6"/>
-                        </LinearGradientBrush>
-                    </CheckBox.Background>
-                </CheckBox>
+                <CheckBox Style="{StaticResource MyCheckBoxStyle}" 
+                          Content="悬停切换菜单" IsChecked="{Binding HoverMenu}"/>
             </hc:UniformSpacingPanel>
 
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
-                <CheckBox  Content="贴边隐藏" IsChecked="{Binding MarginHide}" Click="MarginHide_Changed">
-                    <CheckBox.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                            <GradientStop Color="#FF9EA3A6"/>
-                        </LinearGradientBrush>
-                    </CheckBox.Background>
-                </CheckBox>
+                <CheckBox Style="{StaticResource MyCheckBoxStyle}" 
+                          Content="贴边隐藏" IsChecked="{Binding MarginHide}"
+                          Click="MarginHide_Changed"/>
             </hc:UniformSpacingPanel>
 
             
@@ -90,27 +63,35 @@
                 <TextBlock Text="面板关闭方式" VerticalAlignment="Center"/>
             </hc:UniformSpacingPanel>
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
-                <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}" 
-                         Style="{StaticResource RadioButtonIcon}" Content="失去焦点后"
+                <RadioButton Margin="10,0,0,0" 
+                             Style="{StaticResource MyRadioBtnStyle}"
+                          Content="失去焦点后"
                          IsChecked="{Binding AppHideType, Mode=TwoWay, Converter={StaticResource HideTypeConvert}, ConverterParameter=1}"/>
-                <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}"
-                         Style="{StaticResource RadioButtonIcon}" Content="运行项目后" 
+
+                <RadioButton Margin="10,0,0,0" 
+                         Style="{StaticResource MyRadioBtnStyle}" Content="运行项目后" 
                          IsChecked="{Binding AppHideType, Mode=TwoWay, Converter={StaticResource HideTypeConvert}, ConverterParameter=2}"/>
-                <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}" 
-                         Style="{StaticResource RadioButtonIcon}" Content="手动关闭"
+                <RadioButton Margin="10,0,0,0" 
+                         Style="{StaticResource MyRadioBtnStyle}" Content="手动关闭"
                          IsChecked="{Binding AppHideType, Mode=TwoWay, Converter={StaticResource HideTypeConvert}, ConverterParameter=3}"/>
             </hc:UniformSpacingPanel>
 
             <hc:UniformSpacingPanel Spacing="10" Margin="0,10,0,0" Grid.ColumnSpan="4">
-                <TextBlock Text="搜索方式" VerticalAlignment="Center"/>
+                <TextBlock Text="搜索方式"
+                           VerticalAlignment="Center"
+                           />
             </hc:UniformSpacingPanel>
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
-                <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}" 
-                         Style="{StaticResource RadioButtonIcon}" Content="快捷键"
-                         IsChecked="{Binding SearchType, Mode=TwoWay, Converter={StaticResource SearchTypeConvert}, ConverterParameter=0}"/>
-                <RadioButton Margin="10,0,0,0" Background="{DynamicResource SecondaryRegionBrush}"
-                         Style="{StaticResource RadioButtonIcon}" Content="按键即搜" 
-                         IsChecked="{Binding SearchType, Mode=TwoWay, Converter={StaticResource SearchTypeConvert}, ConverterParameter=1}"/>
+                <RadioButton Margin="10,0,0,0"  
+                             hc:Poptip.Content="主面板显示时按下Ctrl+F开始搜索"
+                             hc:Poptip.Placement="Top"
+                             Style="{StaticResource MyRadioBtnStyle}" Content="快捷键"
+                             IsChecked="{Binding SearchType, Mode=TwoWay, Converter={StaticResource SearchTypeConvert}, ConverterParameter=0}"/>
+                <RadioButton Margin="10,0,0,0" 
+                             hc:Poptip.Content="主面板显示时按下按键直接搜索"
+                             hc:Poptip.Placement="Top"
+                             Style="{StaticResource MyRadioBtnStyle}" Content="按键即搜" 
+                             IsChecked="{Binding SearchType, Mode=TwoWay, Converter={StaticResource SearchTypeConvert}, ConverterParameter=1}"/>
             </hc:UniformSpacingPanel>
 
             <hc:UniformSpacingPanel Spacing="10"  Margin="0,10,0,0" Grid.ColumnSpan="4">
@@ -119,6 +100,7 @@
             <hc:UniformSpacingPanel Spacing="10"  Margin="10,5,0,0" Grid.ColumnSpan="4">
                 <TextBlock Text="主面板:" VerticalAlignment="Center" Margin="0,5,0,0" Width="55"/>
                 <hc:TextBox HorizontalAlignment="Left" 
+                            Style="{StaticResource MyTextBoxStyle}"
                             Tag="{x:Static cst:HotKeyType.Main}"
                             VerticalAlignment="Top" 
                             IsReadOnly="True" 
@@ -129,20 +111,17 @@
                             KeyUp="HotKeyUp"
                             InputMethod.IsInputMethodEnabled="False"
                             />
+
                 <CheckBox Content="启用" 
+                          Style="{StaticResource MyCheckBoxStyle}"
                           Click="EnableHotKey_Click" 
                           Tag="{x:Static cst:HotKeyType.Main}" 
-                          IsChecked="{Binding EnableAppHotKey}">
-                    <CheckBox.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                            <GradientStop Color="#FF9EA3A6"/>
-                        </LinearGradientBrush>
-                    </CheckBox.Background>
-                </CheckBox>
+                          IsChecked="{Binding EnableAppHotKey}"/>
             </hc:UniformSpacingPanel>
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
                 <TextBlock Text="待办任务:" Margin="0,5,0,0"  Width="55"/>
                 <hc:TextBox HorizontalAlignment="Left" 
+                            Style="{StaticResource MyTextBoxStyle}"
                             Tag="{x:Static cst:HotKeyType.ToDo}"
                             VerticalAlignment="Top" 
                             IsReadOnly="True" 
@@ -153,21 +132,18 @@
                             KeyUp="HotKeyUp"
                             InputMethod.IsInputMethodEnabled="False"
                             />
+
                 <CheckBox Content="启用" 
+                          Style="{StaticResource MyCheckBoxStyle}"
                           Click="EnableHotKey_Click" 
                           Tag="{x:Static cst:HotKeyType.ToDo}" 
-                          IsChecked="{Binding EnableTodoHotKey}">
-                    <CheckBox.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                            <GradientStop Color="#FF9EA3A6"/>
-                        </LinearGradientBrush>
-                    </CheckBox.Background>
-                </CheckBox>
+                          IsChecked="{Binding EnableTodoHotKey}"/>
             </hc:UniformSpacingPanel>
 
             <hc:UniformSpacingPanel Spacing="10" Margin="10,5,0,0" Grid.ColumnSpan="4">
                 <TextBlock Text="拾色器:" Margin="0,5,0,0"  Width="55"/>
                 <hc:TextBox HorizontalAlignment="Left" 
+                            Style="{StaticResource MyTextBoxStyle}"
                             Tag="{x:Static cst:HotKeyType.ColorPicker}"
                             VerticalAlignment="Top" 
                             IsReadOnly="True" 
@@ -179,15 +155,10 @@
                             InputMethod.IsInputMethodEnabled="False"
                             />
                 <CheckBox Content="启用" 
+                          Style="{StaticResource MyCheckBoxStyle}"
                           Tag="{x:Static cst:HotKeyType.ColorPicker}"
                           Click="EnableHotKey_Click"
-                          IsChecked="{Binding EnableColorPickerHotKey}">
-                    <CheckBox.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                            <GradientStop Color="#FF9EA3A6"/>
-                        </LinearGradientBrush>
-                    </CheckBox.Background>
-                </CheckBox>
+                          IsChecked="{Binding EnableColorPickerHotKey}"/>
             </hc:UniformSpacingPanel>
         </StackPanel>
     </Grid>

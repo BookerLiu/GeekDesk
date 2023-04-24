@@ -22,6 +22,7 @@ namespace GeekDesk.MyThread
                     foreach (MenuInfo mi in menuList)
                     {
                         ObservableCollection<IconInfo> iconList = mi.IconList;
+                        if (iconList == null) continue;
                         foreach (IconInfo icon in iconList)
                         {
                             if (icon == null) continue;
