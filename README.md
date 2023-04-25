@@ -11,8 +11,11 @@ Free / beautiful / highly customized is the need and direction since the birth o
 At present, GeekDesk is only developed by one person, so the ideas are limited, and you can also raise issues if you have good suggestions
 
 In addition, if you like GeekDesk, you may be able to buy anti-exfoliation shampoo for the author
-Of course, ordering a Star is also an incentive for the author~ 😊😊😊
-
+Of course, ordering a Star is also an incentive for the author~ 😊😊😊  
+  
+[**Paypal**](https://www.paypal.com/paypalme/BookerLiu) 
+  
+### Other:
 <img src="https://z3.ax1x.com/2021/07/20/WYdfmR.jpg" alt="WYdfmR.jpg" border="0" width="400px"/>
 
 ### GitHub
