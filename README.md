@@ -1,6 +1,7 @@
 # GeekDesk 极客桌面
 Small, **beautiful** desktop quickstart management tool with integrated Everything search
-
+- [中文介绍](README-zh.md)
+- [English-machine translation](README.md)
   
 <img src="https://s4.ax1x.com/2021/12/15/TSrwfU.png" a border="0" width="800px"/>
 
