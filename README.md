@@ -1,27 +1,5 @@
 # GeekDesk 极客桌面
-小巧、**美观**的桌面快速启动管理工具  
-  
-———— 大风, 雨夜...  
-「你来了」  
-「我来了」  
-  
-「你究竟想干什么!」  
-「我想做一款软件, 这个软件要Cool」  
-
-「什么软件?」  
-「从最常用的桌面开始吧」  
-  
-「哼!现在的软件多入牛毛, 会差你一个吗」  
-「我不知道, 但是我想做」  
-  
-「你以为凭你一个人的力量能在这大海里掀起什么波浪吗」  
-「但只要我想就够了, 这是我的梦想!」  
-  
-「梦想? 可笑, 这世界哪有什么梦想. 不过是一日三餐, 车子和房!」  
-「我想...就够了...」  
-  
-「...」  
- ———— 雨停, 狂风仍在呼啸...  
+小巧、**美观**的桌面快速启动管理工具, 同时集成了Everything搜索
   
 <img src="https://s4.ax1x.com/2021/12/15/TSrwfU.png" a border="0" width="800px"/>
 
@@ -33,13 +11,18 @@
 另外如果你喜欢 GeekDesk的话, 或许可以为作者购买防脱洗发水  
 当然, 点个**Star**也是对作者的激励哦~ 😊😊😊
 
+<img src="https://z3.ax1x.com/2021/07/20/WYdfmR.jpg" alt="WYdfmR.jpg" border="0" width="400px"/>
 
 ### GitHub
 [https://github.com/BookerLiu/GeekDesk](https://github.com/BookerLiu/GeekDesk)  
 ### 码云
 [https://gitee.com/BookerLiu/GeekDesk](https://gitee.com/BookerLiu/GeekDesk)
 
- <img src="https://z3.ax1x.com/2021/07/20/WYdfmR.jpg" alt="WYdfmR.jpg" border="0" width="400px"/>
+
+## 集成Everything 快速搜索全盘文件
+- 2.5.14及之后版本集成了Everything功能  
+  
+![](https://s3.bmp.ovh/imgs/2023/04/25/ecfbf59916b9b854.gif)
 
 ## 全局热键 一键呼出 鼠标跟随
 - 自定义热键 设置并使用自己习惯的快捷键
