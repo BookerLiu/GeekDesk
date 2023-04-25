@@ -1,6 +1,8 @@
 # GeekDesk 极客桌面
 小巧、**美观**的桌面快速启动管理工具, 同时集成了Everything搜索
-  
+- [中文介绍](README-zh.md)
+- [English-machine translation](README.md)  
+ 
 <img src="https://s4.ax1x.com/2021/12/15/TSrwfU.png" a border="0" width="800px"/>
 
 
