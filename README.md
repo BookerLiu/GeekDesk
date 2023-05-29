@@ -8,7 +8,7 @@ Small, **beautiful** desktop quickstart management tool with integrated Everythi
 
 Free / beautiful / highly customized is the need and direction since the birth of GeekDesk, and will develop in these directions in the future
 
-At present, GeekDesk is only developed by one person, so the ideas are limited, and you can also raise issues if you have good suggestions
+you can raise issues if you have good suggestions
 
 In addition, if you like GeekDesk, you may be able to buy anti-exfoliation shampoo for the author
 Of course, ordering a Star is also an incentive for the author~ 😊😊😊  
