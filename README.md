@@ -64,3 +64,8 @@ Of course, ordering a Star is also an incentive for the author~ 😊😊😊
 ## Stargazers over time
 [![Stargazers over time](https://starchart.cc/BookerLiu/GeekDesk.svg)](https://starchart.cc/BookerLiu/GeekDesk)
 
+## Contributors
+
+<a href="https://github.com/BookerLiu/GeekDesk/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=BookerLiu/GeekDesk" />
+</a>
