@@ -111,6 +111,7 @@
         <cvt:OpcityConvert x:Key="OpcityConvert"/>
         <cvt:GetWidthByWWConvert x:Key="GetWidthByWWConvert"/>
         <temp:SearchIconList x:Key="SearchIconList"/>
+        <cvt:Boolean2VisibilityConverter x:Key="MyBoolean2VisibilityConverter"/>
     </UserControl.Resources>
     <!--右侧栏-->
     <Grid>
@@ -148,6 +149,7 @@
                     <MenuItem Header="添加URL项目" Click="AddUrlIcon"/>
                     <MenuItem Header="添加系统项目" Click="AddSystemIcon"/>
                     <MenuItem x:Name="CardLockCM" Header="锁定主面板" Click="LockAppPanel"/>
+                    <MenuItem x:Name="showTitle" Header="隐藏/显示标题" Click="ShowTitle_Click"/>
                 </ContextMenu>
             </hc:Card.ContextMenu>
             <hc:DialogContainer>
@@ -247,12 +249,16 @@
                                                                  MouseLeftButtonDown="Icon_MouseLeftButtonDown"
                                                                  MouseLeftButtonUp="Icon_MouseLeftButtonUp"
                                                                  >
+                                            <CheckBox Margin="0,0,0,-20" HorizontalAlignment="Right"/>
                                             <!--<StackPanel Background="#00FFFFFF"
                                             MouseEnter="CursorPanel_MouseEnter"
                                             MouseLeave="CursorPanel_MouseLeave"
                                             Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ImageWidth, Mode=OneWay}">-->
                                             <Image Style="{StaticResource ImageStyle}"  
                                                 RenderOptions.BitmapScalingMode="HighQuality"/>
+                                            <!--Width="{Binding AppConfig.WindowWidth, Mode=OneWay, 
+ Converter={StaticResource GetWidthByWWConvert}, 
+ ConverterParameter={x:Static cst:WidthTypeEnum.RIGHT_CARD_70}}"-->
                                             <TextBlock MaxWidth="80"
                                                     Margin="0,5,0,0"
                                                     MaxHeight="40"
@@ -262,6 +268,7 @@
                                                     TextAlignment="Center" 
                                                     VerticalAlignment="Center" 
                                                     Foreground="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.TextColor}"
+                                                    Visibility="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.ShowIconTitle, Converter={StaticResource MyBoolean2VisibilityConverter}, ConverterParameter={x:Static Visibility.Collapsed}, Mode=TwoWay}"
                                                     Text="{Binding Name}"/>
                                             <!--</StackPanel>-->
 

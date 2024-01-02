@@ -353,7 +353,7 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
             DependencyObject dos = sp.Parent;
 
-            Image img = sp.Children[0] as Image;
+            Image img = sp.Children[1] as Image;
 
             double afterHeight = img.Height;
             double afterWidth = img.Width;
@@ -683,6 +683,14 @@ namespace GeekDesk.Control.UserControls.PannelCard
             MyPoptip.VerticalOffset = 30;
         }
 
-
+        /// <summary>
+        /// 控制图标标题显示及隐藏
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowTitle_Click(object sender, RoutedEventArgs e)
+        {
+            appData.AppConfig.ShowIconTitle = !appData.AppConfig.ShowIconTitle;
+        }
     }
 }
