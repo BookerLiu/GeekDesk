@@ -105,10 +105,26 @@ namespace GeekDesk.ViewModel
 
         private bool? secondsWindow; //秒数窗口 默认打开
 
-        private bool? enableEveryThing;
+        private bool? enableEveryThing; //开启everything
 
-        private bool? alwaysTopmost;
+        private bool? alwaysTopmost; //是否置顶
 
+        private bool? showIconTitle = true; //是否显示iconTitle
+
+
+        public bool? ShowIconTitle
+        {
+            get
+            {
+                if (showIconTitle == null) showIconTitle = false;
+                return showIconTitle;
+            }
+            set
+            {
+                showIconTitle = value;
+                OnPropertyChanged("ShowIconTitle");
+            }
+        }
 
         public bool? AlwaysTopmost
         {

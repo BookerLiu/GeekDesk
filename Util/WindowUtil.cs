@@ -44,29 +44,33 @@ namespace GeekDesk.Util
 
         //取得前台窗口句柄函数 
         [DllImport("user32.dll")]
-        private static extern IntPtr GetForegroundWindow();
+        public static extern IntPtr GetForegroundWindow();
         //取得桌面窗口句柄函数 
         [DllImport("user32.dll")]
-        private static extern IntPtr GetDesktopWindow();
+        public static extern IntPtr GetDesktopWindow();
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        private static extern IntPtr FindWindow(string className, string windowName);
-        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        private static extern IntPtr GetWindow(HandleRef hWnd, int nCmd);
-        [DllImport("user32.dll")]
-        private static extern IntPtr SetParent(IntPtr child, IntPtr parent);
-        [DllImport("user32.dll", EntryPoint = "GetDCEx", CharSet = CharSet.Auto, ExactSpelling = true)]
-        private static extern IntPtr GetDCEx(IntPtr hWnd, IntPtr hrgnClip, int flags);
-        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        private static extern bool SetWindowPos(HandleRef hWnd, HandleRef hWndInsertAfter, int x, int y, int cx, int cy, int flags);
-        [DllImport("user32.dll")]
-        private static extern int ReleaseDC(IntPtr window, IntPtr handle);
-        [DllImport("user32.dll")]
-        static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+        public static extern IntPtr FindWindow(string className, string windowName);
 
         [DllImport("user32.dll")]
-        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+        public static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string className, string windowName);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        public static extern IntPtr GetWindow(HandleRef hWnd, int nCmd);
         [DllImport("user32.dll")]
-        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+        public static extern IntPtr SetParent(IntPtr child, IntPtr parent);
+        [DllImport("user32.dll", EntryPoint = "GetDCEx", CharSet = CharSet.Auto, ExactSpelling = true)]
+        public static extern IntPtr GetDCEx(IntPtr hWnd, IntPtr hrgnClip, int flags);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        public static extern bool SetWindowPos(HandleRef hWnd, HandleRef hWndInsertAfter, int x, int y, int cx, int cy, int flags);
+        [DllImport("user32.dll")]
+        public static extern int ReleaseDC(IntPtr window, IntPtr handle);
+        [DllImport("user32.dll")]
+        public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+
+        [DllImport("user32.dll")]
+        public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+        [DllImport("user32.dll")]
+        public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
 
         private const int GWL_STYLE = -16;

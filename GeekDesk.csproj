@@ -274,6 +274,7 @@
     <Compile Include="Converts\BGStyleConvert.cs" />
     <Compile Include="Converts\UpdateTypeConvert.cs" />
     <Compile Include="Converts\ReverseBoolConvert.cs" />
+    <Compile Include="Converts\Boolean2VisibilityConverter.cs" />
     <Compile Include="Converts\Visibility2BooleanConverter.cs" />
     <Compile Include="CustomComponent\DraggAnimatedPanel\DraggAnimatedPanel.cs" />
     <Compile Include="CustomComponent\DraggAnimatedPanel\DraggAnimatedPanel.Drag.cs" />
