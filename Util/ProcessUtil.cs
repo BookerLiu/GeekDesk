@@ -1,4 +1,5 @@
 ﻿using GeekDesk.Constant;
+using GeekDesk.MyThread;
 using GeekDesk.ViewModel;
 using HandyControl.Controls;
 using System;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GeekDesk.Util
 {
@@ -240,6 +242,21 @@ namespace GeekDesk.Util
             }
         }
 
+
+        public static void ReStartApp()
+        {
+            if (MainWindow.appData.AppConfig.MouseMiddleShow || MainWindow.appData.AppConfig.SecondsWindow == true)
+            {
+                MouseHookThread.Dispose();
+            }
+
+            Process p = new Process();
+            p.StartInfo.FileName = Constants.APP_DIR + "GeekDesk.exe";
+            p.StartInfo.WorkingDirectory = Constants.APP_DIR;
+            p.Start();
+
+            Application.Current.Shutdown();
+        }
 
         [Flags]
         private enum ProcessAccessFlags : uint

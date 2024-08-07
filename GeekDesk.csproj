@@ -290,7 +290,7 @@
       <DependentUpon>SecondsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Plugins\ShowSeconds\ViewModel\SecondsDataContext.cs" />
-    <Compile Include="Task\ShowSecondTask.cs" />
+    <Compile Include="Task\BakTask.cs" />
     <Compile Include="Task\ToDoTask.cs" />
     <Compile Include="MyThread\MouseHookThread.cs" />
     <Compile Include="MyThread\DispatcherBuild.cs" />

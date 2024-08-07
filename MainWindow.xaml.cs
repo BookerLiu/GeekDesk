@@ -73,7 +73,10 @@ namespace GeekDesk
                 MarginHide.StartHide();
             }
 
+
+
         }
+
 
         private void Window_SourceInitialized(object sender, EventArgs e)
         {
@@ -84,6 +87,8 @@ namespace GeekDesk
             }
             catch (Exception) { }
         }
+
+       
 
 
 
@@ -379,6 +384,9 @@ namespace GeekDesk
                 EveryThingUtil.EnableEveryThing();
             }
 
+            //启动文件备份任务
+            BakTask.Start();
+
             Keyboard.Focus(SearchBox);
 
             MessageUtil.ChangeWindowMessageFilter(MessageUtil.WM_COPYDATA, 1);
@@ -388,6 +396,7 @@ namespace GeekDesk
             {
                 Guide();
             }
+           
         }
 
 
@@ -596,6 +605,7 @@ namespace GeekDesk
             if (appData.AppConfig.FollowMouse)
             {
                 ShowWindowFollowMouse.Show(mainWindow, MousePosition.CENTER, 0, 0);
+                //ShowWindowFollowMouse.FollowMouse(mainWindow);
             }
 
 
@@ -853,19 +863,9 @@ namespace GeekDesk
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ReStartApp(object sender, RoutedEventArgs e)
+        public void ReStartApp(object sender, RoutedEventArgs e)
         {
-            if (appData.AppConfig.MouseMiddleShow || appData.AppConfig.SecondsWindow == true)
-            {
-                MouseHookThread.Dispose();
-            }
-
-            Process p = new Process();
-            p.StartInfo.FileName = Constants.APP_DIR + "GeekDesk.exe";
-            p.StartInfo.WorkingDirectory = Constants.APP_DIR;
-            p.Start();
-
-            Application.Current.Shutdown();
+            ProcessUtil.ReStartApp();
         }
 
         /// <summary>
