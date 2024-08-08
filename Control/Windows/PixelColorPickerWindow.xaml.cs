@@ -27,7 +27,9 @@ namespace GeekDesk.Control.Windows
         private static readonly int MIN_LENGTH = 10;
         private static readonly int MAX_LENGTH = 50;
 
-        private static System.Drawing.Bitmap bgBitmap;
+        //private static System.Drawing.Bitmap bgBitmap;
+
+        private static RenderTargetBitmap renderTargetBitmap;
 
         private readonly ColorPicker colorPicker;
 
@@ -58,8 +60,7 @@ namespace GeekDesk.Control.Windows
             int x = 0;
             int y = 0;
 
-            //获取缩放比例
-            double scale = ScreenUtil.GetScreenScalingFactor();
+           
 
             foreach (var screen in screens)
             {
@@ -69,6 +70,9 @@ namespace GeekDesk.Control.Windows
                 x = Math.Min(x, rect.X);
                 y = Math.Min(y, rect.Y);
             }
+
+            //获取缩放比例
+            double scale = ScreenUtil.GetScreenScalingFactor();
             //如果主显示器是最左边和最上边，则显示主显示器的缩放比例，反之则缩放比例不添加缩放比例
             if (Screen.PrimaryScreen.Bounds.X != x || Screen.PrimaryScreen.Bounds.Y != y)
             {
@@ -85,7 +89,7 @@ namespace GeekDesk.Control.Windows
             DesktopBG.Height = this.Height;
             this.Topmost = true;
 
-            bgBitmap = new System.Drawing.Bitmap(
+            System.Drawing.Bitmap bgBitmap = new System.Drawing.Bitmap(
                     (int)(Width * scale),
                     (int)(Height * scale),
                     System.Drawing.Imaging.PixelFormat.Format32bppArgb
@@ -111,8 +115,21 @@ namespace GeekDesk.Control.Windows
             VisualBrush b = (VisualBrush)PixelBG.Fill;
             b.Visual = DesktopBG;
             Mouse.OverrideCursor = Cursors.Cross;
+
+            
+        }
+
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            // 创建一个RenderTargetBitmap，捕获窗口的内容
+            renderTargetBitmap = new RenderTargetBitmap((int)this.Width, (int)this.Height, 96, 96, PixelFormats.Pbgra32);
+            renderTargetBitmap.Render(this);
+
             SetPixelAbout(null);
         }
+
+
 
 
         public void OnKeyDown(object sender, KeyEventArgs e)
@@ -128,9 +145,7 @@ namespace GeekDesk.Control.Windows
         {
             Mouse.OverrideCursor = null;
             Point pos = e.MouseDevice.GetPosition(DesktopBG);
-            System.Drawing.Color colorD = bgBitmap.GetPixel((int)pos.X, (int)pos.Y);
-            colorPicker.SelectedBrush = new SolidColorBrush(Color.FromArgb(colorD.A, colorD.R, colorD.G, colorD.B));
-            DeleteObject(bgBitmap.GetHbitmap());
+            colorPicker.SelectedBrush = new SolidColorBrush(GetColorAtPosition(Mouse.GetPosition(this)));
             this.Close();
             ClickColorPickerToggleButton(colorPicker);
         }
@@ -163,14 +178,20 @@ namespace GeekDesk.Control.Windows
             VisualBrush b = (VisualBrush)PixelBG.Fill;
 
             Point pos;
-            if (e == null)
-            {
-                pos = MouseUtil.GetMousePosition();
-            }
-            else
-            {
-                pos = e.MouseDevice.GetPosition(DesktopBG);
-            }
+            //if (e == null)
+            //{
+            //    pos = MouseUtil.GetMousePosition();
+            //}
+            //else
+            //{
+            //    pos = e.MouseDevice.GetPosition(DesktopBG);
+            //}
+
+            
+
+            pos = Mouse.GetPosition(this);
+
+
             Rect viewBox = b.Viewbox;
 
             viewBox.Width = PIXEL_REC_LENGTH;
@@ -195,15 +216,49 @@ namespace GeekDesk.Control.Windows
             Canvas.SetTop(ColorCanvas, y);
 
 
-            System.Drawing.Color dColor = bgBitmap.GetPixel((int)pos.X, (int)pos.Y);
+            //Color wColor = GetColorAtPosition(pos);
 
-            PixelColor_HTML.Text = "#" + dColor.Name.ToUpper();
+            //获取缩放比例
+            double scale = ScreenUtil.GetScreenScalingFactor();
+            //如果主显示器是最左边和最上边，则显示主显示器的缩放比例，反之则缩放比例不添加缩放比例
+            if (Screen.PrimaryScreen.Bounds.X != x || Screen.PrimaryScreen.Bounds.Y != y)
+            {
+                scale = 1;
+            }
+
+            //Console.WriteLine(DesktopBG.Width + "=" + DesktopBG.Height + "=" + pos.X + "=" + pos.Y);
+
+            Color wColor = GetColorAtPosition(pos);
+
+            System.Drawing.Color dColor = System.Drawing.Color.FromArgb(wColor.A, wColor.R, wColor.G, wColor.B);
+
+            PixelColor_HTML.Text = "#" + dColor.Name.ToUpper().Substring(2);
             PixelColor_RGB.Text = dColor.R + "," + dColor.G + "," + dColor.B;
-            Pixel_XY.Text = pos.X + "*" + pos.Y;
+            Pixel_XY.Text = (int)pos.X + "*" + (int)pos.Y;
 
             SolidColorBrush scb = (SolidColorBrush)PixelColor.Fill;
-            scb.Color = Color.FromArgb(dColor.A, dColor.R, dColor.G, dColor.B);
+            scb.Color = wColor;
+            //scb.Color = Color.FromArgb(dColor.A, dColor.R, dColor.G, dColor.B);
         }
+
+        private Color GetColorAtPosition(Point position)
+        {
+            // 使用CroppedBitmap裁剪出鼠标位置的一个像素
+            CroppedBitmap croppedBitmap = new CroppedBitmap(renderTargetBitmap, new Int32Rect((int)position.X, (int)position.Y, 1, 1));
+            // 将像素数据复制到数组中
+            byte[] pixels = new byte[4];
+            croppedBitmap.CopyPixels(pixels, 4, 0);
+            // 如果像素数据有效，则返回颜色
+            //if (pixels.Length == 4)
+            //{
+                
+            //}
+            return Color.FromArgb(pixels[3], pixels[2], pixels[1], pixels[0]);
+            //return Color.FromArgb(0, 0, 0, 0);
+        }
+
+
+
 
         /// <summary>
         /// 滚轮控制缩放区域
@@ -238,5 +293,6 @@ namespace GeekDesk.Control.Windows
             //关闭
             this.Close();
         }
+
     }
 }
