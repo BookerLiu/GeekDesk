@@ -294,7 +294,7 @@
     <Compile Include="Task\ToDoTask.cs" />
     <Compile Include="MyThread\MouseHookThread.cs" />
     <Compile Include="MyThread\DispatcherBuild.cs" />
-    <Compile Include="MyThread\UpdateThread.cs" />
+    <Compile Include="Task\UpdateTask.cs" />
     <Compile Include="Util\AeroGlassHelper.cs" />
     <Compile Include="Util\BGSettingUtil.cs" />
     <Compile Include="Util\BlurGlassUtil.cs" />
