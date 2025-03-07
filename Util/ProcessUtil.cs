@@ -161,6 +161,9 @@ namespace GeekDesk.Util
                         LogUtil.WriteErrorLog(e, "程序启动失败:path=" + icon.Path + ",type=" + type);
                     }
                 }
+
+                //启动后根据是否开启了使用次数排序判断是否执行一次排序
+                CommonCode.SortIconList(MainWindow.appData.AppConfig.IconSortType == (SortType.COUNT_LOW|SortType.COUNT_UP) ? true : false);
             });
         }
 

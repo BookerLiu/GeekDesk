@@ -349,11 +349,11 @@ namespace GeekDesk.Util
         /// <summary>
         /// 排序图标
         /// </summary>
-        public static void SortIconList()
+        public static void SortIconList(bool sort = true)
         {
             try
             {
-                if (MainWindow.appData.AppConfig.IconSortType != SortType.CUSTOM)
+                if (MainWindow.appData.AppConfig.IconSortType != SortType.CUSTOM && sort)
                 {
                     ObservableCollection<MenuInfo> menuList = MainWindow.appData.MenuList;
                     //List<IconInfo> list = new List<IconInfo>(menuList[MainWindow.appData.AppConfig.SelectedMenuIndex].IconList);
