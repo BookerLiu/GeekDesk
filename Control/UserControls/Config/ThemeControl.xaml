@@ -16,6 +16,7 @@
         <cvt:BGStyleConvert x:Key="BGStyleConvert"/>
         <cvt:StringAppendConvert x:Key="StringAppendConvert"/>
         <cvt:Visibility2BooleanConverter x:Key="Visibility2BooleanConverter"/>
+        <cvt:TextToColorConverter x:Key="TextToColorConverter"/>
     </UserControl.Resources>
     <Grid>
         <Grid Background="Transparent">
@@ -70,7 +71,8 @@
                             </hc:UniformSpacingPanel>
                             <hc:UniformSpacingPanel Spacing="10" Margin="20,0,0,0" Grid.ColumnSpan="4">
                                 <TextBlock Text="色彩1:" VerticalAlignment="Center" Margin="0,5,0,0"/>
-                                <TextBlock Text="{Binding GradientBGParam.Color1, NotifyOnTargetUpdated=True}"
+                                <Rectangle Width="10" Height="10" Stroke="White"  Margin="0,0,0,5" Fill="{Binding Path=GradientBGParam.Color1, Converter={StaticResource TextToColorConverter}}"/>
+                                <TextBlock Text="{Binding GradientBGParam.Color1, NotifyOnTargetUpdated=True, Mode=OneWay}"
                                            TargetUpdated="Color_TargetUpdated"
                                            Width="65" 
                                            Margin="0,5,0,0"
@@ -83,7 +85,8 @@
                             </hc:UniformSpacingPanel>
                             <hc:UniformSpacingPanel Spacing="10" Margin="20,5,0,0" Grid.ColumnSpan="4">
                                 <TextBlock Text="色彩2:" VerticalAlignment="Center" Margin="0,5,0,0"/>
-                                <TextBlock Text="{Binding GradientBGParam.Color2, NotifyOnTargetUpdated=True}" 
+                                <Rectangle Width="10" Height="10" Stroke="White" Margin="0,0,0,5" Fill="{Binding Path=GradientBGParam.Color2, Converter={StaticResource TextToColorConverter}}"/>
+                                <TextBlock Text="{Binding GradientBGParam.Color2, NotifyOnTargetUpdated=True, Mode=OneWay}" 
                                            TargetUpdated="Color_TargetUpdated"
                                            Width="65" 
                                            Margin="0,5,0,0"
@@ -95,7 +98,7 @@
                                         />
 
                             </hc:UniformSpacingPanel>
-
+                            <hc:UniformSpacingPanel HorizontalAlignment="Center"  Spacing="10" Grid.ColumnSpan="4">
                             <Button Content="系统预设"
                                     Style="{StaticResource MyBtnStyle}"
                                     Margin="0,5,0,0"
@@ -105,6 +108,12 @@
                                     hc:Poptip.Placement="Top"
                                     Click="SysBG_Click"
                                     />
+                            <Button Content="保存当前颜色到系统预设"
+                                    Style="{StaticResource MyBtnStyle}"
+                                    Margin="0,5,0,0"
+                                    Click="NewBGBtn_Click"
+                                    />
+                            </hc:UniformSpacingPanel>
                         </StackPanel>
                     </hc:TransitioningContentControl>
                 </UniformGrid>
@@ -131,6 +140,10 @@
 
                 <hc:UniformSpacingPanel Spacing="10" Margin="5,10,0,0"  Grid.ColumnSpan="4">
                     <CheckBox Style="{StaticResource MyCheckBoxStyle}"  Content="显示主面板Logo" IsChecked="{Binding TitleLogoVisible, Mode=TwoWay, Converter={StaticResource Visibility2BooleanConverter}}"/>
+                </hc:UniformSpacingPanel>
+
+                <hc:UniformSpacingPanel Spacing="10" Margin="5,10,0,0"  Grid.ColumnSpan="4">
+                    <CheckBox Style="{StaticResource MyCheckBoxStyle}"  Content="显示图标标题" IsChecked="{Binding ShowIconTitle, Mode=TwoWay}"/>
                 </hc:UniformSpacingPanel>
 
 
@@ -216,6 +229,7 @@
                 <hc:Divider LineStrokeDashArray="3,3" LineStroke="Black" Grid.ColumnSpan="4"/>
                 <hc:UniformSpacingPanel Spacing="10" Grid.ColumnSpan="4">
                     <TextBlock VerticalAlignment="Center" Text="图标字体颜色:" />
+                    <Rectangle Width="10" Height="10" Stroke="White" Margin="0,0,0,5" Fill="{Binding Path=TextColor, Converter={StaticResource TextToColorConverter}}"/>
                     <TextBlock VerticalAlignment="Center" Text="{Binding TextColor}" Foreground="{Binding TextColor}" Width="100"/>
                     <Button Style="{StaticResource MyBtnStyle}" Content="选择" Margin="0,-10,0,0" Tag="Text"  Click="ColorButton_Click"/>
                 </hc:UniformSpacingPanel>

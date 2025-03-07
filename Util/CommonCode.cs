@@ -57,7 +57,8 @@ namespace GeekDesk.Util
                 catch
                 {
                     DirectoryInfo dirInfo = new DirectoryInfo(Constants.DATA_FILE_BAK_DIR_PATH);
-                    FileInfo[] files = dirInfo.GetFiles();
+                    FileInfo[] files = dirInfo.GetFiles()
+                        .Where(f => f.Extension.Equals(".bak", StringComparison.OrdinalIgnoreCase)).ToArray(); ;
                     if (files.Length > 0)
                     {
                         FileInfo[] sortedFiles = files.OrderByDescending(file => file.CreationTime).ToArray();

@@ -144,10 +144,10 @@ namespace GeekDesk.Util
                     icon.Count++;
 
                     //隐藏搜索框
-                    if (RunTimeStatus.SEARCH_BOX_SHOW)
-                    {
-                        MainWindow.mainWindow.HidedSearchBox();
-                    }
+                    //if (RunTimeStatus.SEARCH_BOX_SHOW)
+                    //{
+                    //    MainWindow.mainWindow.HidedSearchBox();
+                    //}
                 }
                 catch (Exception e)
                 {

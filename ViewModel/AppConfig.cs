@@ -58,7 +58,7 @@ namespace GeekDesk.ViewModel
         private string customIconUrl; //自定义图标url
         private string customIconJsonUrl;  //自定义图标json信息url
 
-        private bool blurEffect = false; //毛玻璃效果 默认否
+        private bool blurEffect = true; //毛玻璃效果 默认是
         private double blurValue;
 
         private UpdateType updateType = UpdateType.Gitee; //更新源 默认gitee源
@@ -74,7 +74,7 @@ namespace GeekDesk.ViewModel
         private int imageWidth = (int)CommonEnum.IMAGE_WIDTH; //图片宽度
         private int imageHeight = (int)CommonEnum.IMAGE_HEIGHT; //图片高度
 
-        private bool mouseMiddleShow = false;  //鼠标中键呼出 默认不启用
+        private bool mouseMiddleShow = true;  //鼠标中键呼出 默认启用
 
         private bool showBarIcon = true; //显示托盘图标  默认显示
 
@@ -111,12 +111,46 @@ namespace GeekDesk.ViewModel
 
         private bool? showIconTitle = true; //是否显示iconTitle
 
+        private bool iconBatch = false; //批量操作图标状态
+
+        private ObservableCollection<GradientBGParam> customBGParams; //自定义纯色背景
+
+
+        public ObservableCollection<GradientBGParam> CustomBGParams
+        {
+            get
+            {
+                if (customBGParams == null)
+                {
+                    customBGParams = new ObservableCollection<GradientBGParam>();
+                }
+                return customBGParams;
+            }
+            set
+            {
+                customBGParams = value;
+                OnPropertyChanged("CustomBGParams");
+            }
+        }
+
+        public bool IconBatch_NoWrite
+        {
+            get
+            {
+                return iconBatch;
+            }
+            set
+            {
+                iconBatch = value;
+                OnPropertyChanged("IconBatch_NoWrite");
+            }
+        }
 
         public bool? ShowIconTitle
         {
             get
             {
-                if (showIconTitle == null) showIconTitle = false;
+                if (showIconTitle == null) showIconTitle = true;
                 return showIconTitle;
             }
             set
@@ -306,7 +340,7 @@ namespace GeekDesk.ViewModel
             {
                 if (gradientBGParam == null)
                 {
-                    gradientBGParam = GradientBGParamList.GradientBGParams[0];
+                    gradientBGParam = DeepCopyUtil.DeepCopy(GradientBGParamList.GradientBGParams[0]);
                 }
                 return gradientBGParam;
             }
@@ -690,6 +724,14 @@ namespace GeekDesk.ViewModel
         {
             get
             {
+                if (blurEffect)
+                {
+                    BlurValue = 100;
+                }
+                else
+                {
+                    BlurValue = 0;
+                }
                 return blurValue;
             }
             set
@@ -1035,7 +1077,10 @@ namespace GeekDesk.ViewModel
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
+            if (propertyName != null && !propertyName.Contains("NoWrite"))
+            {
+                CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
+            }
         }
 
         #endregion

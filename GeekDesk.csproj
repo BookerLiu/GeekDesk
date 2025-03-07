@@ -168,6 +168,7 @@
     <Compile Include="Command\DelegateCommandBase.cs" />
     <Compile Include="Constant\AppHideType.cs" />
     <Compile Include="Constant\Constants.cs" />
+    <Compile Include="Constant\DictConst.cs" />
     <Compile Include="Constant\HotKeyType.cs" />
     <Compile Include="Constant\IconType.cs" />
     <Compile Include="Constant\CommonEnum.cs" />
@@ -192,6 +193,9 @@
     </Compile>
     <Compile Include="Control\Other\GradientBGDialog.xaml.cs">
       <DependentUpon>GradientBGDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Other\BGNmaeDialog.xaml.cs">
+      <DependentUpon>BGNmaeDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\Other\PasswordDialog.xaml.cs">
       <DependentUpon>PasswordDialog.xaml</DependentUpon>
@@ -259,6 +263,7 @@
     <Compile Include="Control\Windows\UpdateWindow.xaml.cs">
       <DependentUpon>UpdateWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converts\ValueConvert.cs" />
     <Compile Include="Converts\CountGreZero2BoolConvert.cs" />
     <Compile Include="Converts\Count2VisibleConvert.cs" />
     <Compile Include="Converts\GetWidthByWWConvert.cs" />
@@ -275,6 +280,7 @@
     <Compile Include="Converts\UpdateTypeConvert.cs" />
     <Compile Include="Converts\ReverseBoolConvert.cs" />
     <Compile Include="Converts\Boolean2VisibilityConverter.cs" />
+    <Compile Include="Converts\TextToColorConverter.cs" />
     <Compile Include="Converts\Visibility2BooleanConverter.cs" />
     <Compile Include="CustomComponent\DraggAnimatedPanel\DraggAnimatedPanel.cs" />
     <Compile Include="CustomComponent\DraggAnimatedPanel\DraggAnimatedPanel.Drag.cs" />
@@ -299,6 +305,7 @@
     <Compile Include="Util\BGSettingUtil.cs" />
     <Compile Include="Util\BlurGlassUtil.cs" />
     <Compile Include="Util\ColorUtil.cs" />
+    <Compile Include="Util\DeepCopyUtil.cs" />
     <Compile Include="Util\DefaultIcons.cs" />
     <Compile Include="Util\DragAdorner.cs" />
     <Compile Include="Util\FileWatcher.cs" />
@@ -362,6 +369,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Control\Other\GradientBGDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\Other\BGNmaeDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

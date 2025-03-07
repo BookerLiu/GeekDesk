@@ -21,10 +21,13 @@
            >
 
     <Grid Margin="30">
+
         <Grid.Effect>
             <DropShadowEffect BlurRadius="20" Direction="-90" Color="Gray"
                               RenderingBias="Quality" ShadowDepth="2"/>
         </Grid.Effect>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Panel.ZIndex="9999" hc:Growl.GrowlParent="False" hc:Growl.Token="ConfigWindowAskGrowl" Grid.Column="1" Grid.Row="1"/>
+
         <Grid  hc:Dialog.Token="ConfigWindowDialog">
             <hc:DialogContainer  Margin="10">
                 <Border Style="{StaticResource BorderBG}">
@@ -36,6 +39,7 @@
                             <ColumnDefinition Width="140"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
+                        
 
                         <hc:Card Grid.Row="0" Grid.Column="0" Background="Transparent" BorderThickness="0">
 

@@ -7,10 +7,12 @@ using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using GeekDesk.ViewModel.Temp;
 using HandyControl.Controls;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
@@ -105,6 +107,11 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
         private void Icon_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (appData.AppConfig.IconBatch_NoWrite)
+            {
+                
+                return;
+            }
             if (appData.AppConfig.DoubleOpen)
             {
                 IconClick(sender, e);
@@ -113,6 +120,18 @@ namespace GeekDesk.Control.UserControls.PannelCard
 
         private void Icon_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            //Console.WriteLine("选中:" + IconListBox.SelectedItems.Count);
+            if (appData.AppConfig.IconBatch_NoWrite)
+            {
+                //查找checkbox更改选中状态
+                Panel p = sender as Panel;
+                var ens = p.Children.OfType<CheckBox>();
+                foreach (CheckBox cb in ens)
+                {
+                    cb.IsChecked = !cb.IsChecked;
+                }
+                return;
+            }
             if (!appData.AppConfig.DoubleOpen)
             {
                 IconClick(sender, e);
@@ -352,9 +371,14 @@ namespace GeekDesk.Control.UserControls.PannelCard
             Panel sp = sender as Panel;
 
             DependencyObject dos = sp.Parent;
+            Image img = null;
 
-            Image img = sp.Children[1] as Image;
+            foreach (var imgBak in sp.Children.OfType<Image>())
+            {
+                img = (Image)imgBak;
 
+            }
+            if (img == null) return;
             double afterHeight = img.Height;
             double afterWidth = img.Width;
 
@@ -691,6 +715,31 @@ namespace GeekDesk.Control.UserControls.PannelCard
         private void ShowTitle_Click(object sender, RoutedEventArgs e)
         {
             appData.AppConfig.ShowIconTitle = !appData.AppConfig.ShowIconTitle;
+        }
+
+        /// <summary>
+        /// 批量操作
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BatchHandle(object sender, RoutedEventArgs e)
+        {
+            if (!appData.AppConfig.IconBatch_NoWrite)
+            {
+                //开启批量操作时把所有的状态更改为未选中
+               foreach(var ic in IconListBox.Items)
+                {
+                    IconInfo info = ic as IconInfo;
+                    info.IsChecked_NoWrite = false;
+                }
+            }
+            appData.AppConfig.IconBatch_NoWrite = !appData.AppConfig.IconBatch_NoWrite;
+            IconListBox.SelectionMode = SelectionMode.Multiple;
+        }
+
+        private void IconListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //Console.WriteLine(sender.ToString()); 
         }
     }
 }

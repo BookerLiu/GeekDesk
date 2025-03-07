@@ -112,6 +112,9 @@
         <cvt:GetWidthByWWConvert x:Key="GetWidthByWWConvert"/>
         <temp:SearchIconList x:Key="SearchIconList"/>
         <cvt:Boolean2VisibilityConverter x:Key="MyBoolean2VisibilityConverter"/>
+        <cvt:ValueConvert x:Key="ValueConvert"/>
+        <cst:RunTimeStatus x:Key="RunTimeStatus"/>
+        <cst:DictConst x:Key="DictConst"/>
     </UserControl.Resources>
     <!--右侧栏-->
     <Grid>
@@ -150,6 +153,7 @@
                     <MenuItem Header="添加系统项目" Click="AddSystemIcon"/>
                     <MenuItem x:Name="CardLockCM" Header="锁定主面板" Click="LockAppPanel"/>
                     <MenuItem x:Name="showTitle" Header="隐藏/显示标题" Click="ShowTitle_Click"/>
+                    <MenuItem Header="{Binding AppConfig.IconBatch_NoWrite, Mode=OneWay, Converter={StaticResource ValueConvert}, ConverterParameter={x:Static cst:DictConst.batchMenuHeaderDict}}" Click="BatchHandle" Tag="{Binding}"/>
                 </ContextMenu>
             </hc:Card.ContextMenu>
             <hc:DialogContainer>
@@ -171,6 +175,7 @@
                                      ItemsSource="{Binding AppConfig.SelectedMenuIcons, Mode=OneWay}" 
                                      BorderThickness="0"
                                      Padding="0,10,0,0"
+                                     SelectionChanged="IconListBox_SelectionChanged"
                                      ScrollViewer.CanContentScroll ="True"
                                      VirtualizingPanel.VirtualizationMode="Recycling"  
                                      VirtualizingPanel.IsVirtualizing="True" 
@@ -225,7 +230,12 @@
                                         <MenuItem Header="添加系统项目" Click="AddSystemIcon"/>
                                         <MenuItem Header="资源管理器菜单" Click="SystemContextMenu" Tag="{Binding}"/>
                                         <MenuItem Header="属性" Click="PropertyConfig" Tag="{Binding}"/>
-                                        <MenuItem Header="从列表移除" Click="RemoveIcon" Tag="{Binding}"/>
+                                        <MenuItem Header="从列表移除"
+                                                  Click="RemoveIcon"
+                                                  Tag="{Binding}"/>
+                                        <!--MenuItem Header="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.IconBatch_NoWrite, Mode=OneWay, Converter={StaticResource ValueConvert}, ConverterParameter={x:Static cst:DictConst.batchMenuHeaderDict}}"
+                                                  Click="BatchHandle"
+                                                  Tag="{Binding}"/>-->
                                     </ContextMenu>
                                 </ListBox.Resources>
 
@@ -249,7 +259,7 @@
                                                                  MouseLeftButtonDown="Icon_MouseLeftButtonDown"
                                                                  MouseLeftButtonUp="Icon_MouseLeftButtonUp"
                                                                  >
-                                            <CheckBox Margin="0,0,0,-20" HorizontalAlignment="Right"/>
+                                            <!--<CheckBox IsChecked="{Binding IsChecked_NoWrite}" Visibility="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=DataContext.AppConfig.IconBatch_NoWrite, Mode=OneWay, Converter={StaticResource Boolean2VisibilityConverter}}" Margin="0,0,0,-20" HorizontalAlignment="Right"/>-->
                                             <!--<StackPanel Background="#00FFFFFF"
                                             MouseEnter="CursorPanel_MouseEnter"
                                             MouseLeave="CursorPanel_MouseLeave"

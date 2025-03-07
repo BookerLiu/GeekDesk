@@ -21,7 +21,7 @@ namespace GeekDesk.Task
             System.Timers.Timer timer = new System.Timers.Timer
             {
                 Enabled = true,
-                Interval = 60 * 1000 * 60, //60秒 * 60分钟
+                Interval = 60 * 1000 * 60, //60秒 * 60
                 //Interval = 6000,
             };
             timer.Start();
@@ -45,7 +45,8 @@ namespace GeekDesk.Task
             if (dirInfo.Exists)
             {
                 // 获取文件信息并按创建时间倒序排序
-                FileInfo[] files = dirInfo.GetFiles();
+                FileInfo[] files = dirInfo.GetFiles()
+                    .Where(f => f.Extension.Equals(".bak", StringComparison.OrdinalIgnoreCase)).ToArray();
                 if (files.Length > 0)
                 {
                     FileInfo[] sortedFiles = files.OrderByDescending(file => file.CreationTime).ToArray();
