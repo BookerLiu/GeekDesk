@@ -21,7 +21,7 @@ namespace GeekDesk.Task
             System.Timers.Timer timer = new System.Timers.Timer
             {
                 Enabled = true,
-                Interval = 60 * 1000 * 60 * 12, //60秒 * 60分钟 * 12
+                Interval = 60 * 1000 * 60 * 12, //60秒 * 60 * 12  12小时触发一次
                 //Interval = 6000,
             };
             timer.Start();
