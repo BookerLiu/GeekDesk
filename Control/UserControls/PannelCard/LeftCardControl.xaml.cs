@@ -463,6 +463,10 @@ namespace GeekDesk.Control.UserControls.PannelCard
                         {
                             int index = MenuListBox.ItemContainerGenerator.IndexFromContainer(lbi);
                             MenuListBox.SelectedIndex = index;
+                            if (appData.AppConfig.IconBatch_NoWrite)
+                            {
+                                appData.AppConfig.IconBatch_NoWrite = false;
+                            }
                         }
                     });
                 });
@@ -487,6 +491,12 @@ namespace GeekDesk.Control.UserControls.PannelCard
             MenuInfo mi = lbi.DataContext as MenuInfo;
             int index = MenuListBox.Items.IndexOf(mi);
             MenuListBox.SelectedIndex = index;
+
+            if (appData.AppConfig.IconBatch_NoWrite)
+            {
+                appData.AppConfig.IconBatch_NoWrite = false;
+                MainWindow.mainWindow.RightCard.IconListBox.SelectionMode = SelectionMode.Extended;
+            }
         }
 
 

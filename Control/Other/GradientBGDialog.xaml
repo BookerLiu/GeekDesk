@@ -20,19 +20,27 @@
                                             Width="600"
                                             Height="400"
                                             Margin="0,-620,0,0">
+
                 <Border Style="{StaticResource BorderBG}">
                     <Grid>
+                        <TextBlock Text="提示: 右键点击可以删除自定义的背景颜色哦" Foreground="Gray" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+
                         <ListBox x:Name="GradientBGs"
-                     ItemsSource="{Binding}"
-                     Background="Transparent"
-                     Margin="20,20,20,50"
-                     BorderThickness="0"
-                     >
+                                 ItemsSource="{Binding}"
+                                 Background="Transparent"
+                                 Margin="20,20,20,50"
+                                 BorderThickness="0"
+                                 >
+                            <ListBox.Resources>
+                                <ContextMenu x:Key="CMDialog" Width="200">
+                                    <MenuItem Header="删除" Click="Delete" Tag="{Binding}"/>
+                                </ContextMenu>
+                            </ListBox.Resources>
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
+                                    <Setter Property="ContextMenu" Value="{StaticResource CMDialog}"/>
                                     <Setter Property="Margin" Value="10"/>
                                     <Setter Property="Effect" Value="{StaticResource EffectShadow2}"/>
-                                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
                                 </Style>
                             </ListBox.ItemContainerStyle>
                             <ListBox.ItemsPanel>
@@ -40,6 +48,7 @@
                                     <WrapPanel Background="Transparent"/>
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
+                            
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Border CornerRadius="4" Width="100" Height="100"

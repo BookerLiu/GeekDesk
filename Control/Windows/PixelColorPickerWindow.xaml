@@ -11,6 +11,7 @@
     MouseLeftButtonDown="Window_MouseLeftButtonDown"
     MouseRightButtonDown="Window_MouseRightButtonDown"
     MouseWheel="Window_MouseWheel"
+    Loaded="Window_Loaded"
     >
     <Window.Resources>
         <Style x:Key="TextKey" TargetType="TextBlock">

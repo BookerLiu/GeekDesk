@@ -36,7 +36,7 @@ namespace GeekDesk.MyThread
                         }
                     }
                     CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
-                    CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_BAK_PATH);
+                    //CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_BAK_PATH);
                 }
                 catch (Exception ex)
                 {

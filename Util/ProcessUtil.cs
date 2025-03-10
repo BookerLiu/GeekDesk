@@ -1,4 +1,5 @@
 ﻿using GeekDesk.Constant;
+using GeekDesk.MyThread;
 using GeekDesk.ViewModel;
 using HandyControl.Controls;
 using System;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GeekDesk.Util
 {
@@ -142,10 +144,10 @@ namespace GeekDesk.Util
                     icon.Count++;
 
                     //隐藏搜索框
-                    if (RunTimeStatus.SEARCH_BOX_SHOW)
-                    {
-                        MainWindow.mainWindow.HidedSearchBox();
-                    }
+                    //if (RunTimeStatus.SEARCH_BOX_SHOW)
+                    //{
+                    //    MainWindow.mainWindow.HidedSearchBox();
+                    //}
                 }
                 catch (Exception e)
                 {
@@ -159,6 +161,9 @@ namespace GeekDesk.Util
                         LogUtil.WriteErrorLog(e, "程序启动失败:path=" + icon.Path + ",type=" + type);
                     }
                 }
+
+                //启动后根据是否开启了使用次数排序判断是否执行一次排序
+                CommonCode.SortIconList(MainWindow.appData.AppConfig.IconSortType == (SortType.COUNT_LOW|SortType.COUNT_UP) ? true : false);
             });
         }
 
@@ -240,6 +245,21 @@ namespace GeekDesk.Util
             }
         }
 
+
+        public static void ReStartApp()
+        {
+            if (MainWindow.appData.AppConfig.MouseMiddleShow || MainWindow.appData.AppConfig.SecondsWindow == true)
+            {
+                MouseHookThread.Dispose();
+            }
+
+            Process p = new Process();
+            p.StartInfo.FileName = Constants.APP_DIR + "GeekDesk.exe";
+            p.StartInfo.WorkingDirectory = Constants.APP_DIR;
+            p.Start();
+
+            Application.Current.Shutdown();
+        }
 
         [Flags]
         private enum ProcessAccessFlags : uint

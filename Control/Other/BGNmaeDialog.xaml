@@ -1,0 +1,34 @@
+﻿<Border x:Class="GeekDesk.Control.Other.BGNmaeDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:cvt="clr-namespace:GeekDesk.Converts"
+        CornerRadius="4"
+        Width="350"
+        Height="160"
+        Style="{StaticResource BorderBG}"
+        >
+    <Border.Resources>
+        <Style x:Key="LeftTB" TargetType="TextBlock" BasedOn="{StaticResource TextBlockBaseStyle}">
+            <Setter Property="Width" Value="75"/>
+            <Setter Property="TextAlignment" Value="Left"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5,8,0,0"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <cvt:StringAppendConvert x:Key="StringAppendConvert"/>
+    </Border.Resources>
+    <hc:SimplePanel Margin="10" VerticalAlignment="Center">
+        <StackPanel>
+            <Button Width="22"  Height="22" Command="hc:ControlCommands.Close" Style="{StaticResource ButtonIcon}" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+            <hc:UniformSpacingPanel Spacing="10" Margin="0,15,0,0">
+                <TextBlock Text="起个名字吧:"  Style="{StaticResource LeftTB}"/>
+                <TextBox x:Name="BGName" Style="{StaticResource MyTextBoxStyle}" Text="{Binding Name, Mode=OneWay}" Width="230" FontSize="14"/>
+            </hc:UniformSpacingPanel>
+            <hc:UniformSpacingPanel Margin="0,25,0,0" Spacing="10"  Grid.ColumnSpan="4">
+                <Button Content="保存" Style="{StaticResource MyBtnStyle}" Click="Save" Margin="265,10,0,0"/>
+            </hc:UniformSpacingPanel>
+        </StackPanel>
+    </hc:SimplePanel>
+</Border>

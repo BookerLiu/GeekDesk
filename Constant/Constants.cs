@@ -22,11 +22,15 @@ namespace GeekDesk.Constant
         /// <summary>
         /// 备份文件路径
         /// </summary>
-        public static string DATA_FILE_BAK_PATH = APP_DIR + "bak\\Data.bak";  //app备份数据文件路径
+        public static string DATA_FILE_BAK_DIR_PATH = APP_DIR + "bak";  //app备份数据文件路径
+        public static string DATA_FILE_TEMP_DIR_PATH = APP_DIR + "temp";  //app临时缓存文件路径
+
+        //public static string DATA_FILE_BAK_PATH = DATA_FILE_BAK_DIR_PATH + "\\Data.bak";  //app备份数据文件路径
+
 
         public static string PW_FILE_BAK_PATH = APP_DIR + "bak\\pw.txt";  //密码文件路径
-
-        public static string UUID_FILE_BAK_PATH = APP_DIR + "bak\\uuid.txt";  //密码文件路径
+        
+        public static string UUID_FILE_BAK_PATH = APP_DIR + "bak\\uuid.txt";  //uuid文件路径
 
         public static string LOG_FILE_PATH = APP_DIR + "logs\\log.log"; //日志文件
 

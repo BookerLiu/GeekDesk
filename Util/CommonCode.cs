@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
@@ -34,6 +35,7 @@ namespace GeekDesk.Util
                 using (FileStream fs = File.Create(Constants.DATA_FILE_PATH)) { }
                 appData = new AppData();
                 SaveAppData(appData, Constants.DATA_FILE_PATH);
+                return appData;
             }
             else
             {
@@ -49,51 +51,104 @@ namespace GeekDesk.Util
                         {
                             SavePassword(appData.AppConfig.MenuPassword);
                         }
+                        return appData;
                     }
                 }
                 catch
                 {
-                    if (File.Exists(Constants.DATA_FILE_BAK_PATH))
+                    DirectoryInfo dirInfo = new DirectoryInfo(Constants.DATA_FILE_BAK_DIR_PATH);
+                    FileInfo[] files = dirInfo.GetFiles()
+                        .Where(f => f.Extension.Equals(".bak", StringComparison.OrdinalIgnoreCase)).ToArray(); ;
+                    if (files.Length > 0)
                     {
-                        try
+                        FileInfo[] sortedFiles = files.OrderByDescending(file => file.CreationTime).ToArray();
+                        //循环获取可用备份文件
+                        string bakFilePath = "";
+                        foreach (FileInfo bakFile in sortedFiles)
                         {
-                            using (FileStream fs = new FileStream(Constants.DATA_FILE_BAK_PATH, FileMode.Open))
+                            if (!Directory.Exists(Constants.DATA_FILE_TEMP_DIR_PATH)) { Directory.CreateDirectory(Constants.DATA_FILE_TEMP_DIR_PATH); }
+                            bakFilePath = Constants.DATA_FILE_TEMP_DIR_PATH + "\\" + bakFile.Name;
+                            try
                             {
-                                BinaryFormatter bf = new BinaryFormatter();
-                                appData = bf.Deserialize(fs) as AppData;
+                                File.Copy(bakFile.FullName, bakFilePath, true);
+                                using (FileStream fs = new FileStream(bakFilePath, FileMode.Open))
+                                {
+                                    BinaryFormatter bf = new BinaryFormatter();
+                                    appData = bf.Deserialize(fs) as AppData;
+                                }
+                                DialogMsg msg = new DialogMsg();
+                                msg.msg = "不幸的是, GeekDesk当前的数据文件已经损坏, " +
+                                    "现在已经启用系统自动备份的数据\n\n" +
+                                    "如果你有较新的备份, " +
+                                    "请退出GeekDesk, " +
+                                    "将备份文件重命名为:Data, " +
+                                    "然后将Data覆盖到GeekDesk的根目录即可\n\n" +
+                                    "启用的备份文件为: \n" + bakFilePath +
+                                    "\n\n如果当前数据就是你想要的数据, 那么请不用管它";
+                                GlobalMsgNotification gm = new GlobalMsgNotification(msg);
+                                HandyControl.Controls.Notification ntf = HandyControl.Controls.Notification.Show(gm, ShowAnimation.Fade, true);
+                                gm.ntf = ntf;
+                                File.Delete(bakFilePath);
+                                SaveAppData(appData, Constants.DATA_FILE_PATH);
+                                return appData;
                             }
-
-                            DialogMsg msg = new DialogMsg();
-                            msg.msg = "不幸的是, GeekDesk当前的数据文件已经损坏, " +
-                                "现在已经启用系统自动备份的数据\n\n" +
-                                "如果你有较新的备份, " +
-                                "请退出GeekDesk, " +
-                                "将备份文件重命名为:Data, " +
-                                "然后将Data覆盖到GeekDesk的根目录即可\n\n" +
-                                "系统上次备份时间: \n" + appData.AppConfig.SysBakTime +
-                                "\n\n如果当前数据就是你想要的数据, 那么请不用管它";
-                            GlobalMsgNotification gm = new GlobalMsgNotification(msg);
-                            HandyControl.Controls.Notification ntf = HandyControl.Controls.Notification.Show(gm, ShowAnimation.Fade, true);
-                            gm.ntf = ntf;
+                            catch { 
+                                if (File.Exists(bakFilePath))
+                                {
+                                    File.Delete(bakFilePath);
+                                }
+                            }
                         }
-                        catch
-                        {
-                            MessageBox.Show("不幸的是, GeekDesk当前的数据文件已经损坏\n如果你有备份, 请将备份文件重命名为:Data 然后将Data覆盖到GeekDesk的根目录即可!");
-                            Application.Current.Shutdown();
-                            return null;
-                        }
-
-                    }
-                    else
+                        MessageBox.Show("不幸的是, GeekDesk当前的数据文件已经损坏\n如果你有备份, 请将备份文件重命名为:Data 然后将Data覆盖到GeekDesk的根目录即可!");
+                        Application.Current.Shutdown();
+                        return new AppData();
+                    } else
                     {
                         MessageBox.Show("不幸的是, GeekDesk当前的数据文件已经损坏\n如果你有备份, 请将备份文件重命名为:Data 然后将Data覆盖到GeekDesk的根目录即可!");
                         Application.Current.Shutdown();
-                        return null;
+                        return new AppData();
                     }
+
+                    //    if (File.Exists(Constants.DATA_FILE_BAK_PATH))
+                    //{
+                    //    try
+                    //    {
+                    //        using (FileStream fs = new FileStream(Constants.DATA_FILE_BAK_PATH, FileMode.Open))
+                    //        {
+                    //            BinaryFormatter bf = new BinaryFormatter();
+                    //            appData = bf.Deserialize(fs) as AppData;
+                    //        }
+
+                    //        DialogMsg msg = new DialogMsg();
+                    //        msg.msg = "不幸的是, GeekDesk当前的数据文件已经损坏, " +
+                    //            "现在已经启用系统自动备份的数据\n\n" +
+                    //            "如果你有较新的备份, " +
+                    //            "请退出GeekDesk, " +
+                    //            "将备份文件重命名为:Data, " +
+                    //            "然后将Data覆盖到GeekDesk的根目录即可\n\n" +
+                    //            "系统上次备份时间: \n" + appData.AppConfig.SysBakTime +
+                    //            "\n\n如果当前数据就是你想要的数据, 那么请不用管它";
+                    //        GlobalMsgNotification gm = new GlobalMsgNotification(msg);
+                    //        HandyControl.Controls.Notification ntf = HandyControl.Controls.Notification.Show(gm, ShowAnimation.Fade, true);
+                    //        gm.ntf = ntf;
+                    //    }
+                    //    catch
+                    //    {
+                    //        MessageBox.Show("不幸的是, GeekDesk当前的数据文件已经损坏\n如果你有备份, 请将备份文件重命名为:Data 然后将Data覆盖到GeekDesk的根目录即可!");
+                    //        Application.Current.Shutdown();
+                    //        return null;
+                    //    }
+
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show("不幸的是, GeekDesk当前的数据文件已经损坏\n如果你有备份, 请将备份文件重命名为:Data 然后将Data覆盖到GeekDesk的根目录即可!");
+                    //    Application.Current.Shutdown();
+                    //    return null;
+                    //}
 
                 }
             }
-            return appData;
         }
 
         private readonly static object _MyLock = new object();
@@ -105,10 +160,10 @@ namespace GeekDesk.Util
         {
             lock (_MyLock)
             {
-                if (filePath.Equals(Constants.DATA_FILE_BAK_PATH))
-                {
-                    appData.AppConfig.SysBakTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                }
+                //if (filePath.Equals(Constants.DATA_FILE_BAK_PATH))
+                //{
+                //    appData.AppConfig.SysBakTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                //}
                 if (!Directory.Exists(filePath.Substring(0, filePath.LastIndexOf("\\"))))
                 {
                     Directory.CreateDirectory(filePath.Substring(0, filePath.LastIndexOf("\\")));
@@ -294,11 +349,11 @@ namespace GeekDesk.Util
         /// <summary>
         /// 排序图标
         /// </summary>
-        public static void SortIconList()
+        public static void SortIconList(bool sort = true)
         {
             try
             {
-                if (MainWindow.appData.AppConfig.IconSortType != SortType.CUSTOM)
+                if (MainWindow.appData.AppConfig.IconSortType != SortType.CUSTOM && sort)
                 {
                     ObservableCollection<MenuInfo> menuList = MainWindow.appData.MenuList;
                     //List<IconInfo> list = new List<IconInfo>(menuList[MainWindow.appData.AppConfig.SelectedMenuIndex].IconList);

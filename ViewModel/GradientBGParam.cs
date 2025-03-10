@@ -8,6 +8,8 @@ namespace GeekDesk.ViewModel
     [Serializable]
     public class GradientBGParam : INotifyPropertyChanged
     {
+        private string id;
+
         private string color1;
 
         private string color2;
@@ -16,14 +18,26 @@ namespace GeekDesk.ViewModel
 
         public GradientBGParam() { }
 
-        public GradientBGParam(string name, string color1, string color2)
+        public GradientBGParam(string id, string name, string color1, string color2)
         {
+            this.id = id;
             this.name = name;
             this.color1 = color1;
             this.color2 = color2;
         }
 
-
+        public string Id
+        {
+            get
+            {
+                return id;
+            }
+            set
+            {
+                id = value;
+                OnPropertyChanged("Id");
+            }
+        }
 
         public string Color1
         {

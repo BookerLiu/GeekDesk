@@ -75,7 +75,7 @@
                             <TextBlock Text="指定时间:"  Style="{StaticResource LeftTB}"/>
                             <TextBlock Text="*" Foreground="Red"/>
                         </WrapPanel>
-                        <hc:DateTimePicker x:Name="ExeTime" Text="{Binding ExeTime, Mode=OneWay}" ErrorStr="Error!"  Width="200" Margin="1.6,0,0,0">
+                        <hc:DateTimePicker x:Name="ExeTime" Text="{Binding ExeTime, Mode=OneWay}" Width="200" Margin="1.6,0,0,0">
                             <hc:DateTimePicker.Background>
                                 <SolidColorBrush Color="White" Opacity="0.7"/>
                             </hc:DateTimePicker.Background>

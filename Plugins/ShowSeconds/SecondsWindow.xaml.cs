@@ -122,9 +122,23 @@ namespace ShowSeconds
             }
         }
 
+
         private void SecondsHookSetFuc(object sender, MouseEventExtArgs e)
         {
-           
+
+            //IntPtr taskBarWnd = WindowUtil.FindWindow("Shell_TrayWnd", null);
+            //IntPtr tray = WindowUtil.FindWindowEx(taskBarWnd, IntPtr.Zero, "TrayNotifyWnd", null);
+            ////IntPtr trayclock = WindowUtil.FindWindowEx(tray, IntPtr.Zero, "TrayClockWClass", null);
+            //IntPtr trayclock = WindowUtil.GetForegroundWindow();
+            //StringBuilder title = new StringBuilder(256);
+            //WindowUtil.GetWindowText(trayclock, title, title.Capacity);//得到窗口的标题
+            ////Console.WriteLine(title.ToString());
+            //if (title.Equals("通知中心"))
+            //{
+                
+            //}
+
+
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
             {
                 if (ScreenUtil.IsPrimaryFullScreen()) return;

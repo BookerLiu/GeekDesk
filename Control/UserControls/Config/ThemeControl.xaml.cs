@@ -167,6 +167,16 @@ namespace GeekDesk.Control.UserControls.Config
             }
             appConfig.IsShow = null;
         }
-  
+
+        /// <summary>
+        /// 保存当前颜色到系统预设
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewBGBtn_Click(object sender, RoutedEventArgs e)
+        {
+            BGNmaeDialog dialog = new BGNmaeDialog();
+            dialog.dialog = HandyControl.Controls.Dialog.Show(dialog, "ConfigWindowDialog");
+        }
     }
 }

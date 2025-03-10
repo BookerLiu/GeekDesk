@@ -1,8 +1,14 @@
 ﻿using GeekDesk.Constant;
+using GeekDesk.MyThread;
 using GeekDesk.Util;
+using GeekDesk.ViewModel;
+using Microsoft.Win32;
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace GeekDesk
@@ -20,10 +26,13 @@ namespace GeekDesk
             this.Startup += new StartupEventHandler(App_Startup);
             Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            SystemEvents.PowerModeChanged += OnPowerModeChanged;
         }
+
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
+            //RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.SoftwareOnly; //禁用硬件加速
             mutex = new System.Threading.Mutex(true, Constants.MY_NAME, out bool ret);
             if (!ret)
             {
@@ -39,6 +48,25 @@ namespace GeekDesk
                 }
             }
         }
+
+
+    //电源监听
+    private void OnPowerModeChanged(object sender, PowerModeChangedEventArgs e)
+        {
+            switch (e.Mode)
+            {
+                case PowerModes.Resume:
+                    // 系统从休眠状态唤醒
+                    LogUtil.WriteLog("System resumed from sleep.");
+                    ProcessUtil.ReStartApp();
+                    break;
+                case PowerModes.Suspend:
+                    // 系统进入休眠状态
+                    LogUtil.WriteLog("System is going to sleep.");
+                    break;
+            }
+        }
+        
 
         void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {

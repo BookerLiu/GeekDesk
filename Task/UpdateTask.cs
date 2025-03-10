@@ -4,47 +4,47 @@ using GeekDesk.Util;
 using GeekDesk.ViewModel;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
-using System.Threading;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace GeekDesk.MyThread
+namespace GeekDesk.Task
 {
-    public class UpdateThread
+    internal class UpdateTask
     {
+
         private static AppConfig appConfig = MainWindow.appData.AppConfig;
-        public static void Update()
+        public static void Start()
         {
-            System.Threading.Thread t = new System.Threading.Thread(new ThreadStart(UpdateApp))
+            System.Timers.Timer timer = new System.Timers.Timer
             {
-                IsBackground = true
+                Enabled = true,
+                Interval = 60 * 1000 * 60 * 12, //60秒 * 60 * 12  12小时触发一次
+                //Interval = 6000,
             };
-            t.Start();
+            timer.Start();
+            timer.Elapsed += Timer_Elapsed; ;
         }
 
-        private static void UpdateApp()
+        private static void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             try
             {
-
-                //等待1分钟后再检查更新  有的网络连接过慢
-                int sleepTime = 60 * 1000;
-                if (Constants.DEV)
-                {
-                    sleepTime = 1;
-                }
-
-                System.Threading.Thread.Sleep(sleepTime);
-
-                string updateUrl;
+                string updateUrl = ConfigurationManager.AppSettings["GiteeUpdateUrl"];
                 string nowVersion = ConfigurationManager.AppSettings["Version"];
-                switch (appConfig.UpdateType)
+                if (appConfig != null)
                 {
-                    case UpdateType.GitHub:
-                        updateUrl = ConfigurationManager.AppSettings["GitHubUpdateUrl"];
-                        break;
-                    default:
-                        updateUrl = ConfigurationManager.AppSettings["GiteeUpdateUrl"];
-                        break;
+                    switch (appConfig.UpdateType)
+                    {
+                        case UpdateType.GitHub:
+                            updateUrl = ConfigurationManager.AppSettings["GitHubUpdateUrl"];
+                            break;
+                        default:
+                            updateUrl = ConfigurationManager.AppSettings["GiteeUpdateUrl"];
+                            break;
+                    }
                 }
                 string updateInfo = HttpUtil.Get(updateUrl);
                 if (!StringUtil.IsEmpty(updateInfo))
@@ -63,9 +63,10 @@ namespace GeekDesk.MyThread
                                 HttpUtil.Get(statisticUrl);
                             }
                         }
-                    } catch (Exception){}
+                    }
+                    catch (Exception) { }
 
-                   
+
 
                     string onlineVersion = jo["version"].ToString();
                     if (onlineVersion.CompareTo(nowVersion) > 0)

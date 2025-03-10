@@ -28,6 +28,21 @@ namespace GeekDesk.ViewModel
 
         private IconType iconType = IconType.OTHER;
 
+        private bool isChecked = false; //是否选中
+
+
+        public bool IsChecked_NoWrite
+        {
+            get
+            {
+                return isChecked;
+            }
+            set
+            {
+                isChecked = value;
+                OnPropertyChanged("IsChecked_NoWrite");
+            }
+        }
 
         public string RelativePath_NoWrite
         {
@@ -347,7 +362,7 @@ namespace GeekDesk.ViewModel
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            if (propertyName!=null && propertyName.Contains("NoWrite"))
+            if (propertyName!=null && !propertyName.Contains("NoWrite"))
             {
                 CommonCode.SaveAppData(MainWindow.appData, Constants.DATA_FILE_PATH);
             }
